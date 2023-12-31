@@ -1,1 +1,0 @@
-Docker notes here 
