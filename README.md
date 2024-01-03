@@ -3,7 +3,8 @@ This repo contains notes and assignments for the 2024 [Data Talks Data Engineeri
 
 ## Resources
 
-- **[GIT](https://dangitgit.com/)** GIT.
+- **[GIT](https://dangitgit.com/)** 
 - **[GIT EXTENDED](https://dangitgit.com/)** GIT special cases.
+  
 *intended for personal use only*
 
