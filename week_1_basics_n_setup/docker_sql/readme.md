@@ -12,33 +12,33 @@
 ## DOCKER GENERAL INFO
 Docker is a set of Platform as a Service products that use OS level virtualization to deliver software in packages called containers.
 
-CONTAINERS:
+CONTAINERS BASIC INFO:
 
-- encapsulate an application and its dependencies along with a runtime environment, libraries, and configurations.   
-- share the host OS kernel and some syterm libraries. 
-- run as isolated processes on the host OS. 
-- multiple can be run on one host OS.
-- lightweight and resource efficient. 
-- quick to spin up compared to VMs.
-- best suited for running multiple applications or processes with similar OS and 
-security requirements on the same host. VMs are better suited if there are different OS requirements or a higher level of isolation is required. 
+    - encapsulate an application and its dependencies along with a runtime environment, libraries, and configurations.   
+    - share the host OS kernel and some syterm libraries. 
+    - run as isolated processes on the host OS. 
+    - multiple can be run on one host OS.
+    - lightweight and resource efficient. 
+    - quick to spin up compared to VMs.
+    - best suited for running multiple applications or processes with similar OS and 
+    security requirements on the same host. VMs are better suited if there are different OS requirements or a higher level of isolation is required. 
 
 DOCKER ADVANTAGES 
 
-- Reproducible 
+- __Reproducible__ 
     - the container contains the application or service and all of its dependencies. This ensures that it will run consitantly whereever it is deployed. 
     - it is particularly useful to recreate the dev environment locally on a developers machine so that they can work and test locally without having to deal with environnment issues (CI/CD)
 
-- Isolated 
+- __Isolated__ 
     - process and resource isolation allows multiple applications or services to run on the same machine without conflict. 
 
-- Portable 
+- __Portable__ 
     - docker containers can run on any platform that supports docker. 
         - Cloud data pipelines - AWS Batch, Kubernetes jobs
         - Spark data pipelines (spark can be on prem or in the cloud)
         - Severless functions - AWS Lamda, Google cloud functions
 
-- Scalable 
+- __Scalable__ 
     - containers are lightweight, resource efficent, and quick to scale up. 
 
 ## POSTGRES GENERAL INFO
