@@ -47,16 +47,7 @@ __Scalable__
 - containers are lightweight, resource efficent, and quick to scale up. 
 
 ## POSTGRES GENERAL INFO
-   <details>
-   <summary>Android</summary>
 
-   > To install zoxide, use a package manager:
-   >
-   > | Repository | Instructions         |
-   > | ---------- | -------------------- |
-   > | [Termux]   | `pkg install zoxide` |
-
-   </details>
 
 ## CREATE DOCKER IMAGE 
 
