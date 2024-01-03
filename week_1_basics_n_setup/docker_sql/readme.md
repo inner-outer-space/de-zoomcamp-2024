@@ -1,6 +1,6 @@
 # DOCKER AND SQL NOTES 
 - [Docker general info](#docker-background)
-- [use docker to run postgres](#docker-&-postgres)
+- [use docker to run postgres](#docker-and-postgres)
 - [create a docker image](#create-docker-image)  
 - [connect to postgres via pgcli]
 - [connect to postgres via pgadmin] 
@@ -53,7 +53,7 @@ DOCKER ADVANTAGES
 
     - containers are lightweight, resource efficent, and quick to scale up. 
 
-## DOCKER & POSTGRES
+## DOCKER and POSTGRES
 
 ## CREATE DOCKER IMAGE 
 
