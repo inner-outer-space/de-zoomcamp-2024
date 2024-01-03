@@ -4,8 +4,8 @@ import pandas as pd
 
 print(sys.argv)
 
-#day = sys.argv[1]
+day = sys.argv[1]
 
 # some fancy stuff with pandas
 
-#print(f'job finished successfully for day = {day}')
+print(f'job finished successfully for day = {day}')

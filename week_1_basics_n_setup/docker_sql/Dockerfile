@@ -1,8 +1,8 @@
 FROM python:3.9.1
 
-RUN pip install 
+RUN pip install pandas
 
 WORKDIR /app
 COPY pipeline.py pipeline.py
 
-#ENTRYPOINT [ "python", "ingest_data.py" ]
+ENTRYPOINT [ "python", "pipeline.py" ]

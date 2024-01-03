@@ -1,5 +1,5 @@
 # DOCKER AND SQL NOTES 
-- what is docker and why do we use it 
+- [what is docker and why do we use it](docker)
 - use docker to run postgres
 - build a test container  
 - connect to postgres via pgcli
@@ -52,4 +52,49 @@ DOCKER ADVANTAGES
 - Scalable 
 
     - containers are lightweight, resource efficent, and quick to scale up. 
+
+## CREATE DOCKER IMAGE 
+
+- hello world 
+check that docker works by running the docker version of hello world. This will go to docker hub (where docker keeps all the images) and get the hello world image.   
+docker run hello-world 
+
+something more ambitious 
+docker run -it ubuntu bash
+
+ubuntu - image 
+everything after is a parameter to this container
+-i interactive 
+-t terminal 
+
+exit - gets out of this 
+Anything that you do in this container is not saved to the container or host machine. You can reload that image and it will be just the way it was before. 
+
+docker run -it python:3.9
+^d gets you out of that
+after the colon is a tag. 
+
+but you don't install in python, you need bash to install libraries
+
+docker run -it --entrypoint=bash python:3.9
+you can pip install pandas there ... but when you close the container it will disappear. Next time you open the container you will need to install it again.
+
+You can create a docker file to provide more information on how to set up the container. 
+Start with base image and then you can install libraries. 
+
+build a docker image from a docker file. Make sure you are in the folder with the docker file.  
+docker build -it test:pandas . 
+pandas is the tag
+. tells docker to build the image in this folder and look for the docker file in this folder. You will see the out put of all the installs. 
+
+you can also create a data pipeline (pipeline.py) and copy that file to the container. You can specify the working directory and copy the file there. 
+
+WORKDIR /app
+COPY ingest_data.py ingest_data.py 
+
+You can pass arguments in the run. In the pipeline.py file we added commands to parse the input as a date and use the day in the output. 
+
+docker run -it test:pandas 2021-12-15
+
+# RUN POSTGRES LOCALLY WITH DOCKER 
 
