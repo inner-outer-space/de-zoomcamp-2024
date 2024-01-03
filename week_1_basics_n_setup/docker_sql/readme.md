@@ -47,11 +47,10 @@ __Scalable__
 ## POSTGRES GENERAL INFO
 PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. 
 
-**[Postgres](https://www.postgresql.org/docs/16/index.html)** PostgreSQL official documentation 
+**[Postgres](https://www.postgresql.org/docs/16/index.html)** PostgreSQL official documentation  
 
 
-
-## CREATE DOCKER IMAGE 
+## CREATE DOCKER IMAGE
 
 - hello world 
 check that docker works by running the docker version of hello world. This will go to docker hub (where docker keeps all the images) and get the hello world image.   
