@@ -6,8 +6,8 @@ This repo contains notes and assignments for the 2024 [Data Talks Data Engineeri
    <summary>GIT</summary>
 
 - **[GIT](https://dangitgit.com/)** 
-- **[GIT EXTENDED](https://dangitgit.com/)** GIT special cases.
-- **[GIT FORMATTING](https://dangitgit.com/)** GIT MD formatting.
+- **[GIT EXTENDED](https://dangitgit.com/)** Special cases.
+- **[GIT FORMATTING](https://dangitgit.com/)** Markdown formatting.
 
    </details>
 
