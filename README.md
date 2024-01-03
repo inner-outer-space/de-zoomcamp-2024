@@ -11,6 +11,5 @@ This repo contains notes and assignments for the 2024 [Data Talks Data Engineeri
 
    </details>
 
-  
-*intended for personal use only*
+
 
