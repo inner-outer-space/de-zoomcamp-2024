@@ -26,13 +26,16 @@ security requirements on the same host. VMs are better suited if there are diffe
 __Reproducible__ 
 -- the container contains the application or service and all of its dependencies. This ensures that it will run consitantly whereever it is deployed. 
 -- it is particularly useful to recreate the dev environment locally on a developers machine so that they can work and test locally without having to deal with environnment issues (CI/CD)
+
 __Isolated__ 
 - process and resource isolation allows multiple applications or services to run on the same machine without conflict. 
+
 __Portable__ 
 - docker containers can run on any platform that supports docker. 
     - Cloud data pipelines - AWS Batch, Kubernetes jobs
     - Spark data pipelines (spark can be on prem or in the cloud)
     - Severless functions - AWS Lamda, Google cloud functions
+    
 __Scalable__ 
 -- containers are lightweight, resource efficent, and quick to scale up. 
 
