@@ -4,7 +4,7 @@
 <hr />
 
 [Docker](#docker-general-info) •
-[Docker image](#docker-image) •
+[Create Images and Containers](#create-images-and-containers) •
 [Connect via pgcli](#connect-via-pgcli) •
 [Connect via pgadmin](#connect-via-pgadmin) •
 [Upload data](#upload-data) •
@@ -18,21 +18,28 @@
 ## DOCKER GENERAL INFO
 Docker is a set of Platform as a Service products that use OS level virtualization to deliver software in packages called containers. It uses client server architecture with communication via a REST API. 
 
-### CONTAINERS:
-- encapsulate an application/ pipeline/ database/ process etc. and its dependencies along with a runtime environment, libraries, and configurations.<br> 
-- share the host OS kernel and some syterm libraries.<br>
-- run as isolated processes on the host OS.<br>
-- multiple containers can be run on the same hardware.<br>
+### DOCKER IMAGES:
+- is a lightweight, stand-alone, and executable package that contains all the necessary code, libraries, dependencies, and configuration to run a piece of software. <br>
+- can be stored in public or private registries for sharing purposses.<br>
+- built using the Dockerfile.<br> 
+
+### DOCKER CONTAINERS:
+- is an instance of a docker image that is running as a process on a host system. <br>
+- encapsulate an application/ pipeline/ database/ process etc. and its dependencies, libraries, and configurations along with a runtime environment.<br> 
+- share the host OS kernel and some syterm libraries but still provide isolation.<br>
+- multiple containers can be run as isolated processes and managed independently on the same host OS.<br>
+- processes, filesystems, user and group IDs, networks, and resources are isolated between containers. <br>
+- can be easily created and destroyed without affecting the host or other containers. When a container is removed, all changes made to it during run time are lost. <br>
 
 ### ADVANTAGES:
 <table>
   <tr>
     <td><b>Reproducible</b></td>
-    <td>- the container contains the application/ service and all of its dependencies ensuring that it will run consitantly whereever it is deployed.<br> - it is particularly useful to recreate the dev environment locally on a developers machine so that they can work and test locally without having to deal with environnment issues (CI/CD)</td>
+    <td>- the container contains the application/ service and all of its dependencies ensuring that it will run consitantly whereever it is deployed.<br> - avoids environment issues when recreating the dev environment on a local machine for the purpose of experimenting and testing (CI/CD)</td>
   </tr>
   <tr>
     <td><b>Isolated</b></td>
-    <td>- process and resource isolation allows multiple applications or services to run on the same machine without conflict.</td>
+    <td>- allows multiple applications or services to run on the same machine without conflict.</td>
   </tr>
   <tr>
     <td><b>Portable</b></td>
@@ -45,13 +52,37 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
 </table>
 
 
-## DOCKER IMAGE
-- Docker Image is a template with instrucutions that are used for creating Docker Containers
-- A Docker Image is built using the Docker File
-- Docker Images can be stored in public or private registries for sharing purposses
-- Pull and Push commands are used to interact with the registries
+## CREATE IMAGES AND CONTAINERS
+#### BUILD AN IMAGE FROM A DOCKERFILE 
+unless otherwise specified the image will be stored in the local cache. 
+```bash
+$ docker build -t test:pandas .    
+```
+`-t` or `--tag` assign a name and optionally a tag to the image being build.
+`test:pandas`  image name:image tag<br>
+`.` use current directory as the build context. Since -f is not specified here, it will also look for the dockerfile in the current dir.<br><br>
 
-BASIC DOCKER FILE SYNTAX<br>
+#### RUN AN IMAGE TO CREATE A CONTAINER
+If the image is not found in the local cache then docker will attempt to pull it from the Docker Hub repository.<br> 
+```bash
+$ docker run -it test:pandas
+```
+`-i` interactive and `-t` terminal allow you to interact with the container via the terminal<br><br> 
+```bash
+$ docker run -it ubuntu bash     
+```
+```ubuntu``` is the image that is being run<br>
+```bash``` is the command \[CMD\] that you want to execute in the container<br><br> 
+other common **RUN** flags<br> 
+`-d` or `--detach` run the container in detach mode in the background.<br>
+`--name` assign a custom name to a container.<br>
+`-p` or `--publish` map ports from the host to the container.<br>
+`-v` or `--volume` mount volumes to share files and directories between the host and container.<br>
+`--network` connect the container to a specific Docker network, allowing communication between containers on the same network.<br><br>
+`--entrypoint` speciy a different command to run as the entrypoint for that container.
+
+### DOCKERFILE EXAMPLE 
+
 ```python
 FROM python:3.9.1
 
@@ -61,27 +92,15 @@ WORKDIR /app
 COPY pipeline.py pipeline.py
 
 ENTRYPOINT [ "python", "pipeline.py" ]
-```
-    
-
-`FROM` specifies the base image for the container and creates a layer using the python:3.9.1 image.<br>
+```    
+`FROM` specifies the base image for the container.<br>
 `RUN`  runs a command within the container during the image build.<br>
 `WORKDIR` sets the working directory.<br>
 `COPY` copies files from the host machine to the current directory in the container.<br>
 `ENTRYPOINT` specifies the default command that should be executed when the container is run. Additional arguments in the run command will be added to this list.<br>
-`CMD` additional run commands executed at build that are added to entrypoint.<br>
 
-- hello world 
-check that docker works by running the docker version of hello world. This will go to docker hub (where docker keeps all the images) and get the hello world image.   
-docker run hello-world 
 
-something more ambitious 
-docker run -it ubuntu bash
 
-ubuntu - image 
-everything after is a parameter to this container
--i interactive 
--t terminal 
 
 exit - gets out of this 
 Anything that you do in this container is not saved to the container or host machine. You can reload that image and it will be just the way it was before. 
