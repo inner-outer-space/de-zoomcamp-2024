@@ -5,9 +5,9 @@ This repo contains notes and assignments for the 2024 [Data Talks Data Engineeri
    <details>
    <summary>GIT</summary>
 
-- **[GIT](https://dangitgit.com/)** 
-- **[GIT EXTENDED](https://dangitgit.com/)** Special cases.
-- **[GIT FORMATTING](https://dangitgit.com/)** Markdown formatting.
+- **[GIT](https://dangitgit.com/)** General
+- **[GIT EXTENDED](https://dangitgit.com/)** Special commit cases.
+- **[GIT README](https://pragmaticpineapple.com/adding-custom-html-and-css-to-github-readme/)** Adding HTML and CSS  GIT Readme.
 
    </details>
 
