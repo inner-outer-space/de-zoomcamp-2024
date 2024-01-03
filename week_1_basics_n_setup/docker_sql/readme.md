@@ -1,5 +1,5 @@
 # DOCKER AND SQL NOTES 
-- [what is docker and why do we use it](docker)
+- [what is docker and why do we use it](docker-background)
 - use docker to run postgres
 - build a test container  
 - connect to postgres via pgcli
@@ -9,7 +9,7 @@
 - ingest the NY taxi data 
 
 
-## DOCKER 
+## DOCKER BACKGROUND 
 Docker is a set of Platform as a Service products that use OS level virtualization to deliver software in packages called containers.
 
 CONTAINERS:
