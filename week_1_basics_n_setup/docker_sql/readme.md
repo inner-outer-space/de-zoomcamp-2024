@@ -1,12 +1,12 @@
 # DOCKER AND SQL NOTES 
-- [what is docker and why do we use it](docker-background)
-- use docker to run postgres
-- build a test container  
-- connect to postgres via pgcli
-- connect to postgres via pgadmin 
-- upload the data 
-- create a pipeline 
-- ingest the NY taxi data 
+- [Docker general info](#docker-background)
+- [use docker to run postgres](#docker-&-postgres)
+- [create a docker image](#create-docker-image)  
+- [connect to postgres via pgcli]
+- [connect to postgres via pgadmin] 
+- [upload the data] 
+- [create a pipeline]  
+- [ingest the NY taxi data] 
 
 
 ## DOCKER BACKGROUND 
@@ -52,6 +52,8 @@ DOCKER ADVANTAGES
 - Scalable 
 
     - containers are lightweight, resource efficent, and quick to scale up. 
+
+## DOCKER & POSTGRES
 
 ## CREATE DOCKER IMAGE 
 
