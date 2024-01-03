@@ -1,13 +1,19 @@
+<div align="center">
+    
 # DOCKER AND SQL NOTES 
-- [Docker general info](#docker-background)
-- [use docker to run postgres](#docker-and-postgres)
-- [create a docker image](#create-docker-image)  
-- [connect to postgres via pgcli]
-- [connect to postgres via pgadmin] 
-- [upload the data] 
-- [create a pipeline]  
-- [ingest the NY taxi data] 
+<hr />
 
+[Docker](#docker-general-info) •
+[Postgres](#postgres-general-info) •
+[Create docker image](#create-docker-image) •
+[Connect via pgcli](#connect-via-pgcli) •
+[Connect via pgadmin](#connect-via-pgadmin) •
+[Upload data](#upload-data) •
+[Create pipeline](#create-pipeline) •
+[Ingest NY taxi data](#ingest-taxi-data) 
+</div>
+
+<hr />
 
 ## DOCKER GENERAL INFO
 Docker is a set of Platform as a Service products that use OS level virtualization to deliver software in packages called containers.
@@ -22,24 +28,35 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
 - best suited for running multiple applications or processes with similar OS and 
 security requirements on the same host. VMs are better suited if there are different OS requirements or a higher level of isolation is required. 
 
-### DOCKER ADVANTAGES: 
+### ADVANTAGES: 
+
 __Reproducible__ 
--- the container contains the application or service and all of its dependencies. This ensures that it will run consitantly whereever it is deployed. 
--- it is particularly useful to recreate the dev environment locally on a developers machine so that they can work and test locally without having to deal with environnment issues (CI/CD)
+- the container contains the application or service and all of its dependencies. This ensures that it will run consitantly whereever it is deployed. 
+- it is particularly useful to recreate the dev environment locally on a developers machine so that they can work and test locally without having to deal with environnment issues (CI/CD)
 
 __Isolated__ 
 - process and resource isolation allows multiple applications or services to run on the same machine without conflict. 
 
 __Portable__ 
-- docker containers can run on any platform that supports docker. 
+- containers can run on any platform that supports docker. 
     - Cloud data pipelines - AWS Batch, Kubernetes jobs
     - Spark data pipelines (spark can be on prem or in the cloud)
     - Severless functions - AWS Lamda, Google cloud functions
     
 __Scalable__ 
--- containers are lightweight, resource efficent, and quick to scale up. 
+- containers are lightweight, resource efficent, and quick to scale up. 
 
 ## POSTGRES GENERAL INFO
+   <details>
+   <summary>Android</summary>
+
+   > To install zoxide, use a package manager:
+   >
+   > | Repository | Instructions         |
+   > | ---------- | -------------------- |
+   > | [Termux]   | `pkg install zoxide` |
+
+   </details>
 
 ## CREATE DOCKER IMAGE 
 
@@ -84,5 +101,9 @@ You can pass arguments in the run. In the pipeline.py file we added commands to 
 
 docker run -it test:pandas 2021-12-15
 
-# RUN POSTGRES LOCALLY WITH DOCKER 
+## CONNECT VIA PGCLI
+## CONNECT VIA PGADMIN
+## UPLOAD DATA 
+## CREATE PIPELINE
+## INGEST TAXI DATA
 
