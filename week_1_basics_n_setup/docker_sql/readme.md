@@ -51,11 +51,25 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
 - Docker Images can be stored in public or private registries for sharing purposses
 - Pull and Push commands are used to interact with the registries
 
-BASIC SYNTAX<br>
-`FROM` creates a layer from the ubuntu:22.04 Docker image.<br>
-`COPY` adds files from your Docker client's current directory.<br>
-`RUN` builds your application with make.<br>
-`CMD` specifies what command to run within the container.<br>
+BASIC DOCKER FILE SYNTAX<br>
+```python
+FROM python:3.9.1
+
+RUN pip install pandas
+
+WORKDIR /app
+COPY pipeline.py pipeline.py
+
+ENTRYPOINT [ "python", "pipeline.py" ]
+```
+    
+
+`FROM` specifies the base image for the container and creates a layer using the python:3.9.1 image.<br>
+`RUN`  runs a command within the container during the image build.<br>
+`WORKDIR` sets the working directory.<br>
+`COPY` copies files from the host machine to the current directory in the container.<br>
+`ENTRYPOINT` specifies the default command that should be executed when the container is run. Additional arguments in the run command will be added to this list.<br>
+`CMD` additional run commands executed at build that are added to entrypoint.<br>
 
 - hello world 
 check that docker works by running the docker version of hello world. This will go to docker hub (where docker keeps all the images) and get the hello world image.   
