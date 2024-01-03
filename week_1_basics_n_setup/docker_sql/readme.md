@@ -19,14 +19,10 @@
 Docker is a set of Platform as a Service products that use OS level virtualization to deliver software in packages called containers.
 
 ### CONTAINERS:
-- encapsulate an application and its dependencies along with a runtime environment, libraries, and configurations.   
+- encapsulate an application/ pipeline/ database/ process etc. and its dependencies along with a runtime environment, libraries, and configurations.   
 - share the host OS kernel and some syterm libraries. 
 - run as isolated processes on the host OS. 
-- multiple can be run on one host OS.
-- lightweight and resource efficient. 
-- quick to spin up compared to VMs.
-- best suited for running multiple applications or processes with similar OS and 
-security requirements on the same host. VMs are better suited if there are different OS requirements or a higher level of isolation is required. 
+- multiple containers can be run on one host OS.
 
 ### ADVANTAGES: 
 
@@ -40,13 +36,19 @@ __Isolated__
 __Portable__ 
 - containers can run on any platform that supports docker. 
     - Cloud data pipelines - AWS Batch, Kubernetes jobs
-    - Spark data pipelines (spark can be on prem or in the cloud)
+    - Spark data pipelines 
     - Severless functions - AWS Lamda, Google cloud functions
     
 __Scalable__ 
-- containers are lightweight, resource efficent, and quick to scale up. 
+- containers are lightweight, resource efficent, and quick to scale up.
+
+  
 
 ## POSTGRES GENERAL INFO
+PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. 
+
+**[Postgres](https://www.postgresql.org/docs/16/index.html)** PostgreSQL official documentation 
+
 
 
 ## CREATE DOCKER IMAGE 
