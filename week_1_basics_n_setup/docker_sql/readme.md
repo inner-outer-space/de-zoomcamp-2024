@@ -259,7 +259,28 @@ count
 ```
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/cb2524f8-977b-4b76-96ff-38b409bc2fd6" width="60" height="45"><br>
 
+```python
+# SAME OUTPUT AS \dt in PGCLI 
+querry = """
+SELECT *
+FROM pg_catalog.pg_tables
+WHERE schemaname != 'pg_catalog' AND 
+    schemaname != 'information_schema';
+"""
+pd.read_sql(querry, engine)
+```
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5e0082d7-8d72-4cdc-b335-b9646625840f" width="600" height="80"><br>
+
 ## CONNECT VIA PGADMIN
+PCLI is not the most convenient method to query the DB. It is great if you just want to check something quickly. For more extensive querying pgAdmin, a web-based GUI tool to interact with a Postgres database session, is more convenient.  
+
+We will use the pgAdmin Docker image to create a container running pgAdmin. Postgres will run in one container and pgAdmin will run in a second container. We will also need to set up a network to connect the two containers. 
+
+```python
+
+```
+
+
 ## UPLOAD DATA 
 ## CREATE PIPELINE
 
