@@ -1,16 +1,17 @@
 <div align="center">
     
 # DOCKER AND SQL NOTES 
+(*for Linux*)
 <hr />
 
 [Docker](#docker-general-info) •
 [Create images and containers](#create-images-and-containers) •
 [Create pipeline](#create-pipeline) <br>
+[Postgres](#postgres-general-info) •
 [Connect via pgcli](#connect-via-pgcli) •
-[Connect via pgadmin](#connect-via-pgadmin) •
+[Connect via pgadmin](#connect-via-pgadmin) <br>
 [Upload data](#upload-data) •
 [Ingest NY taxi data](#ingest-taxi-data) •
-[Postgres](#postgres-general-info)
 </div>
 
 <hr />
@@ -56,7 +57,7 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
 #### BUILD AN IMAGE FROM A DOCKERFILE 
 unless otherwise specified the image will be stored in the local cache. 
 ```bash
-$ docker build -t test:pandas .    
+docker build -t test:pandas .    
 ```
 `-t` or `--tag` assign a name and optionally a tag to the image being build.
 `test:pandas`  image name:image tag<br>
@@ -65,7 +66,7 @@ $ docker build -t test:pandas .
 #### RUN AN IMAGE TO CREATE A CONTAINER
 If the image is not found in the local cache then docker will attempt to pull it from the Docker Hub repository.<br> 
 ```bash
-$ docker run -it test:pandas
+docker run -it test:pandas
 ```
 `-i` interactive and `-t` terminal allow you to interact with the container via the terminal<br><br> 
 ```bash
@@ -86,10 +87,12 @@ other common **RUN** flags<br>
 </div><br><br><br>
 
 ### DOCKERFILE
-but you don't install in python, you need bash to install libraries
-docker run -it --entrypoint=bash python:3.9
-you can pip install pandas there ... but when you close the container it will disappear. Next time you open the container you will need to install it again.
-You can create a docker file to provide more information on how to set up the container. Start with base image and install libraries. You can also create a data pipeline (pipeline.py) and copy that file to the container. You can specify the working directory and copy the file there. 
+You'll normally need more than just python or ubuntu installed in your container. You could specify a bash entrypoint and then install libraries etc via the command line but these will all disappear when you close the container. 
+```bash
+$ docker run -it --entrypoint=bash python:3.9
+```
+
+You can create a docker file to provide more information on how to set up the container. You start with base image and install libraries. You can also create an executable process such as data pipeline (pipeline.py), copy that file to the container, and run it on creation. 
 
 ```python
 FROM python:3.9.1
@@ -120,24 +123,86 @@ day = sys.argv[1]
 print(f'job finished successfully for day = {day}')
 ```
 BUILD AND RUN THE CONTAINER ABOVE THAT EXECUTES PIPELINE.PY
+Make sure you are in the same folder as the dockerfile or specify the path to the dockerfile with -f. 
 ```bash
-$ docker build -t test:pandas .
+docker build -t test:pandas .
 ```
 ```bash 
-$ docker run -it test:pandas 2021-12-15 pass more args 
+docker run -it test:pandas 2021-12-15 pass more args 
+# OUTPUT
 ['pipeline.py', '2021-12-15', 'pass', 'more', 'args']     
 job finished successfully for day = 2021-12-15
 ```
+## POSTGRES GENERAL INFO
+PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. 
+
+
+
+To run postgres we use the official docker image `postgres:13`. Eventually we will create the image using docker compose but the first example will use the command line. 
+*note: make sure there are no spaces following the backslash*
+```bash
+docker run -it \
+  -e POSTGRES_USER="root"\
+  -e POSTGRES_PASSWORD="root"\
+  -e POSTGRES_DB="ny_taxi"\
+  -v $(pwd)/ny_taxi_postgres_data:/var/lib/postgresql/data\
+  -p 5432:5432\
+  postgres:13
+```
+`-e` environmental variables needed to configure postgres<br>
+`-v` map a volume \<path to host folder\>:\<path to container folder\>. This allows postgres to save its file system outside of the container. This ensures that we don't lose the data when the container is stopped. <br>
+`-p` map the port \<host port\>:\<container port\><br>
+
+This sets up postgres and creates the ny_taxi_postgres_data folder on the host machine. I did not have permissions to open the folder so I changed the permissions giving all users read, write, and exec.  
+
+```bash
+sudo chmod a+rwx ny_taxi_postgres_data
+```
 
 ## CONNECT VIA PGCLI
+You can connect to the Postgres instance in the docker container using a CLI Client. We will be using PGCLI, a python library to access the database and submit querries. 
+```bash 
+$ pip install pgcli 
+
+$ pgcli -h localhost -p 5432 -u root -d ny_taxi
+```
+`-h` host 
+`-p` port
+`-u` user
+`-d` database
+
+you will get a password promt where you enter the password for root --> root 
+
+### BASIC PGCLI COMMANDS 
+`\l+` list all databases on that server<br>
+`\dt` list all tables<br> 
+`\d <table_name>` table details<br>  
+            
+
+## LOAD THE DATASET 
+the jupyter notebook upload_data contains the steps needed to load the data to the database. The raw trip data is now stored in Parquet files rather than CSV. You can use pyarrow to read those files into a pd dataframe. Install pyarrow in the conda environment that you are using to run the jupiter notebook or directly in the notebook `!pip install pyarrow`
+
+```python
+#DOWNLOAD THE PARQUET FILE AND IMPORT TO PD DATAFRAME
+import pandas as pd
+import pyarrow.parquet as pq
+import os
+
+!wget -O yellow_cab_trip_data_jan_2021.parquet "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet"
+!wget -O yellow_cab_data_dict.pdf "https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf"
+
+file_path = f'{cwd}/yellow_cab_trip_data_jan_2021.parquet'
+df = pd.read_parquet(file_path)
+df.head()
+```
+
+
+
 ## CONNECT VIA PGADMIN
 ## UPLOAD DATA 
 ## CREATE PIPELINE
 
 
-## POSTGRES GENERAL INFO
-PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. 
 
-**[Postgres](https://www.postgresql.org/docs/16/index.html)** PostgreSQL official documentation  
 ## INGEST TAXI DATA
 
