@@ -171,32 +171,93 @@ $ pgcli -h localhost -p 5432 -u root -d ny_taxi
 `-u` user
 `-d` database
 
-you will get a password promt where you enter the password for root --> root 
+You will be prompted to enter the password (root)
 
 ### BASIC PGCLI COMMANDS 
 `\l+` list all databases on that server<br>
 `\dt` list all tables<br> 
 `\d <table_name>` table details<br>  
-            
+###### *Since we haven't added tables yet the list will be empty.*
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/c054af8a-78e4-4bf6-bfe8-6ba4affc3cc9" width="200" height="70"><br>
 
-## LOAD THE DATASET 
-the jupyter notebook upload_data contains the steps needed to load the data to the database. The raw trip data is now stored in Parquet files rather than CSV. You can use pyarrow to read those files into a pd dataframe. Install pyarrow in the conda environment that you are using to run the jupiter notebook or directly in the notebook `!pip install pyarrow`
 
+
+## LOAD THE DATASET TO POSTGRES
+the jupyter notebook upload_data.ipynb contains the steps needed to load the CSV data to the database. The following steps do the same for the Parquet file.  
+
+1. `wget` download the files. make sure to add .parquet to the .gitignore    
+2. `read_parquet` import data to a dataframe
+3. `create_engine` Use the df schema to create the connection to the DB.<br>
+4. `to_sql` Insert the data in the dataframe in the sql DB. 
+
+### DOWNLOAD THE PARQUET FILE AND IMPORT TO PD DATAFRAME
 ```python
-#DOWNLOAD THE PARQUET FILE AND IMPORT TO PD DATAFRAME
+!pip install pyarrow
 import pandas as pd
 import pyarrow.parquet as pq
 import os
 
 !wget -O yellow_cab_trip_data_jan_2021.parquet "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet"
 !wget -O yellow_cab_data_dict.pdf "https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf"
+!wget -O yellow_cab_zone_lookup.csv "https://d37ci6vzurychx.cloudfront.net/misc/taxi+_zone_lookup.csv"
 
-file_path = f'{cwd}/yellow_cab_trip_data_jan_2021.parquet'
-df = pd.read_parquet(file_path)
-df.head()
+df = pd.read_parquet(yellow_cab_trip_data_jan_2021.parquet)
+df_zones = pd.read_csv('yellow_cab_zone_lookup.csv')
+```  
+### CREATE THE CONNECTION/ ENGINE 
+```python
+!pip install sqlalchemy  
+!pip install psycopg
+from sqlalchemy import create_engine
+    
+engine = create_engine('postgresql://root:root@localhost:5432/ny_taxi')
 ```
+`postgresql` specifies the type of DBMS being used<br>
+`root:root` specifies the username:password <br>
+`@localhost:5432` The hostname and port number of the database server. Connection is established here <br> 
+`ny_taxi` the specific database within the PostgreSQL server that you want to connect to.<br> 
+
+### UPLOAD THE DATA IN THE DF TO THE DB 
+```python
+# add the taxi data 
+df.to_sql(name='yellow_taxi_data', con=engine, if_exists='replace')
+# add the zones data  
+df_zones.to_sql(name='zones', con=engine, if_exists='replace')
+```
+`df` DataFrame you want to write to the database.<br>
+`to_sql` pandas DataFrame method used to write DataFrames to SQL databases.<br>
+`name='yellow_taxi_data'` name of the table in the database where the DataFrame will be written.<br>
+`con=engine` database connection engine<br> 
+`if_exists='replace'` if the table already exists, it will be replaced with the data from the DataFrame.<br>
+
+###### *Now we see the 2 tables listed*
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/546779a3-4e07-4f56-948f-ddae940580a2" width="200" height="70"><br>
+
+###### *Table details for Zones*
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a6876f0a-1741-4306-9c81-65cdcb57499d" width="200" height="120"><br>
+
+##### Query the tables directly from Jupyter Notebook 
+```python
+query = "SELECT * FROM yellow_taxi_data LIMIT 10"
+df_top_10 = pd.read_sql(query, engine)
+df_top_10
+```
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d164c0ac-321c-42d4-85c3-d1f88eabaf9f" width="1100" height="120"><br>
+
+```python
+query = "SELECT COUNT(*) FROM yellow_taxi_data"
+count = pd.read_sql(query, engine)
+count
+```
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/f3ae0f43-f55e-432d-8531-0a455aef19f0" width="80" height="45"><br>
 
 
+```python
+query = "SELECT COUNT(*) FROM zones"
+count = pd.read_sql(query, engine)
+count
+```
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/cb2524f8-977b-4b76-96ff-38b409bc2fd6" width="60" height="45"><br>
 
 ## CONNECT VIA PGADMIN
 ## UPLOAD DATA 
