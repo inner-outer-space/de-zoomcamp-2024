@@ -4,11 +4,11 @@
 <hr />
 
 [Docker](#docker-general-info) •
-[Create Images and Containers](#create-images-and-containers) •
+[Create images and containers](#create-images-and-containers) •
+[Create pipeline](#create-pipeline) <br>
 [Connect via pgcli](#connect-via-pgcli) •
 [Connect via pgadmin](#connect-via-pgadmin) •
 [Upload data](#upload-data) •
-[Create pipeline](#create-pipeline) •
 [Ingest NY taxi data](#ingest-taxi-data) •
 [Postgres](#postgres-general-info)
 </div>
@@ -49,7 +49,7 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
     <td><b>Scalable</b></td>
     <td> - containers are lightweight, resource efficent, and quick to scale up.</td>
   </tr>
-</table>
+</table><br>
 
 
 ## CREATE IMAGES AND CONTAINERS
@@ -60,7 +60,7 @@ $ docker build -t test:pandas .
 ```
 `-t` or `--tag` assign a name and optionally a tag to the image being build.
 `test:pandas`  image name:image tag<br>
-`.` use current directory as the build context. Since -f is not specified here, it will also look for the dockerfile in the current dir.<br><br>
+`.` use current directory as the build context. Since -f is not specified here, it will also look for the dockerfile in the current dir.<br><br><br>
 
 #### RUN AN IMAGE TO CREATE A CONTAINER
 If the image is not found in the local cache then docker will attempt to pull it from the Docker Hub repository.<br> 
@@ -75,13 +75,21 @@ $ docker run -it ubuntu bash
 ```bash``` is the command \[CMD\] that you want to execute in the container<br><br> 
 other common **RUN** flags<br> 
 `-d` or `--detach` run the container in detach mode in the background.<br>
+`-rm` or `--rm` automatically removes container when you exit.<br>
 `--name` assign a custom name to a container.<br>
 `-p` or `--publish` map ports from the host to the container.<br>
 `-v` or `--volume` mount volumes to share files and directories between the host and container.<br>
-`--network` connect the container to a specific Docker network, allowing communication between containers on the same network.<br><br>
+`--network` connect the container to a specific Docker network, allowing communication between containers on the same network.<br>
 `--entrypoint` speciy a different command to run as the entrypoint for that container.
+<div align="center">
+<b>Anything that you do in this container is not saved to the container or host machine.<br> When you create a new container from that image, it will be unchanged.</b>
+</div><br><br><br>
 
-### DOCKERFILE EXAMPLE 
+### DOCKERFILE
+but you don't install in python, you need bash to install libraries
+docker run -it --entrypoint=bash python:3.9
+you can pip install pandas there ... but when you close the container it will disappear. Next time you open the container you will need to install it again.
+You can create a docker file to provide more information on how to set up the container. Start with base image and install libraries. You can also create a data pipeline (pipeline.py) and copy that file to the container. You can specify the working directory and copy the file there. 
 
 ```python
 FROM python:3.9.1
@@ -96,40 +104,30 @@ ENTRYPOINT [ "python", "pipeline.py" ]
 `FROM` specifies the base image for the container.<br>
 `RUN`  runs a command within the container during the image build.<br>
 `WORKDIR` sets the working directory.<br>
-`COPY` copies files from the host machine to the current directory in the container.<br>
-`ENTRYPOINT` specifies the default command that should be executed when the container is run. Additional arguments in the run command will be added to this list.<br>
+`COPY` copies files from the host machine to the working directory in the container.<br>
+`ENTRYPOINT` specifies the default command that should be executed when the container is run. Additional arguments in the run command will be added to this list.<br><br>
 
+## CREATE A PIPELINE
+pipeline.py
+```python
+import sys
+import pandas as pd
 
+print(sys.argv)        #PRINTS ALL PASSED ARGUMENTS
+day = sys.argv[1]      
 
-
-exit - gets out of this 
-Anything that you do in this container is not saved to the container or host machine. You can reload that image and it will be just the way it was before. 
-
-docker run -it python:3.9
-^d gets you out of that
-after the colon is a tag. 
-
-but you don't install in python, you need bash to install libraries
-
-docker run -it --entrypoint=bash python:3.9
-you can pip install pandas there ... but when you close the container it will disappear. Next time you open the container you will need to install it again.
-
-You can create a docker file to provide more information on how to set up the container. 
-Start with base image and then you can install libraries. 
-
-build a docker image from a docker file. Make sure you are in the folder with the docker file.  
-docker build -it test:pandas . 
-pandas is the tag
-. tells docker to build the image in this folder and look for the docker file in this folder. You will see the out put of all the installs. 
-
-you can also create a data pipeline (pipeline.py) and copy that file to the container. You can specify the working directory and copy the file there. 
-
-WORKDIR /app
-COPY ingest_data.py ingest_data.py 
-
-You can pass arguments in the run. In the pipeline.py file we added commands to parse the input as a date and use the day in the output. 
-
-docker run -it test:pandas 2021-12-15
+# some fancy stuff with pandas
+print(f'job finished successfully for day = {day}')
+```
+BUILD AND RUN THE CONTAINER ABOVE THAT EXECUTES PIPELINE.PY
+```bash
+$ docker build -t test:pandas .
+```
+```bash 
+$ docker run -it test:pandas 2021-12-15 pass more args 
+['pipeline.py', '2021-12-15', 'pass', 'more', 'args']     
+job finished successfully for day = 2021-12-15
+```
 
 ## CONNECT VIA PGCLI
 ## CONNECT VIA PGADMIN
