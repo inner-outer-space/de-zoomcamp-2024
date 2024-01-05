@@ -332,7 +332,82 @@ dpage/pgadmin4
 ` Servers > Docker localhost > Databases > ny_taxi > Schemas > public > Tables > `
 
 
-## UPLOAD DATA 
+## CONVERT JUPYTER NOTEBOOK TO SCRIPT 
+Next week we will look at doing this in the app. Here is a quick and dirty manual process.<br>
+CONVERT THE IPYNB FILE TO SCRIPT 
+```cli
+jupyter nbconvert --to=script upload-data.iypnb
+```
+<details>
+<summary>UPLOAD DATA AS PYTHON SCRIPT </summary>  
+ingest-data.py
+```python 
+import argparse
+import os 
+import pandas as pd
+import pyarrow.parquet as pq
+from sqlalchemy import create_engine
+
+
+def main(params):
+    user = params.user
+    password = params.password
+    host = params.host
+    port = params.port
+    db = params.db
+    table_name = params.table_name
+    url = params.url
+    parquet_name = 'output.parquet'
+    
+    # DOWNLOAD THE DATA
+    #os.system(f'wget {url} -O {parquet_name}')
+    os.system(f'wget -O {parquet_name} {url}')
+    
+    # CREATE A CONNECTION TO THE DB
+    engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{db}')
+
+    # READ THE PARQUET and CSV FILES INTO DATAFRAMES
+    df = pd.read_parquet(parquet_name)
+    #df_zones = pd.read_csv('yellow_cab_zone_lookup.csv')
+
+    # UPLOAD THE DATA TO THE DB
+    df.to_sql(name=table_name, con=engine, if_exists='replace')
+    #df_zones.to_sql(name='zones', con=engine, if_exists='replace')
+
+
+# The parser is used to parse the command line arguments which are then passed to the main method. 
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Ingest Parquet and CSV files into a PostgreSQL DB')
+
+    parser.add_argument('--user', help='user name for postgres')
+    parser.add_argument('--password', help='password for postgres')
+    parser.add_argument('--host', help='host for postgres')
+    parser.add_argument('--port', help='port for postgres')
+    parser.add_argument('--db', help='database name')
+    parser.add_argument('--table_name', help='table name')
+    parser.add_argument('--url', help='url for data file')
+    #parser.add_argument('parquet', help='path to parquet file')
+    #parser.add_argument('csv', help='path to csv file')
+
+    args = parser.parse_args()
+    main(args)
+```
+</details>
+
+<details>
+<summary>COMMAND TO RUN .PY SCRIPT </summary>  
+```cli 
+    python ingest-data.py \
+    --user=root \
+    --password=root \
+    --host=localhost \
+    --port=5432 \
+    --db=ny_taxi \
+    --table_name=yellow_taxi_trips \
+    --url="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet"
+```
+</details>
+
 ## CREATE PIPELINE
 
 
