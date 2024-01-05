@@ -152,10 +152,10 @@ docker run -it \
 `-v` map a volume \<path to host folder\>:\<path to container folder\>. This allows postgres to save its file system outside of the container. This ensures that we don't lose the data when the container is stopped. <br>
 `-p` map the port \<host port\>:\<container port\><br>
 
-I did not have permissions to open the folder so I updated permissions to give all users read, write, and exec.  
+I did not have permissions to open the folder so I updated permissions recursively to give all users read, write, and exec in the folder and subfolders. On Linux persmissions for this folder cause issues when trying to ingest the data using docker (later this week). This does not get around that issue. The solution there is to move this folder into a dedicated data folder and then add that folder to .dockerignor and .gitignore.   
 
 ```bash
-sudo chmod a+rwx ny_taxi_postgres_data
+sudo chmod -R 777 ny_taxi_postgres_data
 ```
 
 ## CONNECT VIA PGCLI
