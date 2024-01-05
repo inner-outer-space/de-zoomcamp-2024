@@ -277,7 +277,28 @@ PCLI is not the most convenient method to query the DB. It is great if you just 
 We will use the pgAdmin Docker image to create a container running pgAdmin. Postgres will run in one container and pgAdmin will run in a second container. We will also need to set up a network to connect the two containers. 
 
 ```python
+# CREATE A NETWORK 
+docker network create pg-network
 
+# POSTGRES CONTAINER ON NETWORK
+docker run -it -d \
+  -e POSTGRES_USER="root" \
+  -e POSTGRES_PASSWORD="root" \
+  -e POSTGRES_DB="ny_taxi" \
+  -v $(pwd)/ny_taxi_postgres_data:/var/lib/postgresql/data \
+  -p 5432:5432 \
+  --network=pg-network \
+  --name pg-database \
+postgres:13
+
+# PGADMIN CONTAINER ON NETWORK
+docker run -it -d \
+    -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
+    -e PGADMIN_DEFAULT_PASSWORD="password" \
+    -p 8080:80 \
+    --network=pg-network \
+    --name pgadmin \
+dpage/pgadmin4
 ```
 
 
