@@ -6,7 +6,6 @@
 
 [Docker](#docker-general-info) •
 [Create images and containers](#create-images-and-containers) •
-[Create pipeline](#create-pipeline) <br>
 [Postgres](#postgres-general-info) •
 [Connect via pgcli](#connect-via-pgcli) •
 [Connect via pgadmin](#connect-via-pgadmin) <br>
@@ -83,15 +82,15 @@ More **RUN** flags<br>
 <b>All changes made in a container are lost when that container is destroyed<br> Changes made in one container will not affect the image or any subsequent containers created from that image.</b>
 </div><br><br><br>
 
-### DOCKERFILE
+## DOCKERFILE
 You'll normally need more than just python or ubuntu installed in your container. You could specify a bash entrypoint and then install libraries etc via the command line but these will all disappear when you close the container. 
 ```bash
 $ docker run -it --entrypoint=bash python:3.9
 ```
 
-You can create a docker file to provide more information on how to set up the container. You start with base image and install libraries. You can also create an executable process such as data pipeline (pipeline.py), copy that file to the container, and run it on creation. 
+The dockerfile expands on a base image and allows for the creation of complex images. The file contains instructions on how to set up the container and includes running commands, installing libraries, copying files into the container etc. You can also create an executable process such as data pipeline (pipeline.py), copy that file to the container, and run it on creation. 
 
-DOCKERFILE EXAMPLE THAT RUNS A PIPELINE.PY FILE
+#### DOCKERFILE EXAMPLE THAT RUNS A PIPELINE.PY FILE
 ```python
 FROM python:3.9.1
 
@@ -108,7 +107,7 @@ ENTRYPOINT [ "python", "pipeline.py" ]
 `COPY` copies files from the host machine to the working directory in the container.<br>
 `ENTRYPOINT` specifies the default command that should be executed when the container is run. Additional arguments in the run command will be added to this list.<br><br>
 
-PIPELINE.PY EXAMPLE
+#### PIPELINE.PY EXAMPLE
 ```python
 import sys
 import pandas as pd
@@ -119,13 +118,14 @@ day = sys.argv[1]
 # some fancy stuff with pandas
 print(f'job finished successfully for day = {day}')
 ```
+<br>
 
-BUILD AND RUN THE CONTAINER ABOVE THAT EXECUTES PIPELINE.PY<br>
-Make sure you are in the same folder as the dockerfile or specify the path to the dockerfile with -f. 
+#### BUILD AND RUN THE CONTAINER ABOVE THAT EXECUTES PIPELINE.PY
 ```bash
 # BUILD THE IMAGE
 docker build -t test:pandas .
 ```
+*Make sure you are in the same folder as the dockerfile or specify the path to the dockerfile with -f.* 
 ```bash
 # RUN THE CONTAINER WITH ARGUMENTS
 docker run -it test:pandas 2021-12-15 pass more args 
@@ -135,6 +135,7 @@ docker run -it test:pandas 2021-12-15 pass more args
 ['pipeline.py', '2021-12-15', 'pass', 'more', 'args']     
 job finished successfully for day = 2021-12-15
 ```
+<br><br>
 ## POSTGRES GENERAL INFO
 PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. To run postgres we use the official docker image `postgres:13`. Eventually we will create the image using docker compose but the first example will use the command line.<br><br>
 <b>This command sets up postgres and creates the ny_taxi_postgres_data folder on the host machine.</b> <br>
@@ -158,30 +159,27 @@ I did not have permissions to open the folder so I updated permissions recursive
 sudo chmod -R 777 ny_taxi_postgres_data
 ```
 
-## CONNECT VIA PGCLI
+#### CONNECT TO POSTGRES VIA PGCLI
 You can connect to the Postgres instance in the docker container using a CLI Client. We will be using PGCLI, a python library to access the database and submit querries. 
 ```bash 
-$ pip install pgcli 
-
-$ pgcli -h localhost -p 5432 -u root -d ny_taxi
+pip install pgcli 
+pgcli -h localhost -p 5432 -u root -d ny_taxi
 ```
 `-h` host 
 `-p` port
 `-u` user
 `-d` database
-
 You will be prompted to enter the password (root)
 
-### BASIC PGCLI COMMANDS 
+BASIC PGCLI COMMANDS 
 `\l+` list all databases on that server<br>
 `\dt` list all tables<br> 
 `\d <table_name>` table details<br>  
 ###### *Since we haven't added tables yet the list will be empty.*
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/c054af8a-78e4-4bf6-bfe8-6ba4affc3cc9" width="200" height="70"><br>
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/c054af8a-78e4-4bf6-bfe8-6ba4affc3cc9" width="200" height="70"><br><br>
 
 
-
-## LOAD DATA TO POSTGRES
+## LOAD DATA TO POSTGRES USING JUPYTER NOTEBOOK 
 the jupyter notebook upload_data.ipynb contains the steps needed to load the CSV data to the database. The following steps do the same for the Parquet file.  
 
 1. `wget` download the files. make sure to add .parquet to the .gitignore    
@@ -203,8 +201,10 @@ import os
 df = pd.read_parquet(yellow_cab_trip_data_jan_2021.parquet)
 df_zones = pd.read_csv('yellow_cab_zone_lookup.csv')
 ```
+<br>
+
 ### CREATE THE CONNECTION/ ENGINE 
-`create_engine` Use the converts the dataframe schema to DDL (data definitions language) and uses that to create the connection to the DB. 
+`create_engine` creates the connection to the DB. 
 
 ```python 
 !pip install sqlalchemy  
@@ -218,18 +218,20 @@ engine = create_engine('postgresql://root:root@localhost:5432/ny_taxi')
 `localhost:5432` The hostname and port number of the database server. Connection is established here <br> 
 `ny_taxi` the specific database within the PostgreSQL server that you want to connect to.<br> 
 <br>
+
 ### ADD THE DATAFRAME TO POSTGRES DB AS A TABLE 
-`get_schema` the get_schema function creates a DDL schema based on the DF schema and the DB details in engine.  
+`get_schema` this function creates a DDL schema based on the DF schema and the DB details in engine.  
 ```python
 pd.io.sql.get_schema(df, name='yellow_taxi_data', con=engine)
 ```
-
+<br>
 `to_sql` fumction calls get_schema to get the DDL schema. It then uses that to create a table in the DB and insert the data<br>
-```python
-# add the taxi data 
-df.to_sql(name='yellow_taxi_data', con=engine, if_exists='replace')
-# add the zones data  
-df_zones.to_sql(name='zones', con=engine, if_exists='replace')
+
+```python 
+    # add the taxi data 
+    df.to_sql(name='yellow_taxi_data', con=engine, if_exists='replace')
+    # add the zones data  
+    df_zones.to_sql(name='zones', con=engine, if_exists='replace')
 ```
 `df` DataFrame you want to write to the database.<br>
 `to_sql` pandas DataFrame method used to write DataFrames to SQL databases.<br>
@@ -257,7 +259,6 @@ count = pd.read_sql(query, engine)
 count
 ```
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/f3ae0f43-f55e-432d-8531-0a455aef19f0" width="80" height="45"><br>
-
 
 ```python
 query = "SELECT COUNT(*) FROM zones"
