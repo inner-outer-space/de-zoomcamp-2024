@@ -91,6 +91,7 @@ $ docker run -it --entrypoint=bash python:3.9
 
 You can create a docker file to provide more information on how to set up the container. You start with base image and install libraries. You can also create an executable process such as data pipeline (pipeline.py), copy that file to the container, and run it on creation. 
 
+DOCKERFILE EXAMPLE THAT RUNS A PIPELINE.PY FILE
 ```python
 FROM python:3.9.1
 
@@ -107,7 +108,7 @@ ENTRYPOINT [ "python", "pipeline.py" ]
 `COPY` copies files from the host machine to the working directory in the container.<br>
 `ENTRYPOINT` specifies the default command that should be executed when the container is run. Additional arguments in the run command will be added to this list.<br><br>
 
-PIPELINE EXAMPLE - pipeline.py
+PIPELINE.PY EXAMPLE
 ```python
 import sys
 import pandas as pd
@@ -119,7 +120,7 @@ day = sys.argv[1]
 print(f'job finished successfully for day = {day}')
 ```
 
-TO BUILD AND RUN THE CONTAINER ABOVE THAT EXECUTES PIPELINE.PY
+BUILD AND RUN THE CONTAINER ABOVE THAT EXECUTES PIPELINE.PY<br>
 Make sure you are in the same folder as the dockerfile or specify the path to the dockerfile with -f. 
 ```bash
 # BUILD THE IMAGE
@@ -128,31 +129,30 @@ docker build -t test:pandas .
 ```bash
 # RUN THE CONTAINER WITH ARGUMENTS
 docker run -it test:pandas 2021-12-15 pass more args 
+```
+```bash
 # OUTPUT
 ['pipeline.py', '2021-12-15', 'pass', 'more', 'args']     
 job finished successfully for day = 2021-12-15
 ```
 ## POSTGRES GENERAL INFO
-PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. 
-
-
-
-To run postgres we use the official docker image `postgres:13`. Eventually we will create the image using docker compose but the first example will use the command line. 
+PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. To run postgres we use the official docker image `postgres:13`. Eventually we will create the image using docker compose but the first example will use the command line.<br><br>
+<b>This command sets up postgres and creates the ny_taxi_postgres_data folder on the host machine.</b> <br>
 *note: make sure there are no spaces following the backslash*
 ```bash
 docker run -it \
-  -e POSTGRES_USER="root"\
-  -e POSTGRES_PASSWORD="root"\
-  -e POSTGRES_DB="ny_taxi"\
-  -v $(pwd)/ny_taxi_postgres_data:/var/lib/postgresql/data\
-  -p 5432:5432\
+  -e POSTGRES_USER="root" \
+  -e POSTGRES_PASSWORD="root" \
+  -e POSTGRES_DB="ny_taxi" \
+  -v $(pwd)/ny_taxi_postgres_data:/var/lib/postgresql/data \
+  -p 5432:5432 \
   postgres:13
 ```
 `-e` environmental variables needed to configure postgres<br>
 `-v` map a volume \<path to host folder\>:\<path to container folder\>. This allows postgres to save its file system outside of the container. This ensures that we don't lose the data when the container is stopped. <br>
 `-p` map the port \<host port\>:\<container port\><br>
 
-This sets up postgres and creates the ny_taxi_postgres_data folder on the host machine. I did not have permissions to open the folder so I changed the permissions giving all users read, write, and exec.  
+I did not have permissions to open the folder so I updated permissions to give all users read, write, and exec.  
 
 ```bash
 sudo chmod a+rwx ny_taxi_postgres_data
@@ -181,7 +181,7 @@ You will be prompted to enter the password (root)
 
 
 
-## LOAD THE DATASET TO POSTGRES
+## LOAD DATA TO POSTGRES
 the jupyter notebook upload_data.ipynb contains the steps needed to load the CSV data to the database. The following steps do the same for the Parquet file.  
 
 1. `wget` download the files. make sure to add .parquet to the .gitignore    
@@ -202,27 +202,32 @@ import os
 
 df = pd.read_parquet(yellow_cab_trip_data_jan_2021.parquet)
 df_zones = pd.read_csv('yellow_cab_zone_lookup.csv')
-```  
+```
 ### CREATE THE CONNECTION/ ENGINE 
-```python
+`create_engine` Use the converts the dataframe schema to DDL (data definitions language) and uses that to create the connection to the DB. 
+
+```python 
 !pip install sqlalchemy  
 !pip install psycopg
 from sqlalchemy import create_engine
-    
+
 engine = create_engine('postgresql://root:root@localhost:5432/ny_taxi')
 ```
 `postgresql` specifies the type of DBMS being used<br>
 `root:root` specifies the username:password <br>
-`@localhost:5432` The hostname and port number of the database server. Connection is established here <br> 
+`localhost:5432` The hostname and port number of the database server. Connection is established here <br> 
 `ny_taxi` the specific database within the PostgreSQL server that you want to connect to.<br> 
+<br>
+### ADD THE DATAFRAME TO POSTGRES DB AS A TABLE 
+`to_sql` Inserts the data in the dataframe in the sql DB<br>
 
-### UPLOAD THE DATA IN THE DF TO THE DB 
 ```python
 # add the taxi data 
 df.to_sql(name='yellow_taxi_data', con=engine, if_exists='replace')
 # add the zones data  
 df_zones.to_sql(name='zones', con=engine, if_exists='replace')
 ```
+
 `df` DataFrame you want to write to the database.<br>
 `to_sql` pandas DataFrame method used to write DataFrames to SQL databases.<br>
 `name='yellow_taxi_data'` name of the table in the database where the DataFrame will be written.<br>
@@ -273,7 +278,7 @@ pd.read_sql(querry, engine)
 ## CONNECT VIA PGADMIN
 PCLI is not the most convenient method to query the DB. It is great if you just want to check something quickly. For more extensive querying pgAdmin, a web-based GUI tool to interact with a Postgres database session, is more convenient.  
 
-We will use the pgAdmin Docker image to create a container running pgAdmin. Postgres will run in one container and pgAdmin will run in a second container. We will also need to set up a network to connect the two containers. 
+We will use the pgAdmin Docker image to create a container running pgAdmin. Postgres will run in one container and pgAdmin will run in a second container. Since the containers are independent, we will need to set up a network to connect them. 
 
 ```python
 # CREATE A NETWORK 
@@ -301,8 +306,8 @@ dpage/pgadmin4
 ```
 `8080:80` host machine port: port where pgAdmin is listening<br>
 `--network=pg-network` network connecting the containers<br>
-`--name pg-database` pgAdmin will be able to identify and connect to postgres with this name<br>
-`--name pgadmin` this is less important as nothing is trying to connect to pgAdmin<br><br>
+`--name pg-database` define a name for postgres. pgAdmin will use it to identify and connect to the DB<br>
+`--name pgadmin` define a name for pgadmin. this is less important as nothing is trying to connect to pgAdmin<br><br>
 
 ### After running the above commands in the CLI, open the web browser to `localhost:8080`
 <table>
