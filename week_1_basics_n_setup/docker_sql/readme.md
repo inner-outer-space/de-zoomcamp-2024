@@ -300,30 +300,28 @@ docker run -it -d \
     --name pgadmin \
 dpage/pgadmin4
 ```
-`8080:80` host machine port: port where pgAdmin is listening
-`--network=pg-network`
-`--name pg-database`
-`--name pgadmin`
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/f1ab1fe5-3d72-488c-9987-e16119429ac2" width="200" height="100"><br>
+`8080:80` host machine port: port where pgAdmin is listening<br>
+`--network=pg-network` network connecting the containers<br>
+`--name pg-database` this is necessary for pgAdmin to be able to identify postgres in a different container<br>
+`--name pgadmin` this is less important as postgres will not be looking for pgAdmin<br><br>
 
-After running the above commands in the CLI, open the web browser to `localhost:8080`
+###### After running the above commands in the CLI, open the web browser to `localhost:8080`
 <table>
   <tr>
-    <td><b>After running the above commands in the CLI,<br> open the web browser to `localhost:8080`<br>  and enter the pgAdmin login details specified above<br> `admin@admin.com / password` </b></td>
-    <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/fd61452e-31e7-4fcb-a8f5-a9bf93c1af9c" width="200" height="100"><br></td>
+    <td><b>LOGIN TO PGADMIN</b><br>admin@admin.com / password<br><br><br></td>
+    <td><b>REGISTER A NEW SERVER</b><br><br><br><br></td>
+    <td><b>GENERAL TAB</b><br> enter a name<br><br><br></td>
+    <td><b>CONNECTION TAB</b><br>use Host name, username,<br>& pswd defined for Postgres<br>pg-database / root / root</td>
+<br></td>
   </tr>
   <tr>
-    <td><b>Register a new server</b><br> either by left clicking on Servers in the left hand nav<br> or using Add New Server in the quicklinks</td>
-    <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/f1ab1fe5-3d72-488c-9987-e16119429ac2" width="200" height="100"><br></td>
+    <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/fd61452e-31e7-4fcb-a8f5-a9bf93c1af9c" width="250" height="150"> 
+    <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/f1ab1fe5-3d72-488c-9987-e16119429ac2" width="250" height="200">
+    <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a775f6a3-ff2f-4b87-8be0-e2e90afb636b" width="250" height="200">     
+    <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bc4d9336-f519-453a-bf56-e4ef22f36b06" width="250" height="200"> 
+<br></td>
   </tr>
   <tr>
-    <td><b>Portable</b></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><b>Scalable</b></td>
-    <td></td>
-  </tr>
 </table><br>
 
 ## UPLOAD DATA 
