@@ -20,12 +20,12 @@
 ## DOCKER GENERAL INFO
 Docker is a set of Platform as a Service products that use OS level virtualization to deliver software in packages called containers. It uses client server architecture with communication via a REST API. 
 
-### DOCKER IMAGE:
+#### DOCKER IMAGE:
 - a lightweight, stand-alone, and executable package that contains all the necessary code, libraries, dependencies, and configuration to run a piece of software. <br>
 - can be stored in public or private registries for sharing purposses.<br>
 - built using the Dockerfile.<br> 
 
-### DOCKER CONTAINER:
+#### DOCKER CONTAINER:
 - an instance of a docker image running as a process on a host system. <br>
 - encapsulates an application/ pipeline/ database/ process etc. and its dependencies, libraries, and configurations along with a runtime environment.<br> 
 - shares the host OS kernel and some syterm libraries but still provides isolation.<br>
@@ -33,7 +33,7 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
 - processes, filesystems, user and group IDs, networks, and resources are isolated between containers. <br>
 - can be easily created and destroyed without affecting the host or other containers. When a container is removed, all changes made to it during run time are lost. <br>
 
-### ADVANTAGES:
+#### ADVANTAGES:
 <table>
   <tr>
     <td><b>Reproducible</b></td>
@@ -55,7 +55,7 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
 
 
 ## CREATING CONTAINERS, IMAGES, AND DOCKERFILES
-### CREATE A CONTAINER
+#### CREATE A CONTAINER
 A container is an instance of an images built by running that image. If the image is not found in the local cache then docker will attempt to pull it from the Docker Hub repository.<br> 
 ```bash
 docker run -it ubuntu bash   
@@ -75,7 +75,7 @@ More **RUN** flags<br>
 <b>All changes made in a container are lost when that container is destroyed<br> Changes made in one container will not affect the image or any subsequent containers created from that image.</b>
 </div><br><br><br>
 
-### BUILD AN IMAGE 
+#### BUILD AN IMAGE 
 Images are built from dockerfiles. Once built, the image will be stored in the local cache (unless otherwise specified). 
 ```bash
 docker build -t test:pandas .    
@@ -84,7 +84,7 @@ docker build -t test:pandas .
 `test:pandas`  image name:image tag<br>
 `.` use current directory as the build context. Since -f is not specified here, it will also look for the dockerfile in the current dir.<br><br><br>
 
-### DOCKERFILE
+#### DOCKERFILE
 You'll normally need more than just python or ubuntu (base images) installed in a container. You could specify a bash entrypoint and then install libraries etc via the command line but these will all disappear when you close the container. 
 ```bash
 $ docker run -it --entrypoint=bash python:3.9
@@ -92,7 +92,7 @@ $ docker run -it --entrypoint=bash python:3.9
 
 The dockerfile allows you to expand on a base image and create your own more complex images. The file contains instructions on how to set up the container and includes actions such as running commands, installing libraries, and copying files into the container.  
 
-#### DOCKERFILE EXAMPLE THAT RUNS A PIPELINE.PY FILE
+##### DOCKERFILE EXAMPLE THAT RUNS A PIPELINE.PY FILE
 In this example a data pipeline (pipeline.py) is copied to the container and run on creation.
 ```python
 FROM python:3.9.1
@@ -110,7 +110,7 @@ ENTRYPOINT [ "python", "pipeline.py" ]
 `COPY` copies files from the host machine to the working directory in the container.<br>
 `ENTRYPOINT` specifies the default command that should be executed when the container is run. Additional arguments in the run command will be added to this list.<br><br>
 
-#### PIPELINE.PY EXAMPLE
+##### PIPELINE.PY EXAMPLE
 ```python
 import sys
 import pandas as pd
@@ -123,7 +123,7 @@ print(f'job finished successfully for day = {day}')
 ```
 <br>
 
-#### BUILD AND RUN THE CONTAINER ABOVE THAT EXECUTES PIPELINE.PY
+##### BUILD AND RUN THE CONTAINER ABOVE THAT EXECUTES PIPELINE.PY
 ```bash
 # BUILD THE IMAGE
 docker build -t test:pandas .
@@ -163,9 +163,10 @@ I did not have permissions to open the folder so I updated permissions recursive
 ```bash
 sudo chmod -R 777 ny_taxi_postgres_data
 ```
-<br>
+
 ## CONNECT TO POSTGRES WITH PGCLI
 You can connect to the Postgres instance in the docker container using a CLI Client. We will be using PGCLI, a python library to access the database and submit querries. 
+
 ```bash 
 pip install pgcli 
 pgcli -h localhost -p 5432 -u root -d ny_taxi
@@ -192,7 +193,7 @@ the jupyter notebook upload_data.ipynb contains the steps needed to load the CSV
 3. `create_engine` Use the df schema to create the connection to the DB.<br>
 4. `to_sql` Insert the data in the dataframe in the sql DB. 
 
-### DOWNLOAD THE PARQUET FILE AND IMPORT TO PD DATAFRAME
+#### DOWNLOAD THE PARQUET FILE AND IMPORT TO PD DATAFRAME
 ```python
 !pip install pyarrow
 import pandas as pd
@@ -208,7 +209,7 @@ df_zones = pd.read_csv('yellow_cab_zone_lookup.csv')
 ```
 <br>
 
-### CREATE THE CONNECTION/ ENGINE 
+#### CREATE THE CONNECTION/ ENGINE 
 `create_engine` creates the connection to the DB. 
 
 ```python 
@@ -224,7 +225,7 @@ engine = create_engine('postgresql://root:root@localhost:5432/ny_taxi')
 `ny_taxi` the specific database within the PostgreSQL server that you want to connect to.<br> 
 <br>
 
-### ADD THE DATAFRAME TO POSTGRES DB AS A TABLE 
+#### ADD THE DATAFRAME TO POSTGRES DB AS A TABLE 
 `get_schema` this function creates a DDL schema based on the DF schema and the DB details in engine.  
 ```python
 pd.io.sql.get_schema(df, name='yellow_taxi_data', con=engine)
@@ -250,7 +251,7 @@ pd.io.sql.get_schema(df, name='yellow_taxi_data', con=engine)
 ###### *Table details for Zones*
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a6876f0a-1741-4306-9c81-65cdcb57499d" width="200" height="120"><br>
 
-### QURY THE DATA DIRECTLY FROM JUPYTER 
+### QUERY THE DATA DIRECTLY FROM JUPYTER 
 ```python
 query = "SELECT * FROM yellow_taxi_data LIMIT 10"
 df_top_10 = pd.read_sql(query, engine)
@@ -318,7 +319,7 @@ dpage/pgadmin4
 `--name pg-database` define a name for postgres. pgAdmin will use it to identify and connect to the DB<br>
 `--name pgadmin` define a name for pgadmin. this is less important as nothing is trying to connect to pgAdmin<br><br>
 
-### After running the above commands in the CLI, open the web browser to `localhost:8080`
+#### After running the above commands in the CLI, open the web browser to `localhost:8080`
 <table>
   <tr>
     <td><b>LOGIN TO PGADMIN</b><br>admin@admin.com / password<br><br><br></td>
@@ -337,7 +338,7 @@ dpage/pgadmin4
   <tr>
 </table><br>
 
-### You can now access the tables via the left hand nav <br> 
+#### You can now access the tables via the left hand nav <br> 
 ` Servers > Docker localhost > Databases > ny_taxi > Schemas > public > Tables > `
 
 
