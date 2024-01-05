@@ -300,7 +300,30 @@ docker run -it -d \
     --name pgadmin \
 dpage/pgadmin4
 ```
+`8080:80` host machine port: port where pgAdmin is listening
+`--network=pg-network`
+`--name pg-database`
+`--name pgadmin`
 
+After running the above commands in the CLI, open the web browser to `localhost:8080`
+<table>
+  <tr>
+    <td><b>After running the above commands in the CLI, open the web browser to `localhost:8080` and enter the pgAdmin login details specified above `admin@admin.com / password` </b></td>
+    <td>- </td>
+  </tr>
+  <tr>
+    <td><b>Isolated</b></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><b>Portable</b></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><b>Scalable</b></td>
+    <td></td>
+  </tr>
+</table><br>
 
 ## UPLOAD DATA 
 ## CREATE PIPELINE
