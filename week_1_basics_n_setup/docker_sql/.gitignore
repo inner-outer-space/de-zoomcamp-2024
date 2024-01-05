@@ -3,3 +3,4 @@ ny_taxi_postgres_data/
 *.csv
 *.parquet
 *.zip
+data/
