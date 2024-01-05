@@ -52,7 +52,7 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
     <td>- containers are lightweight, resource efficent, and quick to scale up.</td>
   </tr>
 </table><br>
-
+<br><br>
 
 ## CREATING CONTAINERS, IMAGES, AND DOCKERFILES
 #### CREATE A CONTAINER
@@ -73,7 +73,7 @@ More **RUN** flags<br>
 `--entrypoint` speciy a different command to run as the entrypoint for that container.<br><br>
 <div align="center">
 <b>All changes made in a container are lost when that container is destroyed<br> Changes made in one container will not affect the image or any subsequent containers created from that image.</b>
-</div><br><br><br>
+</div><br>
 
 #### BUILD AN IMAGE 
 Images are built from dockerfiles. Once built, the image will be stored in the local cache (unless otherwise specified). 
@@ -82,7 +82,7 @@ docker build -t test:pandas .
 ```
 `-t` or `--tag` assign a name and optionally a tag to the image being built.
 `test:pandas`  image name:image tag<br>
-`.` use current directory as the build context. Since -f is not specified here, it will also look for the dockerfile in the current dir.<br><br><br>
+`.` use current directory as the build context. Since -f is not specified here, it will also look for the dockerfile in the current dir.<br>
 
 #### DOCKERFILE
 You'll normally need more than just python or ubuntu (base images) installed in a container. You could specify a bash entrypoint and then install libraries etc via the command line but these will all disappear when you close the container. 
@@ -121,7 +121,7 @@ day = sys.argv[1]
 # some fancy stuff with pandas
 print(f'job finished successfully for day = {day}')
 ```
-<br>
+
 
 ##### BUILD AND RUN THE CONTAINER ABOVE THAT EXECUTES PIPELINE.PY
 ```bash
@@ -138,8 +138,7 @@ docker run -it test:pandas 2021-12-15 pass more args
 ['pipeline.py', '2021-12-15', 'pass', 'more', 'args']     
 job finished successfully for day = 2021-12-15
 ```
-<br><br>
-
+<br>
 
 ## POSTGRES GENERAL INFO
 PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. To run postgres we use the official docker image `postgres:13`. Eventually we will create the image using docker compose but the first example will use the command line.<br><br>
@@ -163,6 +162,7 @@ I did not have permissions to open the folder so I updated permissions recursive
 ```bash
 sudo chmod -R 777 ny_taxi_postgres_data
 ```
+<br>
 
 ## CONNECT TO POSTGRES WITH PGCLI
 You can connect to the Postgres instance in the docker container using a CLI Client. We will be using PGCLI, a python library to access the database and submit querries. 
@@ -283,7 +283,7 @@ WHERE schemaname != 'pg_catalog' AND
 """
 pd.read_sql(querry, engine)
 ```
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5e0082d7-8d72-4cdc-b335-b9646625840f" width="600" height="80"><br>
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5e0082d7-8d72-4cdc-b335-b9646625840f" width="600" height="80"><br><br>
 
 ## CONNECT TO POSTGRES WITH PGADMIN
 PCLI is not the most convenient method to query the DB. It is great if you just want to check something quickly. For more extensive querying pgAdmin, a web-based GUI tool to interact with a Postgres database session, is more convenient.  
@@ -336,11 +336,11 @@ dpage/pgadmin4
 <br></td>
   </tr>
   <tr>
-</table><br>
+</table>
 
 #### You can now access the tables via the left hand nav <br> 
 ` Servers > Docker localhost > Databases > ny_taxi > Schemas > public > Tables > `
-
+<br><br>
 
 ## LOAD DATA TO POSTGRES USING A DOCKERIZED SCRIPT
 Next week we will look at doing this in the app. Here is a quick and dirty manual process.<br>
