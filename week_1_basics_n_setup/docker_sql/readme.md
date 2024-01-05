@@ -139,6 +139,8 @@ docker run -it test:pandas 2021-12-15 pass more args
 job finished successfully for day = 2021-12-15
 ```
 <br><br>
+
+
 ## POSTGRES GENERAL INFO
 PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. To run postgres we use the official docker image `postgres:13`. Eventually we will create the image using docker compose but the first example will use the command line.<br><br>
 <b>This command sets up postgres and creates the ny_taxi_postgres_data folder on the host machine.</b> <br>
@@ -161,8 +163,8 @@ I did not have permissions to open the folder so I updated permissions recursive
 ```bash
 sudo chmod -R 777 ny_taxi_postgres_data
 ```
-
-#### CONNECT TO POSTGRES WITH PGCLI
+<br>
+## CONNECT TO POSTGRES WITH PGCLI
 You can connect to the Postgres instance in the docker container using a CLI Client. We will be using PGCLI, a python library to access the database and submit querries. 
 ```bash 
 pip install pgcli 
@@ -248,7 +250,7 @@ pd.io.sql.get_schema(df, name='yellow_taxi_data', con=engine)
 ###### *Table details for Zones*
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a6876f0a-1741-4306-9c81-65cdcb57499d" width="200" height="120"><br>
 
-##### Query the tables directly from Jupyter Notebook 
+### QURY THE DATA DIRECTLY FROM JUPYTER 
 ```python
 query = "SELECT * FROM yellow_taxi_data LIMIT 10"
 df_top_10 = pd.read_sql(query, engine)
