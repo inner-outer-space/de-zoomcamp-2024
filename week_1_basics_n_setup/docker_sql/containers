@@ -6,7 +6,7 @@ docker run -it -d \
   -e POSTGRES_USER="root" \
   -e POSTGRES_PASSWORD="root" \
   -e POSTGRES_DB="ny_taxi" \
-  -v $(pwd)/ny_taxi_postgres_data:/var/lib/postgresql/data \
+  -v $(pwd)/data/ny_taxi_postgres_data:/var/lib/postgresql/data \
   -p 5432:5432 \
   --network=pg-network \
   --name pg-database \
@@ -45,15 +45,42 @@ python ingest-data.py \
     --table_name=yellow_taxi_trips \
     --url="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet"
 
-# THIS DOES NOT. I HAVE PERMISSION PROBLEMS WITH THIS. 
+# THIS WORKS 
+python ingest-data.py \
+    --user=root \
+    --password=root \
+    --host=localhost \
+    --port=5432 \
+    --db=ny_taxi \
+    --data_table_name=yellow_taxi_trips \
+    --lookup_table_name=zones \
+    --data_url="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet" \
+    --lookup_url="https://d37ci6vzurychx.cloudfront.net/misc/taxi+_zone_lookup.csv"
+
+# THERE WERE PERMISSIONS ISSUES WITH RUNNING THE DOCKERIZED VERSION OF THE SCRIPT
+# THE SOLUTION WAS TO CREATE A DATA FOLDER AND MOUNT THAT VOLUME TO THE CONTAINER
+# THEN ADD THE DATA FOLDER TO THE .dockerignore FILE
 docker build -t taxi_ingest:v001 .
 docker run -it \
     --network=pg-network \
     taxi_ingest:v001 \
         --user=root \
         --password=root \
-        --host=localhost \
+        --host=pg-database \
         --port=5432 \
         --db=ny_taxi \
         --table_name=yellow_taxi_trips \
         --url="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet"
+
+docker run -it \
+    --network=pg-network \
+    taxi_ingest:v001 \
+        --user=root \
+        --password=root \
+        --host=pg-database \
+        --port=5432 \
+        --db=ny_taxi \
+        --data_table_name=yellow_taxi_trips \
+        --lookup_table_name=zones \
+        --data_url="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet" \
+        --lookup_url="https://d37ci6vzurychx.cloudfront.net/misc/taxi+_zone_lookup.csv"
