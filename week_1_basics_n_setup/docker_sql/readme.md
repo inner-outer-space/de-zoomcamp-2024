@@ -66,12 +66,9 @@ docker build -t test:pandas .
 #### RUN AN IMAGE TO CREATE A CONTAINER
 If the image is not found in the local cache then docker will attempt to pull it from the Docker Hub repository.<br> 
 ```bash
-docker run -it test:pandas
+docker run -it ubuntu bash   
 ```
 `-i` interactive and `-t` terminal allow you to interact with the container via the terminal<br><br> 
-```bash
-$ docker run -it ubuntu bash     
-```
 ```ubuntu``` is the image that is being run<br>
 ```bash``` is the command \[CMD\] that you want to execute in the container<br><br> 
 other common **RUN** flags<br> 
@@ -83,7 +80,7 @@ other common **RUN** flags<br>
 `--network` connect the container to a specific Docker network, allowing communication between containers on the same network.<br>
 `--entrypoint` speciy a different command to run as the entrypoint for that container.
 <div align="center">
-<b>Anything that you do in this container is not saved to the container or host machine.<br> When you create a new container from that image, it will be unchanged.</b>
+<b>All changes made in a container will be lost when that container is destroyed<br> Changes made in one container will not affect the image or any subsequent containers created from that image.</b>
 </div><br><br><br>
 
 ### DOCKERFILE
@@ -110,8 +107,7 @@ ENTRYPOINT [ "python", "pipeline.py" ]
 `COPY` copies files from the host machine to the working directory in the container.<br>
 `ENTRYPOINT` specifies the default command that should be executed when the container is run. Additional arguments in the run command will be added to this list.<br><br>
 
-## CREATE A PIPELINE
-pipeline.py
+PIPELINE EXAMPLE - pipeline.py
 ```python
 import sys
 import pandas as pd
@@ -122,12 +118,15 @@ day = sys.argv[1]
 # some fancy stuff with pandas
 print(f'job finished successfully for day = {day}')
 ```
-BUILD AND RUN THE CONTAINER ABOVE THAT EXECUTES PIPELINE.PY
+
+TO BUILD AND RUN THE CONTAINER ABOVE THAT EXECUTES PIPELINE.PY
 Make sure you are in the same folder as the dockerfile or specify the path to the dockerfile with -f. 
 ```bash
+# BUILD THE IMAGE
 docker build -t test:pandas .
 ```
-```bash 
+```bash
+# RUN THE CONTAINER WITH ARGUMENTS
 docker run -it test:pandas 2021-12-15 pass more args 
 # OUTPUT
 ['pipeline.py', '2021-12-15', 'pass', 'more', 'args']     
