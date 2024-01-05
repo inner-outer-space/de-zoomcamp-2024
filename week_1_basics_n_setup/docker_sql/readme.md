@@ -302,10 +302,10 @@ dpage/pgadmin4
 ```
 `8080:80` host machine port: port where pgAdmin is listening<br>
 `--network=pg-network` network connecting the containers<br>
-`--name pg-database` this is necessary for pgAdmin to be able to identify postgres in a different container<br>
-`--name pgadmin` this is less important as postgres will not be looking for pgAdmin<br><br>
+`--name pg-database` pgAdmin will be able to identify and connect to postgres with this name<br>
+`--name pgadmin` this is less important as nothing is trying to connect to pgAdmin<br><br>
 
-###### After running the above commands in the CLI, open the web browser to `localhost:8080`
+### After running the above commands in the CLI, open the web browser to `localhost:8080`
 <table>
   <tr>
     <td><b>LOGIN TO PGADMIN</b><br>admin@admin.com / password<br><br><br></td>
@@ -317,7 +317,7 @@ dpage/pgadmin4
   <tr>
     <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/fd61452e-31e7-4fcb-a8f5-a9bf93c1af9c" width="250" height="150"> 
     <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/f1ab1fe5-3d72-488c-9987-e16119429ac2" width="250" height="200">
-    <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a775f6a3-ff2f-4b87-8be0-e2e90afb636b" width="250" height="200">     
+    <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a0ebf0d8-9829-48fa-bb37-a5f42ba62494" width="250" height="200">   
     <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bc4d9336-f519-453a-bf56-e4ef22f36b06" width="250" height="200"> 
 <br></td>
   </tr>
