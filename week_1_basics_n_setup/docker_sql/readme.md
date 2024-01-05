@@ -304,12 +304,16 @@ dpage/pgadmin4
 `--network=pg-network`
 `--name pg-database`
 `--name pgadmin`
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/fd61452e-31e7-4fcb-a8f5-a9bf93c1af9c" width="100" height="80"><br>
+![image]()
+
+
 
 After running the above commands in the CLI, open the web browser to `localhost:8080`
 <table>
   <tr>
     <td><b>After running the above commands in the CLI, open the web browser to `localhost:8080` and enter the pgAdmin login details specified above `admin@admin.com / password` </b></td>
-    <td>- </td>
+    <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/fd61452e-31e7-4fcb-a8f5-a9bf93c1af9c" width="100" height="80"><br></td>
   </tr>
   <tr>
     <td><b>Isolated</b></td>
