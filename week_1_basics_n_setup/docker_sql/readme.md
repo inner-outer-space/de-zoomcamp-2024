@@ -334,13 +334,17 @@ dpage/pgadmin4
 
 ## CONVERT JUPYTER NOTEBOOK TO SCRIPT 
 Next week we will look at doing this in the app. Here is a quick and dirty manual process.<br>
-CONVERT THE IPYNB FILE TO SCRIPT 
+
+<details>
+<summary>CONVERT IPYNB FILE TO PYTHON SCRIPT  </summary> 
+
 ```cli
 jupyter nbconvert --to=script upload-data.iypnb
 ```
+</details>
 <details>
-<summary>UPLOAD DATA AS PYTHON SCRIPT </summary>  
-ingest-data.py
+<summary>UPLOAD DATA AS PYTHON SCRIPT - ingest-data.py</summary>  
+    
 ```python 
 import argparse
 import os 
@@ -360,7 +364,6 @@ def main(params):
     parquet_name = 'output.parquet'
     
     # DOWNLOAD THE DATA
-    #os.system(f'wget {url} -O {parquet_name}')
     os.system(f'wget -O {parquet_name} {url}')
     
     # CREATE A CONNECTION TO THE DB
@@ -368,11 +371,9 @@ def main(params):
 
     # READ THE PARQUET and CSV FILES INTO DATAFRAMES
     df = pd.read_parquet(parquet_name)
-    #df_zones = pd.read_csv('yellow_cab_zone_lookup.csv')
 
     # UPLOAD THE DATA TO THE DB
     df.to_sql(name=table_name, con=engine, if_exists='replace')
-    #df_zones.to_sql(name='zones', con=engine, if_exists='replace')
 
 
 # The parser is used to parse the command line arguments which are then passed to the main method. 
@@ -386,8 +387,6 @@ if __name__ == '__main__':
     parser.add_argument('--db', help='database name')
     parser.add_argument('--table_name', help='table name')
     parser.add_argument('--url', help='url for data file')
-    #parser.add_argument('parquet', help='path to parquet file')
-    #parser.add_argument('csv', help='path to csv file')
 
     args = parser.parse_args()
     main(args)
@@ -395,7 +394,8 @@ if __name__ == '__main__':
 </details>
 
 <details>
-<summary>COMMAND TO RUN .PY SCRIPT </summary>  
+<summary>COMMAND TO RUN .PY SCRIPT </summary> 
+    
 ```cli 
     python ingest-data.py \
     --user=root \
@@ -407,6 +407,10 @@ if __name__ == '__main__':
     --url="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet"
 ```
 </details>
+<br><br>
+NOW TO DOCKERIZE THE SCRIPT 
+
+
 
 ## CREATE PIPELINE
 
