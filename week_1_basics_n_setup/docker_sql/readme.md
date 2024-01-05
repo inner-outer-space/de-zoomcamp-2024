@@ -59,7 +59,7 @@ unless otherwise specified the image will be stored in the local cache.
 ```bash
 docker build -t test:pandas .    
 ```
-`-t` or `--tag` assign a name and optionally a tag to the image being build.
+`-t` or `--tag` assign a name and optionally a tag to the image being built.
 `test:pandas`  image name:image tag<br>
 `.` use current directory as the build context. Since -f is not specified here, it will also look for the dockerfile in the current dir.<br><br><br>
 
@@ -219,15 +219,18 @@ engine = create_engine('postgresql://root:root@localhost:5432/ny_taxi')
 `ny_taxi` the specific database within the PostgreSQL server that you want to connect to.<br> 
 <br>
 ### ADD THE DATAFRAME TO POSTGRES DB AS A TABLE 
-`to_sql` Inserts the data in the dataframe in the sql DB<br>
+`get_schema` the get_schema function creates a DDL schema based on the DF schema and the DB details in engine.  
+```python
+pd.io.sql.get_schema(df, name='yellow_taxi_data', con=engine)
+```
 
+`to_sql` fumction calls get_schema to get the DDL schema. It then uses that to create a table in the DB and insert the data<br>
 ```python
 # add the taxi data 
 df.to_sql(name='yellow_taxi_data', con=engine, if_exists='replace')
 # add the zones data  
 df_zones.to_sql(name='zones', con=engine, if_exists='replace')
 ```
-
 `df` DataFrame you want to write to the database.<br>
 `to_sql` pandas DataFrame method used to write DataFrames to SQL databases.<br>
 `name='yellow_taxi_data'` name of the table in the database where the DataFrame will be written.<br>
@@ -332,18 +335,19 @@ dpage/pgadmin4
 ` Servers > Docker localhost > Databases > ny_taxi > Schemas > public > Tables > `
 
 
-## CONVERT JUPYTER NOTEBOOK TO SCRIPT 
+## DOCKERIZE THE INGESTION SCRIPT 
 Next week we will look at doing this in the app. Here is a quick and dirty manual process.<br>
 
 <details>
-<summary>CONVERT IPYNB FILE TO PYTHON SCRIPT  </summary> 
-
+<summary>CONVERT JUPYTER UPLOAD DATA FILE TO PYTHON SCRIPT  </summary> 
+    
+Conver the ipynb file to a python script. 
 ```cli
 jupyter nbconvert --to=script upload-data.iypnb
 ```
-</details>
-<details>
-<summary>UPLOAD DATA AS PYTHON SCRIPT - ingest-data.py</summary>  
+
+Remove unnecessary cide, add a main method, and arg parse so that you can pass arguments to the job. 
+As an excercise this was written to upload the yellow taxi data and the zones lookup table. 
     
 ```python 
 import argparse
@@ -359,21 +363,27 @@ def main(params):
     host = params.host
     port = params.port
     db = params.db
-    table_name = params.table_name
-    url = params.url
-    parquet_name = 'output.parquet'
+    data_table_name = params.data_table_name
+    lookup_table_name = params.lookup_table_name
+    data_url = params.data_url
+    lookup_url = params.lookup_url
+    parquet_name = 'data_output.parquet'
+    csv_name = 'lookup_output.csv'
     
     # DOWNLOAD THE DATA
-    os.system(f'wget -O {parquet_name} {url}')
+    os.system(f'wget -O {parquet_name} {data_url}')
+    os.system(f'wget -O {csv_name} {lookup_url}')
     
     # CREATE A CONNECTION TO THE DB
     engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{db}')
 
     # READ THE PARQUET and CSV FILES INTO DATAFRAMES
     df = pd.read_parquet(parquet_name)
+    df_zones = pd.read_csv(csv_name)
 
     # UPLOAD THE DATA TO THE DB
-    df.to_sql(name=table_name, con=engine, if_exists='replace')
+    df.to_sql(name=data_table_name, con=engine, if_exists='replace')
+    df_zones.to_sql(name=lookup_table_name, con=engine, if_exists='replace')
 
 
 # The parser is used to parse the command line arguments which are then passed to the main method. 
@@ -385,16 +395,19 @@ if __name__ == '__main__':
     parser.add_argument('--host', help='host for postgres')
     parser.add_argument('--port', help='port for postgres')
     parser.add_argument('--db', help='database name')
-    parser.add_argument('--table_name', help='table name')
-    parser.add_argument('--url', help='url for data file')
+    parser.add_argument('--data_table_name', help='data table name')
+    parser.add_argument('--lookup_table_name', help='zones lookup table name')
+    parser.add_argument('--data_url', help='url for data Parquet file')
+    parser.add_argument('--lookup_url', help='url for zones lookup CSV file')
 
     args = parser.parse_args()
     main(args)
+
 ```
 </details>
 
 <details>
-<summary>COMMAND TO RUN .PY SCRIPT </summary> 
+<summary>RUN SCRIPT FROM THE COMMAND LINE </summary> 
     
 ```cli 
     python ingest-data.py \
@@ -407,10 +420,67 @@ if __name__ == '__main__':
     --url="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet"
 ```
 </details>
-<br><br>
-NOW TO DOCKERIZE THE SCRIPT 
 
+<details>
+<summary>CREATE A DOCKER CONTAINER TO RUN THE JOB </summary> 
+    
+```docker 
+    FROM python:3.9.1
+    
+    RUN apt-get update && apt-get install wget
+    RUN pip install --upgrade pip
+    RUN pip install pandas sqlalchemy psycopg2 pyarrow
+    
+    WORKDIR /app
+    COPY ingest-data.py ingest-data.py
+    
+    ENTRYPOINT [ "python", "ingest-data.py" ]
+```
+</details>
 
+<details>
+<summary>DOCKER PERMISSIONS ISSUE ON LINUX </summary> 
+
+When running the dockerized ingestion script on linux, docker was blocked by permissions errors for the ny_taxi_postgress_data folder.  Neither changing permissions nor adding that folder to .dockerigore solved the problem.<br>
+
+WORK AROUND 
+[port mapping and networks in docker video](https://www.youtube.com/watch?v=tOr4hTsHOzU&list=PL3MmuxUbc_hJed7dXYoJw8DoCuVHhGEQb&index=18) <br>
+1. Create a data folder.<br>
+2. Add this data folder to the .dockerignore.<br>
+3. Create a new postgres container with the volume mounted to this new location.<br>
+    `-v $(pwd)/data/ny_taxi_postgres_data:/var/lib/postgresql/data`
+</details>
+
+<details>
+<summary>BUILD THE TAXI_INGEST DOCKER IMAGE FOR INGESTING THE DATA </summary>   
+    
+```cli 
+docker build -t taxi_ingest:v001 .
+```
+</details>
+
+<details>
+<summary>CREATE THE TAXI_INGEST CONTAINER </summary> 
+    
+- create the container on the same network as the pgAdmin and postgres containers<br>
+- the network parameter is passed to docker and the rest of the parameters are passed to the script.<br>
+- ingest-data.py will be executed in the taxi_ingest:v001 container and the data files will be downloaded there.<br> 
+- in real life you wouldn't be doing this on your local network. Your host will normally be a url to some DB that runs in the cloud. 
+```cli 
+docker run -it \
+    --network=pg-network \
+    taxi_ingest:v001 \
+        --user=root \
+        --password=root \
+        --host=pg-database \
+        --port=5432 \
+        --db=ny_taxi \
+        --data_table_name=yellow_taxi_trips \
+        --lookup_table_name=zones \
+        --data_url="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet" \
+        --lookup_url="https://d37ci6vzurychx.cloudfront.net/misc/taxi+_zone_lookup.csv"
+```
+</details>
 
 ## CREATE PIPELINE
 
