@@ -324,6 +324,10 @@ dpage/pgadmin4
   <tr>
 </table><br>
 
+### You can now access the tables via the left hand nav <br> 
+` Servers > Docker localhost > Databases > ny_taxi > Schemas > public > Tables > `
+
+
 ## UPLOAD DATA 
 ## CREATE PIPELINE
 
