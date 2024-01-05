@@ -11,8 +11,8 @@
 [Load Data with Jupyter](#load-data-to-postgres-with-jupyter) • 
 [PGADMIN](#connect-to-postgres-with-pgadmin) <br>
 [Load Data with a Dockerized Script](#load-data-to-postgres-using-a-dockerized-script) • 
-[Upload data](#upload-data) •
-[Ingest NY taxi data](#ingest-taxi-data) •
+[Docker Compose](#docker-compose) •
+[SQL Review](#sql-review) •
 </div>
 
 <hr />
@@ -459,20 +459,18 @@ WORK AROUND
 </details>
 
 <details>
-<summary>BUILD THE TAXI_INGEST DOCKER IMAGE FOR INGESTING THE DATA </summary>   
-    
-```cli 
-docker build -t taxi_ingest:v001 .
-```
-</details>
-
-<details>
 <summary>CREATE THE TAXI_INGEST CONTAINER </summary> 
     
 - create the container on the same network as the pgAdmin and postgres containers<br>
 - the network parameter is passed to docker and the rest of the parameters are passed to the script.<br>
 - ingest-data.py will be executed in the taxi_ingest:v001 container and the data files will be downloaded there.<br> 
 - in real life you wouldn't be doing this on your local network. Your host will normally be a url to some DB that runs in the cloud. 
+<br>
+BUILD THE TAXI_INGEST DOCKER IMAGE   
+```cli 
+docker build -t taxi_ingest:v001 .
+```
+CREATE THE CONTAINER  
 ```cli 
 docker run -it \
     --network=pg-network \
@@ -489,9 +487,33 @@ docker run -it \
 ```
 </details>
 
-## CREATE PIPELINE
+## DOCKER COMPOSE
 
+Docker compose is a tool for defining and running multi-container Docker applications. Instead of creating the network, postgres, pgAdmin, and taxi_ingest containers separately we can use a YAML file with Docker Compose to create everything with one command.  
+- Containers defined within a YAML file are automatically created within the same network. You don't need to define the network.
+- Each container is defined as a service in the yaml file. The name of service is also the name that you can access the service with.
 
+docker-compose.yaml
+``` yaml
+services:
+  pgdatabase:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=ny_taxi
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./data/ny_taxi_postgres_data:/var/lib/postgresql/data:rw"
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=password
+    ports:
+      - "8080:80"
+```
 
-## INGEST TAXI DATA
+## SQL REVIEW
 
