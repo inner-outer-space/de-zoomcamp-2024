@@ -19,15 +19,15 @@
 ## DOCKER GENERAL INFO
 Docker is a set of Platform as a Service products that use OS level virtualization to deliver software in packages called containers. It uses client server architecture with communication via a REST API. 
 
-### DOCKER IMAGES:
-- is a lightweight, stand-alone, and executable package that contains all the necessary code, libraries, dependencies, and configuration to run a piece of software. <br>
+### DOCKER IMAGE:
+- a lightweight, stand-alone, and executable package that contains all the necessary code, libraries, dependencies, and configuration to run a piece of software. <br>
 - can be stored in public or private registries for sharing purposses.<br>
 - built using the Dockerfile.<br> 
 
-### DOCKER CONTAINERS:
-- is an instance of a docker image that is running as a process on a host system. <br>
-- encapsulate an application/ pipeline/ database/ process etc. and its dependencies, libraries, and configurations along with a runtime environment.<br> 
-- share the host OS kernel and some syterm libraries but still provide isolation.<br>
+### DOCKER CONTAINER:
+- an instance of a docker image running as a process on a host system. <br>
+- encapsulates an application/ pipeline/ database/ process etc. and its dependencies, libraries, and configurations along with a runtime environment.<br> 
+- shares the host OS kernel and some syterm libraries but still provides isolation.<br>
 - multiple containers can be run as isolated processes and managed independently on the same host OS.<br>
 - processes, filesystems, user and group IDs, networks, and resources are isolated between containers. <br>
 - can be easily created and destroyed without affecting the host or other containers. When a container is removed, all changes made to it during run time are lost. <br>
@@ -36,7 +36,7 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
 <table>
   <tr>
     <td><b>Reproducible</b></td>
-    <td>- the container contains the application/ service and all of its dependencies ensuring that it will run consitantly whereever it is deployed.<br> - avoids environment issues when recreating the dev environment on a local machine for the purpose of experimenting and testing (CI/CD)</td>
+    <td>- the container contains the application/ service and all of its dependencies ensuring that it will run consitantly whereever it is deployed.<br>- avoids environment issues when recreating the dev environment on a local machine for the purpose of experimenting and testing (CI/CD)</td>
   </tr>
   <tr>
     <td><b>Isolated</b></td>
@@ -48,7 +48,7 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
   </tr>
   <tr>
     <td><b>Scalable</b></td>
-    <td> - containers are lightweight, resource efficent, and quick to scale up.</td>
+    <td>- containers are lightweight, resource efficent, and quick to scale up.</td>
   </tr>
 </table><br>
 
@@ -71,16 +71,16 @@ docker run -it ubuntu bash
 `-i` interactive and `-t` terminal allow you to interact with the container via the terminal<br><br> 
 ```ubuntu``` is the image that is being run<br>
 ```bash``` is the command \[CMD\] that you want to execute in the container<br><br> 
-other common **RUN** flags<br> 
+More **RUN** flags<br> 
 `-d` or `--detach` run the container in detach mode in the background.<br>
 `-rm` or `--rm` automatically removes container when you exit.<br>
 `--name` assign a custom name to a container.<br>
 `-p` or `--publish` map ports from the host to the container.<br>
 `-v` or `--volume` mount volumes to share files and directories between the host and container.<br>
 `--network` connect the container to a specific Docker network, allowing communication between containers on the same network.<br>
-`--entrypoint` speciy a different command to run as the entrypoint for that container.
+`--entrypoint` speciy a different command to run as the entrypoint for that container.<br><br>
 <div align="center">
-<b>All changes made in a container will be lost when that container is destroyed<br> Changes made in one container will not affect the image or any subsequent containers created from that image.</b>
+<b>All changes made in a container are lost when that container is destroyed<br> Changes made in one container will not affect the image or any subsequent containers created from that image.</b>
 </div><br><br><br>
 
 ### DOCKERFILE
