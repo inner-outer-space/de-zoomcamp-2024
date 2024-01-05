@@ -5,10 +5,12 @@
 <hr />
 
 [Docker](#docker-general-info) •
-[Create images and containers](#create-images-and-containers) •
+[Creating Containers, Images and Dockerfiles](#creating-containers-images-and-dockerfiles) •
 [Postgres](#postgres-general-info) •
-[Connect via pgcli](#connect-via-pgcli) •
-[Connect via pgadmin](#connect-via-pgadmin) <br>
+[PGCLI](#connect-to-postgres-with-pgcli) •
+[Load Data with Jupyter](#load-data-to-postgres-with-jupyter) • 
+[PGADMIN](#connect-to-postgres-with-pgadmin) <br>
+[Load Data with a Dockerized Script](#load-data-to-postgres-using-a-dockerized-script) • 
 [Upload data](#upload-data) •
 [Ingest NY taxi data](#ingest-taxi-data) •
 </div>
@@ -52,18 +54,9 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
 </table><br>
 
 
-## CREATE IMAGES AND CONTAINERS
-#### BUILD AN IMAGE FROM A DOCKERFILE 
-unless otherwise specified the image will be stored in the local cache. 
-```bash
-docker build -t test:pandas .    
-```
-`-t` or `--tag` assign a name and optionally a tag to the image being built.
-`test:pandas`  image name:image tag<br>
-`.` use current directory as the build context. Since -f is not specified here, it will also look for the dockerfile in the current dir.<br><br><br>
-
-#### RUN AN IMAGE TO CREATE A CONTAINER
-If the image is not found in the local cache then docker will attempt to pull it from the Docker Hub repository.<br> 
+## CREATING CONTAINERS, IMAGES, AND DOCKERFILES
+### CREATE A CONTAINER
+A container is an instance of an images built by running that image. If the image is not found in the local cache then docker will attempt to pull it from the Docker Hub repository.<br> 
 ```bash
 docker run -it ubuntu bash   
 ```
@@ -82,15 +75,25 @@ More **RUN** flags<br>
 <b>All changes made in a container are lost when that container is destroyed<br> Changes made in one container will not affect the image or any subsequent containers created from that image.</b>
 </div><br><br><br>
 
-## DOCKERFILE
-You'll normally need more than just python or ubuntu installed in your container. You could specify a bash entrypoint and then install libraries etc via the command line but these will all disappear when you close the container. 
+### BUILD AN IMAGE 
+Images are built from dockerfiles. Once built, the image will be stored in the local cache (unless otherwise specified). 
+```bash
+docker build -t test:pandas .    
+```
+`-t` or `--tag` assign a name and optionally a tag to the image being built.
+`test:pandas`  image name:image tag<br>
+`.` use current directory as the build context. Since -f is not specified here, it will also look for the dockerfile in the current dir.<br><br><br>
+
+### DOCKERFILE
+You'll normally need more than just python or ubuntu (base images) installed in a container. You could specify a bash entrypoint and then install libraries etc via the command line but these will all disappear when you close the container. 
 ```bash
 $ docker run -it --entrypoint=bash python:3.9
 ```
 
-The dockerfile expands on a base image and allows for the creation of complex images. The file contains instructions on how to set up the container and includes running commands, installing libraries, copying files into the container etc. You can also create an executable process such as data pipeline (pipeline.py), copy that file to the container, and run it on creation. 
+The dockerfile allows you to expand on a base image and create your own more complex images. The file contains instructions on how to set up the container and includes actions such as running commands, installing libraries, and copying files into the container.  
 
 #### DOCKERFILE EXAMPLE THAT RUNS A PIPELINE.PY FILE
+In this example a data pipeline (pipeline.py) is copied to the container and run on creation.
 ```python
 FROM python:3.9.1
 
@@ -159,7 +162,7 @@ I did not have permissions to open the folder so I updated permissions recursive
 sudo chmod -R 777 ny_taxi_postgres_data
 ```
 
-#### CONNECT TO POSTGRES VIA PGCLI
+#### CONNECT TO POSTGRES WITH PGCLI
 You can connect to the Postgres instance in the docker container using a CLI Client. We will be using PGCLI, a python library to access the database and submit querries. 
 ```bash 
 pip install pgcli 
@@ -179,7 +182,7 @@ BASIC PGCLI COMMANDS
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/c054af8a-78e4-4bf6-bfe8-6ba4affc3cc9" width="200" height="70"><br><br>
 
 
-## LOAD DATA TO POSTGRES USING JUPYTER NOTEBOOK 
+## LOAD DATA TO POSTGRES WITH JUPYTER  
 the jupyter notebook upload_data.ipynb contains the steps needed to load the CSV data to the database. The following steps do the same for the Parquet file.  
 
 1. `wget` download the files. make sure to add .parquet to the .gitignore    
@@ -279,7 +282,7 @@ pd.read_sql(querry, engine)
 ```
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5e0082d7-8d72-4cdc-b335-b9646625840f" width="600" height="80"><br>
 
-## CONNECT VIA PGADMIN
+## CONNECT TO POSTGRES WITH PGADMIN
 PCLI is not the most convenient method to query the DB. It is great if you just want to check something quickly. For more extensive querying pgAdmin, a web-based GUI tool to interact with a Postgres database session, is more convenient.  
 
 We will use the pgAdmin Docker image to create a container running pgAdmin. Postgres will run in one container and pgAdmin will run in a second container. Since the containers are independent, we will need to set up a network to connect them. 
@@ -336,7 +339,7 @@ dpage/pgadmin4
 ` Servers > Docker localhost > Databases > ny_taxi > Schemas > public > Tables > `
 
 
-## DOCKERIZE THE INGESTION SCRIPT 
+## LOAD DATA TO POSTGRES USING A DOCKERIZED SCRIPT
 Next week we will look at doing this in the app. Here is a quick and dirty manual process.<br>
 
 <details>
