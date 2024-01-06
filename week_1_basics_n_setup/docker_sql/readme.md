@@ -530,11 +530,8 @@ services:
       - "./config/pgadmin-config:/var/lib/pgadmin:rw"
 ```
 
-PERSIST THE PGADMIN CONFIGURATION
-In order to avoid setting up the server every time that I spun up the pgAdmin service: 
-1. created a pgadmin-config folder on my host computer
-2. updated the permissions so that anyone could rwx `chmod 777 /config/pgadmin-config´
-3. mapped that to a volume in the pgAdmin container so that changes to the config will be saved on my machine
+PERSIST THE PGADMIN CONFIGURATION<br>
+To avoid needing to set up the server every time you start the pgAdmin service map a folder on the host to the pgAdmin config folder. 
 ``` yaml
 volumes:
       - "./config/pgadmin-config:/var/lib/pgadmin:rw"
@@ -546,7 +543,7 @@ DOCKER COMPOSE COMMANDS
 docker-compose up        #EXECUTE THE YAML FILE AND START THE SERVICES
 docker-compose up -d     #EXECUTE IN DETACHTED MODE     
 
-docker-compose down     #SHUT DOWN SERVICES AND REMOVE CONTAINERS 
+docker-compose down      #SHUT DOWN SERVICES AND REMOVE CONTAINERS 
 ```
 
 
