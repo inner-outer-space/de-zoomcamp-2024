@@ -2,10 +2,9 @@ services:
   pgdatabase:
     image: postgres:13
     environment:
-      - POSTGRES_USER: root
-      - POSTGRES_PASSWORD: root
-      - POSTGRES_DB: ny_taxi
-    networks: pg-network
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=ny_taxi
     ports:
       - "5432:5432"
     volumes:
@@ -13,8 +12,9 @@ services:
   pgadmin:
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: password
-    networks: pg-network
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=password
     ports:
       - "8080:80"
+    volumes:
+      - "./config/pgadmin-config:/var/lib/pgadmin:rw"
