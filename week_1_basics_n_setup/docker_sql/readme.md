@@ -616,8 +616,8 @@ LIMIT 100;
 ```
 
 #### MODIFYING THE DATE FIELD 
-###### 2021-01-01 00:36:12 `DATE_TRUNC('DAY', tpep_dropoff_datetime)` --> ##### 2021-01-01 00:00:00
-###### 2021-01-01 00:36:12 `CAST(tpep_dropoff_datetime AS DATE)` --> ##### 2021-01-01
+##### 2021-01-01 00:36:12 `DATE_TRUNC('DAY', tpep_dropoff_datetime)` --> 2021-01-01 00:00:00
+##### 2021-01-01 00:36:12 `CAST(tpep_dropoff_datetime AS DATE)` --> 2021-01-01
 
 #### GROUP BY EXAMPLES
 ```sql
