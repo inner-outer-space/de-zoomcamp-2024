@@ -4,3 +4,4 @@ ny_taxi_postgres_data/
 *.parquet
 *.zip
 data/
+config/
