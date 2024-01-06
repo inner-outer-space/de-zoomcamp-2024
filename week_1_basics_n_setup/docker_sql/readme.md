@@ -151,7 +151,7 @@ job finished successfully for day = 2021-12-15
 
 ## POSTGRES GENERAL INFO
 PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. To run postgres we use the official docker image `postgres:13`. Eventually we will use docker compose but the first example will use the command line.<br><br>
-<b>This command sets up a postgres container, </b> <br>
+<b>This command sets up a postgres container</b> <br>
 ###### *note: make sure there are no spaces following the backslash*
 ```bash
 docker run -it \
@@ -167,8 +167,7 @@ docker run -it \
 `-v` \<path to host folder\>:\<path to container folder\> maps a volume on host to the container. 
 Postgres stores data among other things in the `/var/lib/postgresql/data` folder. Mounting a folder on the host to this folder in the container allow the postgres file system to be saved outside of the container so it isn't lost when the container is removed. <br>
 
-
-I did not have permissions to open the folder so I updated permissions recursively to give all users read, write, and exec in the folder and subfolders. On Linux persmissions for this folder cause issues when trying to ingest the data using docker (later this week). This does not get around that issue. The solution there is to move this folder into a dedicated data folder and then add that folder to .dockerignor and .gitignore.   
+*note: I had to update permission in order to open this folder. 
 
 ```bash
 sudo chmod -R 777 ny_taxi_postgres_data
@@ -176,7 +175,7 @@ sudo chmod -R 777 ny_taxi_postgres_data
 <br>
 
 ## CONNECT TO POSTGRES WITH PGCLI
-You can connect to the Postgres instance in the docker container using a CLI Client. We will be using PGCLI, a python library to access the database and submit querries. 
+You can connect to the Postgres container using a CLI Client. We will be using the PGCLI python library to access the database and submit querries. 
 
 ```bash 
 pip install pgcli 
@@ -242,13 +241,14 @@ engine = create_engine('postgresql://root:root@localhost:5432/ny_taxi')
 pd.io.sql.get_schema(df, name='yellow_taxi_data', con=engine)
 ```
 <br>
+
 `to_sql` fumction calls get_schema to get the DDL schema. It then uses that to create a table in the DB and insert the data<br>
 
 ```python 
-    # add the taxi data 
-    df.to_sql(name='yellow_taxi_data', con=engine, if_exists='replace')
-    # add the zones data  
-    df_zones.to_sql(name='zones', con=engine, if_exists='replace')
+# add the taxi data 
+df.to_sql(name='yellow_taxi_data', con=engine, if_exists='replace')
+# add the zones data  
+df_zones.to_sql(name='zones', con=engine, if_exists='replace')
 ```
 `df` DataFrame you want to write to the database.<br>
 `to_sql` pandas DataFrame method used to write DataFrames to SQL databases.<br>
@@ -297,7 +297,7 @@ pd.read_sql(querry, engine)
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5e0082d7-8d72-4cdc-b335-b9646625840f" width="600" height="80"><br><br>
 
 ## CONNECT TO POSTGRES WITH PGADMIN
-PCLI is not the most convenient method to query the DB. It is great if you just want to check something quickly. For more extensive querying pgAdmin, a web-based GUI tool to interact with a Postgres database session, is more convenient.  
+PCLI is not the most convenient method to query the DB. It is great if you just want to check something quickly. For more extensive querying it is more convenient to use pgAdmin, a web-based GUI tool to interact with a Postgres database.  
 
 We will use the pgAdmin Docker image to create a container running pgAdmin. Postgres will run in one container and pgAdmin will run in a second container. Since the containers are independent, we will need to set up a network to connect them. 
 
@@ -364,7 +364,7 @@ Conver the ipynb file to a python script.
 jupyter nbconvert --to=script upload-data.iypnb
 ```
 
-Remove unnecessary cide, add a main method, and arg parse so that you can pass arguments to the job. 
+Remove unnecessary code and add main method and arg parse so that you can pass arguments to the job. 
 As an excercise this was written to upload the yellow taxi data and the zones lookup table. 
     
 ```python 
@@ -477,10 +477,12 @@ WORK AROUND
 - ingest-data.py will be executed in the taxi_ingest:v001 container and the data files will be downloaded there.<br> 
 - in real life you wouldn't be doing this on your local network. Your host will normally be a url to some DB that runs in the cloud. 
 <br>
+
 BUILD THE TAXI_INGEST DOCKER IMAGE   
 ```cli 
 docker build -t taxi_ingest:v001 .
 ```
+
 CREATE THE CONTAINER  
 ```cli 
 docker run -it \
