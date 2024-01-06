@@ -5,7 +5,7 @@
 <hr />
 
 [Docker](#docker-general-info) •
-[Creating Containers, Images and Dockerfiles](#creating-containers-images-and-dockerfiles) •
+[Images, Containers and Dockerfiles](#images-containers-and-dockerfiles) •
 [Postgres](#postgres-general-info) •
 [PGCLI](#connect-to-postgres-with-pgcli) •
 [Load Data with Jupyter](#load-data-to-postgres-with-jupyter) • 
@@ -38,7 +38,7 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
 <table>
   <tr>
     <td><b>Reproducible</b></td>
-    <td>- the container contains the application/ service and all of its dependencies ensuring that it will run consitantly whereever it is deployed.<br>- avoids environment issues when the container is recreated on a different machine (e.g., recreating the dev environment on a local machine for the purpose of experimenting and testing (CI/CD))</td>
+    <td>- the container encapsulates the application/ service and all of its dependencies ensuring that it will run consitantly whereever it is deployed.<br>- avoids environment issues when the container is recreated on a different machine (e.g., recreating the dev environment on a local machine for the purpose of experimenting and testing (CI/CD))</td>
   </tr>
   <tr>
     <td><b>Isolated</b></td>
@@ -55,7 +55,17 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
 </table><br>
 <br><br>
 
-## CREATING CONTAINERS, IMAGES, AND DOCKERFILES
+## IMAGES, CONTAINERS AND DOCKERFILES
+#### BUILD AN IMAGE 
+Images are built from dockerfiles. Once built, the image will be stored in the local cache (unless otherwise specified). 
+```bash
+docker build -t test:pandas .    
+```
+`-t` or `--tag` assign a name and optionally a tag to the image being built.
+`test:pandas`  image name:image tag<br>
+`.` use current directory as the build context. Since -f is not specified here, it will also look for the dockerfile in the current dir.
+<br><br>
+
 #### CREATE A CONTAINER
 A container is an instance of an image that is created by running that image. If the image is not found in the local cache then docker will attempt to pull it from the Docker Hub repository.<br> 
 ```bash
@@ -73,17 +83,12 @@ More **RUN** flags<br>
 `--network` connect the container to a specific Docker network, allowing communication between containers on the same network.<br>
 `--entrypoint` speciy a different command to run as the entrypoint for that container.<br><br>
 <div align="center">
-<b>All changes made in a container are lost when that container is destroyed<br> Changes made in one container will not affect the image or any subsequent containers created from that image.</b>
-</div><br>
-
-#### BUILD AN IMAGE 
-Images are built from dockerfiles. Once built, the image will be stored in the local cache (unless otherwise specified). 
-```bash
-docker build -t test:pandas .    
-```
-`-t` or `--tag` assign a name and optionally a tag to the image being built.
-`test:pandas`  image name:image tag<br>
-`.` use current directory as the build context. Since -f is not specified here, it will also look for the dockerfile in the current dir.<br>
+<h6>
+WHAT HAPPENS IN A CONTAINER STAYS IN A CONTAINER
+</h6>
+<i>All changes made in a container are lost when that container is destroyed<br> Changes made in one container will not affect the image or any subsequent containers created from that image.</i>
+</div>
+<br><br>
 
 #### DOCKERFILE
 You'll normally need more than just python or ubuntu (base images) installed in a container. You could specify a bash entrypoint and then install libraries etc via the command line but these will all disappear when you close the container. 
@@ -109,9 +114,11 @@ ENTRYPOINT [ "python", "pipeline.py" ]
 `RUN`  runs a command within the container during the image build.<br>
 `WORKDIR` sets the working directory.<br>
 `COPY` copies files from the host machine to the working directory in the container.<br>
-`ENTRYPOINT` specifies the default command that should be executed when the container is run. Additional arguments in the run command will be added to this list.<br><br>
+`ENTRYPOINT` specifies the default command that should be executed when the container is run. Additional arguments in the run command will be added to this list.<br>
 
-##### PIPELINE.PY EXAMPLE
+<details>
+<summary>THE PIPELINE.PY EXAMPLE</summary> 
+
 ```python
 import sys
 import pandas as pd
@@ -122,14 +129,15 @@ day = sys.argv[1]
 # some fancy stuff with pandas
 print(f'job finished successfully for day = {day}')
 ```
-
+</details
+<br>
 
 ##### BUILD AND RUN THE CONTAINER ABOVE THAT EXECUTES PIPELINE.PY
 ```bash
 # BUILD THE IMAGE
 docker build -t test:pandas .
 ```
-*Make sure you are in the same folder as the dockerfile or specify the path to the dockerfile with -f.* 
+######         *Make sure you are in the same folder as the dockerfile or specify the path to the dockerfile with -f.* 
 ```bash
 # RUN THE CONTAINER WITH ARGUMENTS
 docker run -it test:pandas 2021-12-15 pass more args 
@@ -142,9 +150,9 @@ job finished successfully for day = 2021-12-15
 <br>
 
 ## POSTGRES GENERAL INFO
-PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. To run postgres we use the official docker image `postgres:13`. Eventually we will create the image using docker compose but the first example will use the command line.<br><br>
-<b>This command sets up postgres and creates the ny_taxi_postgres_data folder on the host machine.</b> <br>
-*note: make sure there are no spaces following the backslash*
+PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. To run postgres we use the official docker image `postgres:13`. Eventually we will use docker compose but the first example will use the command line.<br><br>
+<b>This command sets up a postgres container, </b> <br>
+###### *note: make sure there are no spaces following the backslash*
 ```bash
 docker run -it \
   -e POSTGRES_USER="root" \
@@ -155,8 +163,10 @@ docker run -it \
   postgres:13
 ```
 `-e` environmental variables needed to configure postgres<br>
-`-v` map a volume \<path to host folder\>:\<path to container folder\>. This allows postgres to save its file system outside of the container. This ensures that we don't lose the data when the container is stopped. <br>
-`-p` map the port \<host port\>:\<container port\><br>
+`-p` \<host port\>:\<container port\> maps the host port to the container port <br>
+`-v` \<path to host folder\>:\<path to container folder\> maps a volume on host to the container. 
+Postgres stores data among other things in the `/var/lib/postgresql/data` folder. Mounting a folder on the host to this folder in the container allow the postgres file system to be saved outside of the container so it isn't lost when the container is removed. <br>
+
 
 I did not have permissions to open the folder so I updated permissions recursively to give all users read, write, and exec in the folder and subfolders. On Linux persmissions for this folder cause issues when trying to ingest the data using docker (later this week). This does not get around that issue. The solution there is to move this folder into a dedicated data folder and then add that folder to .dockerignor and .gitignore.   
 
