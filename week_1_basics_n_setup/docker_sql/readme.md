@@ -557,3 +557,105 @@ docker-compose down      #SHUT DOWN SERVICES AND REMOVE CONTAINERS
 
 ## SQL REVIEW
 
+#### INNER JOIN EXAMPLE 
+```sql
+SELECT 
+	tpep_pickup_datetime, 
+	tpep_dropoff_datetime, 
+	total_amount, 
+	CONCAT(zpu."Borough", '/', zpu."Zone") AS "pick_up_loc",
+	CONCAT(zdo."Borough", '/', zdo."Zone") AS "drop_off_loc"
+FROM 
+	yellow_taxi_trips t, 
+	zones zpu,
+	zones zdo
+WHERE 
+	t."PULocationID" = zpu."LocationID" AND 
+	t."DOLocationID" = zdo."LocationID" 
+LIMIT 100;
+```
+#### INNER JOIN VERSION 2
+In this version it is clearer to see what condition is being applied to each join. 
+```sql
+SELECT 
+    tpep_pickup_datetime, 
+    tpep_dropoff_datetime, 
+    total_amount, 
+    CONCAT(zpu."Borough", '/', zpu."Zone") AS "pick_up_loc",
+    CONCAT(zdo."Borough", '/', zdo."Zone") AS "drop_off_loc"
+FROM 
+    yellow_taxi_trips t
+	JOIN zones zpu 
+		ON t."PULocationID" = zpu."LocationID" 
+	JOIN zones zdo 
+		ON t."DOLocationID" = zdo."LocationID" 
+LIMIT 100;
+```
+#### CHECK IF ANY NULL DROP OFF OR PICKUP IDs 
+```sql
+SELECT 
+    tpep_pickup_datetime, 
+    tpep_dropoff_datetime, 
+    total_amount, 
+    "PULocationID"
+    "DOLocationID"
+FROM 
+    yellow_taxi_trips t
+WHERE "PULocationID" is NULL OR "DOLocationID" is NULL
+LIMIT 100;
+```
+##### CHECK FOR ANY PICK UP OR DROP OFF IDS THAT DON'T HAVE A LOOKUP VALUE
+```sql
+SELECT 
+    tpep_pickup_datetime, 
+    tpep_dropoff_datetime, 
+    total_amount, 
+    "PULocationID"
+    "DOLocationID"
+FROM 
+    yellow_taxi_trips t
+WHERE "PULocationID" NOT IN (SELECT "LocationID" FROM zones) OR
+	"DOLocationID" NOT IN (SELECT "LocationID" FROM zones)
+LIMIT 100;
+```
+
+#### MODIFYING THE DATE FIELD 
+"2021-01-01 00:36:12" 'DATE_TRUNC('DAY', tpep_dropoff_datetime)' --> "2021-01-01 00:00:00"
+"2021-01-01 00:36:12" 'CAST(tpep_dropoff_datetime AS DATE)' --> "2021-01-01"
+
+#### GROUP BY EXAMPLES
+```sql
+SELECT 
+	CAST(tpep_dropoff_datetime AS DATE) as "day",
+	COUNT(1) as "count",
+	MAX(total_amount) as "max_total_amount_on_day",
+	MAX(passenger_count) as "max_people_on_day"
+
+FROM 
+    yellow_taxi_trips t
+GROUP BY 
+	CAST(tpep_dropoff_datetime AS DATE)
+ORDER BY "count" DESC;
+```
+
+####
+```sql
+SELECT 
+	CAST(tpep_dropoff_datetime AS DATE) as "day",
+	"DOLocationID",
+	COUNT(1) as "count",
+	MAX(total_amount) as "max_total_amount_on_day_at_location",
+	MAX(passenger_count) as "max_people_on_day_at_location"
+
+FROM 
+    yellow_taxi_trips t
+GROUP BY 
+	1, 2
+ORDER BY "day" ASC, "DOLocationID" ASC;
+```
+
+####
+```sql
+```
+
+
