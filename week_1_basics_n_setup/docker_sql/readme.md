@@ -29,15 +29,16 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
 - an instance of a docker image running as a process on a host system. <br>
 - encapsulates an application/ pipeline/ database/ process etc. and its dependencies, libraries, and configurations along with a runtime environment.<br> 
 - shares the host OS kernel and some syterm libraries but still provides isolation.<br>
-- multiple containers can be run as isolated processes and managed independently on the same host OS.<br>
+- multiple containers can run and be managed independently on the same host OS.<br>
 - processes, filesystems, user and group IDs, networks, and resources are isolated between containers. <br>
-- can be easily created and destroyed without affecting the host or other containers. When a container is removed, all changes made to it during run time are lost. <br>
+- can be easily created and destroyed without affecting the host or other containers.
+- when a container is removed, all changes made to it during run time are lost. <br>
 
 #### ADVANTAGES:
 <table>
   <tr>
     <td><b>Reproducible</b></td>
-    <td>- the container contains the application/ service and all of its dependencies ensuring that it will run consitantly whereever it is deployed.<br>- avoids environment issues when recreating the dev environment on a local machine for the purpose of experimenting and testing (CI/CD)</td>
+    <td>- the container contains the application/ service and all of its dependencies ensuring that it will run consitantly whereever it is deployed.<br>- avoids environment issues when the container is recreated on a different machine (e.g., recreating the dev environment on a local machine for the purpose of experimenting and testing (CI/CD))</td>
   </tr>
   <tr>
     <td><b>Isolated</b></td>
@@ -49,14 +50,14 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
   </tr>
   <tr>
     <td><b>Scalable</b></td>
-    <td>- containers are lightweight, resource efficent, and quick to scale up.</td>
+    <td>- containers are lightweight, resource efficent, and easy to scale.</td>
   </tr>
 </table><br>
 <br><br>
 
 ## CREATING CONTAINERS, IMAGES, AND DOCKERFILES
 #### CREATE A CONTAINER
-A container is an instance of an images built by running that image. If the image is not found in the local cache then docker will attempt to pull it from the Docker Hub repository.<br> 
+A container is an instance of an image that is created by running that image. If the image is not found in the local cache then docker will attempt to pull it from the Docker Hub repository.<br> 
 ```bash
 docker run -it ubuntu bash   
 ```
