@@ -539,11 +539,7 @@ To avoid needing to set up the server every time you start the pgAdmin service m
 volumes:
       - "./config/pgadmin-config:/var/lib/pgadmin:rw"
 ```
-``` yaml
-volumes:
-      - "./config/pgadmin-config:/var/lib/pgadmin:rw"
-```
-
+<br>
 
 DOCKER COMPOSE COMMANDS 
 ```cli
@@ -620,8 +616,8 @@ LIMIT 100;
 ```
 
 #### MODIFYING THE DATE FIELD 
-"2021-01-01 00:36:12" 'DATE_TRUNC('DAY', tpep_dropoff_datetime)' --> "2021-01-01 00:00:00"
-"2021-01-01 00:36:12" 'CAST(tpep_dropoff_datetime AS DATE)' --> "2021-01-01"
+###### 2021-01-01 00:36:12 `DATE_TRUNC('DAY', tpep_dropoff_datetime)` --> ##### 2021-01-01 00:00:00
+###### 2021-01-01 00:36:12 `CAST(tpep_dropoff_datetime AS DATE)` --> ##### 2021-01-01
 
 #### GROUP BY EXAMPLES
 ```sql
