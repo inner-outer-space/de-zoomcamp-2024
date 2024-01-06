@@ -532,6 +532,13 @@ services:
 
 PERSIST THE PGADMIN CONFIGURATION<br>
 To avoid needing to set up the server every time you start the pgAdmin service map a folder on the host to the pgAdmin config folder. 
+1. created a pgadmin-config folder on the host.
+2. updated the permissions so that anyone could rwx `chmod 777 /config/pgadmin-config´
+3. mapped that to a volume in the pgAdmin container so that changes to the config will be saved on my machine
+``` yaml
+volumes:
+      - "./config/pgadmin-config:/var/lib/pgadmin:rw"
+```
 ``` yaml
 volumes:
       - "./config/pgadmin-config:/var/lib/pgadmin:rw"
