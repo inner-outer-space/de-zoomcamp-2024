@@ -16,6 +16,7 @@
 </div>
 
 <hr />
+<br>
 
 ## DOCKER GENERAL INFO
 Docker is a set of Platform as a Service products that use OS level virtualization to deliver software in packages called containers. It uses client server architecture with communication via a REST API. 
@@ -52,8 +53,9 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
     <td><b>Scalable</b></td>
     <td>- containers are lightweight, resource efficent, and easy to scale.</td>
   </tr>
-</table><br>
-<br><br>
+</table>
+<br><br><br>
+<hr />
 
 ## IMAGES, CONTAINERS AND DOCKERFILES
 #### BUILD AN IMAGE 
@@ -114,7 +116,8 @@ ENTRYPOINT [ "python", "pipeline.py" ]
 `RUN`  runs a command within the container during the image build.<br>
 `WORKDIR` sets the working directory.<br>
 `COPY` copies files from the host machine to the working directory in the container.<br>
-`ENTRYPOINT` specifies the default command that should be executed when the container is run. Additional arguments in the run command will be added to this list.<br>
+`ENTRYPOINT` specifies the default command that should be executed when the container is run. Additional arguments in the run command will be added to this list.
+<br>
 
 <details>
 <summary>THE PIPELINE.PY EXAMPLE</summary> 
@@ -147,7 +150,8 @@ docker run -it test:pandas 2021-12-15 pass more args
 ['pipeline.py', '2021-12-15', 'pass', 'more', 'args']     
 job finished successfully for day = 2021-12-15
 ```
-<br>
+<br><br><br>
+<hr />
 
 ## POSTGRES GENERAL INFO
 PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. To run postgres we use the official docker image `postgres:13`. Eventually we will use docker compose but the first example will use the command line.<br><br>
@@ -172,7 +176,8 @@ Postgres stores data among other things in the `/var/lib/postgresql/data` folder
 ```bash
 sudo chmod -R 777 ny_taxi_postgres_data
 ```
-<br>
+<br><br><br>
+<hr />
 
 ## CONNECT TO POSTGRES WITH PGCLI
 You can connect to the Postgres container using a CLI Client. We will be using the PGCLI python library to access the database and submit querries. 
@@ -194,6 +199,8 @@ BASIC PGCLI COMMANDS
 ###### *Since we haven't added tables yet the list will be empty.*
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/c054af8a-78e4-4bf6-bfe8-6ba4affc3cc9" width="200" height="70"><br><br>
 
+<br><br><br>
+<hr />
 
 ## LOAD DATA TO POSTGRES WITH JUPYTER  
 the jupyter notebook upload_data.ipynb contains the steps needed to load the CSV data to the database. The following steps do the same for the Parquet file.  
@@ -296,6 +303,9 @@ pd.read_sql(querry, engine)
 ```
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5e0082d7-8d72-4cdc-b335-b9646625840f" width="600" height="80"><br><br>
 
+<br><br><br>
+<hr />
+
 ## CONNECT TO POSTGRES WITH PGADMIN
 PCLI is not the most convenient method to query the DB. It is great if you just want to check something quickly. For more extensive querying it is more convenient to use pgAdmin, a web-based GUI tool to interact with a Postgres database.  
 
@@ -352,6 +362,9 @@ dpage/pgadmin4
 #### You can now access the tables via the left hand nav <br> 
 ` Servers > Docker localhost > Databases > ny_taxi > Schemas > public > Tables > `
 <br><br>
+
+<br><br><br>
+<hr />
 
 ## LOAD DATA TO POSTGRES USING A DOCKERIZED SCRIPT
 Next week we will look at doing this in the app. Here is a quick and dirty manual process.<br>
@@ -548,8 +561,8 @@ docker-compose up -d     #EXECUTE IN DETACHTED MODE
 
 docker-compose down      #SHUT DOWN SERVICES AND REMOVE CONTAINERS 
 ```
-
-
+<br><br><br>
+<hr />
 
 ## SQL REVIEW
 
@@ -616,8 +629,8 @@ LIMIT 100;
 ```
 
 #### MODIFYING THE DATE FIELD 
-##### 2021-01-01 00:36:12 `DATE_TRUNC('DAY', tpep_dropoff_datetime)` --> 2021-01-01 00:00:00
-##### 2021-01-01 00:36:12 `CAST(tpep_dropoff_datetime AS DATE)` --> 2021-01-01
+- ##### 2021-01-01 00:36:12 `DATE_TRUNC('DAY', tpep_dropoff_datetime)` --> 2021-01-01 00:00:00
+- ##### 2021-01-01 00:36:12 `CAST(tpep_dropoff_datetime AS DATE)` --> 2021-01-01
 
 #### GROUP BY EXAMPLES
 ```sql
@@ -650,8 +663,6 @@ GROUP BY
 ORDER BY "day" ASC, "DOLocationID" ASC;
 ```
 
-####
-```sql
-```
+
 
 
