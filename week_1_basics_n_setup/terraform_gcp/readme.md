@@ -3,7 +3,27 @@
 
 
 Terraform 
-- Infrastructure as code tool from Hashicorp
+HashiCorp terraform is an infrastructure as code tool that lets you define both on-prem and cloud resources in human-readable config files that you can version, reuse, and share. You can then use a consistent workflow to provision and manage all of your infrastructure throughout its lifecycle. [Source](https://developer.hashicorp.com/terraform/intro)
+
+set up infrastructure - a place where your code can live and run. 
+ADVANTAGES 
+- Simple to keep track of and manageme infrastrucutre
+- Easy to collaborate
+- Reproducibile
+- Easy to ensure resources are removed
+
+DOES NOT 
+- Manage code
+- Change immutable resources (e.g., machine type, location)
+- Manage resources not defined in the Terraform file
+
+KEY TERRAFORM COMMANDS 
+- init - get the provider based on selected resouces
+- plan - once you define the resources, shows what you are about to do
+- apply - do what is in the .tf files
+- destroy - bring down all that is in the .tf file
+
+- Infrastructure as code tool
 - you can provision infrastructure resources (VMs, containers, storage etc.) with declarative configuration files
 - uses ISE style approach.
 
@@ -79,11 +99,7 @@ Cross-Provider Interactions: Terraform allows you to work with multiple provider
 
 In summary, Terraform providers serve as the bridge that allows Terraform to interact with the APIs of external services and infrastructure. They are specified in your Terraform configuration and handle the underlying communication, making it possible to manage a wide range of resources and services in a consistent and automated manner.
 
-COMMANDS 
-- init - get the provider based on selected resouces
-- plan - once you define the resources, shows what you are about to do
-- apply - do what is in the .tf files
-- destroy - bring down all that is in the .tf file
+
 
 terraform.fmt --> formats the tf file 
 
