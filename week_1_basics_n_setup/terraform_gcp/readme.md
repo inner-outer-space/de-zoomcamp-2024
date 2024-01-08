@@ -50,7 +50,9 @@ FIRST SET UP A GCP ACCOUNT
 1. Create a project
 2. Create a service account
    - has restricted/ limited permissions
-   - will be used to access services (~make API calls) from the machines
+   - will be used to by software to run tasks, run programs, access services (~make API calls).
+Go to I am and Admin
+click creaet a service account 
 3. Download the key in JSON format
 ```cli
 #for current session
