@@ -1,6 +1,14 @@
 # DataTalks Data Engineering ZoomCamp 2024 
 This repo contains notes and assignments for the 2024 [Data Talks Data Engineering Zoomcamp](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main)
 
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/2689b1a3-60af-4b13-9ca5-dde96f28773c" width="400" height="225"><br>
+
+## NOTES 
+#### WEEK 1 
+1. [Docker & SQL](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/week_1_basics_n_setup/docker_sql/readme.md)
+2. [Terraform & GCP](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/week_1_basics_n_setup/terraform_gcp/readme.md)
+3. [Set Up]()
+
 ## RESOURCES
 <details>
 <summary>GIT</summary>      
