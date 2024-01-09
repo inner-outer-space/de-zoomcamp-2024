@@ -224,8 +224,11 @@ Terraform will perform the following actions:
 <br>
 Running `terraform apply` executes the plan proposed in terraform plan. In this example it will add a bucket to this project and creates a terraform.tfstate file. This state file keeps track of resources created by your configuration and maps them to real-world resources
 
-The bucket can be seen on `cloud_storage > buckets` in the left hand nav. 
+The bucket can be seen at `Cloud Storage > Buckets` in the left hand nav. 
 ![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/ab621b97-6048-4624-ad21-1379cbf76a4b)
+
+The dataset can be seen at `BigQuery > BigQuery Studio` in the left hand nav. 
+![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/f3b98a6b-5b58-4aec-b00c-ba325ab153d1)
 
 
 **TERRAFORM DESTROY** 
@@ -281,6 +284,7 @@ variable "gcs_bucket_name" {
 
 <details>
 <summary>main.tf with variables</summary> 
+	
 ```terraform 
 terraform {
   required_providers {
