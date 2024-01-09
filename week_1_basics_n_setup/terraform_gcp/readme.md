@@ -45,9 +45,9 @@ DOES NOT
 NEED 
 1. Teraform Client
 2. GCP Account
-3. Google SDK so that you can interact with the machines from your command line
+3. Google SDK - so that you can interact with the machines from your command line
    
-#### SET UP A SERVICE ACCOUNT 
+## GCP SERVICE ACCOUNTS 
 After you have created a GCP account and project, you'll need to set up a service account for Terraform. 
 
 Service account:
@@ -55,43 +55,89 @@ Service account:
    - will be used to by software to run tasks, run programs, access services (~make API calls).
    - has restricted/ limited permissions base do on the tasks that need to be executed.
 
-Set Up 
+#### ADD SERVICE ACCOUNT 
 1. Go to ```I am and Admin > Service Accounts``` in the left hand nav. 
 2. Click ```+ CREATE SERVICE ACCOUNT```
 3. Enter a name and click ```CREATE & CONTINUE```
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/7b0262a1-6cda-47a1-9f42-80d7eb1a338a" width="200" height="180">
    
-4. Add and Modify Permissions<br> 
+#### SERVICE ACCOUNT PERMISIONS 
+1. Add Permissions<br> 
 For simplicity we will be granting broad permissions to this service account. In the real world you would set up a custom service account for each service that gives it the permissions only for the task being executed. Admin persmissions are broad roles that permit a lot of actions. With Terraform we are only going to be setting up and taking down resources so a role with bucket creation and deletion would suffice. With Big Querry we only need to be able to create and destroy a dataset.<br><br>
 
    - Cloud Storage > Storage Admin  					*Grants full control of buckets and objects*<br>
    - Big Query > Big Query Admin							*Administer all BigQuery resources and data*<br>
    - Compute Engine > Compute Admin						*Full control of all Compute Engine resources.*
 
-5. Modify Permissions<br>
+2. Modify Permissions<br>
 - Go to `IAM` in the left hand nav<br>
 - Click on `Edit Principle` icon<br>
 <p align="left">
 	<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/0ff3ee7a-0361-4ee6-9ff2-a3124f5b9942" width="100" height="100">
 </p>
 
+#### SERVICE ACCOUNT KEY
+The GCP service account key is a JSON or P12 file that contains the credentials for a service account. It can be used to authenticate GCP service accounts for managing GCP resources and interacting with GCP APIs. 
 
+1. Create a Key
+   - On the Service Accounts page under the Actions ellipse, click `Manage Keys`
+   - Click Add Key > Create new  and select JSON
+   - The JSON file will be saved to your computer
+<p align="center">
+	
+<div align="center">
+<h3>
+!!!BE VERY CAREFUL WITH YOUR CREDENTIALS!!! 
+</h3>
+</div>
+
+ 2. Add Key to GCP environment variables<br>
+ - Move the downloaded JSON into the folder where you keep your GCP key
+ - Add the file to your GCP environment variable. 
+ 
+ `GOOGLE_APPLICATION_CREDENTIALS` is an environmental variable used by Google Cloud SDK and various Google Cloud services to specify the path to a key
+ ```cli
+ #Add for current session only
+ export GOOGLE_APPLICATION_CREDENTIALS="path_to_file/file.json"
 
  
-6. Download the key in JSON format
-```cli
-#for current session
-export GOOGLE_APPLICATION_CREDENTIALS = "file.json"
-
-#add to .bashrc
-echo export GOOGLE_APPLICATION_CREDENTIALS = "file.json" >> */.bashrc 
-```
-4. AUTHENTICATION
+ #Persist by adding to .bashrc. Use source ~/.bashrc to see the change without a restart. 
+ echo export GOOGLE_APPLICATION_CREDENTIALS="path_to_file/file.json" >> ~/.bashrc 
+ ```
+3. Authentication<br>
 This command will authenticate using the environmental variable set in the last step. 
 ``` cli
 gcloud auth application-default login
 ```
-You will get a pop up asking you to verify --> refreshes the token. 
+You will get a pop up asking you to verify --> This process refreshes the token. 
+
+
+## SET UP MAIN.TF 
+
+#### Start with GCP Provider block 
+We will be using GCP and will need to define the provider in the main.tf file. Go to the Hashicorp page for the provider you need and click on `Use Provider` to get the  
+```terraform
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+      version = "5.11.0"
+    }
+  }
+}
+
+provider "google" {
+  # Configuration options
+}
+```
+
+ADD CONFIGURATION OPTIONS 
+```terraform
+provider "google" {
+  project = "<project id found on GCP dashboard"
+  region  = "europe-west1"
+}
+```
 
 5. CREATE RESOURCES IN YOUR ENVIRONMENT
 - Cloud storage - Data Lake - bucket in GCP environmetn where you can store data as a flat file
