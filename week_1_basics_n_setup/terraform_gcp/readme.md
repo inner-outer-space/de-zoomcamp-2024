@@ -1,53 +1,39 @@
 # TERRAFORM and GCP 
+[Boilerplate Terraform .gitignore](https://spacelift.io/blog/terraform-gitignore) <br>
 <hr>
 
 
-Terraform 
 HashiCorp terraform is an infrastructure as code tool that lets you define both on-prem and cloud resources in human-readable config files that you can version, reuse, and share. You can then use a consistent workflow to provision and manage all of your infrastructure throughout its lifecycle. [Source](https://developer.hashicorp.com/terraform/intro)
+<br><br>
 
-set up infrastructure - a place where your code can live and run.<br>
-[Boilerplate Terraform .gitignore](https://spacelift.io/blog/terraform-gitignore) 
-
-ADVANTAGES 
+**ADVANTAGES** 
+- You can provision infrastructure resources (VMs, containers, storage etc.) with declarative configuration files instead of a GUI
 - Simple to keep track of and manageme infrastrucutre
 - Easy to collaborate
 - Reproducibile
 - Easy to ensure resources are removed
+- You can create, deploy, destroy an entire cluster of resources together
+<br><br>
 
-DOES NOT 
+**DOES NOT** 
 - Manage code
 - Change immutable resources (e.g., machine type, location)
 - Manage resources not defined in the Terraform file
+<br><br>
 
-KEY TERRAFORM COMMANDS 
+**KEY TERRAFORM COMMANDS** 
 - init - get the provider based on selected resouces
 - plan - once you define the resources, shows what you are about to do
 - apply - do what is in the .tf files
 - destroy - bring down all that is in the .tf file
+<br><br>
 
-- Infrastructure as code tool
-- you can provision infrastructure resources (VMs, containers, storage etc.) with declarative configuration files
-- uses ISE style approach.
-
-Infrstructure as code is a framework that allows you to define your infrastructure in a safe, consistent, and repeatable way by defining resource configuration files that you can version, reuse, and share. ise is a git for infrastructure. 
-
-you can create, deploy, destroy an entire cluster of resources together. Uses configuration files instead of a GUI. 
-
-- simplicity to keep track of infrastrucutre
-- easy to collaborate
-- reproducibility
-- ensure resources are removed
-
-DOES NOT 
-- Does not manage code.
-- can't change immutable resources such as machine type or location.
-- doesn't manage resources outside of the terraform file.
-
-NEED 
+**REQUIREMENTS**  
 1. Teraform Client
 2. GCP Account
 3. Google SDK - so that you can interact with the machines from your command line
-   
+<br><br>
+
 ## GCP SERVICE ACCOUNTS 
 After you have created a GCP account and project, you'll need to set up a service account for Terraform. 
 
@@ -67,8 +53,8 @@ Service account:
 For simplicity we will be granting broad permissions to this service account. In the real world you would set up a custom service account for each service that gives it the permissions only for the task being executed. Admin persmissions are broad roles that permit a lot of actions. With Terraform we are only going to be setting up and taking down resources so a role with bucket creation and deletion would suffice. With Big Querry we only need to be able to create and destroy a dataset.<br><br>
 
    - Cloud Storage > Storage Admin  					*Grants full control of buckets and objects*<br>
-   - Big Query > Big Query Admin							*Administer all BigQuery resources and data*<br>
-   - Compute Engine > Compute Admin						*Full control of all Compute Engine resources.*
+   - Big Query > Big Query Admin					*Administer all BigQuery resources and data*<br>
+   - Compute Engine > Compute Admin					*Full control of all Compute Engine resources.*
 
 2. Modify Permissions<br>
 - Go to `IAM` in the left hand nav<br>
@@ -146,21 +132,18 @@ INITIALIZE THE PROJECT
 RUN ` Teraform init` 
 The terraform init command initializes a working directory containing configuration files and installs plugins for required providers. In this case,  Terraform will retrieve the google provider, which is the piece of code that connects us to talk to GCP. 
 
-#### Creates or Downloads  
+#### Creates/ Downloads  
 - .terraform folder - created in the project directory and contains subdirectories and files related to intialization and plug in management.   
 - .terraform.lock.hcl folder - lock file that records a list of provider plugins and their versions as hashes. 
 
 ## MANAGE RESOURCES 
-- Cloud storage - Data Lake - bucket in GCP environmetn where you can store data as a flat file
-- Big Query Warehouse - Data Warehouse - can have fact/ dimension tables
+- BUCKETS - Cloud Storage - GCP containers that can store various types of data as flat files
+- DATASETS - Big Query - structured data storage
   
-#### CREATE AND DESTROY BUCKETS 
-ADD A BUCKET 
-Start with the example on the Hashicorp site and adjust to your project. 
-- resource - \<resource being created\> \<local variable name\>  --> these names combined with a dot can be used to reference this resource in other blocks in this file (e.g., google_storage_bucket.taxi-bucket
-- name - this has to be globally unique across all of GPC to be unique. Using a variation on the project generally works. 
-- age - in days 
-
+#### RESOURCES 
+GPC BUCKET 
+[**Terraform google_storage_bucket Documentation**](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket)
+ 
 ```terraform
 resource "google_storage_bucket" "taxi-bucket" {
   name          = "aerobic-badge-408610-taxi-bucket"
@@ -177,7 +160,20 @@ resource "google_storage_bucket" "taxi-bucket" {
   }
 }
 ```
+- `resource` \<resource being created\> \<local variable name\>  --> these names combined with a dot can be used to reference this resource in other blocks in this file (e.g., google_storage_bucket.taxi-bucket
+- `name` this has to be globally unique across all of GPC to be unique. Using a variation on the project generally works. 
+- `age` - in days 
 
+GPC DATASET 
+[**Terraform google_bigquerry_dataset Documentation**](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_dataset)
+```terraform
+resource "google_bigquery_dataset" "taxi-dataset" {
+  dataset_id = "taxi_dataset"
+  location   = "EU"
+}
+```
+
+#### MANAGE RESOURCES
 TERRAFORM PLAN 
 Running `terraform plan` will show you the actions that will be taken and the details. 
 ```cli
@@ -223,12 +219,12 @@ The bucket can be seen on `cloud_storage > buckets` in the left hand nav.
 TERRAFORM DESTROY <br>
 run `terraform destroy` will look at state file and check what changes need to be made to get rid of the resources. 
 - The plan is returned providing have a list of resources to be destroyed and their details.
-- The terraform.tfstate.backup file is updated with the current state before the change is made so you can roll back in case of errors.
+- The terraform.tfstate.backup file is updated with the current state before the change.
 - The terraform.tfstate file is updated with the state after the change.
 
 [more on state files](https://www.devopsschool.com/blog/what-is-terraform-tfstate-backup-file-in-terraform/)
 
-
+## USING VARIABLES
 
 
 *** in prod you would normally create custom roles for each service.
