@@ -113,6 +113,7 @@ You will get a pop up asking you to verify --> This process refreshes the token.
 
 
 ## SET UP MAIN.TF 
+```terraform fmt``` fixes the formating of the tf file in the folder you run this commmand. 
 
 #### Start with GCP Provider block 
 We will be using GCP and will need to define the provider in the main.tf file. Go to the Hashicorp page for the provider you need and click on `Use Provider` to get the  
@@ -131,13 +132,87 @@ provider "google" {
 }
 ```
 
-ADD CONFIGURATION OPTIONS 
+CONNECT TO A PROJECT 
+To connect to a Google Cloud project, add the following configuration options to the "google" provider block:
 ```terraform
 provider "google" {
-  project = "<project id found on GCP dashboard"
-  region  = "europe-west1"
+  credentials = <path_to_file/file.json> # The not recommended method. We get other suggestions later.  
+  project = "<your_project_id>"  # Replace with your Google Cloud project ID found on the GPC Dashboard
+  region  = "europe-west1"       # Set your desired region
 }
 ```
+INITIALIZE THE PROJECT 
+RUN ` Teraform init` 
+The terraform init command initializes a working directory containing configuration files and installs plugins for required providers. In this case,  Terraform will retrieve the google provider, which is the piece of code that connects us to talk to GCP. 
+
+#### Creates or Downloads  
+- .terraform folder - created in the project directory and contains subdirectories and files related to intialization and plug in management.   
+- .terraform.lock.hcl folder - lock file that records a list of provider plugins and their versions as hashes. 
+
+ADD A BUCKET 
+Start with the example on the Hashicorp site and adjust to your project. 
+- resource - \<resource being created\> \<local variable name\>  --> these names combined with a dot can be used to reference this resource in other blocks in this file (e.g., google_storage_bucket.taxi-bucket
+- name - this has to be globally unique across all of GPC to be unique. Using a variation on the project generally works. 
+- age - in days 
+
+```terraform
+resource "google_storage_bucket" "taxi-bucket" {
+  name          = "aerobic-badge-408610-taxi-bucket"
+  location      = "EU"
+  force_destroy = true
+
+  lifecycle_rule {
+    condition {
+      age = 1
+    }
+    action {
+      type = "AbortIncompleteMultipartUpload"
+    }
+  }
+}
+```
+
+TERRAFORM PLAN 
+Running `terraform plan` will show you the actions that will be taken and the details. 
+```cli
+Terraform will perform the following actions:
+
+  # google_storage_bucket.taxi-bucket will be created
+  + resource "google_storage_bucket" "taxi-bucket" {
+      + effective_labels            = (known after apply)
+      + force_destroy               = true
+      + id                          = (known after apply)
+      + location                    = "EU"
+      + name                        = "aerobic-badge-408610-taxi-bucket"
+      + project                     = (known after apply)
+      + public_access_prevention    = (known after apply)
+      + rpo                         = (known after apply)
+      + self_link                   = (known after apply)
+      + storage_class               = "STANDARD"
+      + terraform_labels            = (known after apply)
+      + uniform_bucket_level_access = (known after apply)
+      + url                         = (known after apply)
+
+      + lifecycle_rule {
+          + action {
+              + type = "AbortIncompleteMultipartUpload"
+            }
+          + condition {
+              + age                   = 1
+              + matches_prefix        = []
+              + matches_storage_class = []
+              + matches_suffix        = []
+              + with_state            = (known after apply)
+            }
+        }
+    }
+```
+TERRAFORM APPLY 
+executes the plan proposed in terraform plan adding a bucket to this project. The bucket can be seen on `cloud_storage > buckets` in the left hand nav. 
+![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/ab621b97-6048-4624-ad21-1379cbf76a4b)
+
+
+
 
 5. CREATE RESOURCES IN YOUR ENVIRONMENT
 - Cloud storage - Data Lake - bucket in GCP environmetn where you can store data as a flat file
