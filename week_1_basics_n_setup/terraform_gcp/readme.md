@@ -149,6 +149,11 @@ The terraform init command initializes a working directory containing configurat
 - .terraform folder - created in the project directory and contains subdirectories and files related to intialization and plug in management.   
 - .terraform.lock.hcl folder - lock file that records a list of provider plugins and their versions as hashes. 
 
+## MANAGE RESOURCES 
+- Cloud storage - Data Lake - bucket in GCP environmetn where you can store data as a flat file
+- Big Query Warehouse - Data Warehouse - can have fact/ dimension tables
+  
+#### CREATE AND DESTROY BUCKETS 
 ADD A BUCKET 
 Start with the example on the Hashicorp site and adjust to your project. 
 - resource - \<resource being created\> \<local variable name\>  --> these names combined with a dot can be used to reference this resource in other blocks in this file (e.g., google_storage_bucket.taxi-bucket
@@ -208,15 +213,21 @@ Terraform will perform the following actions:
     }
 ```
 TERRAFORM APPLY 
-executes the plan proposed in terraform plan adding a bucket to this project. The bucket can be seen on `cloud_storage > buckets` in the left hand nav. 
+executes the plan proposed in terraform plan. In this example it will add a bucket to this project and creates a terraform.tfstate file. This state file keeps track of resources created by your configuration and maps them to real-world resources
+
+The bucket can be seen on `cloud_storage > buckets` in the left hand nav. 
 ![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/ab621b97-6048-4624-ad21-1379cbf76a4b)
 
 
+TERRAFORM DESTROY <br>
+run `terraform destroy` will look at state file and check what changes need to be made to get rid of the resources. 
+- The plan is returned providing have a list of resources to be destroyed and their details.
+- The terraform.tfstate.backup file is updated with the current state before the change is made so you can roll back in case of errors.
+- The terraform.tfstate file is updated with the state after the change.
+
+[more on state files](https://www.devopsschool.com/blog/what-is-terraform-tfstate-backup-file-in-terraform/)
 
 
-5. CREATE RESOURCES IN YOUR ENVIRONMENT
-- Cloud storage - Data Lake - bucket in GCP environmetn where you can store data as a flat file
-- Big Query Warehouse - Data Warehouse - can have fact/ dimension tables 
 
 
 *** in prod you would normally create custom roles for each service.
