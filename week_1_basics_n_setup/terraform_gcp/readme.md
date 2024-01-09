@@ -129,9 +129,9 @@ provider "google" {
 To connect to a Google Cloud project, add the following configuration options to the "google" provider block:
 ```terraform
 provider "google" {
-  credentials = <path_to_file/file.json> # The not recommended method. We get other suggestions later.  
-  project = "<your_project_id>"  # Replace with your Google Cloud project ID found on the GPC Dashboard
-  region  = "europe-west1"       # Set your desired region
+  credentials = <path_to_file/file.json>	# This method is NOT RECOMMENDED  
+  project = "<your_project_id>"  		# Replace with your Google Cloud project ID found on the GPC Dashboard
+  region  = "europe-west1"       		# Set your desired region
 }
 ```
 **INITIALIZE THE PROJECT** `Teraform init` <br> 
@@ -224,12 +224,11 @@ Terraform will perform the following actions:
 <br>
 Running `terraform apply` executes the plan proposed in terraform plan. In this example it will add a bucket to this project and creates a terraform.tfstate file. This state file keeps track of resources created by your configuration and maps them to real-world resources
 
-The bucket can be seen at `Cloud Storage > Buckets` in the left hand nav. 
+The bucket can be seen at `Cloud Storage > Buckets` in the left hand nav. <br>
 ![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/ab621b97-6048-4624-ad21-1379cbf76a4b)
 
-The dataset can be seen at `BigQuery > BigQuery Studio` in the left hand nav. 
-![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/f3b98a6b-5b58-4aec-b00c-ba325ab153d1)
-
+The dataset can be seen at `BigQuery > BigQuery Studio` in the left hand nav.<br> 
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/f3b98a6b-5b58-4aec-b00c-ba325ab153d1" width="150" height="150" >
 
 **TERRAFORM DESTROY** 
 <br>
@@ -311,15 +310,12 @@ resource "google_bigquery_dataset" "taxi-dataset" {
   location   = var.gcp_storage_location
 }
 ```
+</details>
 
 
 7. Enable the APIs.
 - I AM
 - I AM Credentials      
-
-
-
-
 
 
 Terraform is installed on your local machine and connects to the remote service or resource via a *provider* A provider is a plugin that enables interaction with an API. This includes Cloud providers and Software-as-a-service providers. The providers are specified in the Terraform configuration code. They tell Terraform which services it needs to interact with.
