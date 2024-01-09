@@ -38,9 +38,9 @@ HashiCorp terraform is an infrastructure as code tool that lets you define both 
 After you have created a GCP account and project, you'll need to set up a service account for Terraform. 
 
 Service account:
-   - similar to a user accoun that is used by particular services rather than by a user. 
-   - will be used to by software to run tasks, run programs, access services (~make API calls).
-   - has restricted/ limited permissions base do on the tasks that need to be executed.
+   - similar to a user account that is used by particular services rather than by a user
+   - will be used to by software to run tasks, run programs, access services (~make API calls) etc
+   - has restricted/ limited permissions
 
 #### ADD SERVICE ACCOUNT 
 1. Go to ```I am and Admin > Service Accounts``` in the left hand nav. 
@@ -48,9 +48,9 @@ Service account:
 3. Enter a name and click ```CREATE & CONTINUE```
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/7b0262a1-6cda-47a1-9f42-80d7eb1a338a" width="200" height="180">
    
-#### SERVICE ACCOUNT PERMISIONS 
+#### GRANT PERMISIONS 
 1. Add Permissions<br> 
-For simplicity we will be granting broad permissions to this service account. In the real world you would set up a custom service account for each service that gives it the permissions only for the task being executed. Admin persmissions are broad roles that permit a lot of actions. With Terraform we are only going to be setting up and taking down resources so a role with bucket creation and deletion would suffice. With Big Querry we only need to be able to create and destroy a dataset.<br><br>
+For simplicity, we will grant broad admin permissions to this service account. Admin permissions include broad roles that permit numerous actions. With Terraform, our scope is limited to resource provisioning and de-provisioning, so a role with bucket creation and deletion capabilities would suffice. Similarly, for BigQuery, we only need the ability to create and delete datasets. In the real world, you would set up a custom service account for each service, giving it permissions only for the specific tasks it needs to perform.<br><br>
 
    - Cloud Storage > Storage Admin  					*Grants full control of buckets and objects*<br>
    - Big Query > Big Query Admin					*Administer all BigQuery resources and data*<br>
@@ -63,10 +63,10 @@ For simplicity we will be granting broad permissions to this service account. In
 	<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/0ff3ee7a-0361-4ee6-9ff2-a3124f5b9942" width="100" height="100">
 </p>
 
-#### SERVICE ACCOUNT KEY
+#### AUTHORIZATION KEY
 The GCP service account key is a JSON or P12 file that contains the credentials for a service account. It can be used to authenticate GCP service accounts for managing GCP resources and interacting with GCP APIs. 
 
-1. Create a Key
+1. **Create and download key**<br>
    - On the Service Accounts page under the Actions ellipse, click `Manage Keys`
    - Click Add Key > Create new  and select JSON
    - The JSON file will be saved to your computer
@@ -78,7 +78,7 @@ The GCP service account key is a JSON or P12 file that contains the credentials 
 </h3>
 </div>
 
- 2. Add Key to GCP environment variables<br>
+ 2. **Add Key to GCP environment variables**<br>
  - Move the downloaded JSON into the folder where you keep your GCP key
  - Add the file to your GCP environment variable. 
  
@@ -91,7 +91,7 @@ The GCP service account key is a JSON or P12 file that contains the credentials 
  #Persist by adding to .bashrc. Use source ~/.bashrc to see the change without a restart. 
  echo export GOOGLE_APPLICATION_CREDENTIALS="path_to_file/file.json" >> ~/.bashrc 
  ```
-3. Authentication<br>
+3. **Authentication**<br>
 This command will authenticate using the environmental variable set in the last step. 
 ``` cli
 gcloud auth application-default login
@@ -103,7 +103,7 @@ You will get a pop up asking you to verify --> This process refreshes the token.
 ```terraform fmt``` fixes the formating of the tf file in the folder you run this commmand. 
 
 #### Start with GCP Provider block 
-We will be using GCP and will need to define the provider in the main.tf file. Go to the Hashicorp page for the provider you need and click on `Use Provider` to get the  
+We need to define the provider in the main.tf file. Go to the Hashicorp page for the provider you need and click on `Use Provider` to get the provider blocks for the main.tf file. 
 ```terraform
 terraform {
   required_providers {
@@ -119,7 +119,7 @@ provider "google" {
 }
 ```
 
-CONNECT TO A PROJECT 
+**CONFIGURE THE PROJECT** 
 To connect to a Google Cloud project, add the following configuration options to the "google" provider block:
 ```terraform
 provider "google" {
@@ -128,20 +128,22 @@ provider "google" {
   region  = "europe-west1"       # Set your desired region
 }
 ```
-INITIALIZE THE PROJECT 
+**INITIALIZE THE PROJECT** 
 RUN ` Teraform init` 
 The terraform init command initializes a working directory containing configuration files and installs plugins for required providers. In this case,  Terraform will retrieve the google provider, which is the piece of code that connects us to talk to GCP. 
-
-#### Creates/ Downloads  
+<br>
+RUN Creates/ Downloads:  
 - .terraform folder - created in the project directory and contains subdirectories and files related to intialization and plug in management.   
 - .terraform.lock.hcl folder - lock file that records a list of provider plugins and their versions as hashes. 
+<br><br>
 
 ## MANAGE RESOURCES 
 - BUCKETS - Cloud Storage - GCP containers that can store various types of data as flat files
 - DATASETS - Big Query - structured data storage
-  
-#### RESOURCES 
-GPC BUCKET 
+<br>  
+#### RESOURCES
+<br>
+**GPC BUCKET** 
 [**Terraform google_storage_bucket Documentation**](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket)
  
 ```terraform
@@ -164,7 +166,8 @@ resource "google_storage_bucket" "taxi-bucket" {
 - `name` this has to be globally unique across all of GPC to be unique. Using a variation on the project generally works. 
 - `age` - in days 
 
-GPC DATASET 
+**GPC DATASET** 
+<br>
 [**Terraform google_bigquerry_dataset Documentation**](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_dataset)
 ```terraform
 resource "google_bigquery_dataset" "taxi-dataset" {
@@ -174,7 +177,8 @@ resource "google_bigquery_dataset" "taxi-dataset" {
 ```
 
 #### MANAGE RESOURCES
-TERRAFORM PLAN 
+**TERRAFORM PLAN** 
+<br>
 Running `terraform plan` will show you the actions that will be taken and the details. 
 ```cli
 Terraform will perform the following actions:
@@ -209,14 +213,16 @@ Terraform will perform the following actions:
         }
     }
 ```
-TERRAFORM APPLY 
+**TERRAFORM APPLY ** 
+<br>
 executes the plan proposed in terraform plan. In this example it will add a bucket to this project and creates a terraform.tfstate file. This state file keeps track of resources created by your configuration and maps them to real-world resources
 
 The bucket can be seen on `cloud_storage > buckets` in the left hand nav. 
 ![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/ab621b97-6048-4624-ad21-1379cbf76a4b)
 
 
-TERRAFORM DESTROY <br>
+**TERRAFORM DESTROY** 
+<br>
 run `terraform destroy` will look at state file and check what changes need to be made to get rid of the resources. 
 - The plan is returned providing have a list of resources to be destroyed and their details.
 - The terraform.tfstate.backup file is updated with the current state before the change.
