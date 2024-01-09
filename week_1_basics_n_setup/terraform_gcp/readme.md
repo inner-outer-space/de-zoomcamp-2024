@@ -50,15 +50,15 @@ Service account:
    
 #### GRANT PERMISIONS 
 1. Add Permissions<br> 
-For simplicity, we will grant broad admin permissions to this service account. Admin permissions include broad roles that permit numerous actions. With Terraform, our scope is limited to resource provisioning and de-provisioning, so a role with bucket creation and deletion capabilities would suffice. Similarly, for BigQuery, we only need the ability to create and delete datasets. In the real world, you would set up a custom service account for each service, giving it permissions only for the specific tasks it needs to perform.<br><br>
+For simplicity, we will grant broad admin permissions to this service account. Admin permissions include broad roles that permit numerous actions. With Terraform, our scope is limited to resource provisioning and de-provisioning, so a role with bucket creation and deletion capabilities would suffice. Similarly, for BigQuery, we only need the ability to create and delete datasets. In the real world, you would set up a custom service account for each service, giving it permissions only for the specific tasks it needs to perform.<br>
 
    - Cloud Storage > Storage Admin  					*Grants full control of buckets and objects*<br>
    - Big Query > Big Query Admin					*Administer all BigQuery resources and data*<br>
    - Compute Engine > Compute Admin					*Full control of all Compute Engine resources.*
 
-2. Modify Permissions<br>
-- Go to `IAM` in the left hand nav<br>
-- Click on `Edit Principle` icon<br>
+2. Modify Permissions
+   - Go to `IAM` in the left hand nav<br>
+   - Click on `Edit Principle` icon<br>
 <p align="left">
 	<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/0ff3ee7a-0361-4ee6-9ff2-a3124f5b9942" width="100" height="100">
 </p>
@@ -77,10 +77,11 @@ The GCP service account key is a JSON or P12 file that contains the credentials 
 !!!BE VERY CAREFUL WITH YOUR CREDENTIALS!!! 
 </h3>
 </div>
+<br>
 
  2. **Add Key to GCP environment variables**<br>
- - Move the downloaded JSON into the folder where you keep your GCP key
- - Add the file to your GCP environment variable. 
+    - Move the downloaded JSON into the folder where you keep your GCP key
+    - Add the file to your GCP environment variable. 
  
  `GOOGLE_APPLICATION_CREDENTIALS` is an environmental variable used by Google Cloud SDK and various Google Cloud services to specify the path to a key
  ```cli
@@ -92,18 +93,23 @@ The GCP service account key is a JSON or P12 file that contains the credentials 
  echo export GOOGLE_APPLICATION_CREDENTIALS="path_to_file/file.json" >> ~/.bashrc 
  ```
 3. **Authentication**<br>
-This command will authenticate using the environmental variable set in the last step. 
+This command will authenticate using the environmental variable set in the last step.
+##### You'll get a pop up asking you to verify --> This process refreshes the token. 
 ``` cli
 gcloud auth application-default login
 ```
-You will get a pop up asking you to verify --> This process refreshes the token. 
+<br><br>
 
-
-## SET UP MAIN.TF 
+## TERRAFORM MAIN.TF 
 ```terraform fmt``` fixes the formating of the tf file in the folder you run this commmand. 
 
-#### Start with GCP Provider block 
-We need to define the provider in the main.tf file. Go to the Hashicorp page for the provider you need and click on `Use Provider` to get the provider blocks for the main.tf file. 
+#### GCP Provider block 
+Define the provider in the main.tf file.  
+1. Go to the Hashicorp [Google Cloud Platform Provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs) page
+2. Click on `Use Provider`
+3. Copy the provider blocks to your main.tf file
+<br>
+
 ```terraform
 terraform {
   required_providers {
@@ -119,7 +125,7 @@ provider "google" {
 }
 ```
 
-**CONFIGURE THE PROJECT** 
+**CONFIGURE THE PROJECT**<br> 
 To connect to a Google Cloud project, add the following configuration options to the "google" provider block:
 ```terraform
 provider "google" {
@@ -128,8 +134,7 @@ provider "google" {
   region  = "europe-west1"       # Set your desired region
 }
 ```
-**INITIALIZE THE PROJECT** 
-RUN ` Teraform init` 
+**INITIALIZE THE PROJECT** `Teraform init` <br> 
 The terraform init command initializes a working directory containing configuration files and installs plugins for required providers. In this case,  Terraform will retrieve the google provider, which is the piece of code that connects us to talk to GCP. 
 <br>
 RUN Creates/ Downloads:  
@@ -137,13 +142,13 @@ RUN Creates/ Downloads:
 - .terraform.lock.hcl folder - lock file that records a list of provider plugins and their versions as hashes. 
 <br><br>
 
-## MANAGE RESOURCES 
+## RESOURCES 
 - BUCKETS - Cloud Storage - GCP containers that can store various types of data as flat files
 - DATASETS - Big Query - structured data storage
-<br>  
-#### RESOURCES
 <br>
-**GPC BUCKET** 
+
+**GPC BUCKET**
+<br> 
 [**Terraform google_storage_bucket Documentation**](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket)
  
 ```terraform
@@ -165,6 +170,7 @@ resource "google_storage_bucket" "taxi-bucket" {
 - `resource` \<resource being created\> \<local variable name\>  --> these names combined with a dot can be used to reference this resource in other blocks in this file (e.g., google_storage_bucket.taxi-bucket
 - `name` this has to be globally unique across all of GPC to be unique. Using a variation on the project generally works. 
 - `age` - in days 
+<br>
 
 **GPC DATASET** 
 <br>
@@ -176,7 +182,7 @@ resource "google_bigquery_dataset" "taxi-dataset" {
 }
 ```
 
-#### MANAGE RESOURCES
+## MANAGE RESOURCES
 **TERRAFORM PLAN** 
 <br>
 Running `terraform plan` will show you the actions that will be taken and the details. 
@@ -213,9 +219,10 @@ Terraform will perform the following actions:
         }
     }
 ```
-**TERRAFORM APPLY ** 
+
+**TERRAFORM APPLY** 
 <br>
-executes the plan proposed in terraform plan. In this example it will add a bucket to this project and creates a terraform.tfstate file. This state file keeps track of resources created by your configuration and maps them to real-world resources
+Running `terraform apply` executes the plan proposed in terraform plan. In this example it will add a bucket to this project and creates a terraform.tfstate file. This state file keeps track of resources created by your configuration and maps them to real-world resources
 
 The bucket can be seen on `cloud_storage > buckets` in the left hand nav. 
 ![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/ab621b97-6048-4624-ad21-1379cbf76a4b)
@@ -223,22 +230,23 @@ The bucket can be seen on `cloud_storage > buckets` in the left hand nav.
 
 **TERRAFORM DESTROY** 
 <br>
-run `terraform destroy` will look at state file and check what changes need to be made to get rid of the resources. 
+Running `terraform destroy` will look at state file and check what changes need to be made to get rid of the resources. 
 - The plan is returned providing have a list of resources to be destroyed and their details.
 - The terraform.tfstate.backup file is updated with the current state before the change.
 - The terraform.tfstate file is updated with the state after the change.
 
 [more on state files](https://www.devopsschool.com/blog/what-is-terraform-tfstate-backup-file-in-terraform/)
 
+<br><br>
 ## USING VARIABLES
 
 
-*** in prod you would normally create custom roles for each service.
+
 7. Enable the APIs.
 - I AM
 - I AM Credentials      
 
-Back a couple steps 
+
 
 
 
@@ -260,9 +268,9 @@ In summary, Terraform providers serve as the bridge that allows Terraform to int
 
 
 
-terraform.fmt --> formats the tf file 
 
-Terraform GIT Ignore *.json --> careful not to push your service account creds to git hub!!!
+
+
 
 
 
