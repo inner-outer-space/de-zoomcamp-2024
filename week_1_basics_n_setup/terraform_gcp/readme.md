@@ -5,8 +5,9 @@
 Terraform 
 HashiCorp terraform is an infrastructure as code tool that lets you define both on-prem and cloud resources in human-readable config files that you can version, reuse, and share. You can then use a consistent workflow to provision and manage all of your infrastructure throughout its lifecycle. [Source](https://developer.hashicorp.com/terraform/intro)
 
-set up infrastructure - a place where your code can live and run.
- 
+set up infrastructure - a place where your code can live and run.<br>
+[Boilerplate Terraform .gitignore](https://spacelift.io/blog/terraform-gitignore) 
+
 ADVANTAGES 
 - Simple to keep track of and manageme infrastrucutre
 - Easy to collaborate
