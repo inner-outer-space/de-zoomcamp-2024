@@ -239,7 +239,74 @@ Running `terraform destroy` will look at state file and check what changes need 
 
 <br><br>
 ## USING VARIABLES
+You can define variables in the `variable.tf` file and reference them from main.tf
 
+<details>
+<summary>variable.tf</summary> 
+	
+```terraform
+
+variable "gcp_storage_location" {
+  description = "Location for GCP bucket"
+  default     = "EU"
+}
+
+variable project {
+  description = "Project"
+  default     = "aerobic-badge-408610"
+}
+
+variable "region" {
+  description = "Region"
+  default     = "europe-west1"
+  
+}
+
+variable "bq_dataset_name" {
+  description = "My BigQuery dataset"
+  default     = "taxi_dataset"
+}
+
+variable "gcp_storage_class" {
+  description = "Storage class for GCP bucket"
+  default     = "STANDARD"
+}
+
+variable "gcs_bucket_name" {
+  description = "Name for GCP bucket"
+  default     = "aerobic-badge-408610-taxi-bucket"
+}
+```
+</detail>
+
+<details>
+<summary>main.tf with variables</summary> 
+```terraform 
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "5.11.0"
+    }
+  }
+}
+
+provider "google" {
+  project = var.project
+  region  = var.region
+}
+
+resource "google_storage_bucket" "taxi-bucket" {
+  name          = var.gcs_bucket_name
+  location      = var.gcp_storage_location
+  force_destroy = true
+}
+
+resource "google_bigquery_dataset" "taxi-dataset" {
+  dataset_id = var.bq_dataset_name
+  location   = var.gcp_storage_location
+}
+```
 
 
 7. Enable the APIs.
