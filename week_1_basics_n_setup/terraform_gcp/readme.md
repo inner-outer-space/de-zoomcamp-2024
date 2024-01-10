@@ -279,7 +279,8 @@ variable "gcs_bucket_name" {
   default     = "aerobic-badge-408610-taxi-bucket"
 }
 ```
-</detail>
+</details>
+
 
 <details>
 <summary>main.tf with variables</summary> 
@@ -311,6 +312,27 @@ resource "google_bigquery_dataset" "taxi-dataset" {
 }
 ```
 </details>
+
+<details>
+<summary>USING THE CREDENTIAL VARIABLE</summary> 
+
+```terraform
+
+# variable.tf
+variable "credentials"  {
+  description = "Credentials for GCP"
+  default     = "path_to_key/key.json"
+}
+
+#main.tf
+provider "google" {
+  credentials = file(var.credentials)
+  project     = var.project
+  region      = var.region
+}
+```
+</details>
+
 
 
 7. Enable the APIs.
