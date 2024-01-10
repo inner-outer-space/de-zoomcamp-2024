@@ -3,16 +3,19 @@
 <hr>
 
 
-HashiCorp terraform is an infrastructure as code tool that lets you define both on-prem and cloud resources in human-readable config files that you can version, reuse, and share. You can then use a consistent workflow to provision and manage all of your infrastructure throughout its lifecycle. [Source](https://developer.hashicorp.com/terraform/intro)
+HashiCorp terraform is an infrastructure as code (IaC) tool that lets you define both on-prem and cloud resources in human-readable config files that you can version, reuse, and share. You can then use a consistent workflow to provision and manage all of your infrastructure throughout its lifecycle. [Source](https://developer.hashicorp.com/terraform/intro)
 <br><br>
 
 **ADVANTAGES** 
 - You can provision infrastructure resources (VMs, containers, storage etc.) with declarative configuration files instead of a GUI
-- Simple to keep track of and manageme infrastrucutre
+- Supports devops best practices for change management
+- Simple to keep track of and manage infrastrucutre
+- You can create, deploy, destroy an entire cluster of resources together
+- Easy to ensure resources are removed
 - Easy to collaborate
 - Reproducibile
-- Easy to ensure resources are removed
-- You can create, deploy, destroy an entire cluster of resources together
+
+
 <br><br>
 
 **DOES NOT** 
@@ -31,10 +34,15 @@ HashiCorp terraform is an infrastructure as code tool that lets you define both 
 **REQUIREMENTS**  
 1. Teraform Client
 2. GCP Account
-3. Google SDK - so that you can interact with the machines from your command line
+3. Google SDK - so that you can interact with the VMs from your command line
 <br><br>
 
-## GCP SERVICE ACCOUNTS 
+## GCP ACCOUNT
+1. Create an account with your Google email ID
+2. Set up a project
+3. Set up a service account and authentication
+
+### SERVICE ACCOUNT AND AUTHENTICATION   
 After you have created a GCP account and project, you'll need to set up a service account for Terraform. 
 
 Service account:
