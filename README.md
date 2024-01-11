@@ -19,6 +19,10 @@ This repo contains notes and assignments for the 2024 [Data Talks Data Engineeri
 - **[GIT README](https://pragmaticpineapple.com/adding-custom-html-and-css-to-github-readme/)** Adding HTML and CSS to GIT Readme  
 </details>
 
+<details>
+<summary>TERRAFORM</summary> 
+-**[Terraform State Files](https://www.devopsschool.com/blog/what-is-terraform-tfstate-backup-file-in-terraform/)
+</details>
 
 <details>
 <summary>DOCKER</summary>      
