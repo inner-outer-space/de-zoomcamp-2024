@@ -8,6 +8,6 @@ RUN pip install --upgrade pip
 RUN pip install pandas sqlalchemy psycopg2 pyarrow
 
 WORKDIR /app
-COPY ingest-data.py ingest-data.py
+COPY data-ingest.py data-ingest.py
 
-ENTRYPOINT [ "python", "ingest-data.py" ]
+ENTRYPOINT [ "python", "data-ingest.py" ]
