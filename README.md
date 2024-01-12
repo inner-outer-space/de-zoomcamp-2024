@@ -35,6 +35,6 @@ This repo contains notes and assignments for the 2024 [Data Talks Data Engineeri
 </details>
 
 <details>
-<summary>PostgreSQL</summary>
+<summary>Vizualization</summary>
 **[Vizualize in Python](https://hossainlab.github.io/dataviz/notebooks/MPL01-Intro%20to%20Data%20Visualization.html)
 </details>
