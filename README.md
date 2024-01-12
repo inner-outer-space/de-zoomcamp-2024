@@ -33,3 +33,8 @@ This repo contains notes and assignments for the 2024 [Data Talks Data Engineeri
 <summary>PostgreSQL</summary>
 **[Postgres](https://www.postgresql.org/docs/16/index.html)** PostgreSQL official documentation  
 </details>
+
+<details>
+<summary>PostgreSQL</summary>
+**[Vizualize in Python](https://hossainlab.github.io/dataviz/notebooks/MPL01-Intro%20to%20Data%20Visualization.html)
+</details>
