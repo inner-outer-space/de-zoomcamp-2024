@@ -26,7 +26,7 @@ mapping_dict = {
         4: "Dispute",
         5: "Unknown",
         6: "Voided trip"
-    }
+    },
     "day_of_week": {
         0: "Monday",
         1: "Tuesday",
