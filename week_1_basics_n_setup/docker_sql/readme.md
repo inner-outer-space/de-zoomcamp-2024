@@ -92,6 +92,13 @@ WHAT HAPPENS IN A CONTAINER STAYS IN A CONTAINER
 </div>
 <br><br>
 
+#### DOCKER COMMANDS  
+[Source: PhoenixNAP Cheat Sheet](https://phoenixnap.com/kb/docker-commands-cheat-sheet)
+<p align="center">
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/635e26c7-de01-41d4-98f8-0d67b8730541" align="ctr" width="800" height="580"><br>
+</p>
+
+
 #### DOCKERFILE
 You'll normally need more than just python or ubuntu (base images) installed in a container. You could specify a bash entrypoint and then install libraries etc via the command line but these will all disappear when you close the container. 
 ```bash
@@ -211,6 +218,8 @@ the jupyter notebook upload_data.ipynb contains the steps needed to load the CSV
 4. `to_sql` Insert the data in the dataframe in the sql DB. 
 
 #### DOWNLOAD THE PARQUET FILE AND IMPORT TO PD DATAFRAME
+[NY TAXI DATASET](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page)
+
 ```python
 !pip install pyarrow
 import pandas as pd
@@ -447,8 +456,11 @@ if __name__ == '__main__':
     --host=localhost \
     --port=5432 \
     --db=ny_taxi \
-    --table_name=yellow_taxi_trips \
-    --url="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet"
+    --data_table_name=yellow_taxi_trips \
+    --lookup_table_name=zones \
+    --data_url="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet" \
+    --lookup_url="https://d37ci6vzurychx.cloudfront.net/misc/taxi+_zone_lookup.csv"
+     
 ```
 </details>
 
@@ -515,7 +527,7 @@ docker run -it \
 
 ## DOCKER COMPOSE
 
-Docker compose is a tool for defining and running multi-container Docker applications. Instead of creating the network, postgres, pgAdmin, and taxi_ingest containers separately we can use a YAML file with Docker Compose to create everything with one command.  
+Docker compose is a tool for defining and running multi-container Docker applications. Instead of creating the network and the postgres and pgAdmin containers separately we can use a YAML file with Docker Compose to create everything with one command.  
 - Containers defined within a YAML file are automatically created within the same network. You don't need to define the network.
 - Each container is defined as a service in the yaml file. The name of service is also the name that you can access the service with.
 
