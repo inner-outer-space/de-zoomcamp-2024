@@ -133,7 +133,8 @@ provider "google" {
 ```
 
 <br>
-**CONFIGURE THE PROJECT**<br> 
+**CONFIGURE THE PROJECT** 
+<br> 
 To connect to a Google Cloud project, add the following configuration options to the "google" provider block:
 
 
@@ -146,7 +147,8 @@ provider "google" {
 ```
 
 <br>
-**INITIALIZE THE PROJECT** `Terraform init` <br> 
+**INITIALIZE THE PROJECT** `Terraform init` 
+<br> 
 The terraform init command initializes a working directory containing configuration files and installs plugins for required providers. In this case,  Terraform will retrieve the google provider, which is the piece of code that connects us to talk to GCP. 
 <br>
 RUN Creates/ Downloads:  
