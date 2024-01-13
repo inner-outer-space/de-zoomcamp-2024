@@ -101,7 +101,7 @@ $ docker run -it --entrypoint=bash python:3.9
 The dockerfile allows you to expand on a base image and create your own more complex images. The file contains instructions on how to set up the container and includes actions such as running commands, installing libraries, and copying files into the container.  
 
 ##### DOCKERFILE EXAMPLE THAT RUNS A PIPELINE.PY FILE
-In this example a data pipeline (pipeline.py) is copied to the container and run on creation.
+In this example a data pipeline (pipeline.py) is copied to the container and executed on creation.
 ```python
 FROM python:3.9.1
 
@@ -189,10 +189,10 @@ pgcli -h localhost -p 5432 -u root -d ny_taxi
 `-h` host 
 `-p` port
 `-u` user
-`-d` database
+`-d` database<br>
 You will be prompted to enter the password (root)
 
-BASIC PGCLI COMMANDS 
+BASIC PGCLI COMMANDS<br> 
 `\l+` list all databases on that server<br>
 `\dt` list all tables<br> 
 `\d <table_name>` table details<br>  
@@ -243,9 +243,9 @@ engine = create_engine('postgresql://root:root@localhost:5432/ny_taxi')
 <br>
 
 #### ADD THE DATAFRAME TO POSTGRES DB AS A TABLE 
-`get_schema` this function creates a DDL schema based on the DF schema and the DB details in engine.  
+`get_schema` this function is called by `to_sql`. It creates a DDL schema based on the DF schema and the DB details in engine. You can see the schema by printing the output.   
 ```python
-pd.io.sql.get_schema(df, name='yellow_taxi_data', con=engine)
+print(pd.io.sql.get_schema(df, name='yellow_taxi_data', con=engine))
 ```
 <br>
 
@@ -292,7 +292,7 @@ count
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/cb2524f8-977b-4b76-96ff-38b409bc2fd6" width="60" height="45"><br>
 
 ```python
-# SAME OUTPUT AS \dt in PGCLI 
+# EXTENDED TABLE INFORMATION
 querry = """
 SELECT *
 FROM pg_catalog.pg_tables
@@ -455,7 +455,7 @@ if __name__ == '__main__':
 <details>
 <summary>CREATE A DOCKER CONTAINER TO RUN THE JOB </summary> 
     
-```docker 
+``` dockerfile 
     FROM python:3.9.1
     
     RUN apt-get update && apt-get install wget
@@ -544,7 +544,7 @@ services:
 ```
 
 PERSIST THE PGADMIN CONFIGURATION<br>
-To avoid needing to set up the server every time you start the pgAdmin service map a folder on the host to the pgAdmin config folder. 
+To avoid needing to set up the server every time you start pgAdmin, map a folder on the host to the pgAdmin config folder. 
 1. created a pgadmin-config folder on the host.
 2. updated the permissions so that anyone could rwx `chmod 777 /config/pgadmin-config´
 3. mapped that to a volume in the pgAdmin container so that changes to the config will be saved on my machine
@@ -583,8 +583,8 @@ WHERE
 	t."DOLocationID" = zdo."LocationID" 
 LIMIT 100;
 ```
-#### INNER JOIN VERSION 2
-In this version it is clearer to see what condition is being applied to each join. 
+#### INNER JOIN EXAMPLE 2
+In this version it is clearer to see which condition is being applied to each join. 
 ```sql
 SELECT 
     tpep_pickup_datetime, 
@@ -600,7 +600,7 @@ FROM
 		ON t."DOLocationID" = zdo."LocationID" 
 LIMIT 100;
 ```
-#### CHECK IF ANY NULL DROP OFF OR PICKUP IDs 
+#### QUERY FOR NULL DROP OFF OR PICKUP IDs 
 ```sql
 SELECT 
     tpep_pickup_datetime, 
@@ -613,7 +613,7 @@ FROM
 WHERE "PULocationID" is NULL OR "DOLocationID" is NULL
 LIMIT 100;
 ```
-##### CHECK FOR ANY PICK UP OR DROP OFF IDS THAT DON'T HAVE A LOOKUP VALUE
+##### QUERY FOR PICK UP AND DROP OFF IDS THAT DON'T HAVE AN ASSOCIATED LOOKUP VALUE
 ```sql
 SELECT 
     tpep_pickup_datetime, 
