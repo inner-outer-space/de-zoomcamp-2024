@@ -116,6 +116,7 @@ Define the provider in the main.tf file.
 2. Click on `Use Provider`
 3. Copy the provider blocks to your main.tf file
 <br>
+
 ```terraform
 terraform {
   required_providers {
@@ -130,9 +131,12 @@ provider "google" {
   # Configuration options
 }
 ```
+
 <br>
 **CONFIGURE THE PROJECT**<br> 
 To connect to a Google Cloud project, add the following configuration options to the "google" provider block:
+
+
 ```terraform
 provider "google" {
   credentials = <path_to_file/file.json>	# This method is NOT RECOMMENDED  
@@ -140,6 +144,7 @@ provider "google" {
   region  = "europe-west1"       		# Set your desired region
 }
 ```
+
 <br>
 **INITIALIZE THE PROJECT** `Terraform init` <br> 
 The terraform init command initializes a working directory containing configuration files and installs plugins for required providers. In this case,  Terraform will retrieve the google provider, which is the piece of code that connects us to talk to GCP. 
