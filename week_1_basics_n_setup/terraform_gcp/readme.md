@@ -110,7 +110,7 @@ gcloud auth application-default login
 ## TERRAFORM MAIN.TF 
 ```terraform fmt``` fixes the formatting of the tf file in the folder you run this command. 
 
-**GCP PROVIDER BLOCK**<br> 
+**GCP PROVIDER BLOCK** <br> 
 Define the provider in the main.tf file.  
 1. Go to the Hashicorp [Google Cloud Platform Provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs) page
 2. Click on `Use Provider`
@@ -131,8 +131,8 @@ provider "google" {
   # Configuration options
 }
 ```
-
 <br>
+
 **CONFIGURE THE PROJECT** 
 <br> 
 To connect to a Google Cloud project, add the following configuration options to the "google" provider block:
@@ -145,8 +145,8 @@ provider "google" {
   region  = "europe-west1"       		# Set your desired region
 }
 ```
-
 <br>
+
 **INITIALIZE THE PROJECT** `Terraform init` 
 <br> 
 The terraform init command initializes a working directory containing configuration files and installs plugins for required providers. In this case,  Terraform will retrieve the google provider, which is the piece of code that connects us to talk to GCP. 
