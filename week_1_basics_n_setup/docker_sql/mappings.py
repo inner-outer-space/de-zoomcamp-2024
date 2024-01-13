@@ -3,11 +3,11 @@
 # a mapping is added here to convert back 
 
 mapping_dict = {
-    "vendor_id": {
+    "vendorid": {
         1: "Creative Mobile Technologies",
         2: "VeriFone"
     },
-    "rate_code": {
+    "ratecodeid": {
         1: "Standard rate",
         2: "JFK",
         3: "Newark",
@@ -41,4 +41,4 @@ mapping_dict = {
 # Example usage:
 # print(mapping_dict["vendor_id"].get(1, "Unknown"))
 # print(mapping_dict["vendor_id"][2])
-# print(mapping_dict["payment_type"][3])  
+# print(mapping_dict["payment_type"][3]) 
