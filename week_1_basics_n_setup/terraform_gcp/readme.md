@@ -15,7 +15,6 @@ HashiCorp terraform is an infrastructure as code (IaC) tool that lets you define
 - Easy to collaborate
 - Reproducible
 
-
 <br><br>
 
 **DOES NOT** 
@@ -25,10 +24,10 @@ HashiCorp terraform is an infrastructure as code (IaC) tool that lets you define
 <br><br>
 
 **KEY TERRAFORM COMMANDS** 
-- init - get the provider based on selected resources
-- plan - once you define the resources, shows what you are about to do
-- apply - do what is in the .tf files
-- destroy - bring down all that is in the .tf file
+- `init` get the provider based on selected resources
+- `plan` once you define the resources, shows what you are about to do
+- `apply` do what is in the .tf files
+- `destroy` bring down all that is in the .tf file
 <br><br>
 
 **REQUIREMENTS**  
@@ -58,7 +57,7 @@ Service account:
    
 #### GRANT PERMISIONS 
 1. Add Permissions<br> 
-For simplicity, we will grant broad admin permissions to this service account. Admin permissions include broad roles that permit numerous actions. With Terraform, our scope is limited to resource provisioning and de-provisioning, so a role with bucket creation and deletion capabilities would suffice. Similarly, for BigQuery, we only need the ability to create and delete datasets. In the real world, you would set up a custom service account for each service, giving it permissions only for the specific tasks it needs to perform.<br>
+For simplicity, we will grant broad admin permissions to this service account. Admin permissions include broad roles that permit numerous actions. With Terraform, our scope is limited to resource provisioning and de-provisioning, so a role with bucket creation and deletion capabilities would suffice. Similarly, for BigQuery, we only need the ability to create and delete datasets. In the real world, you would set up a custom service account for each service, giving it permissions only for the specific tasks it needs to perform. Add the following: <br>
 
    - Cloud Storage > Storage Admin  					*Grants full control of buckets and objects*<br>
    - Big Query > Big Query Admin					*Administer all BigQuery resources and data*<br>
@@ -66,13 +65,13 @@ For simplicity, we will grant broad admin permissions to this service account. A
 
 2. Modify Permissions
    - Go to `IAM` in the left hand nav<br>
-   - Click on `Edit Principle` icon<br>
+   - Click on `Edit Principal` icon<br>
 <p align="left">
 	<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/0ff3ee7a-0361-4ee6-9ff2-a3124f5b9942" width="100" height="100">
 </p>
 
 #### AUTHORIZATION KEY
-The GCP service account key is a JSON or P12 file that contains the credentials for a service account. It can be used to authenticate GCP service accounts for managing GCP resources and interacting with GCP APIs. 
+The GCP service account key is a JSON or P12 file that contains the credentials for a service account. It can be used to authenticate GCP service accounts used for managing GCP resources and interacting with GCP APIs. 
 
 1. **Create and download key**<br>
    - On the Service Accounts page under the Actions ellipse, click `Manage Keys`
@@ -97,7 +96,7 @@ The GCP service account key is a JSON or P12 file that contains the credentials 
  export GOOGLE_APPLICATION_CREDENTIALS="path_to_file/file.json"
 
  
- #Persist by adding to .bashrc. Use source ~/.bashrc to see the change without a restart. 
+ #Persist by adding to .bashrc. Use `source ~/.bashrc` to see the change without a restart. 
  echo export GOOGLE_APPLICATION_CREDENTIALS="path_to_file/file.json" >> ~/.bashrc 
  ```
 3. **Authentication**<br>
@@ -111,37 +110,37 @@ gcloud auth application-default login
 ## TERRAFORM MAIN.TF 
 ```terraform fmt``` fixes the formatting of the tf file in the folder you run this command. 
 
-#### GCP Provider block 
+**GCP PROVIDER BLOCK**<br> 
 Define the provider in the main.tf file.  
 1. Go to the Hashicorp [Google Cloud Platform Provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs) page
 2. Click on `Use Provider`
 3. Copy the provider blocks to your main.tf file
 <br>
-
-```terraform
-terraform {
-  required_providers {
-    google = {
-      source = "hashicorp/google"
-      version = "5.11.0"
+  ```terraform
+  terraform {
+    required_providers {
+      google = {
+        source = "hashicorp/google"
+        version = "5.11.0"
+      }
     }
   }
-}
 
-provider "google" {
-  # Configuration options
-}
-```
-
+  provider "google" {
+    # Configuration options
+  }
+  ```
+<br>
 **CONFIGURE THE PROJECT**<br> 
 To connect to a Google Cloud project, add the following configuration options to the "google" provider block:
 ```terraform
 provider "google" {
   credentials = <path_to_file/file.json>	# This method is NOT RECOMMENDED  
-  project = "<your_project_id>"  		# Replace with your Google Cloud project ID found on the GPC Dashboard
+  project = "<your_project_id>"  		# Replace with your Google Cloud project ID on GPC Dashboard
   region  = "europe-west1"       		# Set your desired region
 }
 ```
+<br>
 **INITIALIZE THE PROJECT** `Terraform init` <br> 
 The terraform init command initializes a working directory containing configuration files and installs plugins for required providers. In this case,  Terraform will retrieve the google provider, which is the piece of code that connects us to talk to GCP. 
 <br>
