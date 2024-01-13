@@ -116,20 +116,20 @@ Define the provider in the main.tf file.
 2. Click on `Use Provider`
 3. Copy the provider blocks to your main.tf file
 <br>
-  ```terraform
-  terraform {
-    required_providers {
-      google = {
-        source = "hashicorp/google"
-        version = "5.11.0"
-      }
+```terraform
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+      version = "5.11.0"
     }
   }
+}
 
-  provider "google" {
-    # Configuration options
-  }
-  ```
+provider "google" {
+  # Configuration options
+}
+```
 <br>
 **CONFIGURE THE PROJECT**<br> 
 To connect to a Google Cloud project, add the following configuration options to the "google" provider block:
