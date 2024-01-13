@@ -13,7 +13,7 @@ HashiCorp terraform is an infrastructure as code (IaC) tool that lets you define
 - You can create, deploy, destroy an entire cluster of resources together
 - Easy to ensure resources are removed
 - Easy to collaborate
-- Reproducibile
+- Reproducible
 
 
 <br><br>
