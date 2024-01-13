@@ -9,7 +9,7 @@ HashiCorp terraform is an infrastructure as code (IaC) tool that lets you define
 **ADVANTAGES** 
 - You can provision infrastructure resources (VMs, containers, storage etc.) with declarative configuration files instead of a GUI
 - Supports devops best practices for change management
-- Simple to keep track of and manage infrastrucutre
+- Simple to keep track of and manage infrastructure
 - You can create, deploy, destroy an entire cluster of resources together
 - Easy to ensure resources are removed
 - Easy to collaborate
@@ -25,14 +25,14 @@ HashiCorp terraform is an infrastructure as code (IaC) tool that lets you define
 <br><br>
 
 **KEY TERRAFORM COMMANDS** 
-- init - get the provider based on selected resouces
+- init - get the provider based on selected resources
 - plan - once you define the resources, shows what you are about to do
 - apply - do what is in the .tf files
 - destroy - bring down all that is in the .tf file
 <br><br>
 
 **REQUIREMENTS**  
-1. Teraform Client
+1. Terraform Client
 2. GCP Account
 3. Google SDK - so that you can interact with the VMs from your command line
 <br><br>
@@ -109,7 +109,7 @@ gcloud auth application-default login
 <br><br>
 
 ## TERRAFORM MAIN.TF 
-```terraform fmt``` fixes the formating of the tf file in the folder you run this commmand. 
+```terraform fmt``` fixes the formatting of the tf file in the folder you run this command. 
 
 #### GCP Provider block 
 Define the provider in the main.tf file.  
@@ -142,11 +142,11 @@ provider "google" {
   region  = "europe-west1"       		# Set your desired region
 }
 ```
-**INITIALIZE THE PROJECT** `Teraform init` <br> 
+**INITIALIZE THE PROJECT** `Terraform init` <br> 
 The terraform init command initializes a working directory containing configuration files and installs plugins for required providers. In this case,  Terraform will retrieve the google provider, which is the piece of code that connects us to talk to GCP. 
 <br>
 RUN Creates/ Downloads:  
-- .terraform folder - created in the project directory and contains subdirectories and files related to intialization and plug in management.   
+- .terraform folder - created in the project directory and contains subdirectories and files related to initialization and plug in management.   
 - .terraform.lock.hcl folder - lock file that records a list of provider plugins and their versions as hashes. 
 <br><br>
 

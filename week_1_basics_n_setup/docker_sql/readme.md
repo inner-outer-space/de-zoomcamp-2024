@@ -23,15 +23,15 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
 
 #### DOCKER IMAGE:
 - a lightweight, stand-alone, and executable package that contains all the necessary code, libraries, dependencies, and configuration to run a piece of software. <br>
-- can be stored in public or private registries for sharing purposses.<br>
+- can be stored in public or private registries for sharing purposes.<br>
 - built using the Dockerfile.<br> 
 
 #### DOCKER CONTAINER:
 - an instance of a docker image running as a process on a host system. <br>
 - encapsulates an application/ pipeline/ database/ process etc. and its dependencies, libraries, and configurations along with a runtime environment.<br> 
-- shares the host OS kernel and some syterm libraries but still provides isolation.<br>
+- shares the host OS kernel and some system libraries but still provides isolation.<br>
 - multiple containers can run and be managed independently on the same host OS.<br>
-- processes, filesystems, user and group IDs, networks, and resources are isolated between containers. <br>
+- processes, file systems, user and group IDs, networks, and resources are isolated between containers. <br>
 - can be easily created and destroyed without affecting the host or other containers.
 - when a container is removed, all changes made to it during run time are lost. <br>
 
@@ -39,7 +39,7 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
 <table>
   <tr>
     <td><b>Reproducible</b></td>
-    <td>- the container encapsulates the application/ service and all of its dependencies ensuring that it will run consitantly whereever it is deployed.<br>- avoids environment issues when the container is recreated on a different machine (e.g., recreating the dev environment on a local machine for the purpose of experimenting and testing (CI/CD))</td>
+    <td>- the container encapsulates the application/ service and all of its dependencies ensuring that it will run consistently where ever it is deployed.<br>- avoids environment issues when the container is recreated on a different machine (e.g., recreating the dev environment on a local machine for the purpose of experimenting and testing (CI/CD))</td>
   </tr>
   <tr>
     <td><b>Isolated</b></td>
@@ -51,7 +51,7 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
   </tr>
   <tr>
     <td><b>Scalable</b></td>
-    <td>- containers are lightweight, resource efficent, and easy to scale.</td>
+    <td>- containers are lightweight, resource efficient, and easy to scale.</td>
   </tr>
 </table>
 <br><br><br>
@@ -83,7 +83,7 @@ More **RUN** flags<br>
 `-p` or `--publish` map ports from the host to the container.<br>
 `-v` or `--volume` mount volumes to share files and directories between the host and container.<br>
 `--network` connect the container to a specific Docker network, allowing communication between containers on the same network.<br>
-`--entrypoint` speciy a different command to run as the entrypoint for that container.<br><br>
+`--entrypoint` specify a different command to run as the entrypoint for that container.<br><br>
 <div align="center">
 <h6>
 WHAT HAPPENS IN A CONTAINER STAYS IN A CONTAINER
@@ -180,7 +180,7 @@ sudo chmod -R 777 ny_taxi_postgres_data
 <hr />
 
 ## CONNECT TO POSTGRES WITH PGCLI
-You can connect to the Postgres container using a CLI Client. We will be using the PGCLI python library to access the database and submit querries. 
+You can connect to the Postgres container using a CLI Client. We will be using the PGCLI python library to access the database and submit queries. 
 
 ```bash 
 pip install pgcli 
@@ -249,7 +249,7 @@ print(pd.io.sql.get_schema(df, name='yellow_taxi_data', con=engine))
 ```
 <br>
 
-`to_sql` fumction calls get_schema to get the DDL schema. It then uses that to create a table in the DB and insert the data<br>
+`to_sql` function calls get_schema to get the DDL schema. It then uses that to create a table in the DB and insert the data<br>
 
 ```python 
 # add the taxi data 
@@ -293,7 +293,7 @@ count
 
 ```python
 # EXTENDED TABLE INFORMATION
-querry = """
+query = """
 SELECT *
 FROM pg_catalog.pg_tables
 WHERE schemaname != 'pg_catalog' AND 
@@ -307,7 +307,7 @@ pd.read_sql(querry, engine)
 <hr />
 
 ## CONNECT TO POSTGRES WITH PGADMIN
-PCLI is not the most convenient method to query the DB. It is great if you just want to check something quickly. For more extensive querying it is more convenient to use pgAdmin, a web-based GUI tool to interact with a Postgres database.  
+PGCLI is not the most convenient method to query the DB. It is great if you just want to check something quickly. For more extensive querying it is more convenient to use pgAdmin, a web-based GUI tool to interact with a Postgres database.  
 
 We will use the pgAdmin Docker image to create a container running pgAdmin. Postgres will run in one container and pgAdmin will run in a second container. Since the containers are independent, we will need to set up a network to connect them. 
 
@@ -378,7 +378,7 @@ jupyter nbconvert --to=script upload-data.iypnb
 ```
 
 Remove unnecessary code and add main method and arg parse so that you can pass arguments to the job. 
-As an excercise this was written to upload the yellow taxi data and the zones lookup table. 
+As an exercise this was written to upload the yellow taxi data and the zones lookup table. 
     
 ```python 
 import argparse
@@ -557,7 +557,7 @@ volumes:
 DOCKER COMPOSE COMMANDS 
 ```cli
 docker-compose up        #EXECUTE THE YAML FILE AND START THE SERVICES
-docker-compose up -d     #EXECUTE IN DETACHTED MODE     
+docker-compose up -d     #EXECUTE IN DETACHED MODE     
 
 docker-compose down      #SHUT DOWN SERVICES AND REMOVE CONTAINERS 
 ```
