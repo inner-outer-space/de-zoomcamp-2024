@@ -507,7 +507,7 @@ sudo chmod -R 777 data
 <details>
 <summary>BUILD AND RUN THE TAXI_INGEST DOCKER CONTAINER </summary> 
     
-- create the pgAdmin and postgres containers on a shared network <br>
+- create the pgAdmin and postgres containers on a shared network. <br>
 - create the taxi_ingest container on the same network as the pgAdmin and postgres containers<br>
 - note: in the command below the network parameter is passed to docker and the rest of the parameters are passed to the taxi_ingest script.<br>
 - ingest-data.py will be executed in the taxi_ingest:v001 container and the data files will be downloaded there.<br> 
