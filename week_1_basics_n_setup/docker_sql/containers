@@ -84,3 +84,38 @@ docker run -it \
         --lookup_table_name=zones \
         --data_url="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet" \
         --lookup_url="https://d37ci6vzurychx.cloudfront.net/misc/taxi+_zone_lookup.csv"
+
+# GREEN TYXI DATA JAN 2019
+# https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2019-01.parquet
+
+# CREATE THE CONTAINER AND LOAD THE GREEN 2019 JAN plus Zones data
+# used docker-compose up to create the pgadmin adn postgres containers 
+# use 
+docker run -it \
+    --network=pg-network \
+    taxi_ingest:v001 \
+        --user=root \
+        --password=root \
+        --host=pgdatabase \
+        --port=5432 \
+        --db=ny_taxi \
+        --data_table_name=green_taxi_trips \
+        --lookup_table_name=zones \
+        --data_url="https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2019-01.parquet" \
+        --lookup_url="https://d37ci6vzurychx.cloudfront.net/misc/taxi+_zone_lookup.csv"
+
+
+# docker-compose up  --- created its own network. Updated name below and added green url, ran and it worked. 
+
+docker run -it \
+    --network=docker_sql_default \
+    taxi_ingest:v001 \
+        --user=root \
+        --password=root \
+        --host=pgdatabase \
+        --port=5432 \
+        --db=ny_taxi \
+        --data_table_name=green_taxi_trips \
+        --lookup_table_name=zones \
+        --data_url="https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2019-01.parquet" \
+        --lookup_url="https://d37ci6vzurychx.cloudfront.net/misc/taxi+_zone_lookup.csv"
