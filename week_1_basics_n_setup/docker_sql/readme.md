@@ -385,7 +385,7 @@ Next week we will look at doing this in the app. Here is a quick and dirty manua
 <details>
 <summary>CONVERT JUPYTER UPLOAD DATA FILE TO PYTHON SCRIPT  </summary> 
     
-Conver the ipynb file to a python script. 
+Convert the .ipynb file to a python script. 
 ```cli
 jupyter nbconvert --to=script upload-data.iypnb
 ```
@@ -451,7 +451,7 @@ if __name__ == '__main__':
 </details>
 
 <details>
-<summary>RUN SCRIPT FROM THE COMMAND LINE </summary> 
+<summary>RUN THE .py SCRIPT FROM THE COMMAND LINE </summary> 
     
 ```cli 
     python ingest-data.py \
@@ -469,7 +469,7 @@ if __name__ == '__main__':
 </details>
 
 <details>
-<summary>CREATE A DOCKER CONTAINER TO RUN THE JOB </summary> 
+<summary> OR - CREATE A DOCKER CONTAINER TO RUN THE JOB </summary> 
     
 ``` dockerfile 
     FROM python:3.9.1
@@ -486,7 +486,7 @@ if __name__ == '__main__':
 </details>
 
 <details>
-<summary>DOCKER PERMISSIONS ISSUE ON LINUX </summary> 
+<summary>NOTE: Solution for the Linux-Docker permissions issue </summary> 
 
 When running the dockerized ingestion script on linux, docker was blocked by permissions errors for the ny_taxi_postgress_data folder.  Neither changing permissions nor adding that folder to .dockerigore solved the problem.<br>
 
@@ -499,7 +499,7 @@ WORK AROUND
 </details>
 
 <details>
-<summary>CREATE AND RUN THE TAXI_INGEST CONTAINER </summary> 
+<summary>BUILD AND RUN THE TAXI_INGEST DOCKER CONTAINER </summary> 
     
 - create the pgAdmin and postgres containers on a shared network <br>
 - create the taxi_ingest container on the same network as the pgAdmin and postgres containers<br>
