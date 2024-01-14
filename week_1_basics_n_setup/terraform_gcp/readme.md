@@ -1,7 +1,24 @@
-# TERRAFORM and GCP 
-[Boilerplate Terraform .gitignore](https://spacelift.io/blog/terraform-gitignore) <br>
+
+
 <hr>
 
+<div align="center">
+    
+# TERRAFORM and GCP 
+(*for Linux*)
+<hr />
+
+[GCP ACCOUNT](#gcp-account) •
+[TERRAFORM MAIN.TF](#terraform-maintf) •
+[RESOURCES](#resources) •
+[MANAGE RESOURCES](#manage-resources) •
+[USING VARIABLES](#using-variables)
+</div>
+
+<hr />
+<br>
+
+[Boilerplate Terraform .gitignore](https://spacelift.io/blog/terraform-gitignore) <br>
 
 HashiCorp terraform is an infrastructure as code (IaC) tool that lets you define both on-prem and cloud resources in human-readable config files that you can version, reuse, and share. You can then use a consistent workflow to provision and manage all of your infrastructure throughout its lifecycle. [Source](https://developer.hashicorp.com/terraform/intro)
 <br><br>
@@ -14,7 +31,6 @@ HashiCorp terraform is an infrastructure as code (IaC) tool that lets you define
 - Easy to ensure resources are removed
 - Easy to collaborate
 - Reproducible
-
 <br><br>
 
 **DOES NOT** 
@@ -38,8 +54,9 @@ HashiCorp terraform is an infrastructure as code (IaC) tool that lets you define
 
 ## GCP ACCOUNT
 1. Create an account with your Google email ID
-2. Set up a project
-3. Set up a service account and authentication
+2. Grant permissions to the APIs
+3. Set up a project
+4. Set up a service account and authentication
 
 ### SERVICE ACCOUNT AND AUTHENTICATION   
 After you have created a GCP account and project, you'll need to set up a service account for Terraform. 
@@ -197,6 +214,8 @@ resource "google_bigquery_dataset" "taxi-dataset" {
 ```
 
 ## MANAGE RESOURCES
+<br>
+
 **TERRAFORM PLAN** 
 <br>
 Running `terraform plan` will show you the actions that will be taken and the details. 
@@ -232,6 +251,7 @@ Terraform will perform the following actions:
         }
     }
 ```
+<br><br>
 
 **TERRAFORM APPLY** 
 <br>
@@ -242,6 +262,7 @@ The bucket can be seen at `Cloud Storage > Buckets` in the left hand nav. <br>
 
 The dataset can be seen at `BigQuery > BigQuery Studio` in the left hand nav.<br> 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/f3b98a6b-5b58-4aec-b00c-ba325ab153d1" width="150" height="150" >
+<br><br>
 
 **TERRAFORM DESTROY** 
 <br>
