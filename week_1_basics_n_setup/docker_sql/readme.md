@@ -182,7 +182,7 @@ docker run -it \
 `-v` \<path to host folder\>:\<path to container folder\> maps a volume on host to the container. 
 Postgres stores data among other things in the `/var/lib/postgresql/data` folder. Mounting a folder on the host to this folder in the container allow the postgres file system to be saved outside of the container so it isn't lost when the container is removed. <br>
 
-*note: I had to update permission in order to open this folder. 
+*note: I had to update permission in order to open this folder. This grants complete access for everyone and is not a good practice. 
 
 ```bash
 sudo chmod -R 777 ny_taxi_postgres_data
@@ -496,6 +496,12 @@ WORK AROUND
 2. Add this data folder to the .dockerignore.<br>
 3. Create a new postgres container with the volume mounted to this new location.<br>
     `-v $(pwd)/data/ny_taxi_postgres_data:/var/lib/postgresql/data`
+4. Make sure that docker has permissions access the data folder
+
+```bash
+sudo chmod -R 777 data
+```
+
 </details>
 
 <details>
