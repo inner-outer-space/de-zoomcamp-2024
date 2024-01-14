@@ -93,11 +93,15 @@ WHAT HAPPENS IN A CONTAINER STAYS IN A CONTAINER
 <br><br>
 
 #### DOCKER COMMANDS  
+
+<details>
+<summary>DOCKER CHEAT SHEET</summary> 
+	
 [Source: PhoenixNAP Cheat Sheet](https://phoenixnap.com/kb/docker-commands-cheat-sheet)
 <p align="center">
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/635e26c7-de01-41d4-98f8-0d67b8730541" align="ctr" width="800" height="580"><br>
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/635e26c7-de01-41d4-98f8-0d67b8730541" align="ctr" width="900" height="580"><br>
 </p>
-
+</details>
 
 #### DOCKERFILE
 You'll normally need more than just python or ubuntu (base images) installed in a container. You could specify a bash entrypoint and then install libraries etc via the command line but these will all disappear when you close the container. 
@@ -579,6 +583,10 @@ docker-compose down      #SHUT DOWN SERVICES AND REMOVE CONTAINERS
 
 ## SQL REVIEW
 
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a14fa532-3229-4f4c-975f-250d69c56e22" width="800" height="600"><br>
+[Source](https://www.codeproject.com/KB/database/Visual_SQL_Joins/Visual_SQL_JOINS_orig.jpg)
+
+
 #### INNER JOIN EXAMPLE 
 ```sql
 SELECT 
@@ -646,6 +654,7 @@ LIMIT 100;
 - ##### 2021-01-01 00:36:12 `CAST(tpep_dropoff_datetime AS DATE)` --> 2021-01-01
 
 #### GROUP BY EXAMPLES
+Example 1:
 ```sql
 SELECT 
 	CAST(tpep_dropoff_datetime AS DATE) as "day",
@@ -660,7 +669,8 @@ GROUP BY
 ORDER BY "count" DESC;
 ```
 
-####
+
+Example 2:
 ```sql
 SELECT 
 	CAST(tpep_dropoff_datetime AS DATE) as "day",
