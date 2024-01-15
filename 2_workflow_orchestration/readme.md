@@ -12,7 +12,7 @@
 [ETL](#etl) <br>
 [Parameterized Execution](#parameterized-execution) • 
 [Backfills](#backfills) •
-[Deployment Prereqs](#deployment-prerequisits) •
+[Deployment Prerequisites](#deployment-prerequisites) •
 [Deploying to GCP](#deploying-to-gcp) •
 [Next Steps](#next-steps)
 
