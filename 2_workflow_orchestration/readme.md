@@ -4,7 +4,7 @@
 (*for Linux*)
 <hr />
 
-[Orchestration](#workflow orchestration) •
+[Orchestration](#workflow-orchestration) •
 [Mage](#mage) •
 [Mage Configuration](#mage-configuration) •
 [Simple Pipeline](#simple-pipeline) •
