@@ -8,7 +8,7 @@
 (*for Linux*)
 <hr />
 
-[GCP ACCOUNT](#gcp-account) •
+[GCP ACCOUNT SETUP](#gcp-account-setup) •
 [TERRAFORM MAIN.TF](#terraform-maintf) •
 [RESOURCES](#resources) •
 [MANAGE RESOURCES](#manage-resources) •
@@ -52,14 +52,14 @@ HashiCorp terraform is an infrastructure as code (IaC) tool that lets you define
 3. Google SDK - so that you can interact with the VMs from your command line
 <br><br>
 
-## GCP ACCOUNT
+## GCP ACCOUNT SETUP 
 1. Create an account with your Google email ID
 2. Grant permissions to the APIs
 3. Set up a project
 4. Set up a service account and authentication
 
 ### SERVICE ACCOUNT AND AUTHENTICATION   
-After you have created a GCP account and project, you'll need to set up a service account for Terraform. 
+After you have created a GCP account and project and enabled the apis, you'll need to set up a GPC service account for Terraform. 
 
 Service account:
    - similar to a user account that is used by particular services rather than by a user
@@ -118,7 +118,7 @@ The GCP service account key is a JSON or P12 file that contains the credentials 
  ```
 3. **Authentication**<br>
 This command will authenticate using the environmental variable set in the last step.
-##### You'll get a pop up asking you to verify --> This process refreshes the token. 
+##### You'll get a pop up asking you to verify --> verification refreshes the token. 
 ``` cli
 gcloud auth application-default login
 ```
