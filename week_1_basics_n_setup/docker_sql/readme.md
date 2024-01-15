@@ -205,7 +205,7 @@ pip install pgcli
 pgcli -h localhost -p 5432 -u root -d ny_taxi
 ```
 `-h` host 
-`-p` port
+`-p` local host port 
 `-u` user
 `-d` database<br>
 You will be prompted to enter the password (root)
