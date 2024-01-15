@@ -13,7 +13,7 @@
 [Parameterized Execution](#parameterized-execution) • 
 [Backfills](#backfills) •
 [Deployment Prerequisites](#deployment-prerequisites) •
-[Deploying to GCP](#deploying-to-gcp) •
+[Deploying to GCS](#deploying-to-gcs) •
 [Next Steps](#next-steps)
 
 </div>
@@ -57,6 +57,8 @@ Matt and Joes - fundamentals of Data Engineering
 
 
 ## Mage
+
+
 
 ###### An open-source pipeline tool for orchestrating, transforming, and integrating data 
 
