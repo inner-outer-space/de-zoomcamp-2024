@@ -73,12 +73,19 @@ A container is an instance of an image that is created by running that image. If
 ```bash
 docker run -it ubuntu bash   
 ```
-`-i` interactive and `-t` terminal allow you to interact with the container via the terminal<br><br> 
-```ubuntu``` is the image that is being run<br>
-```bash``` is the command \[CMD\] that you want to execute in the container<br><br> 
+Structure: \<Main \Command\> \<flags\> \<image\> \<commands to run in container\>   
+`docker run` main command<br>
+`-i` interactive and `-t` terminal flags allow you to interact with the container via the terminal<br>
+```ubuntu``` image that is being run<br>
+```bash``` command to execute in the container<br><br> 
+
+ANOTHER EXAMPLE 
+```bash
+docker run -it --rm --network=docker_sql_default --entrypoint=bash python:3.9 
+```
 More **RUN** flags<br> 
 `-d` or `--detach` run the container in detach mode in the background.<br>
-`-rm` or `--rm` automatically removes container when you exit.<br>
+`--rm` automatically removes container when you exit.<br>
 `--name` assign a custom name to a container.<br>
 `-p` or `--publish` map ports from the host to the container.<br>
 `-v` or `--volume` mount volumes to share files and directories between the host and container.<br>
@@ -124,10 +131,10 @@ COPY pipeline.py pipeline.py
 ENTRYPOINT [ "python", "pipeline.py" ]
 ```    
 `FROM` specifies the base image for the container.<br>
-`RUN`  runs a command within the container during the image build.<br>
+`RUN`  runs a command within the container.<br>
 `WORKDIR` sets the working directory.<br>
 `COPY` copies files from the host machine to the working directory in the container.<br>
-`ENTRYPOINT` specifies the default command that should be executed when the container is run. Additional arguments in the run command will be added to this list.
+`ENTRYPOINT` specifies the default command that should be executed when the container is run.
 <br>
 
 <details>
@@ -153,7 +160,7 @@ docker build -t test:pandas .
 ```
 ######         *Make sure you are in the same folder as the dockerfile or specify the path to the dockerfile with -f.* 
 ```bash
-# RUN THE CONTAINER WITH ARGUMENTS
+# RUN THE CONTAINER WITH ARGUMENTS PASSED AFTER IMAGE NAME
 docker run -it test:pandas 2021-12-15 pass more args 
 ```
 ```bash
@@ -640,7 +647,7 @@ FROM
 WHERE "PULocationID" is NULL OR "DOLocationID" is NULL
 LIMIT 100;
 ```
-##### QUERY FOR PICK UP AND DROP OFF IDS THAT DON'T HAVE AN ASSOCIATED LOOKUP VALUE
+#### QUERY FOR PICK UP AND DROP OFF IDS THAT DON'T HAVE AN ASSOCIATED LOOKUP VALUE
 ```sql
 SELECT 
     tpep_pickup_datetime, 
