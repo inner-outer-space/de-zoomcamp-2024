@@ -6,7 +6,7 @@
 
 [Orchestration](#workflow-orchestration) •
 [Mage](#mage) •
-[Mage Configuration](#mage-configuration) •
+[Mage Set Up](#mage-set-up) •
 [Simple Pipeline](#simple-pipeline) •
 [Configuring Postgres](#configuring-postgres) • 
 [ETL](#etl) <br>
@@ -119,7 +119,51 @@ BLOCKS
 ![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/3b652643-f7ce-44c3-b8d5-80b520e2ea60)
 
 
-## Mage Configuration
+## Mage Set Up  
+
+CLONE THE REPO<br> 
+[Mage Getting Started Repo](https://github.com/mage-ai/mage-zoomcamp)
+<br>
+```cli
+git clone https://github.com/mage-ai/mage-zoomcamp.git mage-zoomcamp
+```
+<br><br>
+HOUSEKEEPING
+<br>
+Rename `dev.env` to `.env` in the Mage Repo
+<br>
+```cli
+mv dev.env .env
+```
+This file contains environmental variables for the project and could in the future include sensitive data. The .gitignore file includes `.env` so we need to update this name so that it will not be uploaded to GIT. 
+<br><br>
+BUILD AND RUN MAGE CONTAINER
+<br> 
+The container being built for this demo includes 2 services: Mage and Postgres. 
+```cli
+docker-compose build
+```
+<br>
+
+```cli
+docker-compose run
+```
+*Note: the port mapping in the YAML file `"${POSTGRES_PORT}:5432"` uses 5432 on the host. If that port is already allocated to another Postgres container, it will cause a conflict.* 
+<br><br>
+UPDATE MAGE 
+<br>
+Mage is updated on a regular fairly often basis. You will receive a message in the app when you are working with out of date images. <br>
+To update update the mage images that you have cached on your local. 
+```cli
+pull mageai/mageai:latest
+```
+
+
+
+
+   
+
+
 ## Simple Pipeline
 ## Configuring Postgres
 ## ETL 
