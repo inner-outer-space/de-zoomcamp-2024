@@ -211,7 +211,7 @@ The .yaml file references environmental variables defined in the .env file. Sinc
       - "${POSTGRES_PORT}:5432"
 ```
 
-The connections are managed in Mage in the io_config.yaml. There are many different types of default connections already defined in this document.  
+The connections are managed in Mage in the io_config.yaml. There are many different types of default connections defined under the `default:` profile in this document.  
 ```yaml
   # PostgreSQL default connection defined in io_congig.yaml.
   POSTGRES_CONNECT_TIMEOUT: 10
@@ -222,10 +222,11 @@ The connections are managed in Mage in the io_config.yaml. There are many differ
   POSTGRES_HOST: hostname
   POSTGRES_PORT: 5432
 ```
-You can specify connection profiles in Mage. For example if you wanted to specify a dev connection profile that is different than default. This can be useful if you want to define a different connection profile for your dev and live environments. 
+You can also specify custom connection profiles in the io_config.yaml file. For example, it can be useful to define a different Postgres connection profile for the dev environments. 
 
-Pull in environment variables using [Jinja Templating](https://realpython.com/primer-on-jinja-templating/). Use double curly brackets with the env.var 
+To do this, create a `dev:` profil, copy the the block above into that profile, and replaced the values with environment variables using [Jinja Templating](https://realpython.com/primer-on-jinja-templating/). In specific, use double curly brackets with the env.var syntax.  
 
+Dev profile with postgres configuration parameters that are being pulled in from docker, which is where we are defining the postres instance. 
 ```yaml
 dev:
   POSTGRES_CONNECT_TIMEOUT: 10
@@ -234,10 +235,50 @@ dev:
   POSTGRES_USER: "{{env.var('POSTGRES_USER')}}"
   POSTGRES_PASSWORD: "{{env.var('POSTGRES_PASSWORD')}}"
   POSTGRES_HOST: "{{env.var('POSTGRES_HOST')}}"
-  POSTGRES_PORT: 5432
+  POSTGRES_PORT: "{{env.var('POSTGRES_PORT')}}"
+```
 
-
+To test the new Dev Postgres configuration profile, we'll create a new pipeline.
+<br>
+1. Add new standard (batch) Pipeline <br>
+2. Rename the pipeline <br>
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a05ff57e-51d9-4d85-be94-0ae1f4a7adc4" width="auto" height="100">
+3. Return to Pipeline page and add a block
+<br>
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d57e0b40-df26-463d-b389-fb8fe6080db6" width="auto" height="100">
+4. Delete a Block <br>
+- click on the more actions elipse in the block 
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5359c5aa-8a13-4f4d-b0ad-468a690e1b5f" width="auto" height="200">
+5. Select Connection and Profile
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d5128b51-382e-406e-8776-a3853b149657" width="auto" height="200">
+6. Test the connection 
+Check mark `Use raw SQL` so that you don't have to deal with the Mage templating.
+Run the following to confirm that the postgres connection is initialized. We can now proceed with building the rest of the pipeline. 
+```sql
+SELECT 1;
+```
 ## ETL 
+### API TO Postgres
+Loading data from an API that takes the form of a compressed CSV file, transforms the data, and loading it to Postgres. 
+
+1. Add a new standard (batch) pipeline and rename it to api_to_postgres
+2. Add a new `Python > API Data Loader Block` and rename to load_api_data
+
+The Data Loader Block Template 
+```python
+@data_loader
+def load_data_from_api(*args, **kwargs):
+    """
+    Template for loading data from API
+    """
+    url = ''
+    response = requests.get(url)
+
+    return pd.read_csv(io.StringIO(response.text), sep=',')
+```
+
+
+
 ## Parameterized Execution
 ## Backfills
 ## Deployment Prerequisites 
