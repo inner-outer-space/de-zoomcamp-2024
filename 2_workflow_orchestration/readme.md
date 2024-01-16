@@ -278,14 +278,12 @@ def load_data_from_api(*args, **kwargs):
 ```
 <br>
 Modify the template to load the NY taxi data as follows. 
-- URL - define    
-- Requests - In mage you don't need to make requests for loading CSV files with Pandas. 
+- URL - provide the URL for the NY Taxi Jan 2021 CSV   
+- Requests - delete this line. In mage you don't need to make requests for loading CSV files with Pandas. 
 - Declair data types
     - saves space in memory 
-    - implicit assertion - if data types change then the load will fail. 
-- Parse the datetime columes as dates
-
-    
+    - implicit assertion - load will fail if the data types don't match what has been defined. 
+- Parse the datetime columes as dates   
 
 ```python
 @data_loader
@@ -325,6 +323,55 @@ def load_data_from_api(*args, **kwargs):
     # read_csv LOADS A CSV FILE INTO A DATAFRAME. THIS BLOCK RETURNS THAT DF. 
     return pd.read_csv(url, sep=',', compression="gzip", dtype=taxi_dtypes, parse_dates=parse_dates)
 ```
+
+TRANSFORM THE DATA <br>
+Add a python generic transformation block following the data loader block. For this exercise, we'll assume that the records with passenger_count = 0 represent bad data and we'll remove them. 
+<br>
+- Add a preprocessing step that prints the number of rows with passenger_count = 0
+- Return a dataframe filtered for passenger_count > 0
+- Tests that there are no records with passenger_count = 0
+
+First, update the transformer block to print the number of records with passenger_count = 0. 
+```python
+def transform(data, *args, **kwargs):
+    # PRINT COUNTS OF RECORDS WITH 
+    print(f"Preprocessing: rows with zero passengers:{data['passenger_count'].isin([0]).sum()}")
+
+    # RETURN FILTERED DATA SET
+    return data[data['passenger_count']>0]
+
+@test
+# CHECK THAT THERE ARE NO RECORDS WITH 0 PASSENGER COUNT
+def test_output(output, *args):
+    assert output['passenger_count'].isin([0]).sum() ==0, 'There are rides with zero passengers'
+```
+
+EXPORT THE DATA <br>
+Add a `Python > Postgres Data Exporter` and name it data_to_postgres
+
+Update the following in the template <br>
+- `schema_name` = 'ny_taxi'
+- `table_name` = 'yellow_cab_data'
+- `config_profile` = 'dev'
+  <br>
+```python
+@data_exporter
+def export_data_to_postgres(df: DataFrame, **kwargs) -> None:
+    schema_name = 'ny_taxi'  # Specify the name of the schema to export data to
+    table_name = 'yellow_cab_data'  # Specify the name of the table to export data to
+    config_path = path.join(get_repo_path(), 'io_config.yaml')
+    config_profile = 'dev'
+
+    with Postgres.with_config(ConfigFileLoader(config_path, config_profile)) as loader:
+        loader.export(
+            df,
+            schema_name,
+            table_name,
+            index=False,  # Specifies whether to include index in exported table
+            if_exists='replace',  # Specify resolution policy if table name already exists
+        )
+```
+
 
 
 
