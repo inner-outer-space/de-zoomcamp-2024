@@ -283,6 +283,9 @@ Modify the template to load the NY taxi data as follows.
 - Declair data types
     - saves space in memory 
     - implicit assertion - if data types change then the load will fail. 
+- Parse the datetime columes as dates
+
+    
 
 ```python
 @data_loader
@@ -290,16 +293,21 @@ def load_data_from_api(*args, **kwargs):
     """
     Template for loading data from API
     """
+    # DEFINE VARIABLES THAT WILL BE PASSED TO read_csv FUNCTION
+
+    # DATA URL 
     url = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz'
-    taxi_dtypes = [
-        'VendorID':pd.Int64Dtype()
-        'passenger_count':pd.Int64Dtype()
+
+    # DEFINE A DICTIONARY OF DATA TYPES FOR ALL NON DATE COLUMNS 
+    taxi_dtypes = {
+        'VendorID':pd.Int64Dtype(),
+        'passenger_count':pd.Int64Dtype(),
         'trip_distance':float,
         'RatecodeID':float,
         'store_and_fwd_flag':str,
-        'PULocationID':pd.Int64Dtype()
-        'DOLocationID':pd.Int64Dtype()
-        'payment_type':pd.Int64Dtype()
+        'PULocationID':pd.Int64Dtype(),
+        'DOLocationID':pd.Int64Dtype(),
+        'payment_type':pd.Int64Dtype(),
         'fare_amount':float,
         'extra':float,
         'mta_tax':float,
@@ -308,8 +316,14 @@ def load_data_from_api(*args, **kwargs):
         'improvement_surcharge':float,
         'total_amount':float,
         'congestion_surcharge':float
+    }
 
-    return pd.read_csv(io.StringIO(response.text), sep=',')
+    # CREATE A LIST OF DATE COLUMNS.
+    # The list will be passed to the read_csv function and pandas will parse the columns as dates with the appropriate time stamps.  
+    parse_dates = ['tpep_pickup_datetime', 'tpep_dropoff_datetime']  
+
+    # read_csv LOADS A CSV FILE INTO A DATAFRAME. THIS BLOCK RETURNS THAT DF. 
+    return pd.read_csv(url, sep=',', compression="gzip", dtype=taxi_dtypes, parse_dates=parse_dates)
 ```
 
 
