@@ -404,9 +404,110 @@ Step 4 AUTHENTICATE WITH THESE CREDENTIALS
 ```
 ```yaml
   # Google
-  GOOGLE_SERVICE_ACC_KEY_FILEPATH: "home/src/key_file_name.json"
+  GOOGLE_SERVICE_ACC_KEY_FILEPATH: "/home/src/key_file_name.json"
 ```
-If using the GOOGLE_SERVICE_ACC_KEY_FILEPATH, then you can delete the first block. Then update the path to the JSON key in the GOOGLE_SERVICE_ACC_KEY_FILEPATH. In docker compose we have specified that the mage project directory will be mounted to the /home/src/ folder in the Mage container. The json key file can therefor be reached at "home/src/key_file_name.json". Now Mage knows where to look for the credentials. When we use any block with a google service, mage will use that service account to execute the cell. 
+If using the GOOGLE_SERVICE_ACC_KEY_FILEPATH, then you can delete the first block. Then update the path to the JSON key in the GOOGLE_SERVICE_ACC_KEY_FILEPATH. In docker compose we have specified that the mage project directory will be mounted to the /home/src/ folder in the Mage container. The json key file can therefor be reached at `"/home/src/key_file_name.json"`. Now Mage knows where to look for the credentials. When we use any block with a google service, mage will use that service account to execute the cell. 
+
+Step 5 TEST THE AUTHENTICATION 
+- Go back to the test_config pipeline
+- Change the Data Loader to BigQuery and set the profile to Default
+- Click Run
+- This query collects to the cloud, runs the query there, and returns a answer on our computer. It confirms the existence of the DB in Google Cloud and that we have a good connection.   
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/56849adc-4706-4ab2-a19c-4534c01f1ff7" width="auto" height="250">
+
+STEP 6 TEST GOOGLE CLOUD STORAGE 
+- Make sure that we can read and write files to Google Cloud Storage
+- Go to the `example_pipeline` in Mage
+- Click on the last block in the pipeline and `Execute with all upstream blocks`. This will write titanic_clean.csv to the mage directory
+- Go to the Google Cloud Console go to the Mage Bucket page
+- You can upload the titanic_clean.csv by dragging and dropping on this page or clicking `upload files`
+- Go back to the test_config pipeline and delete the data loader that is there
+- Add a `Python > Google Cloud Storage Data Loader` and name it test_gcs
+- Update the
+    - bucket_name = 'your_bucket_name'
+    - object_key = 'titanic_clean.csv'
+- Run and you'll see that the data is being loaded from Google Cloud. 
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/8e6866c0-d810-482e-8087-ba2dece1c3f6" width="auto" height="250">
+
+## ETL: API to GCS - BUILDING PIPELINES USING GCP AND GCS
+In this module we will write data to Google Cloud Storage. Previously we wrote data to Postgres an OLTP database (structured row oriented vs column oriented). Now we are going to write data to Google Cloud Storage which is just a file system in the cloud. Often data is written to here because it is inexpensive and it can also accept semi unstructured data. 
+
+From there, the workflow would typically include staging, cleaning, transforming, and writing to an analytical source or using a data lake solution. 
+
+CREATE A NEW PIPELINE 
+We are going to create a piepline that reuses the blocks that we created in the earlier videos. 
+- Create a new pipeline
+- From the left hand file directory drag the `load_api_data.py` file followed by the `transform_taxi_data.py`into the center area.
+- Make sure that the blocks are connected correctly in the tree on the right
+  
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d5efee57-8bcb-4209-b6e2-33c99a279edf" width="auto" height="250">
+
+- The pipeline is set up now to import data via the API and apply the cleaning step of removing rows with passenger_count = 0
+- Now we need to write the data to Google Cloud Storage
+- Add a `Python > Google Cloud Storage Data Exporter` and rename it 'taxi_to_gcs_parquet'
+- Modify the following variables
+    - bucket_name = 'your_bucket_name'
+    - object_key = 'nyc_taxi_data.parquet'   mage is going to infer the parquet file format and write here.
+- Click `Execute will all upstream blocks`
+- This will load the data, clean it, and upload it directly to GCS. It will be visible on the bucket page. 
+  <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/dd2b9c3a-3385-4c29-a7d3-134a5780e503" width="auto" height="250">
+
+#### PARTITIONING DATA 
+Very often datasets are too large to write to one single file. In that case you'll want to partition it to multiple files. The dataset will be broken up based on a row or characteristic. Date is a good way to partition the taxi dataset because it creates an even distribution of rides. 
+
+- Add a `Python > Generic (No Template) Data Exporter` and rename to 'taxi_to_gcs_partitioned_parquet'
+- The new block gets automatically added after the 'taxi_to_gcs_parquet' block. This is not where we want it. Click on the connection, delete it, and then add a connection directly from the transformer to the 'taxi_to_gcs_partitioned_parquet' block. Now the 2 export blocks will be run in parallel.  
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/3994a612-663a-47f3-8016-e7544072fffb" width="auto" height="250">
+
+
+- manually define the credentials and use the pyarrow library to partition the dataset. Pyarrow handles the chuncking logic needed to partitioning the data. Note: Pyarrow was included in the docker image so it should be installed by default.
+
+This custom data exporting block will partition the data by date and write to multiple parquet files. 
+```python
+import pyarrow as pa
+import pyarrow.parquet as pq
+import os
+
+
+if 'data_exporter' not in globals():
+    from mage_ai.data_preparation.decorators import data_exporter
+
+# Set the environment variable to the location of the mounted key. json
+# This will tell pyarrow where our credentials are
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "/home/src/google_cloud_key.json"
+
+# Define the bucket, project, and table  
+bucket_name = 'mage-zoomcamp-lulu'
+project_id = 'aerobic-badge-408610'
+table_name = 'nyc_taxi_data'
+
+root_path = f'{bucket_name}/{table_name}'
+
+@data_exporter
+def export_data(data, *args, **kwargs):
+    # define the column to partition on 
+    # create a date column from the timestamp so that we can partition on date
+    data['tpep_pickup_date'] = data['tpep_pickup_datetime'].dt.date
+
+    # define the pyarrow table and read the df into it
+    table = pa.Table.from_pandas(data)
+
+    # define file syste - the google cloud object that is going to authorize using the environmental variable automatically
+    gcs = pa.fs.GcsFileSystem()
+
+    # write to the dataset using a parquet function
+    pq.write_to_dataset(
+        table, 
+        root_path=root_path, 
+        partition_cols=['tpep_pickup_date'], # needs to be a list
+        filesystem=gcs
+    )
+```
+The files can be found in the ny_taxi folder in the bucket. 
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bd304b0a-0e98-4055-89fe-b4b496dc9801" width="auto" height="250">
+
+
+## ETL: GCS TO BIGQUERY 
 
 
 ## Parameterized Execution
