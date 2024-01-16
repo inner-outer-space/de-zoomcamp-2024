@@ -115,8 +115,9 @@ BLOCKS
  - function that returns a dataframe  (only thing that is executed when a block is run)
  - assertion - test that runs on the output df. 
 
-
-![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/3b652643-f7ce-44c3-b8d5-80b520e2ea60)
+<div align="center" style="border: 2px solid #FF69B4;"> 
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/3b652643-f7ce-44c3-b8d5-80b520e2ea60" width="300" height="auto">
+</div>
 
 
 ## Mage Set Up  
@@ -157,15 +158,85 @@ To update update the mage images that you have cached on your local.
 ```cli
 pull mageai/mageai:latest
 ```
+<br><br>
+ACCESS MAGE 
 
-
-
-
-   
-
+<br>
+Mage is accessed through a web browser
+<br>
+```cli
+localhost:789
+```
 
 ## Simple Pipeline
+We are going to configure a simple pipeline from an API to a Postgres location. 
+
+To create a new Pipeline 
+- Click `New Pipeline`
+- Or go to the `Pipeline` page in the left hand nav.
+
+On the Pipeline page you'll find an example Pipeline that you can click to open. 
+
+The pipeline loads the Titanic data set from an API, performs a transformation, and then writes to a local dataframe and is constructed using these blocks:
+- load_titanic - a Data Loader
+- fill_in_missing_values - a Transformer
+- export_titanic_clean - a Data Exporter 
+
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/aab41bd5-7d5a-4bfd-a52b-c586323f1fb3" width="300" height="auto">
+
+The blocks and their code are displayed in the center of the page. From here, you can edit and run each block individually.  
+- When 2 blocks are connected in the pipeline, it means that dataframes that are returned are going to be passed between the two blocks. The prior ones output will be the input of the later. 
+
+- to run all files in a pipeline - goto last block and click `Execute with all upstream blocks`
+
 ## Configuring Postgres
+Configuring the postgres client so that we can connect to the local Postgres DB that exists in the Docker image that was built. 
+
+THE POSTGRES SERVICE DEFINED IN DOCKER-COMPOSE.YAML
+<br> 
+The .yaml file references environmental variables defined in the .env file. Since the file is not uploaded to GIT, the postgres credentials will be safe. 
+```yaml
+  # PostgreSQL Service defined in docker-compose 
+  postgres:
+    image: postgres:14
+    restart: on-failure
+    container_name: ${PROJECT_NAME}-postgres
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DBNAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+```
+
+The connections are managed in Mage in the io_config.yaml. There are many different types of default connections already defined in this document.  
+```yaml
+  # PostgreSQL default connection defined in io_congig.yaml.
+  POSTGRES_CONNECT_TIMEOUT: 10
+  POSTGRES_DBNAME: postgres
+  POSTGRES_SCHEMA: public # Optional
+  POSTGRES_USER: username
+  POSTGRES_PASSWORD: password
+  POSTGRES_HOST: hostname
+  POSTGRES_PORT: 5432
+```
+You can specify connection profiles in Mage. For example if you wanted to specify a dev connection profile that is different than default. This can be useful if you want to define a different connection profile for your dev and live environments. 
+
+Pull in environment variables using [Jinja Templating](https://realpython.com/primer-on-jinja-templating/). Use double curly brackets with the env.var 
+
+```yaml
+dev:
+  POSTGRES_CONNECT_TIMEOUT: 10
+  POSTGRES_DBNAME: "{{env.var('POSTGRES_DBNAME')}}"
+  POSTGRES_SCHEMA: "{{env.var('POSTGRES_SCHEMA')}}"
+  POSTGRES_USER: "{{env.var('POSTGRES_USER')}}"
+  POSTGRES_PASSWORD: "{{env.var('POSTGRES_PASSWORD')}}"
+  POSTGRES_HOST: "{{env.var('POSTGRES_HOST')}}"
+  POSTGRES_PORT: 5432
+
+
 ## ETL 
 ## Parameterized Execution
 ## Backfills
