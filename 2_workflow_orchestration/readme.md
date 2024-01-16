@@ -261,29 +261,18 @@ SELECT 1;
 ### API TO Postgres
 Loading data from an API that takes the form of a compressed CSV file, transforms the data, and loading it to Postgres. 
 
-1. Add a new standard (batch) pipeline and rename it to api_to_postgres
-2. Add a new `Python > API Data Loader Block` and rename to load_api_data
+First add a new standard (batch) pipeline and rename it to api_to_postgres
 
-The Data Loader Block Template 
-```python
-@data_loader
-def load_data_from_api(*args, **kwargs):
-    """
-    Template for loading data from API
-    """
-    url = ''
-    response = requests.get(url)
-
-    return pd.read_csv(io.StringIO(response.text), sep=',')
-```
+LOAD THE DATA 
+Add a new `Python > API Data Loader Block` and rename to load_api_data
 <br>
-Modify the template to load the NY taxi data as follows. 
+Modify the template as follows: 
 - URL - provide the URL for the NY Taxi Jan 2021 CSV   
 - Requests - delete this line. In mage you don't need to make requests for loading CSV files with Pandas. 
-- Declair data types
+- Data Types - declairing data types is recommended but not required
     - saves space in memory 
     - implicit assertion - load will fail if the data types don't match what has been defined. 
-- Parse the datetime columes as dates   
+- Date Columns - Create a list of datetime columns to be parsed by read_csv as dates   
 
 ```python
 @data_loader
@@ -371,8 +360,53 @@ def export_data_to_postgres(df: DataFrame, **kwargs) -> None:
             if_exists='replace',  # Specify resolution policy if table name already exists
         )
 ```
+CONFRM THE DATA LOADED <br>
+You can confirm the data loaded by adding another SQL Data Loader block and querying the DB 
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/e00c667f-aa87-4ebc-8e29-99cb39f5e46c" width="auto" height="250">
 
+## CONFIGURING GOOGLE CLOUD 
 
+Step 1 Create a Google Cloud Bucket 
+- on the cloud storage buckets page, click `create` to add a new google cloud bucket to create a bucket for this module.
+- you can keep all the default settings and make sure that public access is enforced 
+
+--> created a cloud storage file system for us to interact with 
+
+Step 2 Create a Service Account for Mage
+- On the service account page, click 'create a new service account' to add a new service account for mage.  
+- Set the role to Basic > Owner. This allows the account to edit everything in GCS and BigQuery. You may want something more restrictive.  
+- Click Continue and Done 
+
+Step 3 Create a Key 
+- Click on the service account that was just created
+- Go to the keys tab and Add Key > Create new key
+- Select JSON and click Create  --> Downloads the JSON key to your computer
+- Move the JSON Key into the Mage project directory. This directory will be mounted as a volume on the mage container making these credentials accessible to mage. Mage can then use those credentials when interacting with google to authenticate. 
+
+Step 4 AUTHENTICATE WITH THESE CREDENTIALS 
+- Go back into Mage into the io_config.yaml file
+- There are 2 ways that you can set up authentication in this file
+    - Copy and paste all values from the JSON key file to the GOOGLE_SERVICE_ACC_KEY variables
+    - OR Use the GOOGLE_SERVICE_ACC_KEY_FILEPATH     ***(Preferred)*** 
+
+```yaml
+  # Google
+  GOOGLE_SERVICE_ACC_KEY:
+    type: service_account
+    project_id: project-id
+    private_key_id: key-id
+    private_key: "-----BEGIN PRIVATE KEY-----\nyour_private_key\n-----END_PRIVATE_KEY"
+    client_email: your_service_account_email
+    auth_uri: "https://accounts.google.com/o/oauth2/auth"
+    token_uri: "https://accounts.google.com/o/oauth2/token"
+    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs"
+    client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/your_service_account_email"
+```
+```yaml
+  # Google
+  GOOGLE_SERVICE_ACC_KEY_FILEPATH: "home/src/key_file_name.json"
+```
+If using the GOOGLE_SERVICE_ACC_KEY_FILEPATH, then you can delete the first block. Then update the path to the JSON key in the GOOGLE_SERVICE_ACC_KEY_FILEPATH. In docker compose we have specified that the mage project directory will be mounted to the /home/src/ folder in the Mage container. The json key file can therefor be reached at "home/src/key_file_name.json". Now Mage knows where to look for the credentials. When we use any block with a google service, mage will use that service account to execute the cell. 
 
 
 ## Parameterized Execution
