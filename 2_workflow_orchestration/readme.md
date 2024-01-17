@@ -185,32 +185,42 @@ localhost:789
 <br>
 
 ## A Simple Pipeline
-We are going to configure a simple pipeline from an API to a Postgres location. 
+We are going to configure a simple pipeline to upload the titanic dataset from an http location and load it to Postgres. 
 
 To create a new Pipeline 
-    - Click `New Pipeline`
-    - Or go to the `Pipeline` page in the left hand nav.
+- Click `New Pipeline`
+- Or go to the `Pipeline` page in the left hand nav.
 
 On the Pipeline Overview page you'll find an example_pipeline that you can click to open. 
+<br>
+<br>
 
-The pipeline loads the Titanic data set from an API, performs a transformation, and then writes to a local dataframe and is constructed using these blocks:
-    - load_titanic - a Data Loader
-    - fill_in_missing_values - a Transformer
-    - export_titanic_clean - a Data Exporter 
+#### EXAMPLE_PIPELINE
+The pipeline loads the Titanic data set, performs a transformation, and then writes to a local dataframe. 
 
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/aab41bd5-7d5a-4bfd-a52b-c586323f1fb3" width="300" height="auto">
+<table>
+    <td>The pipeline is composed of the following blocks:<br><br>
+- Data Loader - load_titanic  <br><br>
+- Transformer - fill_in_missing_values  <br><br>
+- Data Exporter - export_titanic_clean  </td><br>
+    <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/aab41bd5-7d5a-4bfd-a52b-c586323f1fb3" width="300" height="auto"></td>
+</table>
+<br>
 
-The blocks and their code are displayed in the center of the page. From here, you can edit and run each block individually.  
-- When 2 blocks are connected in the pipeline, it means that dataframes that are returned are going to be passed between the two blocks. The prior ones output will be the input of the later. 
+**The blocks and their code** are displayed in the center fo the page. From here, you can edit and run each block individually. You can also run all blocks together by going to the last block in the pipeline and clicking `Execute with all upstream blocks` 
+<br> 
+<br>
 
-- to run all files in a pipeline - goto last block and click `Execute with all upstream blocks`
+**The Pipeline Tree** is displayed in the section on the right. Connections between the blocks can be added and deleted directly in the tree. When 2 blocks are connected in the pipeline, it means that dataframes that are returned are going to be passed between the two blocks. The prior ones output will be the input of the later. 
+<br>
+<br>
 
 ## Configuring Postgres
-Configuring the postgres client so that we can connect to the local Postgres DB that exists in the Docker image that was built. 
-
-THE POSTGRES SERVICE DEFINED IN DOCKER-COMPOSE.YAML
+Configuring the postgres client so that we can connect to the local Postgres DB in the Docker container where Mage lives. 
 <br> 
-The .yaml file references environmental variables defined in the .env file. Since the file is not uploaded to GIT, the postgres credentials will be safe. 
+
+The docker-compose.yaml file references environmental variables defined in the .env file. Since the .env file is not uploaded to GIT, the postgres credentials will be safe there. 
+THE POSTGRES SERVICE DEFINED IN DOCKER-COMPOSE.YAML
 ```yaml
   # PostgreSQL Service defined in docker-compose 
   postgres:
@@ -227,9 +237,10 @@ The .yaml file references environmental variables defined in the .env file. Sinc
       - "${POSTGRES_PORT}:5432"
 ```
 
-The connections are managed in Mage in the io_config.yaml. There are many different types of default connections defined under the `default:` profile in this document.  
+#### io_config.yaml
+Connections are managed in Mage in the io_config.yaml. Default connection parameters are defined under the `default:` profile.  
+THE DEFAULT POSTGRES CONNECTION DEFINED IN IO_CONFIG.YAML<br>
 ```yaml
-  # PostgreSQL default connection defined in io_congig.yaml.
   POSTGRES_CONNECT_TIMEOUT: 10
   POSTGRES_DBNAME: postgres
   POSTGRES_SCHEMA: public # Optional
@@ -238,11 +249,12 @@ The connections are managed in Mage in the io_config.yaml. There are many differ
   POSTGRES_HOST: hostname
   POSTGRES_PORT: 5432
 ```
-You can also specify custom connection profiles in the io_config.yaml file. For example, it can be useful to define a different Postgres connection profile for the dev environments. 
+ADDING A CUSTOM CONNECTION PROFILE TO IO_CONFIG.YAML <br>
+You can specify custom connection profiles in the io_config.yaml file. For example, it can be useful to define a Postgres connection for the development environment that is different than live. 
 
-To do this, create a `dev:` profil, copy the the block above into that profile, and replaced the values with environment variables using [Jinja Templating](https://realpython.com/primer-on-jinja-templating/). In specific, use double curly brackets with the env.var syntax.  
+To do this, create a `dev:` profile, copy the the block above into that profile. We will pass in environmental variables from the .env file using [Jinja Templating](https://realpython.com/primer-on-jinja-templating/). In specific, using double curly brackets with the env.var syntax.  
 
-Dev profile with postgres configuration parameters that are being pulled in from docker, which is where we are defining the postres instance. 
+THE CUSTOM DEV POSTGRES CONNECTION DEFINED IN IO_CONFIG.YAML<br>
 ```yaml
 dev:
   POSTGRES_CONNECT_TIMEOUT: 10
@@ -253,26 +265,23 @@ dev:
   POSTGRES_HOST: "{{env.var('POSTGRES_HOST')}}"
   POSTGRES_PORT: "{{env.var('POSTGRES_PORT')}}"
 ```
-
-To test the new Dev Postgres configuration profile, we'll create a new pipeline.
+#### Test the dev profile 
+To test the new dev Postgres configuration profile, we'll create a new pipeline.
 <br>
 1. Add new standard (batch) Pipeline <br>
-2. Rename the pipeline <br>
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a05ff57e-51d9-4d85-be94-0ae1f4a7adc4" width="auto" height="100">
-3. Return to Pipeline page and add a block
-<br>
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d57e0b40-df26-463d-b389-fb8fe6080db6" width="auto" height="100">
-4. Delete a Block <br>
-- click on the more actions elipse in the block 
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5359c5aa-8a13-4f4d-b0ad-468a690e1b5f" width="auto" height="200">
-5. Select Connection and Profile
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d5128b51-382e-406e-8776-a3853b149657" width="auto" height="200">
-6. Test the connection 
+2. Rename the pipeline <br> <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a05ff57e-51d9-4d85-be94-0ae1f4a7adc4" width="auto" height="125">
+4. Return to Pipeline page and add a block <br> <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d57e0b40-df26-463d-b389-fb8fe6080db6" width="auto" height="100">
+5. To delete a Block <br>- click on the more actions elipse in the block <br><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5359c5aa-8a13-4f4d-b0ad-468a690e1b5f" width="auto" height="200">
+5. Select Connection and Profile <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d5128b51-382e-406e-8776-a3853b149657" width="auto" height="100">
+6. Test the connection <br>
 Check mark `Use raw SQL` so that you don't have to deal with the Mage templating.
 Run the following to confirm that the postgres connection is initialized. We can now proceed with building the rest of the pipeline. 
 ```sql
 SELECT 1;
 ```
+<br>
+<br>
+
 ## ETL 
 ### API TO Postgres
 Loading data from an API that takes the form of a compressed CSV file, transforms the data, and loading it to Postgres. 
