@@ -196,7 +196,62 @@ terraform apply
 ```
 
 Paste the output of this command into the homework submission form.
+```cli
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
 
+Terraform will perform the following actions:
+
+  # google_bigquery_dataset.taxi-dataset will be created
+  + resource "google_bigquery_dataset" "taxi-dataset" {
+      + creation_time              = (known after apply)
+      + dataset_id                 = "taxi_dataset"
+      + default_collation          = (known after apply)
+      + delete_contents_on_destroy = false
+      + effective_labels           = (known after apply)
+      + etag                       = (known after apply)
+      + id                         = (known after apply)
+      + is_case_insensitive        = (known after apply)
+      + last_modified_time         = (known after apply)
+      + location                   = "EU"
+      + max_time_travel_hours      = (known after apply)
+      + project                    = "aerobic-badge-408610"
+      + self_link                  = (known after apply)
+      + storage_billing_model      = (known after apply)
+      + terraform_labels           = (known after apply)
+    }
+
+  # google_storage_bucket.taxi-bucket will be created
+  + resource "google_storage_bucket" "taxi-bucket" {
+      + effective_labels            = (known after apply)
+      + force_destroy               = true
+      + id                          = (known after apply)
+      + location                    = "EU"
+      + name                        = "aerobic-badge-408610-taxi-bucket"
+      + project                     = (known after apply)
+      + public_access_prevention    = (known after apply)
+      + rpo                         = (known after apply)
+      + self_link                   = (known after apply)
+      + storage_class               = "STANDARD"
+      + terraform_labels            = (known after apply)
+      + uniform_bucket_level_access = (known after apply)
+      + url                         = (known after apply)
+    }
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+google_bigquery_dataset.taxi-dataset: Creating...
+google_storage_bucket.taxi-bucket: Creating...
+google_storage_bucket.taxi-bucket: Creation complete after 2s [id=aerobic-badge-408610-taxi-bucket]
+google_bigquery_dataset.taxi-dataset: Creation complete after 2s [id=projects/aerobic-badge-408610/datasets/taxi_dataset]
+
+```
 
 ## Submitting the solutions
 

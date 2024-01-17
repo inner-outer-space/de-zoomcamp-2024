@@ -23,18 +23,20 @@
 
 ## Workflow Orchestration 
 
-We are going to be using docker. Mage and postgres will run in the docker environment. We'll take the taxi data, transform, load to Postgress and to GPC, more transforms using pandas, apache arrow, sql and then load to BigQuery. 
+**WHAT TO EXPECT**
+- We are going to run Mage and Postgres in a docker environment. 
+- We will then take the taxi data, transform it and load it to both Postgres and GPC 
+- We will perform additional transformations using pandas, apache arrow, and sql and then load to BigQuery 
+- We will extract, transform, and load data to multiple sources. 
 
-Extract, Transform, and load data to multiple sources. 
+**WHAT IS ORCHESTRATION**
+A data orchestrator manages scheduling, triggering, monitoring, and resource allocation for DE workflows. Orchestration is the process of dependency management, facilitated through automation. The goal is to automate as many processes as possible. 
 
-What is orchestration 
-Orchestration is process of dependeny management, facilitated through automation. 
-The goal is to automate as many processes as possible. 
-A data orchestrator manages scheduling, triggering, monitoring, and resource allocation for DE workflows
-
-- Every workflow requires sequential steps
+Every workflow requires sequential steps:
 - Steps = tasks = blocks (madge lingo)
 - Workflows = DAGs (directed acyclic graphs) or Pipeline
+
+
 
 Orchestration is one of the undercurrents to Extract-Transform-Load lifecycle, it happens throughout the entire lifecycle. 
 
@@ -50,10 +52,10 @@ A good orchestrator handles
 - observability 
 - debugging
 - compliance and auditing
-- prioritizes developer experience - facilitates seemless development
+- prioritizes developer experience and facilitates seamless development
 - flow state, feedback loops , cognitive load 
 
-Matt and Joes - fundamentals of Data Engineering 
+RECOMMENDED READING: Matt and Joes - fundamentals of Data Engineering 
 
 
 ## Mage
