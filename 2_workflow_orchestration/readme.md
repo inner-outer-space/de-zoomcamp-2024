@@ -269,13 +269,13 @@ dev:
 To test the new dev Postgres configuration profile, we'll create a new pipeline.
 <br>
 1. Add new standard (batch) Pipeline <br>
-2. Rename the pipeline <br> <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a05ff57e-51d9-4d85-be94-0ae1f4a7adc4" width="auto" height="125">
-4. Return to Pipeline page and add a block <br> <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d57e0b40-df26-463d-b389-fb8fe6080db6" width="auto" height="100">
-5. To delete a Block <br>- click on the more actions elipse in the block <br><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5359c5aa-8a13-4f4d-b0ad-468a690e1b5f" width="auto" height="200">
-5. Select Connection and Profile <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d5128b51-382e-406e-8776-a3853b149657" width="auto" height="100">
-6. Test the connection <br>
-Check mark `Use raw SQL` so that you don't have to deal with the Mage templating.
-Run the following to confirm that the postgres connection is initialized. We can now proceed with building the rest of the pipeline. 
+2. Rename the pipeline <br> <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a05ff57e-51d9-4d85-be94-0ae1f4a7adc4" width="300" height="auto"> <br>
+4. Return to pipeline page and add a block <br> <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d57e0b40-df26-463d-b389-fb8fe6080db6" width="300" height="auto"> <br>
+5. To delete a block - click on the more actions elipse in the block <br><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5359c5aa-8a13-4f4d-b0ad-468a690e1b5f" width="300" height="auto"> <br>
+5. Select connection and profile <br> <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d5128b51-382e-406e-8776-a3853b149657" width="300" height="auto"> <br>
+6. Test the connection <br> 
+Check mark `Use raw SQL` so that you don't have to deal with the Mage templating.<br>
+Run the following to confirm that the postgres connection is initialized. 
 ```sql
 SELECT 1;
 ```
