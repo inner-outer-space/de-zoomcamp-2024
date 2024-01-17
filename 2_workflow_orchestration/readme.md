@@ -368,7 +368,11 @@ You can confirm the data loaded by adding another SQL Data Loader block and quer
 
 Step 1 Create a Google Cloud Bucket 
 - on the cloud storage buckets page, click `create` to add a new google cloud bucket to create a bucket for this module.
-- you can keep all the default settings and make sure that public access is enforced 
+    - Select a globally unique name
+    - Location - I chose Multi-region = EU
+    - Storage Class - standard
+    - Access Control - Uniform with 'Enforce public access prevention' checkmarked
+    - Protection - none 
 
 --> created a cloud storage file system for us to interact with 
 
@@ -508,6 +512,62 @@ The files can be found in the ny_taxi folder in the bucket.
 
 
 ## ETL: GCS TO BIGQUERY 
+Take the data that we wrote to Google Cloud Storage and write it to BigQuery, an OLAP database. This mirrors a traditional data workflow. 
+
+1. Create a new batch pipeline and rename to gcs_to_bigquery
+2. Add a `Python > Google Cloud Storage Data Loader` and rename to load_taxi_gcs
+3. We are going to be using the unpartitioned parquet file for this exercise. To load the partitioned files, you need to use pyarrow. 
+4. Update the
+    - bucket_name = 'your_bucket_name'
+    - object_key = 'ny_taxi_data.parquet'
+5. Delete the assertion. We don't need it here.
+```python
+@data_loader
+def load_from_google_cloud_storage(*args, **kwargs):
+
+    config_path = path.join(get_repo_path(), 'io_config.yaml')
+    config_profile = 'default'
+
+    bucket_name = 'mage-zoomcamp-lulu'
+    object_key = 'nyc_taxi_data.parquet'
+
+    return GoogleCloudStorage.with_config(ConfigFileLoader(config_path, config_profile)).load(
+        bucket_name,
+        object_key,
+    )
+```
+6. Now we have the dataset, we are going to do a transformation
+7. Add a `Python > Generic(no Template) Transformer` and rename it to 'transformed_staged_data'
+8. Add a transformation that standardizes the column names to be all lower case with no spaces.
+```python
+@transformer
+def transform(data, *args, **kwargs):
+    data.columns = (data.columns
+                    .str.replace(' ', '_')
+                    .str.lower()
+    )
+
+    return data
+```
+
+9. We can delete the assertion here as well, as this is a fairly simple transform.
+10. Run the transform block
+11. Add a `SQL Data Exporter` block and rename to 'write_taxi_to_biqquery'
+12. Update
+    - connection: Bigquery
+    - profile: default
+    - database: nyc_taxi
+    - yellow_cab_data 
+14. The transform block is going to return a dataframe. The cool thing about mage is that you can select directly from that DF.
+` 
+
+
+![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5c17c16b-c8fa-4fc0-bd0f-dced5c472762)
+
+
+  
+
+
 
 
 ## Parameterized Execution
