@@ -25,21 +25,25 @@
 
 **WHAT TO EXPECT**
 - We are going to run Mage and Postgres in a docker environment. 
-- We will then take the taxi data, transform it and load it to both Postgres and GPC 
+- We will then take the NY taxi data set, transform it and load it to both Postgres and GCS
 - We will perform additional transformations using pandas, apache arrow, and sql and then load to BigQuery 
 - We will extract, transform, and load data to multiple sources. 
 
 **WHAT IS ORCHESTRATION**
-A data orchestrator manages scheduling, triggering, monitoring, and resource allocation for DE workflows. Orchestration is the process of dependency management, facilitated through automation. The goal is to automate as many processes as possible. 
+<br>
+A large part of data engineering is extracting, transforming, and loading data between multiple sources. Orchestration is the process of dependency management, facilitated through automation. The goal of an engineer is to automate as many processes as possible. A data orchestrator manages scheduling, triggering, monitoring, and resource allocation for DE workflows.
 
 Every workflow requires sequential steps:
-- Steps = tasks = blocks (madge lingo)
+- Steps = tasks = blocks (mage lingo)
 - Workflows = DAGs (directed acyclic graphs) or Pipeline
+
+
 
 
 
 Orchestration is one of the undercurrents to Extract-Transform-Load lifecycle, it happens throughout the entire lifecycle. 
 
+**FEATURES OF A GOOD ORCHESTRATOR**
 There is no perfect solution. You need to find the right solution for your use case. 
  
 A good orchestrator handles
