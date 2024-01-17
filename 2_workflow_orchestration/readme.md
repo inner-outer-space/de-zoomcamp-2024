@@ -4,10 +4,10 @@
 (*for Linux*)
 <hr />
 
-[Orchestration](#workflow-orchestration) •
+[Workflow Orchestration](#workflow-orchestration) •
 [Mage](#mage) •
 [Mage Set Up](#mage-set-up) •
-[Simple Pipeline](#simple-pipeline) •
+[A Simple Pipeline](#a-simple-pipeline) •
 [Configuring Postgres](#configuring-postgres) • 
 [ETL](#etl) <br>
 [Parameterized Execution](#parameterized-execution) • 
@@ -18,7 +18,7 @@
 
 </div>
 
-<hr />
+<hr/>
 <br>
 
 ## Workflow Orchestration 
@@ -44,149 +44,156 @@ As shown in this table taken from [Fundamentals of Data Engineering](https://www
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a7518dcd-735d-475f-8225-9c88b4ea4abd" width="400" height="auto">
 </div>
 <br>
+<br>
+
 **FEATURES OF A GOOD ORCHESTRATOR**<br>
 There is no perfect solution. You need to find the right solution for your use case. 
  
 A good orchestrator handles
 - workflow management
 - automation
-- error handling
-- recovery
+- error handling - conditional logic, branching, retry
+- data recovery
 - monitoring and alerting
 - resource optimization
 - observability 
 - debugging
 - compliance and auditing
 - prioritizes developer experience and facilitates seamless development
-- flow state, feedback loops , cognitive load 
-
-
+    - flow state
+    - feedback loops - ability to iterate quickly
+    - cognitive load 
+<br>
+<br>
 
 ## Mage
+### Mage is an open-source pipeline tool for orchestrating, transforming, and integrating data 
 
+It's goal is to provide a good developer experience in mind and the ability to quickly iterate on pipelines. 
 
+The main components in Mage are projects, pipelines, and blocks. Within an instance of Mage you can have many projects. Each project can have many pipelines and a pipeline is made up of blocks, the atomic units that make up a transformation in Mage. Blocks can be written in SQL, Python, or R and can do whatever you want but are mostly used for load, export, and transform. 
+<br>
+<br>
+<div align="center""> 
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/3b652643-f7ce-44c3-b8d5-80b520e2ea60" width="350" height="auto">
+</div>
+<br>
 
-###### An open-source pipeline tool for orchestrating, transforming, and integrating data 
-
-Mage was built with a good developer experience in mind. The ability to quickly iterate on pipelines. 
-
-Main concepts. Within each project (you can have many) you can have many pipelines and a pipeline is comprised of blocks. Blocks are the atomic units that make up a transformation in Mage. They can be written in SQL, Python, or R. They can do whatever you want but mostly used for load, export, and transform. 
-
-Some built in out of the box blocks offered by mage:
+SOME BUILT IN MAGE BLOCKS:
 - Sensors - trigger on some event 
 - Conditionals
 - Dynamics - can create dynamic children
 - Webhooks
+
+ 
+OTHER FUNCTIONALITY:  
 - Data Integration
 - Unified Pipeline
 - Multi-user events
 - Templating
 
-Hybrid Environment
+
+### WHAT MAGE OFFERS ###
+**Hybrid Environment**
 - you can use the gui or develope completely outside of the tool and sync.
 - use blocks as testable, reusable pieces of code
 
-Improved Developer Experience 
+**Improved Developer Experience**
 - allows you to code and test in parallel
-- reduce your dependencies and need to switch between tools --> more efficient
+- reduce the need to switch between multiple tools 
 
-Built in Engineering Best Practices 
+**Built in Engineering Best Practices**
 - In line testing and debugging
-- Fully-featured observability
-    - integration with dbt for complete visibility of your pipelines 
-- Dry pinciples (don't repeat yourself)
-    - you can create blocks that can be reused by others on your team
- 
-CORE CONCEPTS
+- Fully-featured observability capability including integration with dbt for complete visibility of your pipelines 
+- Blocks help you adhere to Dry pinciples (**D**on't **R**epeat **Y**ourself)
+ <br>
 
-projects
+### CORE COMPONENTS ###
+**Projects**
 - forms the basis for all the work you can do in Mage (like a GitHub repo)
 - contains the code for pipelines, blocks, and other assets
 - A Mage instance has one or more
 
-pipeline
+**Pipeline**
 - workflow that performs some operation
 - pipeline contain blocks
-- pipeline is represented by a YAML
+- a pipeline is represented by a YAML
 
-BLOCKS
-- a file that can be executed independently or as part of a pipeline
-- SQL, Python, R
+**Blocks**
+- a SQL, Python, or R file that can be executed independently or as part of a pipeline
 - can be used to performa a variety of actions from simple data transformations to complex ML models
 - Changing a block in one place will change the block everywhere it is used, but blocks can be detached to separate instances if needed. 
-
- ANATOMY OF A BLOCK 
- - imports
- - decorator
- - function that returns a dataframe  (only thing that is executed when a block is run)
- - assertion - test that runs on the output df. 
-
-<div align="center" style="border: 2px solid #FF69B4;"> 
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/3b652643-f7ce-44c3-b8d5-80b520e2ea60" width="300" height="auto">
-</div>
-
+- Components of a block:  
+     - imports
+     - decorator
+     - function that returns a dataframe  (only thing that is executed when a block is run)
+     - assertion - test that runs on the output dataframe of the block
+<br>
+<br>
 
 ## Mage Set Up  
 
-CLONE THE REPO<br> 
+#### CLONE THE REPO 
 [Mage Getting Started Repo](https://github.com/mage-ai/mage-zoomcamp)
 <br>
+
 ```cli
 git clone https://github.com/mage-ai/mage-zoomcamp.git mage-zoomcamp
 ```
-<br><br>
-HOUSEKEEPING
-<br>
+
+#### HOUSEKEEPING 
 Rename `dev.env` to `.env` in the Mage Repo
 <br>
 ```cli
 mv dev.env .env
 ```
-This file contains environmental variables for the project and could in the future include sensitive data. The .gitignore file includes `.env` so we need to update this name so that it will not be uploaded to GIT. 
-<br><br>
-BUILD AND RUN MAGE CONTAINER
-<br> 
+This file contains environmental variables for the project and could also include sensitive data in the future. The .gitignore file in this repo already includes `.env` so changing the name of this file ensures that it will not be uploaded to GIT. 
+<br>
+<br>
+#### BUILD AND RUN MAGE CONTAINER
 The container being built for this demo includes 2 services: Mage and Postgres. 
 ```cli
 docker-compose build
 ```
-<br>
+Followed by: <br>
 
 ```cli
 docker-compose run
 ```
 *Note: the port mapping in the YAML file `"${POSTGRES_PORT}:5432"` uses 5432 on the host. If that port is already allocated to another Postgres container, it will cause a conflict.* 
-<br><br>
-UPDATE MAGE 
 <br>
-Mage is updated on a regular fairly often basis. You will receive a message in the app when you are working with out of date images. <br>
+<br>
+#### UPDATE MAGE 
+Mage is updated fairly often. The app will let you know when you are working with an outdated version. <br>
 To update update the mage images that you have cached on your local. 
 ```cli
 pull mageai/mageai:latest
 ```
-<br><br>
-ACCESS MAGE 
-
 <br>
+
+#### ACCESS MAGE 
 Mage is accessed through a web browser
 <br>
+
 ```cli
 localhost:789
 ```
+<br>
+<br>
 
-## Simple Pipeline
+## A Simple Pipeline
 We are going to configure a simple pipeline from an API to a Postgres location. 
 
 To create a new Pipeline 
-- Click `New Pipeline`
-- Or go to the `Pipeline` page in the left hand nav.
+    - Click `New Pipeline`
+    - Or go to the `Pipeline` page in the left hand nav.
 
 On the Pipeline page you'll find an example Pipeline that you can click to open. 
 
 The pipeline loads the Titanic data set from an API, performs a transformation, and then writes to a local dataframe and is constructed using these blocks:
-- load_titanic - a Data Loader
-- fill_in_missing_values - a Transformer
-- export_titanic_clean - a Data Exporter 
+    - load_titanic - a Data Loader
+    - fill_in_missing_values - a Transformer
+    - export_titanic_clean - a Data Exporter 
 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/aab41bd5-7d5a-4bfd-a52b-c586323f1fb3" width="300" height="auto">
 
