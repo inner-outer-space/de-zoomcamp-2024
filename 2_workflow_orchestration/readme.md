@@ -94,19 +94,22 @@ Other Notable Functionality:
 
 
 ### WHAT MAGE OFFERS ###
-**Hybrid Environment**
-- you can use the gui or develope completely outside of the tool and sync.
-- use blocks as testable, reusable pieces of code
-
-**Improved Developer Experience**
-- allows you to code and test in parallel
-- reduce the need to switch between multiple tools 
-
-**Built in Engineering Best Practices**
-- In line testing and debugging
-- Fully-featured observability capability including integration with dbt for complete visibility of your pipelines 
-- Blocks help you adhere to Dry pinciples (**D**on't **R**epeat **Y**ourself)
- <br>
+<table>
+    <tr>
+    <td>Hybrid Environment  </td>
+    <td>- you can use the gui or develope completely outside of the tool and sync.<br>- use blocks as testable, reusable pieces of code</td>
+    </tr>
+    <tr>
+    <td>Improved Developer Experience  </td>
+    <td>- you can use the gui or develope completely outside of the tool and sync.<br>- use blocks as testable, reusable pieces of code</td>
+    </tr>
+    <tr>
+    <td>Built in Engineering<br> Best Practices  </td>
+    <td>- In line testing and debugging<br>
+- Fully-featured observability capability including integration with dbt for complete visibility of your pipelines<br> 
+- Blocks help you adhere to Dry pinciples (**D**on't **R**epeat **Y**ourself)</td>
+    </tr>
+</table>
 
 ### CORE COMPONENTS ###
 **Projects**
