@@ -85,7 +85,7 @@ Other Built In Mage Blocks:
 - Dynamics - can create dynamic children
 - Webhooks
 
- 
+
 Other Notable Functionality:  
 - Data Integration
 - Unified Pipeline
