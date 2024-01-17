@@ -36,14 +36,15 @@ A large part of data engineering is extracting, transforming, and loading data b
 Every workflow requires sequential steps:
 - Steps = tasks = blocks (mage lingo)
 - Workflows = DAGs (directed acyclic graphs) or Pipeline
+<br><br>
 
+As shown in this table taken from [Fundamentals of Data Engineering](https://www.oreilly.com/library/view/fundamentals-of-data/9781098108298/), orchestration happens throughout the entire data engineering lifecycle. It is one of the undercurrents to Extract-Transform-Load lifecycle
 
-
-
-
-Orchestration is one of the undercurrents to Extract-Transform-Load lifecycle, it happens throughout the entire lifecycle. 
-
-**FEATURES OF A GOOD ORCHESTRATOR**
+<div align ="center">
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a7518dcd-735d-475f-8225-9c88b4ea4abd" width="400" height="auto">
+</div>
+<br>
+**FEATURES OF A GOOD ORCHESTRATOR**<br>
 There is no perfect solution. You need to find the right solution for your use case. 
  
 A good orchestrator handles
@@ -59,7 +60,6 @@ A good orchestrator handles
 - prioritizes developer experience and facilitates seamless development
 - flow state, feedback loops , cognitive load 
 
-RECOMMENDED READING: Matt and Joes - fundamentals of Data Engineering 
 
 
 ## Mage
