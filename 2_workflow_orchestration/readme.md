@@ -282,17 +282,20 @@ SELECT 1;
 <br>
 <br>
 
-## ETL 
-### API TO Postgres
-Loading data from an API that takes the form of a compressed CSV file, transforms the data, and loading it to Postgres. 
-
-First add a new standard (batch) pipeline and rename it to api_to_postgres
-
-LOAD THE DATA 
+## ETL - LOAD DATA TO POSTGRES
+In this section we import the NY Taxi data compressed CSV file, transform the data, and load it to Postgres. 
+<br>
+<br>
+**ADD A NEW PIPELINE**<br> 
+Add a new standard (batch) pipeline and rename it to api_to_postgres
+<br>
+<br>
+**LOAD THE DATA**<br> 
 Add a new `Python > API Data Loader Block` and rename to load_api_data
 <br>
+<br>
 Modify the template as follows: 
-- URL - provide the URL for the NY Taxi Jan 2021 CSV   
+- URL - add the URL for the NY Taxi Jan 2021 .csv.gz   
 - Requests - delete this line. In mage you don't need to make requests for loading CSV files with Pandas. 
 - Data Types - declairing data types is recommended but not required
     - saves space in memory 
@@ -310,7 +313,7 @@ def load_data_from_api(*args, **kwargs):
     # DATA URL 
     url = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz'
 
-    # DEFINE A DICTIONARY OF DATA TYPES FOR ALL NON DATE COLUMNS 
+    # DEFINE A DICTIONARY OF DATA TYPES FOR THE NON DATETIME COLUMNS 
     taxi_dtypes = {
         'VendorID':pd.Int64Dtype(),
         'passenger_count':pd.Int64Dtype(),
@@ -330,22 +333,25 @@ def load_data_from_api(*args, **kwargs):
         'congestion_surcharge':float
     }
 
-    # CREATE A LIST OF DATE COLUMNS.
+    # CREATE A LIST OF DATETIME COLUMNS.
     # The list will be passed to the read_csv function and pandas will parse the columns as dates with the appropriate time stamps.  
     parse_dates = ['tpep_pickup_datetime', 'tpep_dropoff_datetime']  
 
     # read_csv LOADS A CSV FILE INTO A DATAFRAME. THIS BLOCK RETURNS THAT DF. 
     return pd.read_csv(url, sep=',', compression="gzip", dtype=taxi_dtypes, parse_dates=parse_dates)
 ```
-
-TRANSFORM THE DATA <br>
-Add a python generic transformation block following the data loader block. For this exercise, we'll assume that the records with passenger_count = 0 represent bad data and we'll remove them. 
 <br>
+<br>
+
+**TRANSFORM THE DATA** <br>
+Add a python generic transformation block. For this exercise, we'll assume that the 'passenger_count = 0' records represent bad data and remove those rows. 
+<br>
+
+To do this in the transformation block:
 - Add a preprocessing step that prints the number of rows with passenger_count = 0
 - Return a dataframe filtered for passenger_count > 0
-- Tests that there are no records with passenger_count = 0
+- Test that there are no records with passenger_count = 0
 
-First, update the transformer block to print the number of records with passenger_count = 0. 
 ```python
 def transform(data, *args, **kwargs):
     # PRINT COUNTS OF RECORDS WITH 
@@ -359,8 +365,10 @@ def transform(data, *args, **kwargs):
 def test_output(output, *args):
     assert output['passenger_count'].isin([0]).sum() ==0, 'There are rides with zero passengers'
 ```
+<br>
+<br>
 
-EXPORT THE DATA <br>
+**EXPORT THE DATA** <br>
 Add a `Python > Postgres Data Exporter` and name it data_to_postgres
 
 Update the following in the template <br>
@@ -385,9 +393,14 @@ def export_data_to_postgres(df: DataFrame, **kwargs) -> None:
             if_exists='replace',  # Specify resolution policy if table name already exists
         )
 ```
-CONFRM THE DATA LOADED <br>
-You can confirm the data loaded by adding another SQL Data Loader block and querying the DB 
+<br>
+<br>
+
+**CONFIRM DATA LOADED** <br>
+Add another SQL Data Loader block and query the DB to confirm that the data loaded.  
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/e00c667f-aa87-4ebc-8e29-99cb39f5e46c" width="auto" height="250">
+<br>
+<br>
 
 ## CONFIGURING GOOGLE CLOUD 
 
