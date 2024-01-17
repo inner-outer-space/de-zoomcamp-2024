@@ -79,14 +79,14 @@ The main components in Mage are projects, pipelines, and blocks. Within an insta
 </div>
 <br>
 
-SOME BUILT IN MAGE BLOCKS:
+Other Built In Mage Blocks:
 - Sensors - trigger on some event 
 - Conditionals
 - Dynamics - can create dynamic children
 - Webhooks
 
  
-OTHER FUNCTIONALITY:  
+Other Notable Functionality:  
 - Data Integration
 - Unified Pipeline
 - Multi-user events
@@ -188,7 +188,7 @@ To create a new Pipeline
     - Click `New Pipeline`
     - Or go to the `Pipeline` page in the left hand nav.
 
-On the Pipeline page you'll find an example Pipeline that you can click to open. 
+On the Pipeline Overview page you'll find an example_pipeline that you can click to open. 
 
 The pipeline loads the Titanic data set from an API, performs a transformation, and then writes to a local dataframe and is constructed using these blocks:
     - load_titanic - a Data Loader
