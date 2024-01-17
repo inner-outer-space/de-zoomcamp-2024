@@ -249,7 +249,8 @@ THE DEFAULT POSTGRES CONNECTION DEFINED IN IO_CONFIG.YAML<br>
   POSTGRES_HOST: hostname
   POSTGRES_PORT: 5432
 ```
-ADDING A CUSTOM CONNECTION PROFILE TO IO_CONFIG.YAML <br>
+
+#### io_config.yaml custom profile 
 You can specify custom connection profiles in the io_config.yaml file. For example, it can be useful to define a Postgres connection for the development environment that is different than live. 
 
 To do this, create a `dev:` profile, copy the the block above into that profile. We will pass in environmental variables from the .env file using [Jinja Templating](https://realpython.com/primer-on-jinja-templating/). In specific, using double curly brackets with the env.var syntax.  
@@ -404,28 +405,30 @@ Add another SQL Data Loader block and query the DB to confirm that the data load
 
 ## CONFIGURING GOOGLE CLOUD 
 
-Step 1 Create a Google Cloud Bucket 
-- on the cloud storage buckets page, click `create` to add a new google cloud bucket to create a bucket for this module.
+`Step 1` **Add a Google Cloud Bucket** 
+Create a cloud storage file system for us to interact with.<br>
+On the cloud storage buckets page, click `create`
     - Select a globally unique name
-    - Location - I chose Multi-region = EU
-    - Storage Class - standard
-    - Access Control - Uniform with 'Enforce public access prevention' checkmarked
+    - Location - choose your region. (Multi-region = EU)
+    - Storage Class - keep default of 'standard'
+    - Access Control - keep default of 'Uniform' and make sure that 'Enforce public access prevention' is checkmarked
     - Protection - none 
 
---> created a cloud storage file system for us to interact with 
 
-Step 2 Create a Service Account for Mage
-- On the service account page, click 'create a new service account' to add a new service account for mage.  
+
+`Step 2` **Add a Mage Service Account**
+Create a new service account for mage.<br>
+- On the service account page, click 'create a new service account' 
 - Set the role to Basic > Owner. This allows the account to edit everything in GCS and BigQuery. You may want something more restrictive.  
 - Click Continue and Done 
 
-Step 3 Create a Key 
+`Step 3` **Create a Key** 
 - Click on the service account that was just created
-- Go to the keys tab and Add Key > Create new key
-- Select JSON and click Create  --> Downloads the JSON key to your computer
+- Go to the keys tab and select `Add Key > Create new key`
+- Select JSON and click Create. The JSON key will download to your computer
 - Move the JSON Key into the Mage project directory. This directory will be mounted as a volume on the mage container making these credentials accessible to mage. Mage can then use those credentials when interacting with google to authenticate. 
 
-Step 4 AUTHENTICATE WITH THESE CREDENTIALS 
+`Step 4` **Authenticate Using Credentials** 
 - Go back into Mage into the io_config.yaml file
 - There are 2 ways that you can set up authentication in this file
     - Copy and paste all values from the JSON key file to the GOOGLE_SERVICE_ACC_KEY variables
@@ -444,21 +447,25 @@ Step 4 AUTHENTICATE WITH THESE CREDENTIALS
     auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs"
     client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/your_service_account_email"
 ```
+OR 
 ```yaml
   # Google
   GOOGLE_SERVICE_ACC_KEY_FILEPATH: "/home/src/key_file_name.json"
 ```
-If using the GOOGLE_SERVICE_ACC_KEY_FILEPATH, then you can delete the first block. Then update the path to the JSON key in the GOOGLE_SERVICE_ACC_KEY_FILEPATH. In docker compose we have specified that the mage project directory will be mounted to the /home/src/ folder in the Mage container. The json key file can therefor be reached at `"/home/src/key_file_name.json"`. Now Mage knows where to look for the credentials. When we use any block with a google service, mage will use that service account to execute the cell. 
+If using the GOOGLE_SERVICE_ACC_KEY_FILEPATH, then you can delete the first block. 
 
-Step 5 TEST THE AUTHENTICATION 
+JSON KEY FILEPATH
+The docker-compose.yaml specifies that the mage project directory will be mounted to the /home/src/ folder in the container. The json key file can therefor be reached at `"/home/src/key_file_name.json"`. Once this is specified, Mage will know where to look for the credentials. When any block with a google service is executed, mage will use that service account key to execute the cell. 
+
+`Step 5` **Test the Authentication** 
 - Go back to the test_config pipeline
 - Change the Data Loader to BigQuery and set the profile to Default
 - Click Run
 - This query collects to the cloud, runs the query there, and returns a answer on our computer. It confirms the existence of the DB in Google Cloud and that we have a good connection.   
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/56849adc-4706-4ab2-a19c-4534c01f1ff7" width="auto" height="250">
 
-STEP 6 TEST GOOGLE CLOUD STORAGE 
-- Make sure that we can read and write files to Google Cloud Storage
+`STEP 6` **Test Google Cloud Storage** 
+Confirm that we can read and write files to Google Cloud Storage
 - Go to the `example_pipeline` in Mage
 - Click on the last block in the pipeline and `Execute with all upstream blocks`. This will write titanic_clean.csv to the mage directory
 - Go to the Google Cloud Console go to the Mage Bucket page
@@ -471,7 +478,7 @@ STEP 6 TEST GOOGLE CLOUD STORAGE
 - Run and you'll see that the data is being loaded from Google Cloud. 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/8e6866c0-d810-482e-8087-ba2dece1c3f6" width="auto" height="250">
 
-## ETL: API to GCS - BUILDING PIPELINES USING GCP AND GCS
+## ETL: LOAD DATA TOGCS
 In this module we will write data to Google Cloud Storage. Previously we wrote data to Postgres an OLTP database (structured row oriented vs column oriented). Now we are going to write data to Google Cloud Storage which is just a file system in the cloud. Often data is written to here because it is inexpensive and it can also accept semi unstructured data. 
 
 From there, the workflow would typically include staging, cleaning, transforming, and writing to an analytical source or using a data lake solution. 
