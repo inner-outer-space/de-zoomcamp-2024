@@ -646,9 +646,15 @@ Make sure
 - there are spaces between the curly brackets and the df_1 in the SQL query
 - that your google locaion variable is set correctly `GOOGLE_LOCATION: EU` 
 <br>
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/af0301cb-eca0-47a9-b96e-4d66731468f1" width="300" height="auto">
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/af0301cb-eca0-47a9-b96e-4d66731468f1" width="500" height="auto">
 
+#### SCHEDULING 
+Triggers are what schedule workflows in mage. 
 
+You can trigger workflows:
+- based on an event
+- on a schedule
+- from an api webhook 
 
 
 
