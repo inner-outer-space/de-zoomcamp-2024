@@ -607,7 +607,7 @@ def load_from_google_cloud_storage(*args, **kwargs):
     config_path = path.join(get_repo_path(), 'io_config.yaml')
     config_profile = 'default'
 
-    bucket_name = 'mage-zoomcamp-lulu'
+    bucket_name = 'mage-zoomcamp-lulu-eu'
     object_key = 'nyc_taxi_data.parquet'
 
     return GoogleCloudStorage.with_config(ConfigFileLoader(config_path, config_profile)).load(
@@ -615,9 +615,11 @@ def load_from_google_cloud_storage(*args, **kwargs):
         object_key,
     )
 ```
-6. Now we have the dataset, we are going to do a transformation
-7. Add a `Python > Generic(no Template) Transformer` and rename it to 'transformed_staged_data'
-8. Add a transformation that standardizes the column names to be all lower case with no spaces.
+<br>
+
+The dataset is now loaded and we are going to do a transformation
+1. Add a `Python > Generic(no Template) Transformer` and rename it to 'transformed_staged_data'
+2. Add a transformation that standardizes the column names to be all lower case with no spaces.
 ```python
 @transformer
 def transform(data, *args, **kwargs):
@@ -629,17 +631,20 @@ def transform(data, *args, **kwargs):
     return data
 ```
 
-9. We can delete the assertion here as well, as this is a fairly simple transform.
-10. Run the transform block
-11. Add a `SQL Data Exporter` block and rename to 'write_taxi_to_biqquery'
-12. Update
+3. We can delete the assertion here as well, as this is a fairly simple transform.
+4. Run the transform block
+
+Now we can export the transformed data
+1. Add a `SQL Data Exporter` block and rename to 'write_taxi_to_biqquery'
+2. Update
     - connection: Bigquery
     - profile: default
     - database: nyc_taxi
     - yellow_cab_data 
-14. The transform block is going to return a dataframe. The cool thing about mage is that you can select directly from that DF.
-` 
-
+3. The transform block is going to return a dataframe. The cool thing about mage is that you can select directly from that DF.
+Make sure
+- there are spaces between the curly brackets and the df_1 in the SQL query
+- that your google locaion variable is set correctly `GOOGLE_LOCATION: EU`
 
 ![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5c17c16b-c8fa-4fc0-bd0f-dced5c472762)
 
