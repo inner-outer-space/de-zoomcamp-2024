@@ -23,7 +23,7 @@
 
 ## Workflow Orchestration 
 
-**WHAT TO EXPECT**
+**WHAT TO EXPECT THIS WEEK**
 - We are going to run Mage and Postgres in a docker environment. 
 - We will then take the NY taxi data set, transform it and load it to both Postgres and GCS
 - We will perform additional transformations using pandas, apache arrow, and sql and then load to BigQuery 
@@ -31,12 +31,15 @@
 
 **WHAT IS ORCHESTRATION**
 <br>
-A large part of data engineering is extracting, transforming, and loading data between multiple sources. Orchestration is the process of dependency management, facilitated through automation. The goal of an engineer is to automate as many processes as possible. A data orchestrator manages scheduling, triggering, monitoring, and resource allocation for DE workflows.
+Orchestration is the process of dependency management, facilitated through automation.
+<br>
+A large part of data engineering is extracting, transforming, and loading data between multiple sources. The goal is to automate as many processes as possible.  A data orchestrator helps in this regard by managing scheduling, triggering, monitoring, and resource allocation for DE workflows.
 
 Every workflow requires sequential steps:
 - Steps = tasks = blocks (mage lingo)
 - Workflows = DAGs (directed acyclic graphs) or Pipeline
-<br><br>
+<br>
+<br>
 
 As shown in this table taken from [Fundamentals of Data Engineering](https://www.oreilly.com/library/view/fundamentals-of-data/9781098108298/), orchestration happens throughout the entire data engineering lifecycle. It is one of the undercurrents to Extract-Transform-Load lifecycle
 
@@ -191,10 +194,17 @@ To create a new Pipeline
 - Click `New Pipeline`
 - Or go to the `Pipeline` page in the left hand nav.
 
-On the Pipeline Overview page you'll find an example_pipeline that you can click to open. 
-<br>
-<br>
+On the Pipeline Overview page you'll find an example_pipeline that you can click to open. Clicking `Edit Pipeline` in the left hand nav takes you to the pipeline details page. 
 
+On the left side of the screen, you can access the files structure and have a list view of the current blocks included in the pipeline. 
+<br>
+<br>
+The blocks and their code are displayed in the center fo the page. From here, you can edit and run each block individually. You can also run all blocks together by going to the last block in the pipeline and clicking `Execute with all upstream blocks` 
+<br> 
+<br>
+The Pipeline Tree is displayed in the section on the right. Connections between the blocks can be added and deleted directly in the tree. When 2 blocks are connected in the pipeline, it means that dataframes that are returned are going to be passed between the two blocks. The prior ones output will be the input of the later. 
+<br>
+<br>
 #### EXAMPLE_PIPELINE
 The pipeline loads the Titanic data set, performs a transformation, and then writes to a local dataframe. 
 
@@ -205,14 +215,6 @@ The pipeline loads the Titanic data set, performs a transformation, and then wri
 - Data Exporter - export_titanic_clean  </td><br>
     <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/aab41bd5-7d5a-4bfd-a52b-c586323f1fb3" width="300" height="auto"></td>
 </table>
-<br>
-
-**The blocks and their code** are displayed in the center fo the page. From here, you can edit and run each block individually. You can also run all blocks together by going to the last block in the pipeline and clicking `Execute with all upstream blocks` 
-<br> 
-<br>
-
-**The Pipeline Tree** is displayed in the section on the right. Connections between the blocks can be added and deleted directly in the tree. When 2 blocks are connected in the pipeline, it means that dataframes that are returned are going to be passed between the two blocks. The prior ones output will be the input of the later. 
-<br>
 <br>
 
 ## Configuring Postgres
