@@ -202,11 +202,11 @@ On the left side of the screen, you can access the files structure and have a li
 The blocks and their code are displayed in the center fo the page. From here, you can edit and run each block individually. You can also run all blocks together by going to the last block in the pipeline and clicking `Execute with all upstream blocks` 
 <br> 
 <br>
-The Pipeline Tree is displayed in the section on the right. Connections between the blocks can be added and deleted directly in the tree. When 2 blocks are connected in the pipeline, it means that dataframes that are returned are going to be passed between the two blocks. The prior ones output will be the input of the later. 
+The Pipeline Tree is displayed in the section on the right. Connections between the blocks can be added and deleted directly in the tree. When 2 blocks are connected in the pipeline, it means that the output dataframe of the first will be passed as input to the next. 
 <br>
 <br>
 #### EXAMPLE_PIPELINE
-The pipeline loads the Titanic data set, performs a transformation, and then writes to a local dataframe. 
+The example_pipeline loads the Titanic data set, performs a transformation, and then writes to a local dataframe. 
 
 <table>
     <td>The pipeline is composed of the following blocks:<br><br>
@@ -255,7 +255,7 @@ THE DEFAULT POSTGRES CONNECTION DEFINED IN IO_CONFIG.YAML<br>
 #### io_config.yaml custom profile 
 You can specify custom connection profiles in the io_config.yaml file. For example, it can be useful to define a Postgres connection for the development environment that is different than live. 
 
-To do this, create a `dev:` profile, copy the the block above into that profile. We will pass in environmental variables from the .env file using [Jinja Templating](https://realpython.com/primer-on-jinja-templating/). In specific, using double curly brackets with the env.var syntax.  
+To do this, create a `dev:` profile, copy the the block above into that profile. For this exercise we will pass in environmental variables from the .env file using [Jinja Templating](https://realpython.com/primer-on-jinja-templating/). In specific, using double curly brackets with the env.var syntax.  
 
 THE CUSTOM DEV POSTGRES CONNECTION DEFINED IN IO_CONFIG.YAML<br>
 ```yaml
@@ -271,17 +271,16 @@ dev:
 #### Test the dev profile 
 To test the new dev Postgres configuration profile, we'll create a new pipeline.
 <br>
-1. Add new standard (batch) Pipeline <br>
-2. Rename the pipeline <br> <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a05ff57e-51d9-4d85-be94-0ae1f4a7adc4" width="500" height="auto"> <br><br>
-4. Return to pipeline page and add a block <br> <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d57e0b40-df26-463d-b389-fb8fe6080db6" width="500" height="auto"> <br><br>
-5. To delete a block - click on the more actions elipse in the block <br><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5359c5aa-8a13-4f4d-b0ad-468a690e1b5f" width="500" height="auto"> <br><br>
-5. Select connection and profile <br> <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d5128b51-382e-406e-8776-a3853b149657" width="500" height="auto"> <br><br>
-6. Test the connection <br> 
-Check mark `Use raw SQL` so that you don't have to deal with the Mage templating.<br>
-Run the following to confirm that the postgres connection is initialized. 
+1. Add new standard (batch) Pipeline <br><br>
+2. In the pipeline settings, rename the pipeline to 'test_config'<br><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a05ff57e-51d9-4d85-be94-0ae1f4a7adc4" width="500" height="auto"> <br><br><br>
+4. Return to pipeline page and add a `Data loader SQL block`<br><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/0632d69a-a626-415c-b3df-35d393acb390" width="500" height="auto"><br><br><br>
+5. Set the connection and profile and check mark `Use raw SQL` so that you don't have to deal with the Mage templating.<br><br> <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d5128b51-382e-406e-8776-a3853b149657" width="500" height="auto"> <br><br><br>
+6. Running the block with this SQL will connect to the Postgres DB and execute the command there. The result is returned from the Postgres DB, confirming that the connection worked. 
 ```sql
 SELECT 1;
 ```
+<br><br>
+7. NOTE: To delete a block - click on the more actions elipse in the block <br><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5359c5aa-8a13-4f4d-b0ad-468a690e1b5f" width="500" height="auto"> <br><br>
 <br>
 <br>
 
