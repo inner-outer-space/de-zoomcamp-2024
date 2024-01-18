@@ -426,7 +426,7 @@ On the cloud storage buckets page, click `create`
 <br>
 
 `Step 2` **Add a Mage Service Account**<br>
-Create a new service account for mage to connect to GCP.<br>
+Create a new service account for mage to connect to the GCP project.<br>
 - On the service account page, click 'create a new service account' 
 - Enter a name
 - Set the role to Basic > Owner. This allows the account to edit everything in GCS and BigQuery. You may want something more restrictive.  
@@ -638,18 +638,17 @@ Now we can export the transformed data
 1. Add a `SQL Data Exporter` block and rename to 'write_taxi_to_biqquery'
 2. Update
     - connection: Bigquery
-    - profile: default
+    - profile: default     
     - database: nyc_taxi
     - yellow_cab_data 
 3. The transform block is going to return a dataframe. The cool thing about mage is that you can select directly from that DF.
 Make sure
 - there are spaces between the curly brackets and the df_1 in the SQL query
-- that your google locaion variable is set correctly `GOOGLE_LOCATION: EU`
+- that your google locaion variable is set correctly `GOOGLE_LOCATION: EU` 
+<br>
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/af0301cb-eca0-47a9-b96e-4d66731468f1" width="300" height="auto">
 
-![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5c17c16b-c8fa-4fc0-bd0f-dced5c472762)
 
-
-  
 
 
 
