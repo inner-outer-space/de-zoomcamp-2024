@@ -655,13 +655,70 @@ You can trigger workflows:
 - based on an event
 - on a schedule
 - from an api webhook 
-
-
-
+<br>
+<br>
 
 ## Parameterized Execution
+This module will cover loading datasets dependent on a parameter. The execution of the pipeline will be dependent on some variable being supplied to the DAG. Mage has many different types of variables (run time, global etc). In this example, we will look at run time variables. We are going to use the taxi data set and show how you can create a job for each day that the job is being run. This is useful if you want to write to output files on a daily basis. 
+
+If you right click a pipeline, you can clone it. 
+
+Clone the load_to_gcp pipeline. Note: Blocks are global. Any edits made to blocks in this pipeline, will be reflected anywhere they are used. 
+
+We can access keywords 
+
 ## Backfills
+This module covers backfilling pipelines. Imagine that you have missing data. Then you'll need to run some catchup pipelines to recapture that data. 
+
+Go to the backfills tab on the side nave. You can backfill by data and time. 
+
+Name it what you want and select the start and end data and an interval. This interval is 1 day so for a week there will be 8 days because last day is inclusive.  It will assign the execution date variable to each day in this pipeline. There will be a run for each day. 
+
+For each run the execution date is different. If in your pipeline is parameterized based on date this is easy. 
+
+
+
 ## Deployment Prerequisites 
-## Deploying to GCP
+Deploying mage to Google Cloud using Terraform. We are going to create an app and a back end database and persistant storage on google cloud. 
+
+Prerequisites
+- Terraform installed locally
+- google cloud CLI
+- google cloud permissions
+- Mage Terraform templates
+
+## CLOUD PERMISSIONS 
+
+Configuring the google cloud permissions
+- Artifact registry read
+- Artifact registry write 
+- Cloud run developer  
+- Cloud sql admin
+- Service Account token creater
+
+GO to Service Account and add what is above. If you have owner as an assigned role on the service account, then you can do everything. But if you want to be more specific then add those above. 
+
+## DEPLOYING TO GCP
+Configuring the Mage Terraform 
+git clone https://github.com
+
+In the folder you will see a terraform template for each cloud provider. Take a look at what is insite the gcp folder. 
+
+Whitelist your IP
+- go to networking tab
+- Change ingress control to let everyone in... but better to follow the directions he shared.
+
+You can 
+
+Version control in Mage 
+Best way to develope and deploy resources to the cloud. Develope locally and push to GIT and the mage in the cloud would be synxced. 
+
+Terraform Destroy. 
+
+How do you sync to Git Hub
+How do you set up CI/CD
+
+
 ## Next Steps
+
 
