@@ -582,8 +582,11 @@ def export_data(data, *args, **kwargs):
         filesystem=gcs
     )
 ```
+<br>
+<br>
 The files can be found in the ny_taxi folder in the bucket. <br>
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bd304b0a-0e98-4055-89fe-b4b496dc9801" width="auto" height="250">
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bd304b0a-0e98-4055-89fe-b4b496dc9801" width="300" height="auto">
+<br>
 <br>
 <br>
 
