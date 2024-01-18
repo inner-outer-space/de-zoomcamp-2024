@@ -9,9 +9,10 @@
 [Mage Set Up](#mage-set-up) •
 [A Simple Pipeline](#a-simple-pipeline) •
 [Configuring Postgres](#configuring-postgres) <br> 
-[Load Data to Postres](#load_data_to_postgres) •
-[Load Data to GCS](#load_data_to_gcs) •
-[Load Data from GCS to BigQuery](#load_data_from_gcs_to_bigquery) <br> 
+[Load Data to Postres](#etl_load_data_to_postgres) •
+[Configure GCP](#configure_google_cloud_platform) •
+[Load Data to GCS](#etl_load_data_to_gcs) •
+[Load Data from GCS to BigQuery](#etl_load_data_from_gcs_to_bigquery) <br> 
 [Parameterized Execution](#parameterized-execution) • 
 [Backfills](#backfills) •
 [Deployment Prerequisites](#deployment-prerequisites) •
@@ -408,7 +409,7 @@ Add another SQL Data Loader block and query the DB to confirm that the data load
 <br>
 <br>
 
-## CONFIGURING GOOGLE CLOUD 
+## CONFIGURING GOOGLE CLOUD PLATFORM 
 
 `Step 1` **Add a Google Cloud Bucket** 
 Create a cloud storage file system for us to interact with.<br>
@@ -483,7 +484,7 @@ Confirm that we can read and write files to Google Cloud Storage
 - Run and you'll see that the data is being loaded from Google Cloud. 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/8e6866c0-d810-482e-8087-ba2dece1c3f6" width="auto" height="250">
 
-## ETL: LOAD DATA TOGCS
+## ETL: LOAD DATA TO GCS
 In this module we will write data to Google Cloud Storage. Previously we wrote data to Postgres an OLTP database (structured row oriented vs column oriented). Now we are going to write data to Google Cloud Storage which is just a file system in the cloud. Often data is written to here because it is inexpensive and it can also accept semi unstructured data. 
 
 From there, the workflow would typically include staging, cleaning, transforming, and writing to an analytical source or using a data lake solution. 
