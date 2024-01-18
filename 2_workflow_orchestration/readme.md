@@ -9,10 +9,10 @@
 [Mage Set Up](#mage-set-up) •
 [A Simple Pipeline](#a-simple-pipeline) •
 [Configuring Postgres](#configuring-postgres) <br> 
-[Load Data to Postres](#etl_load_data_to_postgres) •
-[Configure GCP](#configure_google_cloud_platform) •
-[Load Data to GCS](#etl_load_data_to_gcs) •
-[Load Data from GCS to BigQuery](#etl_load_data_from_gcs_to_bigquery) <br> 
+[Load Data to Postgres](#load-data-to-postgres) •
+[Configure GCP](#configure-google-cloud-platform) •
+[Load Data to GCS](#load-data-to-gcs) •
+[Load Data from GCS to BigQuery](#load-data-from-gcs-to-bigquery) <br> 
 [Parameterized Execution](#parameterized-execution) • 
 [Backfills](#backfills) •
 [Deployment Prerequisites](#deployment-prerequisites) •
@@ -286,14 +286,16 @@ SELECT 1;
 <br>
 <br>
 
-## ETL - LOAD DATA TO POSTGRES
+## LOAD DATA TO POSTGRES
 In this section we import the NY Taxi data compressed CSV file, transform the data, and load it to Postgres. 
 <br>
 <br>
+
 **ADD A NEW PIPELINE**<br> 
 Add a new standard (batch) pipeline and rename it to api_to_postgres
 <br>
 <br>
+
 **LOAD THE DATA**<br> 
 Add a new `Python > API Data Loader Block` and rename to load_api_data
 <br>
@@ -352,7 +354,7 @@ def load_data_from_api(*args, **kwargs):
 Add a python generic transformation block. For this exercise, we'll assume that the 'passenger_count = 0' records represent bad data and remove those rows. 
 <br>
 
-To do this in the transformation block:
+Modify the transformation block template:
 - Add a preprocessing step that prints the number of rows with passenger_count = 0
 - Return a dataframe filtered for passenger_count > 0
 - Add an assertion to test that there are no records with passenger_count = 0
@@ -377,7 +379,7 @@ def test_output(output, *args):
 **EXPORT THE DATA** <br>
 Add a `Python > Postgres Data Exporter` and name it data_to_postgres
 
-Update the following in the template <br>
+Update these variables in the template: <br>
 - `schema_name` = 'ny_taxi'
 - `table_name` = 'yellow_cab_data'
 - `config_profile` = 'dev'
@@ -409,33 +411,39 @@ Add another SQL Data Loader block and query the DB to confirm that the data load
 <br>
 <br>
 
-## CONFIGURING GOOGLE CLOUD PLATFORM 
+## CONFIGURE GOOGLE CLOUD PLATFORM 
+In this module we are going to set up google cloud to allow to read and write data to both google cloud storage and bigquery. 
 
-`Step 1` **Add a Google Cloud Bucket** 
+`Step 1` **Add a Google Cloud Bucket** <br>
 Create a cloud storage file system for us to interact with.<br>
 On the cloud storage buckets page, click `create`
-    - Select a globally unique name
-    - Location - choose your region. (Multi-region = EU)
-    - Storage Class - keep default of 'standard'
-    - Access Control - keep default of 'Uniform' and make sure that 'Enforce public access prevention' is checkmarked
-    - Protection - none 
+- Select a globally unique name
+- Location - choose your region. (Multi-region = EU)
+- Storage Class - keep default of 'standard'
+- Access Control - keep default of 'Uniform' and make sure that 'Enforce public access prevention' is checkmarked
+- Protection - none 
+<br>
+<br>
 
-
-
-`Step 2` **Add a Mage Service Account**
-Create a new service account for mage.<br>
+`Step 2` **Add a Mage Service Account**<br>
+Create a new service account for mage to connect to GCP.<br>
 - On the service account page, click 'create a new service account' 
+- Enter a name
 - Set the role to Basic > Owner. This allows the account to edit everything in GCS and BigQuery. You may want something more restrictive.  
 - Click Continue and Done 
+<br>
+<br>
 
-`Step 3` **Create a Key** 
+`Step 3` **Create a Key** <br>
 - Click on the service account that was just created
 - Go to the keys tab and select `Add Key > Create new key`
-- Select JSON and click Create. The JSON key will download to your computer
-- Move the JSON Key into the Mage project directory. This directory will be mounted as a volume on the mage container making these credentials accessible to mage. Mage can then use those credentials when interacting with google to authenticate. 
+- Select JSON and click Create. The JSON key file will download to your computer
+- Move the JSON Key into the Mage project directory. This directory will be mounted as a volume on the mage container `.:/home/src/` making these credentials accessible to mage. Mage can then use those credentials when interacting with google to authenticate. 
+<br>
+<br>
 
-`Step 4` **Authenticate Using Credentials** 
-- Go back into Mage into the io_config.yaml file
+`Step 4` **Authenticate Using Credentials** <br>
+- Go back into Mage to the io_config.yaml file
 - There are 2 ways that you can set up authentication in this file
     - Copy and paste all values from the JSON key file to the GOOGLE_SERVICE_ACC_KEY variables
     - OR Use the GOOGLE_SERVICE_ACC_KEY_FILEPATH     ***(Preferred)*** 
@@ -462,29 +470,35 @@ If using the GOOGLE_SERVICE_ACC_KEY_FILEPATH, then you can delete the first bloc
 
 JSON KEY FILEPATH
 The docker-compose.yaml specifies that the mage project directory will be mounted to the /home/src/ folder in the container. The json key file can therefor be reached at `"/home/src/key_file_name.json"`. Once this is specified, Mage will know where to look for the credentials. When any block with a google service is executed, mage will use that service account key to execute the cell. 
+<br>
+<br>
 
-`Step 5` **Test the Authentication** 
+`Step 5` **Test the Authentication** <br>
 - Go back to the test_config pipeline
 - Change the Data Loader to BigQuery and set the profile to Default
 - Click Run
-- This query collects to the cloud, runs the query there, and returns a answer on our computer. It confirms the existence of the DB in Google Cloud and that we have a good connection.   
+- This query connects to the cloud, runs the query there, and returns a answer on our computer. It confirms that we have a good connection.   
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/56849adc-4706-4ab2-a19c-4534c01f1ff7" width="auto" height="250">
+<br>
+<br>
 
-`STEP 6` **Test Google Cloud Storage** 
+`STEP 6` **Test Google Cloud Storage** <br>
 Confirm that we can read and write files to Google Cloud Storage
 - Go to the `example_pipeline` in Mage
 - Click on the last block in the pipeline and `Execute with all upstream blocks`. This will write titanic_clean.csv to the mage directory
-- Go to the Google Cloud Console go to the Mage Bucket page
-- You can upload the titanic_clean.csv by dragging and dropping on this page or clicking `upload files`
+- Go to the Mage Bucket page in the Google Cloud Console 
+- You can upload the titanic_clean.csv by dragging and dropping the file on to this page or by clicking `upload files`
 - Go back to the test_config pipeline and delete the data loader that is there
 - Add a `Python > Google Cloud Storage Data Loader` and name it test_gcs
 - Update the
     - bucket_name = 'your_bucket_name'
     - object_key = 'titanic_clean.csv'
-- Run and you'll see that the data is being loaded from Google Cloud. 
+- Run and you'll see that the data is being loaded from Google Cloud. <br>
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/8e6866c0-d810-482e-8087-ba2dece1c3f6" width="auto" height="250">
+<br>
+<br>
 
-## ETL: LOAD DATA TO GCS
+## LOAD DATA TO GCS
 In this module we will write data to Google Cloud Storage. Previously we wrote data to Postgres an OLTP database (structured row oriented vs column oriented). Now we are going to write data to Google Cloud Storage which is just a file system in the cloud. Often data is written to here because it is inexpensive and it can also accept semi unstructured data. 
 
 From there, the workflow would typically include staging, cleaning, transforming, and writing to an analytical source or using a data lake solution. 
@@ -560,9 +574,10 @@ def export_data(data, *args, **kwargs):
 ```
 The files can be found in the ny_taxi folder in the bucket. 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bd304b0a-0e98-4055-89fe-b4b496dc9801" width="auto" height="250">
+<br>
+<br>
 
-
-## ETL: GCS TO BIGQUERY 
+## LOAD DATA FROM GCS TO BIGQUERY 
 Take the data that we wrote to Google Cloud Storage and write it to BigQuery, an OLAP database. This mirrors a traditional data workflow. 
 
 1. Create a new batch pipeline and rename to gcs_to_bigquery
