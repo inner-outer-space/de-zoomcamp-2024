@@ -8,8 +8,10 @@
 [Mage](#mage) •
 [Mage Set Up](#mage-set-up) •
 [A Simple Pipeline](#a-simple-pipeline) •
-[Configuring Postgres](#configuring-postgres) • 
-[ETL](#etl) <br>
+[Configuring Postgres](#configuring-postgres) <br> 
+[Load Data to Postres](#load_data_to_postgres) •
+[Load Data to GCS](#load_data_to_gcs) •
+[Load Data from GCS to BigQuery](#load_data_from_gcs_to_bigquery) <br> 
 [Parameterized Execution](#parameterized-execution) • 
 [Backfills](#backfills) •
 [Deployment Prerequisites](#deployment-prerequisites) •
@@ -273,14 +275,13 @@ To test the new dev Postgres configuration profile, we'll create a new pipeline.
 <br>
 1. Add new standard (batch) Pipeline <br><br>
 2. In the pipeline settings, rename the pipeline to 'test_config'<br><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/a05ff57e-51d9-4d85-be94-0ae1f4a7adc4" width="500" height="auto"> <br><br><br>
-4. Return to pipeline page and add a `Data loader SQL block`<br><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/0632d69a-a626-415c-b3df-35d393acb390" width="500" height="auto"><br><br><br>
-5. Set the connection and profile and check mark `Use raw SQL` so that you don't have to deal with the Mage templating.<br><br> <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d5128b51-382e-406e-8776-a3853b149657" width="500" height="auto"> <br><br><br>
-6. Running the block with this SQL will connect to the Postgres DB and execute the command there. The result is returned from the Postgres DB, confirming that the connection worked. 
+3. Return to pipeline page and add a `Data loader SQL block`<br><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/0632d69a-a626-415c-b3df-35d393acb390" width="500" height="auto"><br><br><br>
+4. Set the connection and profile and check mark `Use raw SQL` so that you don't have to deal with the Mage templating.<br><br> <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d5128b51-382e-406e-8776-a3853b149657" width="500" height="auto"> <br><br><br>
+5. Running the block with this SQL will connect to the Postgres DB and execute the command there. The result is returned from the Postgres DB, confirming that the connection worked.
 ```sql
 SELECT 1;
 ```
-<br><br>
-7. NOTE: To delete a block - click on the more actions elipse in the block <br><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5359c5aa-8a13-4f4d-b0ad-468a690e1b5f" width="500" height="auto"> <br><br>
+6. Note: To delete a block - click on the more actions elipse in the block <br><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5359c5aa-8a13-4f4d-b0ad-468a690e1b5f" width="500" height="auto"> <br><br>
 <br>
 <br>
 
@@ -302,7 +303,8 @@ Modify the template as follows:
 - Data Types - declairing data types is recommended but not required
     - saves space in memory 
     - implicit assertion - load will fail if the data types don't match what has been defined. 
-- Date Columns - Create a list of datetime columns to be parsed by read_csv as dates   
+- Date Columns - Create a list of datetime columns to be parsed by read_csv as dates
+- Return the CSV 
 
 ```python
 @data_loader
@@ -352,7 +354,8 @@ Add a python generic transformation block. For this exercise, we'll assume that 
 To do this in the transformation block:
 - Add a preprocessing step that prints the number of rows with passenger_count = 0
 - Return a dataframe filtered for passenger_count > 0
-- Test that there are no records with passenger_count = 0
+- Add an assertion to test that there are no records with passenger_count = 0
+- ***Note:*** You can add multiple assertions. Every function decorated with a test decorator will be passed the dataframe as input and run tests. 
 
 ```python
 def transform(data, *args, **kwargs):
@@ -381,8 +384,8 @@ Update the following in the template <br>
 ```python
 @data_exporter
 def export_data_to_postgres(df: DataFrame, **kwargs) -> None:
-    schema_name = 'ny_taxi'  # Specify the name of the schema to export data to
-    table_name = 'yellow_cab_data'  # Specify the name of the table to export data to
+    schema_name = 'ny_taxi'                # Specify the name of the schema to export data to
+    table_name = 'yellow_cab_data'         # Specify the name of the table to export data to
     config_path = path.join(get_repo_path(), 'io_config.yaml')
     config_profile = 'dev'
 
@@ -391,8 +394,8 @@ def export_data_to_postgres(df: DataFrame, **kwargs) -> None:
             df,
             schema_name,
             table_name,
-            index=False,  # Specifies whether to include index in exported table
-            if_exists='replace',  # Specify resolution policy if table name already exists
+            index=False,                  # Specifies whether to include index in exported table
+            if_exists='replace',          # Specify resolution policy if table name already exists
         )
 ```
 <br>
@@ -401,6 +404,7 @@ def export_data_to_postgres(df: DataFrame, **kwargs) -> None:
 **CONFIRM DATA LOADED** <br>
 Add another SQL Data Loader block and query the DB to confirm that the data loaded.  
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/e00c667f-aa87-4ebc-8e29-99cb39f5e46c" width="auto" height="250">
+<br>
 <br>
 <br>
 
