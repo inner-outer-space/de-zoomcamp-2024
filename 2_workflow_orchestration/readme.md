@@ -762,21 +762,17 @@ There are a number of custom ways to do this in Mage
 
 4. You can define parameters from the Global Variables editor found on the left in Pipeline Editor view
 <img src ="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/26a62413-7a27-426c-b97e-c0b561fa2467" width = "275" height = "auto">
-   
+<br>
+<br>
 
-   
+## Pipeline Backfills
+This module covers backfilling pipelines. In the case of lost or missing data, you would need to build a script that will simulate each pipeline to recapture that missing data. 
 
+Mage has built in easy to use backfill functionality. It is especially useful for pipelines that are parameterized by date.  
 
-## Backfills
-This module covers backfilling pipelines. Imagine that you have missing data. Then you'll need to run some catchup pipelines to recapture that data. 
-
-Go to the backfills tab on the side nave. You can backfill by data and time. 
-
-Name it what you want and select the start and end data and an interval. This interval is 1 day so for a week there will be 8 days because last day is inclusive.  It will assign the execution date variable to each day in this pipeline. There will be a run for each day. 
-
-For each run the execution date is different. If in your pipeline is parameterized based on date this is easy. 
-
-
+Click into any parameterized pipeline, navigate to the Backfills page, and create a new Backfill.
+Set the fields as follows. Note that the date range includes the last day, so this will produce 8 files. It will assign the execution date variable that we specified in the last module to each day in this pipeline. 
+<img src ="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/52e881d6-8c83-4b74-bab0-70150dbb5988" width = "275" height = "auto">
 
 ## Deployment Prerequisites 
 Deploying mage to Google Cloud using Terraform. We are going to create an app and a back end database and persistant storage on google cloud. 
