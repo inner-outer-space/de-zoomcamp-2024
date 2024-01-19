@@ -657,6 +657,7 @@ Make sure
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/af0301cb-eca0-47a9-b96e-4d66731468f1" width="500" height="auto">
 <br>
 <br>
+
 #### SCHEDULING 
 Triggers are what schedule workflows in mage. 
 
@@ -751,8 +752,19 @@ def export_data_to_google_cloud_storage(df: DataFrame, **kwargs) -> None:
 ```
 The folders and file can be found on the bucket page in GCP <br>
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/b1659994-7394-41d2-a440-5e125db526da" width="500" height="auto">
+<br>
+<br>
+#### Passing Variables for Parameterizations
+There are a number of custom ways to do this in Mage 
+1. You can supply parameters when triggering pipelines through an API
+2. You can add runtime variables when you set a trigger in Mage
+<img src ="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/716d9864-08d6-4662-aba4-62259bfbdf8b" width = "275" height = "auto">
 
+4. You can define parameters from the Global Variables editor found on the left in Pipeline Editor view
+<img src ="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/26a62413-7a27-426c-b97e-c0b561fa2467" width = "275" height = "auto">
+   
 
+   
 
 
 ## Backfills
