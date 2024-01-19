@@ -798,8 +798,29 @@ Configuring the Mage Terraform
 First download the Mage Terraform templates from GIT. You'll find Terraform templates for each cloud provider in this folder. 
 `git clone https://github.com/mage-ai/mage-ai-terraform-templates.git`
 
-In the GCP folder you'll find the resources you need to 
+In the GCP folder you'll find the resources you need to terraform a mage container to GCP. 
 
+1. Make sure the `Cloud SQL Admin API` and `Cloud Filestore API` and `Serverless VPC Access API` are enabled. 
+2. Update the follwing variables in the variables.tf file with those specific to your project
+```terraform
+variable "project_id" {
+  type        = string
+  description = "The name of the project"
+  default     = "unique-gcp-project-id"
+}
+
+variable "region" {
+  type        = string
+  description = "The default compute region"
+  default     = "us-west2"
+}
+
+
+variable "zone" {
+  type        = string
+  description = "The default compute zone"
+  default     = "us-west2-a"
+}
 
 Whitelist your IP
 - go to networking tab
