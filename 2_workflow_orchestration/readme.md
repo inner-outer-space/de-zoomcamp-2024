@@ -775,30 +775,31 @@ Set the fields as follows. Note that the date range includes the last day, so th
 <img src ="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/52e881d6-8c83-4b74-bab0-70150dbb5988" width = "275" height = "auto">
 
 ## Deployment Prerequisites 
-Deploying mage to Google Cloud using Terraform. We are going to create an app and a back end database and persistant storage on google cloud. 
-
-Prerequisites
+Prerequisites for deploying Mage to Google Cloud using Terraform. 
 - Terraform installed locally
 - google cloud CLI
 - google cloud permissions
 - Mage Terraform templates
-
+<br>
+<br>
 ## CLOUD PERMISSIONS 
-
-Configuring the google cloud permissions
-- Artifact registry read
-- Artifact registry write 
+Go to Service Account for Mage in GCP. We originally added this service account with the owner role, which has full permissions ***not recommended***. 
+If you want to limit the permissions then replace owner with the following:  
+- Artifact registry reader
+- Artifact registry writer 
 - Cloud run developer  
 - Cloud sql admin
 - Service Account token creater
-
-GO to Service Account and add what is above. If you have owner as an assigned role on the service account, then you can do everything. But if you want to be more specific then add those above. 
-
+<br>
+<br>
 ## DEPLOYING TO GCP
 Configuring the Mage Terraform 
-git clone https://github.com
 
-In the folder you will see a terraform template for each cloud provider. Take a look at what is insite the gcp folder. 
+First download the Mage Terraform templates from GIT. You'll find Terraform templates for each cloud provider in this folder. 
+`git clone https://github.com/mage-ai/mage-ai-terraform-templates.git`
+
+In the GCP folder you'll find the resources you need to 
+
 
 Whitelist your IP
 - go to networking tab
