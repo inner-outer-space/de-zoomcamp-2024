@@ -75,9 +75,9 @@ A good orchestrator handles
 ## Mage
 ### Mage is an open-source pipeline tool for orchestrating, transforming, and integrating data 
 
-It's goal is to provide a good developer experience in mind and the ability to quickly iterate on pipelines. 
+It's goal is to provide a good developer experience with the ability to quickly iterate on pipelines. 
 
-The main components in Mage are projects, pipelines, and blocks. Within an instance of Mage you can have many projects. Each project can have many pipelines and a pipeline is made up of blocks, the atomic units that make up a transformation in Mage. Blocks can be written in SQL, Python, or R and can do whatever you want but are mostly used for load, export, and transform. 
+Mage's main components are projects, pipelines, and blocks. Within an instance of Mage you can have many projects, each project can have many pipelines, and a pipeline is made up of one or more blocks. Blocks are written in SQL, Python, or R. They are mostly used for loading, exporting, and transforming data but can be customized to do whatever you want. 
 <br>
 <br>
 <div align="center""> 
@@ -85,14 +85,14 @@ The main components in Mage are projects, pipelines, and blocks. Within an insta
 </div>
 <br>
 
-Other Built In Mage Blocks:
+Other types of built In Mage blocks:
 - Sensors - trigger on some event 
 - Conditionals
 - Dynamics - can create dynamic children
 - Webhooks
 
 
-Other Notable Functionality:  
+Other notable functionality:  
 - Data Integration
 - Unified Pipeline
 - Multi-user events
@@ -103,11 +103,11 @@ Other Notable Functionality:
 <table>
     <tr>
     <td>Hybrid Environment  </td>
-    <td>- you can use the gui or develope completely outside of the tool and sync.<br>- use blocks as testable, reusable pieces of code</td>
+    <td>- Use the gui or develop completely outside of the tool and sync.<br>- Use blocks as testable, reusable pieces of code</td>
     </tr>
     <tr>
     <td>Improved Developer Experience  </td>
-    <td>- you can use the gui or develope completely outside of the tool and sync.<br>- use blocks as testable, reusable pieces of code</td>
+    <td>- </td>
     </tr>
     <tr>
     <td>Built in Engineering<br> Best Practices  </td>
@@ -119,24 +119,26 @@ Other Notable Functionality:
 
 ### CORE COMPONENTS ###
 **Projects**
-- forms the basis for all the work you can do in Mage (like a GitHub repo)
-- contains the code for pipelines, blocks, and other assets
-- A Mage instance has one or more
+- Are the basis for all work done in Mage (like a GitHub repo)
+- Contain the code for pipelines, blocks, and other assets
+- A Mage instance has one or more projects
 
-**Pipeline**
-- workflow that performs some operation
-- pipeline contain blocks
-- a pipeline is represented by a YAML
+**Pipelines**
+- Workflow that perform some operation
+- Are made up of blocks
+- Are represented by a YAML
 
 **Blocks**
-- a SQL, Python, or R file that can be executed independently or as part of a pipeline
-- can be used to performa a variety of actions from simple data transformations to complex ML models
-- Changing a block in one place will change the block everywhere it is used, but blocks can be detached to separate instances if needed. 
+- SQL, Python, or R files that can be executed independently or as part of a pipeline
+- Can be used to performa a variety of actions from simple data transformations to complex ML models
+- Are defined globally. Changing a block in one place will change the block everywhere it is used, but blocks can be detached to separate instances if needed. 
 - Components of a block:  
-     - imports
-     - decorator
-     - function that returns a dataframe  (only thing that is executed when a block is run)
-     - assertion - test that runs on the output dataframe of the block
+     - Imports
+     - Decorators
+     - Function that returns dataframe
+     - Assertions
+        - tests that run on the output dataframe of the block
+        - you can have zero to many assertions
 <br>
 <br>
 
@@ -156,7 +158,7 @@ Rename `dev.env` to `.env` in the Mage Repo
 ```cli
 mv dev.env .env
 ```
-This file contains environmental variables for the project and could also include sensitive data in the future. The .gitignore file in this repo already includes `.env` so changing the name of this file ensures that it will not be uploaded to GIT. 
+This file contains environmental variables for the project and could also include sensitive data in the future. The .gitignore file in this repo already includes `.env`.  Changing the name of this file ensures that it will not be uploaded to GIT. 
 <br>
 <br>
 #### BUILD AND RUN MAGE CONTAINER
@@ -354,7 +356,7 @@ def load_data_from_api(*args, **kwargs):
 Add a python generic transformation block. For this exercise, we'll assume that the 'passenger_count = 0' records represent bad data and remove those rows. 
 <br>
 
-Modify the transformation block template:
+Modify the transformation block template as follows:
 - Add a preprocessing step that prints the number of rows with passenger_count = 0
 - Return a dataframe filtered for passenger_count > 0
 - Add an assertion to test that there are no records with passenger_count = 0
@@ -412,13 +414,13 @@ Add another SQL Data Loader block and query the DB to confirm that the data load
 <br>
 
 ## CONFIGURE GOOGLE CLOUD PLATFORM 
-In this module we are going to set up google cloud to allow to read and write data to both google cloud storage and bigquery. 
+In this module we are going to set up google cloud to allow Mage to read and write data to both google cloud storage and bigquery. 
 
 `Step 1` **Add a Google Cloud Bucket** <br>
-Create a cloud storage file system for us to interact with.<br>
+Create a cloud storage file system for Mage to interact with.<br>
 On the cloud storage buckets page, click `create`
 - Select a globally unique name
-- Location - choose your region. (Multi-region = EU)
+- Location - choose your region. (Multi-region = EU)  ***Note: The default location in our Mage container is US. Update to avoid conflict*** 
 - Storage Class - keep default of 'standard'
 - Access Control - keep default of 'Uniform' and make sure that 'Enforce public access prevention' is checkmarked
 - Protection - none 
@@ -426,7 +428,7 @@ On the cloud storage buckets page, click `create`
 <br>
 
 `Step 2` **Add a Mage Service Account**<br>
-Create a new service account for mage to connect to the GCP project.<br>
+Create a new service account that mage can use to connect to the GCP project.<br>
 - On the service account page, click 'create a new service account' 
 - Enter a name
 - Set the role to Basic > Owner. This allows the account to edit everything in GCS and BigQuery. You may want something more restrictive.  
@@ -438,7 +440,7 @@ Create a new service account for mage to connect to the GCP project.<br>
 - Click on the service account that was just created
 - Go to the keys tab and select `Add Key > Create new key`
 - Select JSON and click Create. The JSON key file will download to your computer
-- Move the JSON Key into the Mage project directory. This directory will be mounted as a volume on the mage container `.:/home/src/` making these credentials accessible to mage. Mage can then use those credentials when interacting with google to authenticate. 
+- Move the JSON Key into the Mage project directory. This directory will be mounted as a volume on the mage container `.:/home/src/` making these credentials accessible to mage. Mage can then use those credentials to authenticate. 
 <br>
 <br>
 
@@ -477,7 +479,7 @@ The docker-compose.yaml specifies that the mage project directory will be mounte
 - Go back to the test_config pipeline
 - Change the Data Loader to BigQuery and set the profile to Default
 - Click Run
-- This query connects to the cloud, runs the query there, and returns a answer on our computer. It confirms that we have a good connection.   
+- This query connects to the cloud, runs the query there, and returns a answer on our computer. Receiving an answer confirms that we have a good connection.   
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/56849adc-4706-4ab2-a19c-4534c01f1ff7" width="auto" height="250">
 <br>
 <br>
@@ -486,8 +488,8 @@ The docker-compose.yaml specifies that the mage project directory will be mounte
 Confirm that we can read and write files to Google Cloud Storage
 - Go to the `example_pipeline` in Mage
 - Click on the last block in the pipeline and `Execute with all upstream blocks`. This will write titanic_clean.csv to the mage directory
-- Go to the Mage Bucket page in the Google Cloud Console 
-- You can upload the titanic_clean.csv by dragging and dropping the file on to this page or by clicking `upload files`
+- Go to the Mage Bucket page in Google Cloud Console 
+- You can upload the titanic_clean.csv by dragging and dropping the file to this page or by clicking `upload files`
 - Go back to the test_config pipeline and delete the data loader that is there
 - Add a `Python > Google Cloud Storage Data Loader` and name it test_gcs
 - Update the
@@ -499,11 +501,11 @@ Confirm that we can read and write files to Google Cloud Storage
 <br>
 
 ## LOAD DATA TO GCS
-In this module we will write data to Google Cloud Storage. Previously we wrote data to Postgres an OLTP database (structured row oriented vs column oriented). Now we are going to write data to Google Cloud Storage which is just a file system in the cloud. Often data is written to cloud storage destinations because it is relatively inexpensive and it can also accept semi structured data better than a relationsal database. 
+In this module we will write data to Google Cloud Storage. Previously we wrote data to Postgres, an OLTP database (structured row oriented vs column oriented). Now we are going to write data to Google Cloud Storage which is just a file system in the cloud. Often data is written to cloud storage destinations because it is relatively inexpensive and it can also accept semi structured data better than a relationsal database. 
 
 From there, the workflow would typically include staging, cleaning, transforming, and writing to an analytical source or using a data lake solution. 
 
-CREATE A NEW PIPELINE 
+**CREATE A NEW PIPELINE** <br>
 We are going to create a piepline that reuses the blocks that we created in the earlier videos. 
 - Create a new pipeline
 - Reuse the blocks we created before by dragging the files from the left hand file directory into the center area.
@@ -518,11 +520,11 @@ Make sure that the blocks are connected correctly in the tree on the right<br>
 <br>
 <br>
 
-The pipeline is now set up now to import data and apply the cleaning step of removing rows with passenger_count = 0. Now we need to write the data to Google Cloud Storage.
+The pipeline is now set up now to import and transform the data. Now we need to write the data to Google Cloud Storage.
 - Add a `Python > Google Cloud Storage Data Exporter` and rename it 'taxi_to_gcs_parquet'
 - Modify the following variables
     - bucket_name = 'your_bucket_name'
-    - object_key = 'nyc_taxi_data.parquet'   mage is going to infer the parquet file format and write here.
+    - object_key = 'ny_taxi_data.parquet'   -- mage will infer the parquet file format when it writes the file.
 - Click `Execute will all upstream blocks`
 <br>
 This will load the data, clean it, and upload it directly to GCS. It will be visible on the bucket page. <br><br>
@@ -531,7 +533,7 @@ This will load the data, clean it, and upload it directly to GCS. It will be vis
 <br>
 
 ### PARTITIONING DATA 
-Very often datasets are too large to write to one single file. In that case, you'll want to partition it to multiple files breaking up the dataset based on a row or characteristic. Date is a good way to partition the taxi dataset because it creates an even distribution of rides and it is a natural way to query data. 
+Very often, datasets are too large to be written to a single file. In such cases, you'll want to partition the dataset into multiple files, breaking it up based on a specific row or characteristic. Using the date is a good way to partition the taxi dataset because it creates an even distribution of rides and provides a natural way to query the data."
 
 - Add a `Python > Generic (No Template) Data Exporter` and rename to 'taxi_to_gcs_partitioned_parquet'
 - The new block gets automatically added after the 'taxi_to_gcs_parquet' block. This is not where we want it. Click on the connection, delete it, and then add a connection directly from the transformer to the 'taxi_to_gcs_partitioned_parquet' block. Now the 2 export blocks will be run in parallel rather than sequentially. <br>
@@ -591,11 +593,12 @@ The files can be found in the ny_taxi folder in the bucket. <br>
 <br>
 
 ## LOAD DATA FROM GCS TO BIGQUERY 
-Take the data that we wrote to Google Cloud Storage and write it to BigQuery, an OLAP database. This mirrors a traditional data workflow. 
+In this module, we will take the data that we wrote to Google Cloud Storage and write it to BigQuery, an OLAP database. This mirrors a traditional data workflow. 
 
+#### LOAD THE DATA
 1. Create a new batch pipeline and rename to gcs_to_bigquery
 2. Add a `Python > Google Cloud Storage Data Loader` and rename to load_taxi_gcs
-3. We are going to be using the unpartitioned parquet file for this exercise. To load the partitioned files, you need to use pyarrow. 
+3. We will use the unpartitioned parquet file for this exercise. To load the partitioned files, you need to use pyarrow. 
 4. Update the
     - bucket_name = 'your_bucket_name'
     - object_key = 'ny_taxi_data.parquet'
@@ -616,8 +619,10 @@ def load_from_google_cloud_storage(*args, **kwargs):
     )
 ```
 <br>
+<br>
 
-The dataset is now loaded and we are going to do a transformation
+#### TRANSFORM THE DATA
+The dataset is now loaded. The next step is to transfom it. 
 1. Add a `Python > Generic(no Template) Transformer` and rename it to 'transformed_staged_data'
 2. Add a transformation that standardizes the column names to be all lower case with no spaces.
 ```python
@@ -633,8 +638,11 @@ def transform(data, *args, **kwargs):
 
 3. We can delete the assertion here as well, as this is a fairly simple transform.
 4. Run the transform block
+<br>
+<br>
 
-Now we can export the transformed data
+#### EXPORT THE DATA
+Now that the data is loaded and transformed, we can export it. 
 1. Add a `SQL Data Exporter` block and rename to 'write_taxi_to_biqquery'
 2. Update
     - connection: Bigquery
