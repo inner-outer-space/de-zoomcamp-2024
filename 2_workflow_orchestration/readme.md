@@ -771,7 +771,7 @@ This module covers backfilling pipelines. In the case of lost or missing data, y
 Mage has built in easy to use backfill functionality. It is especially useful for pipelines that are parameterized by date.  
 
 Click into any parameterized pipeline, navigate to the Backfills page, and create a new Backfill.
-Set the fields as follows. Note that the date range includes the last day, so this will produce 8 files. It will assign the execution date variable that we specified in the last module to each day in this pipeline. 
+Set the fields as follows. Note that the date range includes the last day, so this will produce 8 files. It will assign the execution date variable that we specified in the last module to each day in this pipeline. <br>
 <img src ="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/52e881d6-8c83-4b74-bab0-70150dbb5988" width = "275" height = "auto">
 
 ## Deployment Prerequisites 
@@ -800,8 +800,16 @@ First download the Mage Terraform templates from GIT. You'll find Terraform temp
 
 In the GCP folder you'll find the resources you need to terraform a mage container to GCP. 
 
-1. Make sure the `Cloud SQL Admin API` and `Cloud Filestore API` and `Serverless VPC Access API` are enabled. 
-2. Update the follwing variables in the variables.tf file with those specific to your project
+REFER TO THE MAGE DOCUMENTATION FOR DEPLOYING TO GPC USING TERRAFORM - [Mage-GPC SetUp](https://docs.mage.ai/production/deploying-to-cloud/gcp/setup) 
+
+#### BEFORE RUNNING TERRAFORM 
+1. Make sure the following APIs are enabled
+- Cloud SQL Admin API
+- Cloud Filestore API
+- Serverless VPC Access API
+- Security Token Service API
+2. Make sure that your `GOOGLE_APPLICATION_CREDENTIALS` is set to the path to the key that you set up for the mage service account. 
+3. Update the follwing variables in the variables.tf file with those specific to your project
 ```terraform
 variable "project_id" {
   type        = string
@@ -815,12 +823,16 @@ variable "region" {
   default     = "us-west2"
 }
 
-
 variable "zone" {
   type        = string
   description = "The default compute zone"
   default     = "us-west2-a"
 }
+```
+#### RUNNING TERRAFORM 
+
+1. Initialize google cloud cli and make sure you are in the right project
+2. 
 
 Whitelist your IP
 - go to networking tab
