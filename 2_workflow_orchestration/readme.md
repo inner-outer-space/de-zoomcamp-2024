@@ -655,7 +655,8 @@ Make sure
 - that your google locaion variable is set correctly `GOOGLE_LOCATION: EU` 
 <br>
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/af0301cb-eca0-47a9-b96e-4d66731468f1" width="500" height="auto">
-
+<br>
+<br>
 #### SCHEDULING 
 Triggers are what schedule workflows in mage. 
 
@@ -667,12 +668,14 @@ You can trigger workflows:
 <br>
 
 ## Parameterized Execution
-This module will cover loading datasets dependent on a parameter. The execution of the pipeline will be dependent on some variable being supplied to the DAG. Mage has many different types of variables (run time, global etc). In this example, we will look at run time variables. We are going to use the taxi data set and show how you can create a job for each day that the job is being run. This is useful if you want to write to output files on a daily basis. 
+This module will cover loading partial datasets or loading datasets dependent on a parameter. The execution of the DAG or pipeline is dependent on a variable being supplied to the DAG. Mage has many different types of variables (run time, global etc). 
 
-If you right click a pipeline, you can clone it. 
+In this example, we will use the taxi data set and create a different file for each day that the job is being run. This is useful if you want to write to output files on a daily basis. Note: This particular example can also be done using Pyarrow  
 
-Clone the load_to_gcp pipeline. Note: Blocks are global. Any edits made to blocks in this pipeline, will be reflected anywhere they are used. 
+`Step 1` Right click on the load_to_gcs pipeline and clone it
+Note: Blocks are global. Any edits made to blocks in this pipeline, will be reflected anywhere they are used. 
 
+'Step 2` Delete the 
 We can access keywords 
 
 ## Backfills
