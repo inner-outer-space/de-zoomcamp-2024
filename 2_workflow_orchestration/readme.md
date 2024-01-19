@@ -675,8 +675,85 @@ In this example, we will use the taxi data set and create a different file for e
 `Step 1` Right click on the load_to_gcs pipeline and clone it
 Note: Blocks are global. Any edits made to blocks in this pipeline, will be reflected anywhere they are used. 
 
-'Step 2` Delete the 
-We can access keywords 
+`Step 2` Delete the Partitioned File Data Exporter 
+This only deletes the block from the project. It does not delete it entirely. 
+
+`Step 3` Add a `Python > Generic(no template) Data Exporter` and copy the exiting Exporters code into it. 
+We don' want to modify the exporter that is in the pipeline because those changes will be propagated to our other pipelines. Instead we'll create a new generic exporter and copy the code from the existing exporter into it. 
+
+`Step 4` Delete the old exporter
+Delete the connections between the old exporter and the other blocks and delete the old exporter block. 
+
+`Step 5` Update Pipeline Tree and Rename Pipeline 
+Add connections in the pipeline tree to the new exporter and rename the pipeline to load_to_gcp_parameterized
+
+`Note on **kwargs` Every mage block has a key words argument. kwargs allows you to pass a variable number of keyword arguments to a function, and these arguments are then gathered into a dictionary within the function. There are a number of these variables that you can access in mage by default. Here is an example:
+```python
+def export_data(data, *args, **kwargs):
+    
+    # print list of kwargs 
+    print(list(kwargs.keys()))
+
+    # print value for key = execution_date
+    now = kwargs.get('execution_date')
+    print(now)
+    now2 = kwargs['execution_date']
+    print(now2)
+
+    # extract date, day #, time from datetime 
+    print(now.date())
+    print(now.day)
+    print(now.time())
+    print(now.strftime("%Y/%m/%d"))
+```
+
+`Step 6` Use the Keyword argument to write incremental data
+You can use the custom now date string to add year, month, and day folders to the file name. This way each file will be written to a folder specific to its date.   
+- Use the now date string to define the file path `now_fpath = now.strftime("%Y/%m/%d")`
+- then use that file path as a variable in the object_key `object_key = f'{now_fpath}/ny_taxi_data.parquet'`
+- Printing the file path out for today gives `2024/01/19/ny_taxi_data.parquet`
+
+`Step 7` Run the pipeline with the export_taxi_to_gcp_parameterized exporter.  
+
+```python
+from mage_ai.settings.repo import get_repo_path
+from mage_ai.io.config import ConfigFileLoader
+from mage_ai.io.google_cloud_storage import GoogleCloudStorage
+from pandas import DataFrame
+from os import path
+
+if 'data_exporter' not in globals():
+    from mage_ai.data_preparation.decorators import data_exporter
+
+
+@data_exporter
+def export_data_to_google_cloud_storage(df: DataFrame, **kwargs) -> None:
+    """
+    Template for exporting data to a Google Cloud Storage bucket.
+    Specify your configuration settings in 'io_config.yaml'.
+
+    Docs: https://docs.mage.ai/design/data-loading#googlecloudstorage
+    """
+    now = kwargs.get('execution_date')
+    now_fpath = now.strftime("%Y/%m/%d")
+
+    config_path = path.join(get_repo_path(), 'io_config.yaml')
+    config_profile = 'default'
+
+    bucket_name = 'mage-zoomcamp-lulu-eu'
+    object_key = f'{now_fpath}/daily-trips.parquet'
+
+    GoogleCloudStorage.with_config(ConfigFileLoader(config_path, config_profile)).export(
+        df,
+        bucket_name,
+        object_key,
+    )
+```
+The folders and file can be found on the bucket page in GCP <br>
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/b1659994-7394-41d2-a440-5e125db526da" width="500" height="auto">
+
+
+
 
 ## Backfills
 This module covers backfilling pipelines. Imagine that you have missing data. Then you'll need to run some catchup pipelines to recapture that data. 
