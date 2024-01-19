@@ -831,8 +831,12 @@ variable "zone" {
 ```
 #### RUNNING TERRAFORM 
 
-1. Initialize google cloud cli and make sure you are in the right project
-2. 
+1. Navigate to the GPC Terrraform folder
+2. Initialize google cloud cli gcloud init'
+3. 'gcloud auth application-default login'  terraform can then acces the credentials
+4. Run `Terraform Init`
+5. 
+
 
 Whitelist your IP
 - go to networking tab
