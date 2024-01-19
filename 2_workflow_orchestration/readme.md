@@ -807,7 +807,7 @@ REFER TO THE MAGE DOCUMENTATION FOR DEPLOYING TO GPC USING TERRAFORM - [Mage-GPC
 - Cloud SQL Admin API
 - Cloud Filestore API
 - Serverless VPC Access API
-- Security Token Service API
+
 2. Make sure that your `GOOGLE_APPLICATION_CREDENTIALS` is set to the path to the key that you set up for the mage service account. 
 3. Update the follwing variables in the variables.tf file with those specific to your project
 ```terraform
