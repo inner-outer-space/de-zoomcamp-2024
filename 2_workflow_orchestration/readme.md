@@ -836,8 +836,8 @@ variable "zone" {
 #### RUNNING TERRAFORM TO DEPLOY THE MAGE CONTAINER
 
 1. Navigate to the GPC Terrraform folder
-2. Initialize google cloud cli gcloud init'
-3. 'gcloud auth application-default login'  terraform can then acces the credentials
+2. Initialize google cloud cli `gcloud init`
+3. `gcloud auth application-default login`  terraform can then acces the credentials
 4. Run `Terraform Init`
 5. Run `Terraform Plan`
 6. Run `Terraform Apply` -- you will be prompted to create a Postgres password. Enter something you can remember. 
