@@ -842,13 +842,13 @@ variable "zone" {
 5. Run `Terraform Plan`
 6. Run `Terraform Apply` -- you will be prompted to create a Postgres password. Enter something you can remember. 
 7. Go to the Cloud Run page and click into the service
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/b96bca22-f99c-4cc3-9076-6ab59e429be0" height="auto" width=400">
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/b96bca22-f99c-4cc3-9076-6ab59e429be0" height="auto" width="500">
 
 8. Go to the networking tab, change the ingress control to All, and click save. <br>
 ***This is ok for the moment. In general, it is best to whitelist your IP***
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/10e06423-e4c2-47e0-8b30-150406e8dab8" height="auto" width=400">
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/10e06423-e4c2-47e0-8b30-150406e8dab8" height="auto" width="500">
 
-10. Use the link provided to access the Mage instance in the container deployed to Cloud Run.
+9. Use the link provided to access the Mage instance in the container deployed to Cloud Run.
 
     
 #### ISSUE 
@@ -874,7 +874,7 @@ When you are done experimenting with this Mage instance, then run `terraform-des
 There is a lot that you can do with your Mage instance in Google Run
 - sync to Git Hub
 - set up CI/CD
-- mount volumes to cloud storage or bigquery 
+- mount volumes to cloud storage or bigquery **(double check)**
 
 ## Next Steps
 
