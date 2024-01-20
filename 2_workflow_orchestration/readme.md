@@ -16,7 +16,7 @@
 [Parameterized Execution](#parameterized-execution) • 
 [Backfills](#pipeline-backfills) •
 [Deployment Prerequisites](#deployment-prerequisites) •
-[Deploying to GCS](#deploying-to-gcs) •
+[Deploying to GCP](#deploying-to-gcp) •
 [Next Steps](#next-steps)
 
 </div>
@@ -773,6 +773,8 @@ Mage has built in easy to use backfill functionality. It is especially useful fo
 Click into any parameterized pipeline, navigate to the Backfills page, and create a new Backfill.
 Set the fields as follows. Note that the date range includes the last day, so this will produce 8 files. It will assign the execution date variable that we specified in the last module to each day in this pipeline. <br>
 <img src ="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/52e881d6-8c83-4b74-bab0-70150dbb5988" width = "275" height = "auto">
+<br>
+<br>
 
 ## Deployment Prerequisites 
 Prerequisites for deploying Mage to Google Cloud using Terraform. 
@@ -782,6 +784,7 @@ Prerequisites for deploying Mage to Google Cloud using Terraform.
 - Mage Terraform templates
 <br>
 <br>
+
 ## CLOUD PERMISSIONS 
 Go to Service Account for Mage in GCP. We originally added this service account with the owner role, which has full permissions ***not recommended***. 
 If you want to limit the permissions then replace owner with the following:  
@@ -792,6 +795,7 @@ If you want to limit the permissions then replace owner with the following:
 - Service Account token creater
 <br>
 <br>
+
 ## DEPLOYING TO GCP
 Configuring the Mage Terraform 
 
@@ -808,7 +812,7 @@ REFER TO THE MAGE DOCUMENTATION FOR DEPLOYING TO GPC USING TERRAFORM - [Mage-GPC
 - Cloud Filestore API
 - Serverless VPC Access API
 
-2. Make sure that your `GOOGLE_APPLICATION_CREDENTIALS` is set to the path to the key that you set up for the mage service account. 
+2. Make sure that your `GOOGLE_APPLICATION_CREDENTIALS` is set to the key path set up for the mage service account or you can copy it into the GCP Mage Terraform folder.  
 3. Update the follwing variables in the variables.tf file with those specific to your project
 ```terraform
 variable "project_id" {
@@ -836,10 +840,15 @@ variable "zone" {
 3. 'gcloud auth application-default login'  terraform can then acces the credentials
 4. Run `Terraform Init`
 5. Run `Terraform Plan`
-6. Run `Terraform Apply` -- I used root when promted for a Postgres password
-7. Goto the Cloud Run page and click into the service
-8. Goto the networking tab and change the ingress control to allow all visitors. For the moment this is ok, but he will provide info on limiting by IP later
-10. Click on the link to open Mage in the cloud container
+6. Run `Terraform Apply` -- you will be prompted to create a Postgres password. Enter something you can remember. 
+7. Go to the Cloud Run page and click into the service
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/b96bca22-f99c-4cc3-9076-6ab59e429be0" height="auto" width=400">
+
+8. Go to the networking tab, change the ingress control to All, and click save. <br>
+***This is ok for the moment. In general, it is best to whitelist your IP***
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/10e06423-e4c2-47e0-8b30-150406e8dab8" height="auto" width=400">
+
+10. Use the link provided to access the Mage instance in the container deployed to Cloud Run.
 
     
 #### ISSUE 
