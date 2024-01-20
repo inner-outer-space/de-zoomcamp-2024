@@ -14,7 +14,7 @@
 [Load Data to GCS](#load-data-to-gcs) •
 [Load Data from GCS to BigQuery](#load-data-from-gcs-to-bigquery) <br> 
 [Parameterized Execution](#parameterized-execution) • 
-[Backfills](#backfills) •
+[Backfills](#pipeline-backfills) •
 [Deployment Prerequisites](#deployment-prerequisites) •
 [Deploying to GCS](#deploying-to-gcs) •
 [Next Steps](#next-steps)
@@ -829,16 +829,22 @@ variable "zone" {
   default     = "us-west2-a"
 }
 ```
-#### RUNNING TERRAFORM 
+#### RUNNING TERRAFORM TO DEPLOY THE MAGE CONTAINER
 
 1. Navigate to the GPC Terrraform folder
 2. Initialize google cloud cli gcloud init'
 3. 'gcloud auth application-default login'  terraform can then acces the credentials
 4. Run `Terraform Init`
-5. 
+5. Run `Terraform Plan`
+6. Run `Terraform Apply` -- I used root when promted for a Postgres password
+7. Goto the Cloud Run page and click into the service
+8. Goto the networking tab and change the ingress control to allow all visitors. For the moment this is ok, but he will provide info on limiting by IP later
+10. Click on the link to open Mage in the cloud container
 
-#### ISSUES 
-I received the following error concerning quoatas 
+    
+#### ISSUE 
+I received the following error concerning security policy quotas. Apparently, the limit with the free tier is zero so this action failed. The container still deployed and was visible on the Google Run page. I was able to access Mage in the cloud container by clicking on the link on that page. 
+
 ```cli
 ╷
 │ Error: Error waiting for Creating SecurityPolicy "mage-data-prep-security-policy": Quota 'SECURITY_POLICIES' exceeded.  Limit: 0.0 globally.
@@ -850,84 +856,16 @@ I received the following error concerning quoatas
 │   with google_compute_security_policy.policy,
 │   on load_balancer.tf line 7, in resource "google_compute_security_policy" "policy":
 │    7: resource "google_compute_security_policy" "policy" {
-│ 
-╵
-╷
-│ Error: Error waiting to create Service: resource is in failed state "Ready:False", message: Revision 'mage-data-prep-00001-4hb' is not ready and cannot serve traffic. The user-provided container failed to start and listen on the port defined provided by the PORT=6789 environment variable. Logs for this revision might contain more information.
-│ 
-│ Logs URL: https://console.cloud.google.com/logs/viewer?project=aerobic-badge-408610&resource=cloud_run_revision/service_name/mage-data-prep/revision_name/mage-data-prep-00001-4hb&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22mage-data-prep%22%0Aresource.labels.revision_name%3D%22mage-data-prep-00001-4hb%22 
-│ For more troubleshooting guidance, see https://cloud.google.com/run/docs/troubleshooting#container-failed-to-start
-│ 
-│   with google_cloud_run_service.run_service,
-│   on main.tf line 65, in resource "google_cloud_run_service" "run_service":
-│   65: resource "google_cloud_run_service" "run_service" {
-│ 
-```
-I found a stack comment that said there are 2 profiles for using cloud armor - standard and managed protection. The quota = 0 for google the free tier but there is the possibility that I might be able to increase that quota by switching to managed protection.   
-
-After looking into that, I decided against it because it would require moving my account to billing. 
-https://cloud.google.com/armor/docs/managed-protection-using
-
-Next Try - comment this resource section and all the rules out in the terraform load balancer file... hopefully dont need this :)
-``` terraform
-# resource "google_compute_security_policy" "policy" {
-#   name = "${var.app_name}-security-policy"
-
-#   rule {
-#     action   = "allow"
-#     priority = "100"
-#     match {
-#       versioned_expr = "SRC_IPS_V1"
-#       config {
-#         src_ip_ranges = ["${chomp(data.http.myip.response_body)}/32"]
-#       }
-#     }
-#     description = "Whitelist IP"
-#   }
-
-  # Uncomment the example rule below to whitelist IPs for specific endpoints.
-  # rule {
-  #   action   = "allow"
-  #   priority = "200"
-  #   match {
-  #     expr {
-  #       # https://cloud.google.com/armor/docs/rules-language-reference
-  #       expression = "request.path.startsWith('/api/pipeline_schedules/100/pipeline_runs') && inIpRange(origin.ip, '1.1.1.1/32')"
-  #     }
-  #   }
-  #   description = "Whitelist IP for specific endpoints"
-  # }
-
-#   rule {
-#     action   = "deny(403)"
-#     priority = "2147483647"
-#     match {
-#       versioned_expr = "SRC_IPS_V1"
-#       config {
-#         src_ip_ranges = ["*"]
-#       }
-#     }
-#     description = "default rule"
-#   }
-# }
 ```
 
+#### Terraform Destroy
+When you are done experimenting with this Mage instance, then run `terraform-destroy` to take all the resources down. 
 
-
-Whitelist your IP
-- go to networking tab
-- Change ingress control to let everyone in... but better to follow the directions he shared.
-
-You can 
-
-Version control in Mage 
-Best way to develope and deploy resources to the cloud. Develope locally and push to GIT and the mage in the cloud would be synxced. 
-
-Terraform Destroy. 
-
-How do you sync to Git Hub
-How do you set up CI/CD
-
+#### MORE 
+There is a lot that you can do with your Mage instance in Google Run
+- sync to Git Hub
+- set up CI/CD
+- mount volumes to cloud storage or bigquery 
 
 ## Next Steps
 
