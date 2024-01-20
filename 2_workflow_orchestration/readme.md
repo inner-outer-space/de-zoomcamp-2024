@@ -837,6 +837,82 @@ variable "zone" {
 4. Run `Terraform Init`
 5. 
 
+#### ISSUES 
+I received the following error concerning quoatas 
+```cli
+╷
+│ Error: Error waiting for Creating SecurityPolicy "mage-data-prep-security-policy": Quota 'SECURITY_POLICIES' exceeded.  Limit: 0.0 globally.
+│       metric name = compute.googleapis.com/security_policies
+│       limit name = SECURITY-POLICIES-per-project
+│       dimensions = map[global:global]
+│ 
+│ 
+│   with google_compute_security_policy.policy,
+│   on load_balancer.tf line 7, in resource "google_compute_security_policy" "policy":
+│    7: resource "google_compute_security_policy" "policy" {
+│ 
+╵
+╷
+│ Error: Error waiting to create Service: resource is in failed state "Ready:False", message: Revision 'mage-data-prep-00001-4hb' is not ready and cannot serve traffic. The user-provided container failed to start and listen on the port defined provided by the PORT=6789 environment variable. Logs for this revision might contain more information.
+│ 
+│ Logs URL: https://console.cloud.google.com/logs/viewer?project=aerobic-badge-408610&resource=cloud_run_revision/service_name/mage-data-prep/revision_name/mage-data-prep-00001-4hb&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22mage-data-prep%22%0Aresource.labels.revision_name%3D%22mage-data-prep-00001-4hb%22 
+│ For more troubleshooting guidance, see https://cloud.google.com/run/docs/troubleshooting#container-failed-to-start
+│ 
+│   with google_cloud_run_service.run_service,
+│   on main.tf line 65, in resource "google_cloud_run_service" "run_service":
+│   65: resource "google_cloud_run_service" "run_service" {
+│ 
+```
+I found a stack comment that said there are 2 profiles for using cloud armor - standard and managed protection. The quota = 0 for google the free tier but there is the possibility that I might be able to increase that quota by switching to managed protection.   
+
+After looking into that, I decided against it because it would require moving my account to billing. 
+https://cloud.google.com/armor/docs/managed-protection-using
+
+Next Try - comment this resource section and all the rules out in the terraform load balancer file... hopefully dont need this :)
+``` terraform
+# resource "google_compute_security_policy" "policy" {
+#   name = "${var.app_name}-security-policy"
+
+#   rule {
+#     action   = "allow"
+#     priority = "100"
+#     match {
+#       versioned_expr = "SRC_IPS_V1"
+#       config {
+#         src_ip_ranges = ["${chomp(data.http.myip.response_body)}/32"]
+#       }
+#     }
+#     description = "Whitelist IP"
+#   }
+
+  # Uncomment the example rule below to whitelist IPs for specific endpoints.
+  # rule {
+  #   action   = "allow"
+  #   priority = "200"
+  #   match {
+  #     expr {
+  #       # https://cloud.google.com/armor/docs/rules-language-reference
+  #       expression = "request.path.startsWith('/api/pipeline_schedules/100/pipeline_runs') && inIpRange(origin.ip, '1.1.1.1/32')"
+  #     }
+  #   }
+  #   description = "Whitelist IP for specific endpoints"
+  # }
+
+#   rule {
+#     action   = "deny(403)"
+#     priority = "2147483647"
+#     match {
+#       versioned_expr = "SRC_IPS_V1"
+#       config {
+#         src_ip_ranges = ["*"]
+#       }
+#     }
+#     description = "default rule"
+#   }
+# }
+```
+
+
 
 Whitelist your IP
 - go to networking tab
