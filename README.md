@@ -7,9 +7,19 @@ This repo contains notes and assignments for the 2024 [Data Talks Data Engineeri
 
 ## NOTES 
 #### WEEK 1 
-1. [Docker & SQL](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/week_1_basics_n_setup/docker_sql/readme.md)
-2. [Terraform & GCP](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/week_1_basics_n_setup/terraform_gcp/readme.md)
-3. [Set Up]()
+- [Docker & SQL](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/week_1_basics_n_setup/docker_sql/readme.md)
+- [Terraform & GCP](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/week_1_basics_n_setup/terraform_gcp/readme.md)
+#### WEEK 2 
+- [Orchestration & Mage]()
+#### WEEK 3 
+- [Data Warehouses & BigQuery]()
+#### WEEK 4 
+- []()
+#### WEEK 5 
+- []()
+#### WEEK 6 
+- [Streaming with Kafka]()
+
 
 ## RESOURCES
 
