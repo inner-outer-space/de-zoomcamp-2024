@@ -30,7 +30,12 @@
 - We are going to run Mage and Postgres in a docker environment. 
 - We will then take the NY taxi data set, transform it and load it to both Postgres and GCS
 - We will perform additional transformations using pandas, apache arrow, and sql and then load to BigQuery 
-- We will extract, transform, and load data to multiple sources. 
+- We will extract, transform, and load data to multiple sources.
+
+<div align = center>
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/fe77f070-0f24-47e0-8793-1526e96661c1" width="500" height="auto"> 
+</div>
+
 
 **WHAT IS ORCHESTRATION**
 <br>
