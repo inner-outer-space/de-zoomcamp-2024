@@ -40,13 +40,27 @@ This repo contains notes and assignments for the 2024 [Data Talks Data Engineeri
 </details>
 
 <details>
+<summary> PGAdmin </summary>
+  
+  - [PG Admin]()
+</details>
+
+<details>
 <summary>Vizualization</summary>
 
   - [Vizualize in Python](https://hossainlab.github.io/dataviz/notebooks/MPL01-Intro%20to%20Data%20Visualization.html)
 </details>
 
 <details>
-<summary> GCloud CLI </summary>
+<summary> GCloud </summary>
   
-  - [Auth Login](https://mahira-technology.medium.com/gcloud-auth-login-using-cli-658ba1a0268f)
+  - [CLI Auth Login](https://mahira-technology.medium.com/gcloud-auth-login-using-cli-658ba1a0268f)
 </details>
+
+<details>
+<summary> Mage </summary>
+  
+  - [Mage Dox]()
+</details>
+
+
