@@ -100,9 +100,9 @@ How many columns need to be renamed to snake case?
 
 ## Question 6. Data Exporting
 
-Once exported, how many partitions (folders) are present in Google Cloud?  ***I GET 95***
+Once exported, how many partitions (folders) are present in Google Cloud?  ***I GET 95 for the days and then 1 for green taxi***
 
-* 96
+* 96 ***THIS ONE***
 * 56
 * 67
 * 108
