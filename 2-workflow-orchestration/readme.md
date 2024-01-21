@@ -41,7 +41,7 @@
 <br>
 Orchestration is the process of dependency management, facilitated through automation.
 <br>
-A large part of data engineering is extracting, transforming, and loading data between multiple sources. The goal is to automate as many processes as possible.  A data orchestrator helps in this regard by managing scheduling, triggering, monitoring, and resource allocation for DE workflows.
+A large part of data engineering is extracting, transforming, and loading data between multiple sources. An engineer's goal is to automate as many processes as possible.  A data orchestrator helps in this regard by managing scheduling, triggering, monitoring, and resource allocation for DE workflows.
 
 Every workflow requires sequential steps:
 - Steps = tasks = blocks (mage lingo)
@@ -70,7 +70,7 @@ A good orchestrator handles
 - observability 
 - debugging
 - compliance and auditing
-- prioritizes developer experience and facilitates seamless development
+- and prioritizes developer experience and facilitates seamless development
     - flow state
     - feedback loops - ability to iterate quickly
     - cognitive load 
@@ -108,17 +108,22 @@ Other notable functionality:
 <table>
     <tr>
     <td>Hybrid Environment  </td>
-    <td>- Use the gui or develop completely outside of the tool and sync.<br>- Use blocks as testable, reusable pieces of code</td>
+    <td>- Use the gui or develop completely outside of the tool and sync.<br>
+        - Use blocks as testable, reusable pieces of code
+    </td>
     </tr>
     <tr>
     <td>Improved Developer Experience  </td>
-    <td>- </td>
+    <td>- Code and test in parallel <br>
+        - Reduce the dependencies on different tools and the need to switch between them
+    </td>
     </tr>
     <tr>
     <td>Built in Engineering<br> Best Practices  </td>
     <td>- In line testing and debugging<br>
-- Fully-featured observability capability including integration with dbt for complete visibility of your pipelines<br> 
-- Blocks help you adhere to Dry pinciples (**D**on't **R**epeat **Y**ourself)</td>
+        - Fully-featured observability capability including integration with dbt for complete visibility of your pipelines<br> 
+        - Blocks help you adhere to Dry pinciples (**D**on't **R**epeat **Y**ourself)
+    </td>
     </tr>
 </table>
 
