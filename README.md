@@ -12,29 +12,35 @@ This repo contains notes and assignments for the 2024 [Data Talks Data Engineeri
 3. [Set Up]()
 
 ## RESOURCES
+
 <details>
 <summary>GIT</summary>      
-- **[GIT](https://dangitgit.com/)** General
-- **[GIT EXTENDED](https://dangitgit.com/)** Special commit cases
-- **[GIT README](https://pragmaticpineapple.com/adding-custom-html-and-css-to-github-readme/)** Adding HTML and CSS to GIT Readme  
+- [GIT](https://dangitgit.com/) General
+- [GIT EXTENDED](https://dangitgit.com/) Special commit cases
+- [GIT README](https://pragmaticpineapple.com/adding-custom-html-and-css-to-github-readme/) Adding HTML and CSS to GIT Readme  
 </details>
 
 <details>
 <summary>TERRAFORM</summary> 
--**[Terraform State Files](https://www.devopsschool.com/blog/what-is-terraform-tfstate-backup-file-in-terraform/)
+- [Terraform State Files](https://www.devopsschool.com/blog/what-is-terraform-tfstate-backup-file-in-terraform/)
 </details>
 
 <details>
 <summary>DOCKER</summary>      
-- **[DOCKER COMMANDS](https://linuxhandbook.com/essential-docker-commands/)**
+- [DOCKER COMMANDS](https://linuxhandbook.com/essential-docker-commands/)
 </details>
 
 <details>
 <summary>PostgreSQL</summary>
-**[Postgres](https://www.postgresql.org/docs/16/index.html)** PostgreSQL official documentation  
+- [Postgres](https://www.postgresql.org/docs/16/index.html) PostgreSQL official documentation  
 </details>
 
 <details>
 <summary>Vizualization</summary>
-**[Vizualize in Python](https://hossainlab.github.io/dataviz/notebooks/MPL01-Intro%20to%20Data%20Visualization.html)
+- [Vizualize in Python](https://hossainlab.github.io/dataviz/notebooks/MPL01-Intro%20to%20Data%20Visualization.html)
+</details>
+
+<details>
+<summary> GCLOUD CLI </summary>
+- [Auth Login](https://mahira-technology.medium.com/gcloud-auth-login-using-cli-658ba1a0268f)
 </details>
