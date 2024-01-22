@@ -320,14 +320,33 @@ CHOOSING AN ALGORITHM
 Source: BigQuery Documnetation 
 
 BUILDING A MODEL IN BIGQUERY 
-We will build a model based on the NY taxi data that will predict the tip amount based on the following data points:
+We will build a model based on the NY taxi data that will predict the tip amount based on the following data points and excluding records with fare amount =0 because those all have tip amount of 0. 
 
-``sql 
+```sql 
 -- SELECT THE COLUMNS INTERESTED FOR YOU
 SELECT passenger_count, trip_distance, PULocationID, DOLocationID, payment_type, fare_amount, tolls_amount, tip_amount
 FROM `taxi-rides-ny.nytaxi.yellow_tripdata_partitoned` WHERE fare_amount != 0;
 ```
 
+BQ Feature preprocessing functionaliy 
+- automatic transformation include:
+    - numeric standardization
+    - one hot encoding
+    - multi hot encoding
+    - and more   
+- manual transformations include:
+    - bucketization
+    - polynomial expansion
+    - feature cross
+    - Ngrams
+    - quantile bucketization
+    - min max scaler
+    - standard scaler  
+
+`STEP 3` CAST DATA TYPES OF COLUMNS 
+
+This step is confusing to me because a model does not take strings in. Usually preprocessing for a ML model requires that all columns be changed to something numeric. This is tricky when dealing with categories because the model can assume that there is a significance to a high or low number. The automatic feature transformations will convert these columns back to something numeric. One hot or multi hot will avoid the issue mentioned before. Maybe that is why these are first converted back to string, so that BQ can hopefully convert the columns in a way to avoid this issue. 
+ 
 ```sql
 -- CREATE A ML TABLE WITH APPROPRIATE TYPE
 CREATE OR REPLACE TABLE `taxi-rides-ny.nytaxi.yellow_tripdata_ml` (
