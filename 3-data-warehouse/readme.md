@@ -245,6 +245,189 @@ BigQuery stores the data in a seperate storage called Colossus, where the data i
 
 Colossus is a cheap form of storage. Most of the costs are incurred when reading or writing the data, which is done by compute. 
 
+How does compute and storage network communicate. Jupiter network - 1TB/second speed. 
+
+Dremel is the query execution structure. It divides the query into a tree strucuture. It seperates the query so that each node can execute a subset. 
+
+Record oriented vs Column oriented.
+<div align = center>
+<img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/6ce6b68e-7322-4969-882f-0ce972b2ab86" width ="500" height = "auto">
+</div>
+
+ BQ uses column oriented structure. You can aggregate better with column oriented.  BQ does not query all the columns at once. The general pattern is to query a few columns and filter and aggregate on different parts. 
+
+DREMEL 
+When dremel receives a query, it understands how to subdivide the query. 
+
+The mixers then get the modified query and it is further divided into subsets of queries assigned to the leaf nodes. The leaf nodes actually make the queries and executes any operations and returns the data back to the mixers and then back to the root server and then it is aggregated and return. 
+
+The distribution of workers is what makes BQ so fast. 
+
+<div align = center>
+<img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/3d00a91f-aec3-4620-867f-83ce7e345135" width ="500" height = "auto">
+</div>
+
+BQ REFERENCES 
+https://cloud.google.com/bigquery/docs/how-to
+https://research.google/pubs/pub36632/
+https://panoply.io/data-warehouse-guide/bigquery-architecture/
+http://www.goldsborough.me/distributed-systems/2019/05/18/21-09-00-a_look_at_dremel/
 
 ## ML in BQ 
+This module covers ML in BigQuery. We are going to build a model, export it, and run it with Docker. 
+
+ML in BigQuery
+- Target audience is Data Analysts and Managers
+- You can work in just SQL, there is no need for Python or Java
+- No need to export data into a different system
+    - BQ allows you to build the model in the data wharehouse directly. 
+
+PRICING 
+Free
+- 10 GB per month of data storage
+- 1 TB per month of queries processed
+- ML Create model step: First 10 GB per month is free
+
+PAID 
+- $250/ TB for model creation 
+      - Logistic and Linear regression
+      - K-Means clustering
+      - Time Series  
+- $5 per TB, plus Vertex AI training cost 
+    - AutoML Tables
+    - DNNs
+    - Boosted Trees  
+
+#### MACHINE LEARNING DEVELOPMENT STEPS 
+
+<div align = center>
+<img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d02c7596-d1c8-4f69-bedd-5e33fd55b61f" width ="500" height = "auto">
+</div>
+
+BQ helps in all these steps. 
+- Automatic feature enginnering
+- Allows to choose between models
+- Automated hyperparameter tuning
+- Data splitting
+- Provides many error metrics to validate model
+- Deploy using a docker image
+
+CHOOSING AN ALGORITHM 
+
+<div align = center>
+<img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/6afab632-97e7-4cc4-9f72-fd2a5deab958" width ="500" height = "auto">
+</div>
+Source: BigQuery Documnetation 
+
+BUILDING A MODEL IN BIGQUERY 
+We will build a model based on the NY taxi data that will predict the tip amount based on the following data points:
+
+``sql 
+-- SELECT THE COLUMNS INTERESTED FOR YOU
+SELECT passenger_count, trip_distance, PULocationID, DOLocationID, payment_type, fare_amount, tolls_amount, tip_amount
+FROM `taxi-rides-ny.nytaxi.yellow_tripdata_partitoned` WHERE fare_amount != 0;
+```
+
+```sql
+-- CREATE A ML TABLE WITH APPROPRIATE TYPE
+CREATE OR REPLACE TABLE `taxi-rides-ny.nytaxi.yellow_tripdata_ml` (
+`passenger_count` INTEGER,
+`trip_distance` FLOAT64,
+`PULocationID` STRING,
+`DOLocationID` STRING,
+`payment_type` STRING,
+`fare_amount` FLOAT64,
+`tolls_amount` FLOAT64,
+`tip_amount` FLOAT64
+) AS (
+SELECT passenger_count, trip_distance, cast(PULocationID AS STRING), CAST(DOLocationID AS STRING),
+CAST(payment_type AS STRING), fare_amount, tolls_amount, tip_amount
+FROM `taxi-rides-ny.nytaxi.yellow_tripdata_partitoned` WHERE fare_amount != 0
+);
+```
+
+
+```sql
+-- CREATE MODEL WITH DEFAULT SETTING
+CREATE OR REPLACE MODEL `taxi-rides-ny.nytaxi.tip_model`
+OPTIONS
+(model_type='linear_reg',
+input_label_cols=['tip_amount'],
+DATA_SPLIT_METHOD='AUTO_SPLIT') AS
+SELECT
+*
+FROM
+`taxi-rides-ny.nytaxi.yellow_tripdata_ml`
+WHERE
+tip_amount IS NOT NULL;
+```
+
+```sql
+-- CHECK FEATURES
+SELECT * FROM ML.FEATURE_INFO(MODEL `taxi-rides-ny.nytaxi.tip_model`);
+```
+```sql
+-- EVALUATE THE MODEL
+SELECT
+*
+FROM
+ML.EVALUATE(MODEL `taxi-rides-ny.nytaxi.tip_model`,
+(
+SELECT
+*
+FROM
+`taxi-rides-ny.nytaxi.yellow_tripdata_ml`
+WHERE
+tip_amount IS NOT NULL
+));
+```
+```sql 
+-- PREDICT THE MODEL
+SELECT
+*
+FROM
+ML.PREDICT(MODEL `taxi-rides-ny.nytaxi.tip_model`,
+(
+SELECT
+*
+FROM
+`taxi-rides-ny.nytaxi.yellow_tripdata_ml`
+WHERE
+tip_amount IS NOT NULL
+));
+```
+```sql
+-- PREDICT AND EXPLAIN
+SELECT
+*
+FROM
+ML.EXPLAIN_PREDICT(MODEL `taxi-rides-ny.nytaxi.tip_model`,
+(
+SELECT
+*
+FROM
+`taxi-rides-ny.nytaxi.yellow_tripdata_ml`
+WHERE
+tip_amount IS NOT NULL
+), STRUCT(3 as top_k_features));
+```
+
+```sql 
+-- HYPER PARAM TUNNING
+CREATE OR REPLACE MODEL `taxi-rides-ny.nytaxi.tip_hyperparam_model`
+OPTIONS
+(model_type='linear_reg',
+input_label_cols=['tip_amount'],
+DATA_SPLIT_METHOD='AUTO_SPLIT',
+num_trials=5,
+max_parallel_trials=2,
+l1_reg=hparam_range(0, 20),
+l2_reg=hparam_candidates([0, 0.1, 1, 10])) AS
+SELECT
+*
+FROM
+`taxi-rides-ny.nytaxi.yellow_tripdata_ml`
+WHERE
+tip_amount IS NOT NULL;
+```
 
