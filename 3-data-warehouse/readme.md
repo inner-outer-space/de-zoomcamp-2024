@@ -4,15 +4,14 @@
 (*for Linux*)
 <hr />
 
-[OLAP vs OLTP]() • 
-[Data Warehouse]() •
-[BigQuery]() • 
-[Cost]() • <br>
-[Partitions & Clustering]() • 
-[Best Practices]() •
-[Internals]() •
-[ML in BQ]() •
-
+[OLAP vs OLTP](olag-vs-oltp) • 
+[Data Warehouse](data-warehouse) •
+[BigQuery](bigquery) • <br>
+[Partitions & Clustering](partitioning-and-clustering) • 
+[Best Practices](best-practices) •
+[Internals](internals) •
+[ML in BQ](ml-in-bigquery) •
+[Deploying an ML Model](deploying-an-ml-model) 
 </div>
 
 <hr />
@@ -52,20 +51,29 @@ BigQuery is a fully managed and serverless data warehouse and analytics platform
 - Integrates with business intelligence and visualization tools 
 - Maximizes flexibility by separating the compute engine used to analyze data from the server used to store it
 
-CONSIDERATIONS
-- BigQuery caches data. Disable that to avoid confusion. 
-- BQ Provides open source data. You can search for the data by name. 
+#### CACHING 
+- BigQuery caches query resultsto improve query performance and reduce costs.
+- This can lead to unexpected query results if you're not aware of it.
+- If you want to ensure that each query reflects the most up-to-date data, you can disable caching temporarily or set cache expiration policies.
+
+#### OPEN SOURCE DATA SETS 
+- BigQuery provides access to a wide range of public datasets, many of which are open-source and freely available to users.
+- You can find available public datasets in BigQuery by searching for them using keywords or dataset names in the BigQuery Console or UI.
 
 #### COST 
 Pricing Models
 - On Demand - $5 per TB of data processed
 - Flat Rate - based on the number or pre requested slots. 100 slots costs ~ $2,000/mos which is ~400TB of data processed on demand. 
 
-## PARTITIONS AND CLUSTERING 
-Create an external table from the Taxi dataset. We have already imported the data into GCS. Bigquery allows you to create external tables from data stored in GCS. 
+## PARTITIONING AND CLUSTERING 
+A partitioned table is a type of database table in which the data is divided into multiple smaller sub-tables or partitions based on a specific column or set of columns, typically a date or timestamp column. The primary purpose of partitioning tables is to improve query performance and data management by allowing the database system to read and write only the relevant partitions when executing queries or performing maintenance operations. When done correctly, partitioning can considerably improve performance.  
 
-BigQuery infered the data types of the columns from the CSV. You don't have define the schema but you can do it explicitely. BQ is not able to datamine the rows and the cost because the data itself is not inside BQ, it is inside GCS. 
+#### BigQuery External Tables
+An external table in BigQuery references data stored in external data sources, typically in GCS or other external storage systems. External tables allow you to query and analyze data that is located in different storage locations without having to load the data into BigQuery tables. It costs less to store data in GCS than it does to store it in BigQuery. 
 
+External tables support various data formats, including Avro, Parquet, ORC, JSON, and CSV.  BigQuery can automatically infer the schema of external data sources when you create an external table, or you can specify the schema manually.  Since the data is not in BigQuery, it will not be able to estimate the cost of the query prior to running it. Additionally, querires run slower when the data is housed externally. This may be an issue when dealing with large datasets.  
+
+We have already imported the New York taxi CSV files into GCS. Now we will create an external table in BigQuery that points to that data.  
 ```sql 
 -- Creating external table referring to gcs path
 CREATE OR REPLACE EXTERNAL TABLE `taxi-rides-ny.nytaxi.external_yellow_tripdata`
@@ -75,17 +83,16 @@ OPTIONS (
 );
 ```
 
-#### PARTITIONING IN BIGQUERY
-When a query is executed in a partitioned database, only the partitions that contain the data being retrieved will be process as opposed to the whole dataset in the case of a non partitioned DB. When done correctly, partitioning can considerably improve performance.  
+#### PARTITIONING THE NY TAXI DATA SET IN BIGQUERY
 
-Changing the NY Taxi dataset into a partitioned table in BigQuery. 
-
-To create a non partitioned table, you just need to supply the source of the data and target table name. 
+To create a non partitioned table from the external table, you just need to supply the source of the data and target table name. 
 ```sql
 -- Create a non partitioned table from external table
 CREATE OR REPLACE TABLE taxi-rides-ny.nytaxi.yellow_tripdata_non_partitoned AS
 SELECT * FROM taxi-rides-ny.nytaxi.external_yellow_tripdata;
 ```
+<br>
+
 To create a partitioned table, you must additionally provide the attribute on which the table will be partitioned. 
 ```sql
 -- Create a partitioned table from external table
@@ -95,12 +102,8 @@ PARTITION BY
 SELECT * FROM taxi-rides-ny.nytaxi.external_yellow_tripdata;
 ```
 
-Differences between partitioned and non partitioned tables 
-- The loaded partitioned table - you get information on # of rows and partition information
-- The icon is different. The partitioned icon has a break in it. 
-
-Compare processing volume
-The same query against the unpartitioned DB needs to processes about 15 times more data then against the partitioned DB. This will have a considerable impact on cost. 
+#### COMPARING PROCESSING VOLUME 
+There is a considerable difference in the amount of data processed when running the same query against the partitioned and the unpartitioned tables. The DB must process ~15 times more data when querying the unpartitioned table which will have a considerable impact on cost. 
 ```sql
 -- Impact of partition
 -- Scanning 1.6GB of data
@@ -114,6 +117,7 @@ FROM taxi-rides-ny.nytaxi.yellow_tripdata_partitoned
 WHERE DATE(tpep_pickup_datetime) BETWEEN '2019-06-01' AND '2019-06-30';
 ```
 
+#### PARTIONING DETAILS 
 Each data set has an information schema which contains a partitions table. We can get information on the size of the partitions by querying this table. 
 It is helpful to review this to make sure that data is more or less evenly distributed between partitions.  
 
