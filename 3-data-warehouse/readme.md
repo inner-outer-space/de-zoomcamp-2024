@@ -344,9 +344,11 @@ BQ Feature preprocessing functionaliy
     - standard scaler  
 
 `STEP 3` CAST DATA TYPES OF COLUMNS 
+The PULocationID, DOLocationID, and payment_type are categorical data represented by numbers. In the case of Location, it is likely that the number was assigned alphabetically to the location and has therefor no relation to the difference between locations. The model will attempt to find a meaningful mathematical relationship between these numbers and the target variable, which leads to misleading results. 
 
-This step is confusing to me because a model does not take strings in. Usually preprocessing for a ML model requires that all columns be changed to something numeric. This is tricky when dealing with categories because the model can assume that there is a significance to a high or low number. The automatic feature transformations will convert these columns back to something numeric. One hot or multi hot will avoid the issue mentioned before. Maybe that is why these are first converted back to string, so that BQ can hopefully convert the columns in a way to avoid this issue. 
- 
+One-hot encoding avoids this issue by transforming the categorical column into N binary columns one for each category. While this technique can help the model avoid spurious relatinships, it can lead to high dimensionality if you have a large number of unique categories.
+
+In this example the integer data type of the categorical columns is casted to string. BigQuery will then automatically handle the encoding of these columns. 
 ```sql
 -- CREATE A ML TABLE WITH APPROPRIATE TYPE
 CREATE OR REPLACE TABLE `taxi-rides-ny.nytaxi.yellow_tripdata_ml` (
@@ -364,8 +366,12 @@ CAST(payment_type AS STRING), fare_amount, tolls_amount, tip_amount
 FROM `taxi-rides-ny.nytaxi.yellow_tripdata_partitoned` WHERE fare_amount != 0
 );
 ```
+#### CREATE AND RUN MODEL 
+- linear model
+- BQ will determine the data split
+- target variable = tip amount
 
-
+Running the following SQL code will build the model using the training data set. 
 ```sql
 -- CREATE MODEL WITH DEFAULT SETTING
 CREATE OR REPLACE MODEL `taxi-rides-ny.nytaxi.tip_model`
@@ -381,10 +387,22 @@ WHERE
 tip_amount IS NOT NULL;
 ```
 
+When it completes running you will be able to see more information under these tabs 
+- `details` -  model, loss, and optimization details 
+- `training` - loss and duration graphs
+- `evaluatin` - evalutation metrics 
+- `schema` 
+
+
+#### FEATURE INFORMATION 
+You can retrieve feature information using ml.feature_info
 ```sql
 -- CHECK FEATURES
 SELECT * FROM ML.FEATURE_INFO(MODEL `taxi-rides-ny.nytaxi.tip_model`);
 ```
+
+#### MODEL EVALUATION 
+You can retrieve evaluation metrics using ml.evaluate
 ```sql
 -- EVALUATE THE MODEL
 SELECT
@@ -400,7 +418,9 @@ WHERE
 tip_amount IS NOT NULL
 ));
 ```
-```sql 
+#### PREDICTION
+You can the model to make predictions using ml.predict. You need to specify the model and the dataset you want to use. 
+```sql
 -- PREDICT THE MODEL
 SELECT
 *
@@ -415,6 +435,9 @@ WHERE
 tip_amount IS NOT NULL
 ));
 ```
+
+#### PREDICT AND EXPLAINATION 
+ML.EXPAIN_PREDICT will return the top N feature that drive variation. 
 ```sql
 -- PREDICT AND EXPLAIN
 SELECT
@@ -430,7 +453,8 @@ WHERE
 tip_amount IS NOT NULL
 ), STRUCT(3 as top_k_features));
 ```
-
+### HYPERPARAMETER TUNING 
+BigQuery provides different possibilities for hyperparameter tuning based on the selected model. 
 ```sql 
 -- HYPER PARAM TUNNING
 CREATE OR REPLACE MODEL `taxi-rides-ny.nytaxi.tip_hyperparam_model`
