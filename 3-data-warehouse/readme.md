@@ -67,8 +67,10 @@ Pricing Models
 
 ## PARTITIONING AND CLUSTERING 
 A partitioned table is a type of database table in which the data is divided into multiple smaller sub-tables or partitions based on a specific column or set of columns, typically a date or timestamp column. The primary purpose of partitioning tables is to improve query performance and data management by allowing the database system to read and write only the relevant partitions when executing queries or performing maintenance operations. When done correctly, partitioning can considerably improve performance.  
+<br>
+<br>
 
-#### BigQuery External Tables
+#### BIGQUERY EXTERNAL TABLES 
 An external table in BigQuery references data stored in external data sources, typically in GCS or other external storage systems. External tables allow you to query and analyze data that is located in different storage locations without having to load the data into BigQuery tables. It costs less to store data in GCS than it does to store it in BigQuery. 
 
 External tables support various data formats, including Avro, Parquet, ORC, JSON, and CSV.  BigQuery can automatically infer the schema of external data sources when you create an external table, or you can specify the schema manually.  Since the data is not in BigQuery, it will not be able to estimate the cost of the query prior to running it. Additionally, querires run slower when the data is housed externally. This may be an issue when dealing with large datasets.  
@@ -82,8 +84,10 @@ OPTIONS (
   uris = ['gs://nyc-tl-data/trip data/yellow_tripdata_2019-*.csv', 'gs://nyc-tl-data/trip data/yellow_tripdata_2020-*.csv']
 );
 ```
+<br>
+<br>
 
-#### PARTITIONING THE NY TAXI DATA SET IN BIGQUERY
+#### PARTITIONING IN BIGQUERY
 
 To create a non partitioned table from the external table, you just need to supply the source of the data and target table name. 
 ```sql
@@ -101,8 +105,10 @@ PARTITION BY
   DATE(tpep_pickup_datetime) AS
 SELECT * FROM taxi-rides-ny.nytaxi.external_yellow_tripdata;
 ```
+<br>
+<br>
 
-#### COMPARING PROCESSING VOLUME 
+#### COMPARE PROCESSING VOLUME - Partitioned vs Non Partitioned
 There is a considerable difference in the amount of data processed when running the same query against the partitioned and the unpartitioned tables. The DB must process ~15 times more data when querying the unpartitioned table which will have a considerable impact on cost. 
 ```sql
 -- Impact of partition
@@ -116,10 +122,11 @@ SELECT DISTINCT(VendorID)
 FROM taxi-rides-ny.nytaxi.yellow_tripdata_partitoned
 WHERE DATE(tpep_pickup_datetime) BETWEEN '2019-06-01' AND '2019-06-30';
 ```
+<br>
+<br>
 
 #### PARTIONING DETAILS 
-Each data set has an information schema which contains a partitions table. We can get information on the size of the partitions by querying this table. 
-It is helpful to review this to make sure that data is more or less evenly distributed between partitions.  
+Each dataset contains an information schema that includes a partitions table. Querying this table allows us to access information about the size of individual partitions. This is a helpful practice for ensuring that data is evenly distributed across partitions.
 
 ```sql
 -- Let's look into the partitons
@@ -128,10 +135,13 @@ FROM `nytaxi.INFORMATION_SCHEMA.PARTITIONS`
 WHERE table_name = 'yellow_tripdata_partitoned'
 ORDER BY total_rows DESC;
 ```
-#### CLUSTERING IN BIGQUERY
-In the last example we have partitioned the data by the date. Within a partition you can further cluster the data by another attribute, for example by tag. Data will then be grouped within the partition by the clustering attribute. This will also increase the querying efficiency. 
+<br>
+<br>
 
-It is best to create clustering based on attributes that are often used to query the data.  
+#### CLUSTERING IN BIGQUERY
+Clustering groups similar data together based on specific attributes or criteria. Within a partition you can further cluster the data by another attribute, for example by tag. Data will then be grouped within the partition by the clustering attribute. This can also increase querying efficiency. 
+
+It is best to create clusters based on the attributes frequently used to query the data.  
 ```sql
 -- Creating a partition and cluster table
 CREATE OR REPLACE TABLE taxi-rides-ny.nytaxi.yellow_tripdata_partitoned_clustered
@@ -139,21 +149,28 @@ PARTITION BY DATE(tpep_pickup_datetime)
 CLUSTER BY VendorID AS
 SELECT * FROM taxi-rides-ny.nytaxi.external_yellow_tripdata;
 ```
+<br>
+<br>
 
-Comparing the query against a partitioned vs a partitioned and clustered DB, we see that the clustering further decreases the amount of data that needs to be processed. 
-```sql 
+#### COMPARING PROCESSING VOLUMNE - Partitioned vs Partitioned & Clustered 
+Comparing the same query against a partitioned vs a partitioned and clustered DB, we see that the clustering further decreases the amount of data that needs to be processed. 
+```sql
+# PARTITIONED ONLY
 -- Query scans 1.1 GB
 SELECT count(*) as trips
 FROM taxi-rides-ny.nytaxi.yellow_tripdata_partitoned
 WHERE DATE(tpep_pickup_datetime) BETWEEN '2019-06-01' AND '2020-12-31'
   AND VendorID=1;
 
+# PARTITIONED AND CLUSTERED
 -- Query scans 864.5 MB
 SELECT count(*) as trips
 FROM taxi-rides-ny.nytaxi.yellow_tripdata_partitoned_clustered
 WHERE DATE(tpep_pickup_datetime) BETWEEN '2019-06-01' AND '2020-12-31'
   AND VendorID=1;
 ```
+<br>
+<br>
 
 #### BIQQUERY PARTITIONS 
 
@@ -175,6 +192,8 @@ In the case of integer partitions, you will need to supply
 - start value
 - end value
 - interval
+<br>
+<br>
 
 #### BigQuery Clustering 
 - The columns specified for clustering are used to group data
@@ -194,8 +213,10 @@ In the case of integer partitions, you will need to supply
     - STRING
     - TIMESTAMP
     - DATETIME
+<br>
+<br>
 
-### PARTITIONING VS CLUSTERING
+## PARTITIONING VS CLUSTERING
 Understanding the differences between these two approaches is useful when deciding when to use either partitioning and clustering. 
 | | Clustering | Partitioning |
 |---|---|---|
@@ -203,13 +224,16 @@ Understanding the differences between these two approaches is useful when decidi
 |**GRANULARITY**| High granularity. Multiple criteria can be used to sort the table. | Low granularity. Only a single column can be used to partition the table. |
 |**MANAGEMENT** | **Cannot** add, delete, edit, or move clusters | **Can** add, delete, edit, or move partitions|
 |**USE CASE**| - Use when commonly filtering or aggregating against multiple particular columns<br> - Use when the cardinality, the number of distinct values, of a column or group of columns is large  | Use when mainly filtering or aggregating on one column| 
+<br>
+<br>
 
 #### CHOOSING BETWEEN CLUSTERING AND PARTITIONING 
-
 Choose Clustering if 
 - Partitioning results in a small amount (<1GB) of data per partition
 - Partitioning surpasses the partition limit  (> 4000 partitions)
 - Partitioning results in your mutation operations modifying the majority of partitions in the table frequently (e.g., every few minutes) 
+<br>
+<br>
 
 #### AUTOMATIC RECLUSTERING 
 Source: [GCloud Reclustering Doc](https://cloud.google.com/bigquery/docs/clustered-tables#:~:text=Automatic%20reclustering,-As%20data%20is&text=Block%20optimization%20is%20required%20for,automatic%20reclustering%20in%20the%20background.)<br>
@@ -218,7 +242,9 @@ As data is added to a clustered table, the new data is organized into blocks, wh
 To maintain the performance characteristics of a clustered table, BigQuery performs automatic reclustering in the background. For partitioned tables, clustering is maintained for data within the scope of each partition.
 
 Note: Automatic reclustering does not incur costs on GCloud
-  
+<br>
+<br>
+ 
 ## BEST PRACTICES 
 Cost Reduction Best Practices 
 - avoid SELECT *
@@ -243,6 +269,8 @@ Query Performance Best Practices
 - Order Last, for query operations to maximize performance
 - Optimize your join patterns
 - Place the table with the largest number of rows first, followed by the table with the fewest rows, and then by the remaining tables by decrasing size. 
+<br>
+<br>
 
 ## INTERNAL STRUCTURE OF BIGQUERY 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/05386276-1b5a-4bf2-b514-a006f69b9194" width="500" height="auto">
@@ -278,6 +306,8 @@ https://cloud.google.com/bigquery/docs/how-to
 https://research.google/pubs/pub36632/
 https://panoply.io/data-warehouse-guide/bigquery-architecture/
 http://www.goldsborough.me/distributed-systems/2019/05/18/21-09-00-a_look_at_dremel/
+<br>
+<br>
 
 ## ML in BQ 
 This module covers ML in BigQuery. We are going to build a model, export it, and run it with Docker. 
@@ -303,6 +333,8 @@ PAID
     - AutoML Tables
     - DNNs
     - Boosted Trees  
+<br>
+<br>
 
 #### MACHINE LEARNING DEVELOPMENT STEPS 
 
@@ -398,7 +430,8 @@ When it completes running you will be able to see more information under these t
 - `training` - loss and duration graphs
 - `evaluatin` - evalutation metrics 
 - `schema` 
-
+<br>
+<br>
 
 #### FEATURE INFORMATION 
 You can retrieve feature information using ml.feature_info
@@ -406,6 +439,8 @@ You can retrieve feature information using ml.feature_info
 -- CHECK FEATURES
 SELECT * FROM ML.FEATURE_INFO(MODEL `taxi-rides-ny.nytaxi.tip_model`);
 ```
+<br>
+<br>
 
 #### MODEL EVALUATION 
 You can retrieve evaluation metrics using ml.evaluate
@@ -424,6 +459,9 @@ WHERE
 tip_amount IS NOT NULL
 ));
 ```
+<br>
+<br>
+
 #### PREDICTION
 You can the model to make predictions using ml.predict. You need to specify the model and the dataset you want to use. 
 ```sql
@@ -441,6 +479,8 @@ WHERE
 tip_amount IS NOT NULL
 ));
 ```
+<br>
+<br>
 
 #### PREDICT AND EXPLAINATION 
 ML.EXPAIN_PREDICT will return the top N feature that drive variation. 
@@ -459,6 +499,9 @@ WHERE
 tip_amount IS NOT NULL
 ), STRUCT(3 as top_k_features));
 ```
+<br>
+<br>
+
 ### HYPERPARAMETER TUNING 
 BigQuery provides different possibilities for hyperparameter tuning based on the selected model. 
 ```sql 
@@ -479,6 +522,8 @@ FROM
 WHERE
 tip_amount IS NOT NULL;
 ```
+<br>
+<br>
 
 ## EXPORT THE MODEL USING DOCKER 
 The next module covers exporting and deploying the model using docker. 
