@@ -474,3 +474,58 @@ WHERE
 tip_amount IS NOT NULL;
 ```
 
+## EXPORT THE MODEL USING DOCKER 
+The next module covers exporting and deploying the model using docker. 
+
+`Step 1` Log into GCloud 
+```cli
+gcloud auth login
+```
+
+`Step 2` Export the project into GCS
+The model will then show up in your bucket
+```cli
+bq --project_id taxi-rides-ny extract -m nytaxi.tip_model gs://taxi_ml_model/tip_model
+```
+
+`Step 3` Create a model directory on your local and copy the model from gsc to that directory
+```cli
+mkdir /tmp/model
+gsutil cp -r gs://taxi_ml_model/tip_model /tmp/model
+```
+
+`Step 4` Create a serving directory and copy the tip_model data into that folder
+You can create this in the temp directory or in the project itself
+```cli
+mkdir -p serving_dir/tip_model/1
+cp -r /tmp/model/tip_model/* serving_dir/tip_model/1
+```
+
+`Step 5` Pull the TensorFlow serving Docker image and run it.  
+```cli
+docker pull tensorflow/serving
+docker run -p 8501:8501 --mount type=bind,source=pwd/serving_dir/tip_model,target= /models/tip_model -e MODEL_NAME=tip_model -t tensorflow/serving &
+```
+
+`Step 6` Check model status
+You can submit POST requests to localhost:8501 using postman. The following will return basic model information such as status and version. 
+  
+```cli
+http://localhost:8501/v1/models/tip_model
+```
+
+`Step 6` Use the model to make a prediction 
+You can make a prediction by submitting a JSON payload that includes the input features and their values with your http POST request using PostMan.  
+```cli
+### JSON
+{"instances": [{"passenger_count":1, "trip_distance":12.2, "PULocationID":"193", "DOLocationID":"264", "payment_type":"2","fare_amount":20.4,"tolls_amount":0.0}]}
+
+# POST REQUEST
+http://localhost:8501/v1/models/tip_model:predict
+```
+Or using cURL dirctly in the command line 
+```cli
+curl -d '{"instances": [{"passenger_count":1, "trip_distance":12.2, "PULocationID":"193", "DOLocationID":"264", "payment_type":"2","fare_amount":20.4,"tolls_amount":0.0}]}' -X POST http://localhost:8501/v1/models/tip_model:predict
+```
+
+
