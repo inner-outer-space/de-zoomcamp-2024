@@ -22,39 +22,41 @@
 
 |   | OLTP<br>**Online Transaction Processing** | OLAP<br>Online Analytical Processing |
 |---|---|---|
-| **Purpose** | Control and run essential business operations in real time | Plan, solve problems, support decisions, discover hidden insights |
+| **Purpose** | - designed for transactional operations. They handle day-to-day, real-time transactions, such as order processing, inventory management, and customer interactions.<br> - optimized for fast, concurrent read and write operations.| - primarily used for data analysis, reporting, and business intelligence.<br> - optimized for reading and querying large volumes of historical data to support decision-making processes.|
 | **Data Updates** | Short, fast updates initiated by user | Data periodically refreshed with scheduled, long-running batch jobs |
 | **Database Design** | Normalized databases for efficiency | Denormalized databases for analysis |
 | **Space Requirements** | Generally small if historical data is archived | Generally large due to aggregating large datasets |
 | **Backup and Recovery** | Regular backups required to ensure business continuity and meet legal and governance requirements | Lost data can be reloaded from OLTP database as needed in lieu of regular backups |
 | **Productivity** | Increases productivity of end users | Increases productivity of business managers, data analysts and executives |
 | **Data View** | Lists day-to-day business transactions | Multi-dimensional view of enterprise data |
-| **User Examples** | Customer-facing personnel, clerks, online shoppers | Knowledge workers such as data analysts, business analysts and executives |
+| **Examples** | E-commerce systems, customer relationship management (CRM) software, banking applications, etc. | Data warehousing systems, business intelligence tools, and reporting platforms typically use OLAP databases.|
 
 
 ## WHAT IS A DATA WAREHOUSE 
-- an OLAP solution
-- Used for reporting and data analysis
+A data warehouse is a centralized and integrated repository of large volumes of data collected from various sources within an organization. It is specifically designed for the purpose of efficiently storing, managing, and analyzing data to support business intelligence (BI) and decision-making processes.
 
 <div align = center>
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/ce5d1296-6eec-4356-8e27-3c8b8a1aa0b9" width="500" height="auto">
 </div>
 
 ## BIGQUERY 
-- Serverless data warehouse
-- Provides software and infrastructure
-- Easy to scale and high availabiliy
-- Built in Features
-    - machine learning
-    - geospatial analysis
-    - business intelligence
- - BigQuery maximizes flexibility by separating the compute engine used to analyze data from the server used to store it
+BigQuery is a fully managed and serverless data warehouse and analytics platform offered by Google Cloud. 
+- Cloud based service - the service is accesible from anywhere
+- Serverless architecture - google manages all the infrastrucure so it is easy to deploy
+- Easy to scale - built to handle TBs of data 
+- Columnar data storage which is highly efficient for querying
+- SQL based queries - you don't have to know python or R
+- Machine learning integration
+- geospatial analysis
+- Integrates with other Google Cloud services including Google Cloud Storage
+- Integrates with business intelligence and visualization tools 
+- Maximizes flexibility by separating the compute engine used to analyze data from the server used to store it
 
 CONSIDERATIONS
 - BigQuery caches data. Disable that to avoid confusion. 
 - BQ Provides open source data. You can search for the data by name. 
 
-## COST 
+#### COST 
 Pricing Models
 - On Demand - $5 per TB of data processed
 - Flat Rate - based on the number or pre requested slots. 100 slots costs ~ $2,000/mos which is ~400TB of data processed on demand. 
