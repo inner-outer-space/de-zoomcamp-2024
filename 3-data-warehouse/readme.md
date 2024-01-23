@@ -296,7 +296,7 @@ RECORD VS COLUMN ORIENTED STRUCTURE <br>
 
 **Dremel**
 <br> 
-- Dremel is the query execution structure. 
+- Dremel is the query execution engine. 
 - When dremel receives a query, it understands how to subdivide the query into a tree structure. 
 - The "mixers" in Dremel receive the modified query, further dividing it into subsets of queries assigned to the leaf nodes.
 - The leaf nodes in Dremel are responsible for actually executing the individual queries and performing any necessary operations.
@@ -311,24 +311,32 @@ SUBSETTING OF BQ QUERY <br>
 <br>
 
 #### BQ REFERENCES 
-[BigQuery - How To](#https://cloud.google.com/bigquery/docs/how-to)
-[BigQuery - Research](#https://research.google/pubs/pub36632/)
-[BigQuery - Data Architecture ](#https://panoply.io/data-warehouse-guide/bigquery-architecture/)
-[BigQuery - Dremel](#http://www.goldsborough.me/distributed-systems/2019/05/18/21-09-00-a_look_at_dremel/)
+- [BigQuery - How To](https://cloud.google.com/bigquery/docs/how-to)
+- [BigQuery - Research](https://research.google/pubs/pub36632/)
+- [BigQuery - Data Architecture ](https://panoply.io/data-warehouse-guide/bigquery-architecture/)
+- [BigQuery - Dremel](http://www.goldsborough.me/distributed-systems/2019/05/18/21-09-00-a_look_at_dremel/)
 <br>
 <br>
 
-## ML in BQ 
+## ML in BigQuery  
 This module covers ML in BigQuery. We are going to build a model, export it, and run it with Docker. 
 
-ML in BigQuery
-- Target audience is Data Analysts and Managers
-- You can work in just SQL, there is no need for Python or Java
-- No need to export data into a different system
-    - BQ allows you to build the model in the data wharehouse directly. 
+### OVERVIEW
+- The tool is mean for Data Analysts and Managers.
+- You can build, run, and deploy a model in SQL, no need for other languages like python or R.
+- The model can be built directly in the data wharehouse. There is no need to export data into a different system. 
+- BigQuery can automatically handle many aspects of the ML process:  
+    - Feature enginnering
+    - Hyperparameter tuning
+    - Data splitting
+- Selection of basic ML models and the ability to create a custom model in TensorFlow.
+- Provides various error metrics for model evaluation.
+- Model deployment using docker 
+<br>
+<br>
 
-PRICING 
-Free
+#### PRICING
+FREE TIER 
 - 10 GB per month of data storage
 - 1 TB per month of queries processed
 - ML Create model step: First 10 GB per month is free
@@ -345,29 +353,24 @@ PAID
 <br>
 <br>
 
-#### MACHINE LEARNING DEVELOPMENT STEPS 
-
 <div align = center>
-<img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d02c7596-d1c8-4f69-bedd-5e33fd55b61f" width ="500" height = "auto">
+MACHINE LEARNING DEVELOPMENT STEPS 
+<img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d02c7596-d1c8-4f69-bedd-5e33fd55b61f" width ="600" height = "auto">
 </div>
+<br>
 
-BQ helps in all these steps. 
-- Automatic feature enginnering
-- Allows to choose between models
-- Automated hyperparameter tuning
-- Data splitting
-- Provides many error metrics to validate model
-- Deploy using a docker image
-
-CHOOSING AN ALGORITHM 
 
 <div align = center>
-<img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/6afab632-97e7-4cc4-9f72-fd2a5deab958" width ="500" height = "auto">
+CHOOSING AN ALGORITHM 
+<img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/6afab632-97e7-4cc4-9f72-fd2a5deab958" width ="600" height = "auto">
 </div>
 Source: BigQuery Documnetation 
+<br>
+<br>
+
 
 BUILDING A MODEL IN BIGQUERY 
-We will build a model based on the NY taxi data that will predict the tip amount based on the following data points and excluding records with fare amount =0 because those all have tip amount of 0. 
+We will build a model based on the NY taxi data to predict the tip amount based on the following data points. We will exclude records with fare amount = 0. 
 
 ```sql 
 -- SELECT THE COLUMNS INTERESTED FOR YOU
@@ -375,7 +378,7 @@ SELECT passenger_count, trip_distance, PULocationID, DOLocationID, payment_type,
 FROM `taxi-rides-ny.nytaxi.yellow_tripdata_partitoned` WHERE fare_amount != 0;
 ```
 
-BQ Feature preprocessing functionaliy 
+BIGQUERY FEATURE ENGINEERING 
 - automatic transformation include:
     - numeric standardization
     - one hot encoding
@@ -391,11 +394,11 @@ BQ Feature preprocessing functionaliy
     - standard scaler  
 
 `STEP 3` CAST DATA TYPES OF COLUMNS 
-The PULocationID, DOLocationID, and payment_type are categorical data represented by numbers. In the case of Location, it is likely that the number was assigned alphabetically to the location and has therefor no relation to the difference between locations. The model will attempt to find a meaningful mathematical relationship between these numbers and the target variable, which leads to misleading results. 
+The PULocationID, DOLocationID, and payment_type are all categorical data represented by numbers. In the case of Location, it is likely that the number was assigned alphabetically to the location and has therefor no relation to the difference between locations. The model will attempt to find a meaningful mathematical relationship between these numbers and the target variable, which will give us misleading results. 
 
 One-hot encoding avoids this issue by transforming the categorical column into N binary columns one for each category. While this technique can help the model avoid spurious relatinships, it can lead to high dimensionality if you have a large number of unique categories.
 
-In this example the integer data type of the categorical columns is casted to string. BigQuery will then automatically handle the encoding of these columns. 
+In this example the integer data type of the categorical columns is cast to string so that BigQuery will handle the encoding of these columns as part of the automatic feature engineering step. 
 ```sql
 -- CREATE A ML TABLE WITH APPROPRIATE TYPE
 CREATE OR REPLACE TABLE `taxi-rides-ny.nytaxi.yellow_tripdata_ml` (
@@ -413,12 +416,12 @@ CAST(payment_type AS STRING), fare_amount, tolls_amount, tip_amount
 FROM `taxi-rides-ny.nytaxi.yellow_tripdata_partitoned` WHERE fare_amount != 0
 );
 ```
-#### CREATE AND RUN MODEL 
+#### DEFINE AND TRAIN THE MODEL 
 - linear model
 - BQ will determine the data split
 - target variable = tip amount
 
-Running the following SQL code will build the model using the training data set. 
+Running the following SQL code will build and train the model using the training data set. 
 ```sql
 -- CREATE MODEL WITH DEFAULT SETTING
 CREATE OR REPLACE MODEL `taxi-rides-ny.nytaxi.tip_model`
@@ -434,7 +437,7 @@ WHERE
 tip_amount IS NOT NULL;
 ```
 
-When it completes running you will be able to see more information under these tabs 
+Once the model completes training, more information will be available under these tabs: 
 - `details` -  model, loss, and optimization details 
 - `training` - loss and duration graphs
 - `evaluatin` - evalutation metrics 
@@ -472,7 +475,7 @@ tip_amount IS NOT NULL
 <br>
 
 #### PREDICTION
-You can the model to make predictions using ml.predict. You need to specify the model and the dataset you want to use. 
+You can use the model to make predictions using ml.predict.
 ```sql
 -- PREDICT THE MODEL
 SELECT
@@ -575,7 +578,7 @@ http://localhost:8501/v1/models/tip_model
 ```
 
 `Step 6` Use the model to make a prediction 
-You can make a prediction by submitting a JSON payload that includes the input features and their values with your http POST request using PostMan.  
+You can make a prediction by submitting a JSON payload that includes the input features and their values with an http POST request using PostMan.  
 ```cli
 ### JSON
 {"instances": [{"passenger_count":1, "trip_distance":12.2, "PULocationID":"193", "DOLocationID":"264", "payment_type":"2","fare_amount":20.4,"tolls_amount":0.0}]}
