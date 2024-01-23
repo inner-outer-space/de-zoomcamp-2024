@@ -4,9 +4,9 @@
 (*for Linux*)
 <hr />
 
-[OLAP vs OLTP](olag-vs-oltp) • 
-[Data Warehouse](data-warehouse) •
-[BigQuery](bigquery) • <br>
+[OLAP vs OLTP](#olap-vs-oltp) • 
+[Data Warehouse](#data-warehouse) •
+[BigQuery](#bigquery) • <br>
 [Partitions & Clustering](partitioning-and-clustering) • 
 [Best Practices](best-practices) •
 [Internals](internals) •
