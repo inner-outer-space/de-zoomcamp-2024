@@ -78,6 +78,8 @@ An external table in BigQuery references data stored in external data sources, t
 External tables support various data formats, including Avro, Parquet, ORC, JSON, and CSV.  BigQuery can automatically infer the schema of external data sources when you create an external table, or you can specify the schema manually.  There are alsoSince the data is not in BigQuery, it will not be able to estimate the cost of the query prior to running it. Additionally, queries run slower when the data is housed externally. This may be an issue when dealing with large datasets.  
 
 We have already imported the New York taxi CSV files into GCS. Now we will create an external table in BigQuery that points to that data.  
+The format of the external table name in BQ = `PROJECT_ID.DATASET.EXTERNAL_TABLE_NAME`
+
 ```sql 
 -- Creating external table referring to gcs path
 CREATE OR REPLACE EXTERNAL TABLE `taxi-rides-ny.nytaxi.external_yellow_tripdata`
@@ -86,7 +88,6 @@ OPTIONS (
   uris = ['gs://nyc-tl-data/trip data/yellow_tripdata_2019-*.csv', 'gs://nyc-tl-data/trip data/yellow_tripdata_2020-*.csv']
 );
 ```
-<br>
 <br>
 
 #### PARTITIONING IN BIGQUERY
