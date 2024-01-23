@@ -64,6 +64,8 @@ BigQuery is a fully managed and serverless data warehouse and analytics platform
 Pricing Models
 - On Demand - $5 per TB of data processed
 - Flat Rate - based on the number or pre requested slots. 100 slots costs ~ $2,000/mos which is ~400TB of data processed on demand. 
+<br>
+<br>
 
 ## PARTITIONING AND CLUSTERING 
 A partitioned table is a type of database table in which the data is divided into multiple smaller sub-tables or partitions based on a specific column or set of columns, typically a date or timestamp column. The primary purpose of partitioning tables is to improve query performance and data management by allowing the database system to read and write only the relevant partitions when executing queries or performing maintenance operations. When done correctly, partitioning can considerably improve performance.  
@@ -357,14 +359,14 @@ PAID
 <br>
 
 <div align = center>
-MACHINE LEARNING DEVELOPMENT STEPS 
+MACHINE LEARNING DEVELOPMENT STEPS <br>
 <img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d02c7596-d1c8-4f69-bedd-5e33fd55b61f" width ="600" height = "auto">
 </div>
 <br>
 
 
 <div align = center>
-CHOOSING AN ALGORITHM 
+CHOOSING AN ALGORITHM <br>
 <img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/6afab632-97e7-4cc4-9f72-fd2a5deab958" width ="600" height = "auto">
 </div>
 Source: BigQuery Documnetation 
