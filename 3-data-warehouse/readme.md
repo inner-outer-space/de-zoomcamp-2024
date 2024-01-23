@@ -368,7 +368,7 @@ MACHINE LEARNING DEVELOPMENT STEPS <br>
 <div align = center>
 CHOOSING AN ALGORITHM <br>
 <img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/6afab632-97e7-4cc4-9f72-fd2a5deab958" width ="600" height = "auto">
-Source: BigQuery Documentation 
+<br>Source: BigQuery Documentation 
 </div>
 
 <br>
