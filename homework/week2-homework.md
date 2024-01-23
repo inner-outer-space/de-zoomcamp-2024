@@ -63,6 +63,7 @@ Upon filtering the dataset where the passenger count is equal to 0 _or_ the trip
 
 ```python
 
+data = data[(data['passenger_count'] > 0) & (data['trip_distance'] > 0)]
 
 ```
 
