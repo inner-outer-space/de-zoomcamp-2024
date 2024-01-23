@@ -40,8 +40,8 @@ A data warehouse is a centralized and integrated repository of large volumes of 
 
 ## BIGQUERY 
 BigQuery is a fully managed and serverless data warehouse and analytics platform offered by Google Cloud. 
-- Cloud based service - the service is accesible from anywhere
-- Serverless architecture - google manages all the infrastrucure so it is easy to deploy
+- Cloud based service - the service is accessible from anywhere
+- Serverless architecture - google manages all the infrastructure so it is easy to deploy
 - Easy to scale - built to handle TBs of data 
 - Columnar data - highly efficient for querying
 - SQL based queries - you don't have to know python or R
@@ -73,7 +73,7 @@ A partitioned table is a type of database table in which the data is divided int
 #### BIGQUERY EXTERNAL TABLES 
 An external table in BigQuery references data stored in external data sources, typically in GCS or other external storage systems. External tables allow you to query and analyze data that is located in different storage locations without having to load the data into BigQuery tables. This is cost efficient, as it costs less to store data in GCS than it does to store it in BigQuery. 
 
-External tables support various data formats, including Avro, Parquet, ORC, JSON, and CSV.  BigQuery can automatically infer the schema of external data sources when you create an external table, or you can specify the schema manually.  There are alsoSince the data is not in BigQuery, it will not be able to estimate the cost of the query prior to running it. Additionally, querires run slower when the data is housed externally. This may be an issue when dealing with large datasets.  
+External tables support various data formats, including Avro, Parquet, ORC, JSON, and CSV.  BigQuery can automatically infer the schema of external data sources when you create an external table, or you can specify the schema manually.  There are alsoSince the data is not in BigQuery, it will not be able to estimate the cost of the query prior to running it. Additionally, queries run slower when the data is housed externally. This may be an issue when dealing with large datasets.  
 
 We have already imported the New York taxi CSV files into GCS. Now we will create an external table in BigQuery that points to that data.  
 ```sql 
@@ -92,7 +92,7 @@ OPTIONS (
 To create a non partitioned table from the external table, you just need to supply the source of the data and target table name. 
 ```sql
 -- Create a non partitioned table from external table
-CREATE OR REPLACE TABLE taxi-rides-ny.nytaxi.yellow_tripdata_non_partitoned AS
+CREATE OR REPLACE TABLE taxi-rides-ny.nytaxi.yellow_tripdata_non_partitioned AS
 SELECT * FROM taxi-rides-ny.nytaxi.external_yellow_tripdata;
 ```
 <br>
@@ -100,7 +100,7 @@ SELECT * FROM taxi-rides-ny.nytaxi.external_yellow_tripdata;
 To create a partitioned table, you must additionally provide the attribute on which the table will be partitioned. 
 ```sql
 -- Create a partitioned table from external table
-CREATE OR REPLACE TABLE taxi-rides-ny.nytaxi.yellow_tripdata_partitoned
+CREATE OR REPLACE TABLE taxi-rides-ny.nytaxi.yellow_tripdata_partitioned
 PARTITION BY
   DATE(tpep_pickup_datetime) AS
 SELECT * FROM taxi-rides-ny.nytaxi.external_yellow_tripdata;
@@ -114,26 +114,26 @@ There is a considerable difference in the volume of data that is processed when 
 -- QUERY THE NON PARTITIONED TABLE 
 -- Scanning 1.6GB of data
 SELECT DISTINCT(VendorID)
-FROM taxi-rides-ny.nytaxi.yellow_tripdata_non_partitoned
+FROM taxi-rides-ny.nytaxi.yellow_tripdata_non_partitioned
 WHERE DATE(tpep_pickup_datetime) BETWEEN '2019-06-01' AND '2019-06-30';
 
 -- QUERY THE PARTITIONED TABLE 
 -- Scanning ~106 MB of DATA
 SELECT DISTINCT(VendorID)
-FROM taxi-rides-ny.nytaxi.yellow_tripdata_partitoned
+FROM taxi-rides-ny.nytaxi.yellow_tripdata_partitioned
 WHERE DATE(tpep_pickup_datetime) BETWEEN '2019-06-01' AND '2019-06-30';
 ```
 <br>
 <br>
 
-#### PARTIONING DETAILS 
+#### PARTITIONING DETAILS 
 Each dataset contains an information schema that includes a partitions table. Querying this table allows us to access information about the size of individual partitions. It is helpful to check the size of each partition to ensure that data is evenly distributed.
 
 ```sql
--- Let's look into the partitons
+-- Let's look into the partitions
 SELECT table_name, partition_id, total_rows
 FROM `nytaxi.INFORMATION_SCHEMA.PARTITIONS`
-WHERE table_name = 'yellow_tripdata_partitoned'
+WHERE table_name = 'yellow_tripdata_partitioned'
 ORDER BY total_rows DESC;
 ```
 <br>
@@ -145,7 +145,7 @@ Clustering groups similar data together based on specific attributes or criteria
 It is best to create clusters based on the attributes frequently used to query the data.  
 ```sql
 -- Creating a partition and cluster table
-CREATE OR REPLACE TABLE taxi-rides-ny.nytaxi.yellow_tripdata_partitoned_clustered
+CREATE OR REPLACE TABLE taxi-rides-ny.nytaxi.yellow_tripdata_partitioned_clustered
 PARTITION BY DATE(tpep_pickup_datetime)
 CLUSTER BY VendorID AS
 SELECT * FROM taxi-rides-ny.nytaxi.external_yellow_tripdata;
@@ -153,20 +153,20 @@ SELECT * FROM taxi-rides-ny.nytaxi.external_yellow_tripdata;
 <br>
 <br>
 
-#### COMPARING PROCESSING VOLUMNE - Partitioned vs Partitioned & Clustered 
+#### COMPARING PROCESSING VOLUME - Partitioned vs Partitioned & Clustered 
 Comparing the same query against a partitioned vs a partitioned and clustered DB, we see that the clustering further decreases the amount of data that needs to be processed. 
 ```sql
 # PARTITIONED ONLY
 -- Query scans 1.1 GB
 SELECT count(*) as trips
-FROM taxi-rides-ny.nytaxi.yellow_tripdata_partitoned
+FROM taxi-rides-ny.nytaxi.yellow_tripdata_partitioned
 WHERE DATE(tpep_pickup_datetime) BETWEEN '2019-06-01' AND '2020-12-31'
   AND VendorID=1;
 
 # PARTITIONED AND CLUSTERED
 -- Query scans 864.5 MB
 SELECT count(*) as trips
-FROM taxi-rides-ny.nytaxi.yellow_tripdata_partitoned_clustered
+FROM taxi-rides-ny.nytaxi.yellow_tripdata_partitioned_clustered
 WHERE DATE(tpep_pickup_datetime) BETWEEN '2019-06-01' AND '2020-12-31'
   AND VendorID=1;
 ```
@@ -237,7 +237,8 @@ Choose clustering instead of partitioning if
 <br>
 
 #### AUTOMATIC RECLUSTERING 
-Source: [GCloud Reclustering Doc](#https://cloud.google.com/bigquery/docs/clustered-tables#:~:text=Automatic%20reclustering,-As%20data%20is&text=Block%20optimization%20is%20required%20for,automatic%20reclustering%20in%20the%20background.)<br>
+Source: [GCloud Reclustering Doc](#https://cloud.google.com/bigquery/docs/clustered-tables)
+<br>
 As data is added to a clustered table, the new data is organized into blocks, which might create new storage blocks or update existing ones. Block optimization is required for optimal query and storage performance because new data might not be grouped with existing data that has the same cluster values.
 
 To maintain the performance characteristics of a clustered table, BigQuery performs automatic reclustering in the background. For partitioned tables, clustering is maintained for data within the scope of each partition.
@@ -256,6 +257,8 @@ Note: Automatic reclustering does not incur costs on GCloud
 - Use streaming inserts with caution as these can increase costs drastically  
 - Display query results in stages
 - Use external data sources appropriately as storage in GCS also incurs costs.
+<br>
+<br>
 
 #### QUERY PERFORMANCE 
 - **Partitioning and Clustering:** Partitioning tables and clustering data in BigQuery can significantly improve query performance by limiting the amount of data scanned.
@@ -279,7 +282,7 @@ Note: Automatic reclustering does not incur costs on GCloud
 
 **Colossus**
 <br> 
-- BigQuery stores data in columnar format in a a seperate storage called Colossus, which is more efficient for aggregations. 
+- BigQuery stores data in columnar format in a a separate storage called Colossus, which is more efficient for aggregations. 
 - BigQuery does not query all the columns at once. The general pattern is to query a few columns and filter and aggregate on different parts. 
 - It is a relatively inexpensive form of storage.
 - Most costs are incurred when the compute engine reads or writes the data. 
@@ -310,7 +313,7 @@ SUBSETTING OF BQ QUERY <br>
 <br>
 <br>
 
-#### BQ REFERENCES 
+#### BigQuery REFERENCES 
 - [BigQuery - How To](https://cloud.google.com/bigquery/docs/how-to)
 - [BigQuery - Research](https://research.google/pubs/pub36632/)
 - [BigQuery - Data Architecture ](https://panoply.io/data-warehouse-guide/bigquery-architecture/)
@@ -324,9 +327,9 @@ This module covers ML in BigQuery. We are going to build a model, export it, and
 ### OVERVIEW
 - The tool is mean for Data Analysts and Managers.
 - You can build, run, and deploy a model in SQL, no need for other languages like python or R.
-- The model can be built directly in the data wharehouse. There is no need to export data into a different system. 
+- The model can be built directly in the data warehouse. There is no need to export data into a different system. 
 - BigQuery can automatically handle many aspects of the ML process:  
-    - Feature enginnering
+    - Feature engineering
     - Hyperparameter tuning
     - Data splitting
 - Selection of basic ML models and the ability to create a custom model in TensorFlow.
@@ -369,7 +372,7 @@ Source: BigQuery Documnetation
 <br>
 
 
-BUILDING A MODEL IN BIGQUERY 
+#### BUILDING A MODEL IN BIGQUERY
 We will build a model based on the NY taxi data to predict the tip amount based on the following data points. We will exclude records with fare amount = 0. 
 
 ```sql 
@@ -377,8 +380,10 @@ We will build a model based on the NY taxi data to predict the tip amount based 
 SELECT passenger_count, trip_distance, PULocationID, DOLocationID, payment_type, fare_amount, tolls_amount, tip_amount
 FROM `taxi-rides-ny.nytaxi.yellow_tripdata_partitoned` WHERE fare_amount != 0;
 ```
+<br>
+<br>
 
-BIGQUERY FEATURE ENGINEERING 
+#### BIGQUERY FEATURE ENGINEERING 
 - automatic transformation include:
     - numeric standardization
     - one hot encoding
@@ -392,8 +397,10 @@ BIGQUERY FEATURE ENGINEERING
     - quantile bucketization
     - min max scaler
     - standard scaler  
+<br>
+<br>
 
-`STEP 3` CAST DATA TYPES OF COLUMNS 
+#### CAST DATA TYPES OF COLUMNS 
 The PULocationID, DOLocationID, and payment_type are all categorical data represented by numbers. In the case of Location, it is likely that the number was assigned alphabetically to the location and has therefor no relation to the difference between locations. The model will attempt to find a meaningful mathematical relationship between these numbers and the target variable, which will give us misleading results. 
 
 One-hot encoding avoids this issue by transforming the categorical column into N binary columns one for each category. While this technique can help the model avoid spurious relatinships, it can lead to high dimensionality if you have a large number of unique categories.
@@ -416,6 +423,9 @@ CAST(payment_type AS STRING), fare_amount, tolls_amount, tip_amount
 FROM `taxi-rides-ny.nytaxi.yellow_tripdata_partitoned` WHERE fare_amount != 0
 );
 ```
+<br>
+<br>
+
 #### DEFINE AND TRAIN THE MODEL 
 - linear model
 - BQ will determine the data split
@@ -494,8 +504,8 @@ tip_amount IS NOT NULL
 <br>
 <br>
 
-#### PREDICT AND EXPLAINATION 
-ML.EXPAIN_PREDICT will return the top N feature that drive variation. 
+#### PREDICT AND EXPLANATION 
+ML.EXPLAIN_PREDICT will return the top N feature that drive variation. 
 ```sql
 -- PREDICT AND EXPLAIN
 SELECT
@@ -545,7 +555,7 @@ The next module covers exporting and deploying the model using docker.
 gcloud auth login
 ```
 
-`Step 2` Export the project into GCS
+`Step 2` Export the project into GCS<br>
 The model will then show up in your bucket
 ```cli
 bq --project_id taxi-rides-ny extract -m nytaxi.tip_model gs://taxi_ml_model/tip_model
@@ -570,7 +580,7 @@ docker pull tensorflow/serving
 docker run -p 8501:8501 --mount type=bind,source=pwd/serving_dir/tip_model,target= /models/tip_model -e MODEL_NAME=tip_model -t tensorflow/serving &
 ```
 
-`Step 6` Check model status
+`Step 6` Check model status<br>
 You can submit POST requests to localhost:8501 using postman. The following will return basic model information such as status and version. 
   
 ```cli
