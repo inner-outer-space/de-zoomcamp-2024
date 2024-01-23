@@ -272,36 +272,43 @@ Note: Automatic reclustering does not incur costs on GCloud
 <br>
 
 ## INTERNAL STRUCTURE OF BIGQUERY 
+<div align = center>
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/05386276-1b5a-4bf2-b514-a006f69b9194" width="500" height="auto">
+</div>
+<br>
 
- 
-**Colossus** 
-    - BigQuery stores data in columnar format in a a seperate storage called Colossus.
+**Colossus**
+<br> 
+    - BigQuery stores data in columnar format in a a seperate storage called Colossus, which is more efficient for aggregations. 
+    - BigQuery does not query all the columns at once. The general pattern is to query a few columns and filter and aggregate on different parts. 
     - It is a relatively inexpensive form of storage.
     - Most costs are incurred when the compute engine reads or writes the data. 
 
 **Jupiter network** 
+<br> 
     - The network on which the compute engine and storage network communicate.  
     - 1TB/second speed 
 
-**Dremel** 
+**Dremel**
+<br> 
     - Dremel is the query execution structure. 
-    - It divides the query into a tree strucuture.
-    - The query is seperated so that each node of the tree can execute a subset of it. 
+    - When dremel receives a query, it understands how to subdivide the query into a tree structure. 
+    - The "mixers" in Dremel receive the modified query, further dividing it into subsets of queries assigned to the leaf nodes.
+    - The leaf nodes in Dremel are responsible for actually executing the individual queries and performing any necessary operations.
+    - The responses from the leaf nodes are then returned to the mixers and subsequently sent to the root server, where they are aggregated and returned as the final result of the query execution.
+    - This distribution of workers is what makes BQ so fast. 
 
-Record oriented vs Column oriented.
+<br>
+<br>
+
+#### RECORD VS COLUMN ORIENTED STRUCTURE 
 <div align = center>
 <img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/6ce6b68e-7322-4969-882f-0ce972b2ab86" width ="500" height = "auto">
 </div>
 
-BQ uses column oriented structure. You can aggregate better with column oriented.  BQ does not query all the columns at once. The general pattern is to query a few columns and filter and aggregate on different parts. 
 
-DREMEL 
-When dremel receives a query, it understands how to subdivide the query. 
 
-The mixers then get the modified query and it is further divided into subsets of queries assigned to the leaf nodes. The leaf nodes actually make the queries and executes any operations and returns the data back to the mixers and then back to the root server and then it is aggregated and return. 
 
-The distribution of workers is what makes BQ so fast. 
 
 <div align = center>
 <img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/3d00a91f-aec3-4620-867f-83ce7e345135" width ="500" height = "auto">
