@@ -21,7 +21,7 @@
 
 |   | OLTP<br>**Online Transaction Processing** | OLAP<br>Online Analytical Processing |
 |---|---|---|
-| **Purpose** | - designed for transactional operations. They handle day-to-day, real-time transactions, such as order processing, inventory management, and customer interactions.<br> - optimized for fast, concurrent read and write operations.| - primarily used for data analysis, reporting, and business intelligence.<br> - optimized for reading and querying large volumes of historical data to support decision-making processes.|
+| **Purpose** | - designed for transactional operations. They handle day-to-day, real-time transactions, such as order processing, inventory management, and customer interactions.<br> <br> - optimized for fast, concurrent read and write operations.| - primarily used for data analysis, reporting, and business intelligence.<br><br>  - optimized for reading and querying large volumes of historical data to support decision-making processes.|
 | **Data Updates** | Short, fast updates initiated by user | Data periodically refreshed with scheduled, long-running batch jobs |
 | **Database Design** | Normalized databases for efficiency | Denormalized databases for analysis |
 | **Space Requirements** | Generally small if historical data is archived | Generally large due to aggregating large datasets |
@@ -43,16 +43,16 @@ BigQuery is a fully managed and serverless data warehouse and analytics platform
 - Cloud based service - the service is accesible from anywhere
 - Serverless architecture - google manages all the infrastrucure so it is easy to deploy
 - Easy to scale - built to handle TBs of data 
-- Columnar data storage which is highly efficient for querying
+- Columnar data - highly efficient for querying
 - SQL based queries - you don't have to know python or R
 - Machine learning integration
-- geospatial analysis
+- Geospatial analysis
 - Integrates with other Google Cloud services including Google Cloud Storage
 - Integrates with business intelligence and visualization tools 
-- Maximizes flexibility by separating the compute engine used to analyze data from the server used to store it
+- Maximizes flexibility by separating the compute engine used to execute queries from the server used to store it
 
 #### CACHING 
-- BigQuery caches query resultsto improve query performance and reduce costs.
+- BigQuery caches query results to improve query performance and reduce costs.
 - This can lead to unexpected query results if you're not aware of it.
 - If you want to ensure that each query reflects the most up-to-date data, you can disable caching temporarily or set cache expiration policies.
 
@@ -71,9 +71,9 @@ A partitioned table is a type of database table in which the data is divided int
 <br>
 
 #### BIGQUERY EXTERNAL TABLES 
-An external table in BigQuery references data stored in external data sources, typically in GCS or other external storage systems. External tables allow you to query and analyze data that is located in different storage locations without having to load the data into BigQuery tables. It costs less to store data in GCS than it does to store it in BigQuery. 
+An external table in BigQuery references data stored in external data sources, typically in GCS or other external storage systems. External tables allow you to query and analyze data that is located in different storage locations without having to load the data into BigQuery tables. This is cost efficient, as it costs less to store data in GCS than it does to store it in BigQuery. 
 
-External tables support various data formats, including Avro, Parquet, ORC, JSON, and CSV.  BigQuery can automatically infer the schema of external data sources when you create an external table, or you can specify the schema manually.  Since the data is not in BigQuery, it will not be able to estimate the cost of the query prior to running it. Additionally, querires run slower when the data is housed externally. This may be an issue when dealing with large datasets.  
+External tables support various data formats, including Avro, Parquet, ORC, JSON, and CSV.  BigQuery can automatically infer the schema of external data sources when you create an external table, or you can specify the schema manually.  There are alsoSince the data is not in BigQuery, it will not be able to estimate the cost of the query prior to running it. Additionally, querires run slower when the data is housed externally. This may be an issue when dealing with large datasets.  
 
 We have already imported the New York taxi CSV files into GCS. Now we will create an external table in BigQuery that points to that data.  
 ```sql 
@@ -109,14 +109,15 @@ SELECT * FROM taxi-rides-ny.nytaxi.external_yellow_tripdata;
 <br>
 
 #### COMPARE PROCESSING VOLUME - Partitioned vs Non Partitioned
-There is a considerable difference in the amount of data processed when running the same query against the partitioned and the unpartitioned tables. The DB must process ~15 times more data when querying the unpartitioned table which will have a considerable impact on cost. 
+There is a considerable difference in the volume of data that is processed when running the same query against the partitioned and the unpartitioned tables. The volume processed is visible in the console.  
 ```sql
--- Impact of partition
+-- QUERY THE NON PARTITIONED TABLE 
 -- Scanning 1.6GB of data
 SELECT DISTINCT(VendorID)
 FROM taxi-rides-ny.nytaxi.yellow_tripdata_non_partitoned
 WHERE DATE(tpep_pickup_datetime) BETWEEN '2019-06-01' AND '2019-06-30';
 
+-- QUERY THE PARTITIONED TABLE 
 -- Scanning ~106 MB of DATA
 SELECT DISTINCT(VendorID)
 FROM taxi-rides-ny.nytaxi.yellow_tripdata_partitoned
@@ -126,7 +127,7 @@ WHERE DATE(tpep_pickup_datetime) BETWEEN '2019-06-01' AND '2019-06-30';
 <br>
 
 #### PARTIONING DETAILS 
-Each dataset contains an information schema that includes a partitions table. Querying this table allows us to access information about the size of individual partitions. This is a helpful practice for ensuring that data is evenly distributed across partitions.
+Each dataset contains an information schema that includes a partitions table. Querying this table allows us to access information about the size of individual partitions. It is helpful to check the size of each partition to ensure that data is evenly distributed.
 
 ```sql
 -- Let's look into the partitons
@@ -139,7 +140,7 @@ ORDER BY total_rows DESC;
 <br>
 
 #### CLUSTERING IN BIGQUERY
-Clustering groups similar data together based on specific attributes or criteria. Within a partition you can further cluster the data by another attribute, for example by tag. Data will then be grouped within the partition by the clustering attribute. This can also increase querying efficiency. 
+Clustering groups similar data together based on specific attributes or criteria. Within a partition you can further cluster the data by another attribute, for example by vendorid. Data will then be grouped within the partition by the clustering attribute. This can also increase querying efficiency. 
 
 It is best to create clusters based on the attributes frequently used to query the data.  
 ```sql
