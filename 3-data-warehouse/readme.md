@@ -177,18 +177,18 @@ WHERE DATE(tpep_pickup_datetime) BETWEEN '2019-06-01' AND '2020-12-31'
 
 ***MAX PARTITIONS = 4000***
 
-In BigQuery you can partition on 
+In BigQuery you can partition on: 
 - Time-unit column (Date, Timestamp, or Datetime)
 - Ingestion time
 - Integer column 
 
-Depending on the time column you can specify the granularity of the partitions to be 
+In the case of time columns and contingent on the type of time column, you can specify the granularity of the partitions as:
 - hourly
 - daily (default)
 - monthly
 - yearly
 
-In the case of integer partitions, you will need to supply 
+In the case of integer partitions, you will need to supply:
 - integer column name
 - start value
 - end value
@@ -200,10 +200,10 @@ In the case of integer partitions, you will need to supply
 - The columns specified for clustering are used to group data
 - Up to 4 columns can be used for clustering
 - The grouping is dependent on the order in which the columns are specified
-- Clustering impoves
-    - Filter queries
-    - Aggregate queries
-    - Tables larger than 1GB
+- Clustering:
+    - Improves filter queries
+    - Improves aggregate queries
+    - Is useful for Tables larger than 1GB
 - Clustering columns must be top-level, non repeating columns and can be of the following types:
     - DATE
     - BOOL
@@ -218,18 +218,18 @@ In the case of integer partitions, you will need to supply
 <br>
 
 ## PARTITIONING VS CLUSTERING
-Understanding the differences between these two approaches is useful when deciding when to use either partitioning and clustering. 
+Understanding the differences between partitioning and clustering will help you make decisions about when to use these approaches. 
 | | Clustering | Partitioning |
 |---|---|---|
 |**COST** | **Cost of query is unknown.** <br> BQ cannot estimate the query cost prior to running. | **Cost of query known upfront.** <br> Partitioning allows BQ to estimate the cost of a query before running. |
 |**GRANULARITY**| High granularity. Multiple criteria can be used to sort the table. | Low granularity. Only a single column can be used to partition the table. |
 |**MANAGEMENT** | **Cannot** add, delete, edit, or move clusters | **Can** add, delete, edit, or move partitions|
-|**USE CASE**| - Use when commonly filtering or aggregating against multiple particular columns<br> - Use when the cardinality, the number of distinct values, of a column or group of columns is large  | Use when mainly filtering or aggregating on one column| 
+|**USE CASE**| - Use when commonly filtering or aggregating against particular columns<br> - Use when the cardinality, the number of distinct values, of a column or group of columns is large  | Use when mainly filtering or aggregating on one column| 
 <br>
 <br>
 
 #### CHOOSING BETWEEN CLUSTERING AND PARTITIONING 
-Choose Clustering if 
+Choose clustering instead of partitioning if 
 - Partitioning results in a small amount (<1GB) of data per partition
 - Partitioning surpasses the partition limit  (> 4000 partitions)
 - Partitioning results in your mutation operations modifying the majority of partitions in the table frequently (e.g., every few minutes) 
@@ -237,8 +237,8 @@ Choose Clustering if
 <br>
 
 #### AUTOMATIC RECLUSTERING 
-Source: [GCloud Reclustering Doc](https://cloud.google.com/bigquery/docs/clustered-tables#:~:text=Automatic%20reclustering,-As%20data%20is&text=Block%20optimization%20is%20required%20for,automatic%20reclustering%20in%20the%20background.)<br>
-As data is added to a clustered table, the new data is organized into blocks, which might create new storage blocks or update existing blocks. Block optimization is required for optimal query and storage performance because new data might not be grouped with existing data that has the same cluster values.
+Source: [GCloud Reclustering Doc](#https://cloud.google.com/bigquery/docs/clustered-tables#:~:text=Automatic%20reclustering,-As%20data%20is&text=Block%20optimization%20is%20required%20for,automatic%20reclustering%20in%20the%20background.)<br>
+As data is added to a clustered table, the new data is organized into blocks, which might create new storage blocks or update existing ones. Block optimization is required for optimal query and storage performance because new data might not be grouped with existing data that has the same cluster values.
 
 To maintain the performance characteristics of a clustered table, BigQuery performs automatic reclustering in the background. For partitioned tables, clustering is maintained for data within the scope of each partition.
 
@@ -247,49 +247,54 @@ Note: Automatic reclustering does not incur costs on GCloud
 <br>
  
 ## BEST PRACTICES 
-Cost Reduction Best Practices 
-- avoid SELECT *
-    - instead specify the names of the columns that you are interested in. Cost is based on the amount of data being read and select * will read in all the columns.
+#### COST REDUCTION 
+- Avoid SELECT *
+    - Cost is based on the amount of data being read. Don't select more than you need, instead specify the names of the columns that you are interested in. 
 - Consider the price your queries before running them
     - an estimate of the cost of the query is displayed on the upper right hand side of the table.     
 - Use clustered or partitioned tables
-- Use streaming inserts with caution
-    - these can increase costs drastically.  
+- Use streaming inserts with caution as these can increase costs drastically  
 - Display query results in stages
-- Use external data sources appropriately as storage in GCS could incur costs
+- Use external data sources appropriately as storage in GCS also incurs costs.
 
-Query Performance Best Practices 
-- Filter on partitioned columns
-- Denormalize data  -- Use nested or repeated columns instead
-- Don't use it, in case you want good query performance
-- Reduce data before using a join
-- Do no treat WITH clause as prepared statements
-- Avoid oversharding tables
-- Avoid JS user-defined functions
-- Use approximate aggregate functions (HyperLog++)
-- Order Last, for query operations to maximize performance
-- Optimize your join patterns
-- Place the table with the largest number of rows first, followed by the table with the fewest rows, and then by the remaining tables by decrasing size. 
+#### QUERY PERFORMANCE 
+- **Partitioning and Clustering:** Partitioning tables and clustering data in BigQuery can significantly improve query performance by limiting the amount of data scanned.
+- **Avoid Oversharding Tables:** Avoid creating too many table partitions (shards), as this can lead to suboptimal query performance.
+- **Denormalize Data:** Consider using nested or repeated columns instead of excessive normalization to reduce the need for joins and improve performance.
+- **Filter Data Before Joining:** Apply filters to your data before performing joins to reduce the amount of data being joined.
+- **Do Not Treat the WITH Clause as Prepared Statements:** ??? This is unclear to me. I thought WITH helped with performance. ???
+- **Avoid JavaScript User-Defined Functions:** They may not perform as efficiently as native BigQuery functions. 
+- **Use Approximate Aggregate Functions (HyperLog++):** When exact precision is not required, consider using approximate aggregate functions for faster results.
+- **Order By Last:** If possible, use ORDER BY as the last operation in your query for better performance.
+- **Optimize Join Patterns:** Optimize your query's join patterns to minimize data movement and improve query efficiency.
+- **Arrange Tables by Size:** When performing joins, place the table with the largest number of rows first, followed by the table with fewer rows, and so on, in decreasing order of size.
 <br>
 <br>
 
 ## INTERNAL STRUCTURE OF BIGQUERY 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/05386276-1b5a-4bf2-b514-a006f69b9194" width="500" height="auto">
 
-BigQuery stores the data in a seperate storage called Colossus, where the data is stored in a columnar format. 
+ 
+**Colossus** 
+    - BigQuery stores data in columnar format in a a seperate storage called Colossus.
+    - It is a relatively inexpensive form of storage.
+    - Most costs are incurred when the compute engine reads or writes the data. 
 
-Colossus is a cheap form of storage. Most of the costs are incurred when reading or writing the data, which is done by compute. 
+**Jupiter network** 
+    - The network on which the compute engine and storage network communicate.  
+    - 1TB/second speed 
 
-How does compute and storage network communicate. Jupiter network - 1TB/second speed. 
-
-Dremel is the query execution structure. It divides the query into a tree strucuture. It seperates the query so that each node can execute a subset. 
+**Dremel** 
+    - Dremel is the query execution structure. 
+    - It divides the query into a tree strucuture.
+    - The query is seperated so that each node of the tree can execute a subset of it. 
 
 Record oriented vs Column oriented.
 <div align = center>
 <img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/6ce6b68e-7322-4969-882f-0ce972b2ab86" width ="500" height = "auto">
 </div>
 
- BQ uses column oriented structure. You can aggregate better with column oriented.  BQ does not query all the columns at once. The general pattern is to query a few columns and filter and aggregate on different parts. 
+BQ uses column oriented structure. You can aggregate better with column oriented.  BQ does not query all the columns at once. The general pattern is to query a few columns and filter and aggregate on different parts. 
 
 DREMEL 
 When dremel receives a query, it understands how to subdivide the query. 
@@ -302,11 +307,11 @@ The distribution of workers is what makes BQ so fast.
 <img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/3d00a91f-aec3-4620-867f-83ce7e345135" width ="500" height = "auto">
 </div>
 
-BQ REFERENCES 
-https://cloud.google.com/bigquery/docs/how-to
-https://research.google/pubs/pub36632/
-https://panoply.io/data-warehouse-guide/bigquery-architecture/
-http://www.goldsborough.me/distributed-systems/2019/05/18/21-09-00-a_look_at_dremel/
+#### BQ REFERENCES 
+[BigQuery - How To](#https://cloud.google.com/bigquery/docs/how-to)
+[BigQuery - Research](#https://research.google/pubs/pub36632/)
+[BigQuery - Data Architecture ](#https://panoply.io/data-warehouse-guide/bigquery-architecture/)
+[BigQuery - Dremel](#http://www.goldsborough.me/distributed-systems/2019/05/18/21-09-00-a_look_at_dremel/)
 <br>
 <br>
 
