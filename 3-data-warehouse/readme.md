@@ -363,7 +363,7 @@ MACHINE LEARNING DEVELOPMENT STEPS <br>
 <img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d02c7596-d1c8-4f69-bedd-5e33fd55b61f" width ="600" height = "auto">
 </div>
 <br>
-
+<br>
 
 <div align = center>
 CHOOSING AN ALGORITHM <br>
