@@ -44,87 +44,108 @@ The concept of an "Analytics Engineer" has emerged as a bridge between the tradi
 <br>
 <br>
 
-#### TOOLS USED BY A DATA ENGINEER 
+<div align="center">
+
+<b>TOOLS USED BY A DATA ENGINEER</b> 
 |STEP|TOOLS|RESPONSIBLE ROLE|
 |--|--|--|
 |**Ingestion**|fivetran stitch|Data Engineer or Analytics Engineer|
 |**Storage**| Cloud data warehouses<br>like Snowflake, BigQuery, Redshift|Data Engineer or Analytics Engineer|
 |**Modeling**| Tools like dbt or Dataform |Analytics Engineer|
 |**Visualization**|BI Tools like looker, mode,<br>google data studio or tableau |Data Analyst or Analytics Engineer|
+
+</div>
 <br>
 <br>
 
-#### DATA MODELING CONCEPTS 
-
+## DATA MODELING CONCEPTS 
+<div align = "center">
+    
+<b>ETL vs ELT<b>    
 |ETL<br>extract-transform-load|ELT<br>extract-load-transform|
 |--|--|
 |<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/4bc30eab-b0cd-4673-aa02-210b34da6067" width="350" height="220">|<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/8f3a82fe-1828-4b72-b861-bd31b8f39bd3" width="350" height="220">|
 |- takes longer to implement<br>- data is more stable and compliant|- faster and more flexible<br>|- lower cost and lower maintenance
+
+</div>
 <br>
 <br>
 
+
 #### KIMBALLS'S DIMENSIONAL MODELING
-Objectives: 
+OBJECTIVES 
 - deliver data that is understandable to the business user
 - optimize query performance
 - Does not prioritize reducing redundancy
 
 - Other approaches: Bill Inmon, Data Vauld 
-<br>
-<br>
 
-#### DIMENSIONAL MODELING 
-Fact tables 
+FACT TABLES 
 - Contain meaurements, metrics or facts corresponding to a business process
 - Verbs such as Sales, Orders etc. 
 
-Dimension tables 
+DIMENSION TABLES 
 - Correspond to a business entity and provides context to a business process
 - Nouns such as Customer, Product etc.
+<br>
+<br>
 
 #### ARCHITECURE OF DIMENSIONAL MODELING  
-Staging 
+Staging<br> 
 - Raw data not meant to be exposed to others
-Processing
+Processing<br>
 - Raw data is transformed to data models
 - focuses on efficiency and ensuring standards 
-Presentation 
+Presentation<br> 
 - Data is exposed to end users 
 <br>
 <br>
 
 
 ## WHAT IS DBT 
-
 dbt, data build tool, is a transformation tool that allows anyone with SQL knowledge to deploy analytics code following software engineering best practices like modularity, portability, CI/CD, and documenation. 
+<br>
+<br>
+<div align = "center">
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/f8856a85-98cc-4ffd-9067-5dc32399ae20" width="500" height="auto">
+<br>
+<br>
 
+|||
 |--|--|
-|After data is extracted and loaded into a data warehouse, DBT helps us transform raw data following good software development practices. It allows you to develope models, test and execute and deploy using version control. |<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/608ed128-067c-4775-b7e4-95cbce80b7cc" width="300" height="auto">|
+|After data is extracted and loaded into a data warehouse,<br> DBT helps us transform raw data following good software<br> development practices. It allows you to<br> develope models, test, execute, and deploy<br> using version control. |<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/608ed128-067c-4775-b7e4-95cbce80b7cc" width="350" height="auto">|
 
-After data is extracted and loaded into a data warehouse, DBT helps us transform raw data following good software development practices. It allows you to develope models, test and execute and deploy using version control. 
-
-![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/f8856a85-98cc-4ffd-9067-5dc32399ae20)
-
+</div>
+<br>
+<br>
 
 #### HOW DOES DBT WORK
-DBT adds a modeling layer where we transofrm the data over the raw data. The model is being persisted back to the DW. We will write .sql files. That will be the model. Essentially select statements with no DDL or DML. DBT will compile that code and created the DDL or DML file. It will push the compute to the data warehouse and in the end we will see the table or view in the Warehouse. 
+- DBT adds a data transformation Layer on top of your raw data within your data warehouse.
+- Transformations are defined in this layer using SQL queries.
+- The .sql files that define the model and are essentially SELECT statements with no DDL (Data Definition Language) or DML (Data Manipulation Language) operations.
+- DBT compiles the .sql code and creates the DDL or DML statements needed to create and populate the tables based on the model.
+- The compute is pushed out to the data warehouse
+- The final sturctured and transformed data is made available as tables or views in the data warehouse. 
 
-Dbt Core is the essence of DBT. It is an opensourc project that allows the data transformation. 
+dbt CORE 
+- essence of dbt
+- open source project that provides the core data transformation and modeling functionality 
 - builds and runs a dbt project
 - includes SQL compilation logic, macros and database adapters
 - Includse a CLI interface
-- Open source
 
-dbt Cloud 
-- SaaS application where you can develop and manage dbt projects
-- web based IDE to develop, run and test a dbt project
-- Job orchestration
-- Logging and Alerting
-- Integrated documentation
-- Free for individuals 
+dbt CLOUD 
+- SaaS application that extends the capabilities of dbt Core where you can develop and manage dbt projects
+- web based IDE that allows you to develop, run and test a dbt project
+- Offers additional features such as
+    - Job orchestration
+    - Logging and Alerting
+    - Integrated documentation
+- There is a free for individuals 
+<br>
+<br>
 
 #### HOW WE WILL USE DBT 
-
 We will use dbt to process the data and display it in a dashboard. 
 
 If working with data in BigQuery 
