@@ -127,14 +127,14 @@ dbt, data build tool, is a transformation tool that allows anyone with SQL knowl
 - The compute is pushed out to the data warehouse
 - The final sturctured and transformed data is made available as tables or views in the data warehouse. 
 
-dbt CORE 
+`dbt CORE` 
 - essence of dbt
 - open source project that provides the core data transformation and modeling functionality 
 - builds and runs a dbt project
 - includes SQL compilation logic, macros and database adapters
 - Includse a CLI interface
 
-dbt CLOUD 
+`dbt CLOUD` 
 - SaaS application that extends the capabilities of dbt Core where you can develop and manage dbt projects
 - web based IDE that allows you to develop, run and test a dbt project
 - Offers additional features such as
@@ -158,9 +158,10 @@ If working with data in Postgres
 - Run dbt models through the CLI
 
 Dataset
-- yellow taxi data
-- green taxi data
-- taxi zone look up data
+- Yellow taxi data - Years 2019 and 2020
+- Green taxi data - Years 2019 and 2020
+- For Hire Vehicle data - Year 2019
+- Zone Lookup Table 
 
 
 
