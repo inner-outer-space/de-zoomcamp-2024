@@ -90,16 +90,17 @@ Processing
 - focuses on efficiency and ensuring standards 
 Presentation 
 - Data is exposed to end users 
+<br>
+<br>
 
 
-## WHAT IS DBT
+## WHAT IS DBT 
 
-dbt = data build tool. 
-a transformation tool that allows anyone that knows SQL to deploy analytics code following software engineering best practices like modularity, portability, CI/CD, and documenation. 
+dbt, data build tool, is a transformation tool that allows anyone with SQL knowledge to deploy analytics code following software engineering best practices like modularity, portability, CI/CD, and documenation. 
 
-After the extraction and loading, you will have a lot of raw data in the DW. This data must be transformed before you can expose it to the end users. DBT will help us transform following good software practices. We will Develope the models, test and execute and deploy using version control. 
+After data is extracted and loaded into a data warehouse, DBT helps us transform raw data following good software development practices. It allows you to develope models, test and execute and deploy using version control. 
 
-How does DBT work
+#### HOW DOES DBT WORK
 DBT adds a modeling layer where we transofrm the data over the raw data. The model is being persisted back to the DW. We will write .sql files. That will be the model. Essentially select statements with no DDL or DML. DBT will compile that code and created the DDL or DML file. It will push the compute to the data warehouse and in the end we will see the table or view in the Warehouse. 
 
 Dbt Core is the essence of DBT. It is an opensourc project that allows the data transformation. 
@@ -116,22 +117,25 @@ dbt Cloud
 - Integrated documentation
 - Free for individuals 
 
-How are we going to use dbt 
-BigQuery 
-- development using the cloud IDE
-- No local installation of dbt core
+#### HOW WE WILL USE DBT 
 
-Postgres
-- develop using a local ide of your choice
+We will use dbt to process the data and display it in a dashboard. 
+
+If working with data in BigQuery 
+- use the cloud IDE for development 
+- No need for local installation of dbt core
+
+If working with data in Postgres
 - Install dbt core locally connecting to Postgres database
+- develop using a local preferred IDE 
 - Run dbt models through the CLI
 
-We are going to work with the 
+Dataset
 - yellow taxi data
 - green taxi data
 - taxi zone look up data
 
-We are going to process the data and expose to a dashboard. 
+
 
 ## START A DBT PROJECT WITH BIGQUERY
 
