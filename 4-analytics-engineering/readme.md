@@ -98,7 +98,13 @@ Presentation
 
 dbt, data build tool, is a transformation tool that allows anyone with SQL knowledge to deploy analytics code following software engineering best practices like modularity, portability, CI/CD, and documenation. 
 
+|--|--|
+|After data is extracted and loaded into a data warehouse, DBT helps us transform raw data following good software development practices. It allows you to develope models, test and execute and deploy using version control. |<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/608ed128-067c-4775-b7e4-95cbce80b7cc" width="300" height="auto">|
+
 After data is extracted and loaded into a data warehouse, DBT helps us transform raw data following good software development practices. It allows you to develope models, test and execute and deploy using version control. 
+
+![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/f8856a85-98cc-4ffd-9067-5dc32399ae20)
+
 
 #### HOW DOES DBT WORK
 DBT adds a modeling layer where we transofrm the data over the raw data. The model is being persisted back to the DW. We will write .sql files. That will be the model. Essentially select statements with no DDL or DML. DBT will compile that code and created the DDL or DML file. It will push the compute to the data warehouse and in the end we will see the table or view in the Warehouse. 
