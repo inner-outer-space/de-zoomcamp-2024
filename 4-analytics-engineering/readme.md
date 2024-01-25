@@ -161,14 +161,29 @@ Dataset
 - Green taxi data - Years 2019 and 2020
 - For Hire Vehicle data - Year 2019
 - Zone Lookup Table 
-
-
+<br>
+<br>
 
 ## START A DBT CLOUD PROJECT WITH BIGQUERY
 Starting a dbt project using dbt Cloud and BigQuery
-- [Follow the dbt Cloud Set Up Instructions](#https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/dbt_cloud_setup.md)
-- Create a new git repository to store the dbt project
-- use the strater project that dbt provides
+
+1. Create a new git repository to store the dbt project
+2. Create the dataset tables in BigQuery
+3. Follow the [dbt Cloud Set Up Instructions](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/dbt_cloud_setup.md)
+
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/19732238-2567-49af-b931-44267e99e430" width="300" height="auto">
+
+
+4. On the dbt project page 
+<table>
+    <tr>
+        <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d42636e8-1931-417c-acfb-3996ac7741fb" width="auto" height="300"></td>
+         <td align="center">Click <b>INITIATIALIZE DBT PROJECT</b><br> to add the starter dbt project files to your folder<br><b> > > > > </b></td>
+        <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/9e9f55cb-7960-4536-b519-13b1e1de98f3" width="auto" height="300"></td>
+    </tr>
+</table>
+
+
 
 - important file dbt_project.yml.
     - define global settings
@@ -183,6 +198,7 @@ IN BIGQUERY
 - create another table that will house the dbt models that you build - like a sandbox
 - production schema - where you run the models after deployment. 
 - 
+
 
 
 
