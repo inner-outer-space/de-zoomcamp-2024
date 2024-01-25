@@ -217,13 +217,17 @@ Among the files and folders downloaded are: <br>
 
 
 ## START A DBT PROJECT WITH POSTGRES
-You will be able to write in jinja - a pythonic language
+
+## BUILD A DBT MODEL
+You will be able to write in jinja, a pythonic language, in the SQL files. You can identify a jinja block by the 2 curly brackets. 
 inside the jinja you can use a macro. 
 
-the config macro adds ddl to the 
+CONFIG MACRO 
+- this will be defined in a jinja
+- this macro along with the defined parameters will add the ddl or dml to the model  
 
-Materialization Strategies 
-[dbt Materializations](https://docs.getdbt.com/docs/build/materializations) are strategies for persisting dbt models in a warehouse. DBT has a number of default materializations and you can also create custom materializations. 
+MATERIALIZATION STRATEGIES
+[dbt Materializations](https://docs.getdbt.com/docs/build/materializations) are strategies for persisting dbt models in a warehouse. DBT has a number of default materializations and you can also create custom materializations. The materialization is defined in the config macro. 
 SQL Default Materializations 
     - Table 
         - model structure is re-calibrated on each run
@@ -234,7 +238,7 @@ SQL Default Materializations
         - will always contain the latest data records
     - Incremental 
         - essentially a table 
-        - allows you to update the records since the last time that source records were loaded
+        - allows you to run the model incrementally updating only the records that changed since the last time that source records were loaded
     - Ephemeral 
         - lightweight and do not persist. They cannot be querried outside of dbt. 
     - Materialized view
@@ -244,24 +248,40 @@ Python Default Materializations
     - Table
     - Incremental
 
-The FROM clause of a dbt model
-
+The dbt Model `FROM` Clause
+You can use Sources and Seeds to load data to the dbt model 
 Use a macro called `SOURCES`
+- resolves the name of the source with the right schema
+- will build the dependencies automatically
+- can define source freshness
+- can run a source freshness check
 
 Use `Seeds` to upload CSV files 
+- this is essentially a copy
+- the CSV files will be stored in our repository under the seed folder
+- benefits from version control
+- recommended for data that doesnt change often   
 
 The `Ref()` Macro 
-Macro reverences the underlying tables and views that were building the data warehouse
-RUnd the same code in any environment, it will resolve the correct schema for you
-Dependencies are built automatically
-dbt will resolve the names for you based on whether you are running in dev or prod 
-encapsulates the logic to define the paths, so we run the same code no matter what environment we are working in
+- Macro reverences the underlying tables and views that we have in the data warehouse
+- Run the same code in any environment, it will resolve the correct schema for you
+- Dependencies are built automatically
+- dbt will resolve the names for you based on whether you are running in dev or prod 
+- encapsulates the logic to define the paths, so we run the same code no matter what environment we are working in
 
-ref() is, under the hood, actually doing two important things. First, it is interpolating the schema into your model file to allow you to change your deployment schema via configuration. Second, it is using these references between models to automatically build the dependency graph. This will enable dbt to deploy models in the correct order when using dbt run. [Source](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)
+- ref() is, under the hood, actually doing two important things. First, it is interpolating the schema into your model file to allow you to change your deployment schema via configuration. Second, it is using these references between models to automatically build the dependency graph. This will enable dbt to deploy models in the correct order when using dbt run. [Source](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)
+
+CREATE A MODEL IN DBT 
+Add folders under the `Models` folder:
+    - `Staging` folder - this is where we will create the modesl to process the raw data (e.g., apply type casting, rename columns)
+    - `Core` folder - this is where we will create the models that we will expose at the end to the stakeholders
+
+Add a file under the `staging` folder:
+    - stg_green_tripdata.sql
+    - copy the config block into the file and change to view `{{ config(materialized='view') }}`
+    - we want all the tables in the staging environment to be views so we wont need to refresh to get the latest data
 
 
-
-## BUILD A DBT MODEL
 
 ## TESTING AND DOCUMENTATION
 
