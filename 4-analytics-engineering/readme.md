@@ -167,37 +167,41 @@ Dataset
 ## START A DBT CLOUD PROJECT WITH BIGQUERY
 Starting a dbt project using dbt Cloud and BigQuery
 
-1. Create a new git repository to store the dbt project
-2. Create the dataset tables in BigQuery
-3. Follow the [dbt Cloud Set Up Instructions](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/dbt_cloud_setup.md)
+1. In Git:
+   - Create a new git repository to store the dbt project
+3. In BigQuery:
+   - Make the data available in tables
+   - Create a dev/sandbox schema that will house the dbt models that you build
+   - Create a production schema where you run the models after deployment. 
+5. Follow the [dbt Cloud Set Up Instructions](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/dbt_cloud_setup.md)
+   - set up a new dbt project
+   - connect to the git hub repo
+   - connect to BigQuery
 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/19732238-2567-49af-b931-44267e99e430" width="300" height="auto">
-
+<br>
 
 4. On the dbt project page 
 <table>
     <tr>
         <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d42636e8-1931-417c-acfb-3996ac7741fb" width="auto" height="300"></td>
-         <td align="center">Click <b>INITIATIALIZE DBT PROJECT</b><br> to add the starter dbt project files to your folder<br><b> > > > > </b></td>
+         <td align="center">Click <b>INITIATIALIZE DBT PROJECT</b><br> to add the starter dbt project<br> files and folders to your folder<br><b> > > > > </b></td>
         <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/9e9f55cb-7960-4536-b519-13b1e1de98f3" width="auto" height="300"></td>
     </tr>
 </table>
+<br>
 
+Among the files downloaded are 
+    `.gitignore` 
+        - set up to ignore target/, dbt_packages/, logs/  
+        - Note: compile code is held in the target folder. 
+    `dbt_project.yml`
+        - can define global settings and vatiables
+        - set a database profile 
+            - dbt uses this to adapt the ddl it creates to the target DB. 
+            - If you want to work in different DBs in the project, you can change the setting here and run in a different db.
+        - define whether the output will be a view or a table
 
-
-- important file dbt_project.yml.
-    - define global settings
-    - name and
-    - profile - configures which db dbt will use to run this project. You can change this and then run in a different db.
-            - dbt uses the profile db to adapt the ddl to the correct version
-    - view or table
-    - other global variables
-
-IN BIGQUERY
-- make sure that you have loaded the data into tables
-- create another table that will house the dbt models that you build - like a sandbox
-- production schema - where you run the models after deployment. 
-- 
 
 
 
