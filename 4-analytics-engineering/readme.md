@@ -169,11 +169,11 @@ Starting a dbt project using dbt Cloud and BigQuery
 
 1. In Git:
    - Create a new git repository to store the dbt project
-3. In BigQuery:
+2. In BigQuery:
    - Make the data available in tables
    - Create a dev/sandbox schema that will house the dbt models that you build
    - Create a production schema where you run the models after deployment. 
-5. Follow the [dbt Cloud Set Up Instructions](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/dbt_cloud_setup.md)
+3. Follow the [dbt Cloud Set Up Instructions](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/dbt_cloud_setup.md)
    - set up a new dbt project
    - connect to the git hub repo
    - connect to BigQuery
@@ -191,17 +191,24 @@ Starting a dbt project using dbt Cloud and BigQuery
 </table>
 <br>
 
-Among the files downloaded are 
-    `.gitignore` 
+Among the files and folders downloaded are: 
+    `.gitignore` file
         - set up to ignore target/, dbt_packages/, logs/  
         - Note: compile code is held in the target folder. 
-    `dbt_project.yml`
+    `dbt_project.yml` file
         - can define global settings and vatiables
         - set a database profile 
             - dbt uses this to adapt the ddl it creates to the target DB. 
             - If you want to work in different DBs in the project, you can change the setting here and run in a different db.
         - define whether the output will be a view or a table
+    `models` folder
+        - this is where we will store models
+        - a couple demo models are provided here 
 
+5. Create a branch and update the dbt_project.yml
+    - change name 'my_new_project' to one of your choice
+    - under models change 'my_new_project' to the chosed name
+    - delete the example under this model 
 
 
 
