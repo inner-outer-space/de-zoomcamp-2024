@@ -210,13 +210,56 @@ Among the files and folders downloaded are: <br>
     - this is where we will store models
     - a couple demo models are provided here 
 
-5. Create a branch
+5. Create a branch and edit the dbt_project.yml
    - change name 'my_new_project' to one of your choice
    - under models change 'my_new_project' to the chosed name
    - delete the example under this model 
 
 
 ## START A DBT PROJECT WITH POSTGRES
+You will be able to write in jinja - a pythonic language
+inside the jinja you can use a macro. 
+
+the config macro adds ddl to the 
+
+Materialization Strategies 
+[dbt Materializations](https://docs.getdbt.com/docs/build/materializations) are strategies for persisting dbt models in a warehouse. DBT has a number of default materializations and you can also create custom materializations. 
+SQL Default Materializations 
+    - Table 
+        - model structure is re-calibrated on each run
+        - existing table is dropped and a new one is added in the schema that you are working in 
+        - newly added source data is not auto-added to the Tables you create
+    - View
+        - model structure is re-calibrated every time you run a view
+        - will always contain the latest data records
+    - Incremental 
+        - essentially a table 
+        - allows you to update the records since the last time that source records were loaded
+    - Ephemeral 
+        - lightweight and do not persist. They cannot be querried outside of dbt. 
+    - Materialized view
+        - used to create a table materialized in your target database
+    
+Python Default Materializations
+    - Table
+    - Incremental
+
+The FROM clause of a dbt model
+
+Use a macro called `SOURCES`
+
+Use `Seeds` to upload CSV files 
+
+The `Ref()` Macro 
+Macro reverences the underlying tables and views that were building the data warehouse
+RUnd the same code in any environment, it will resolve the correct schema for you
+Dependencies are built automatically
+dbt will resolve the names for you based on whether you are running in dev or prod 
+encapsulates the logic to define the paths, so we run the same code no matter what environment we are working in
+
+ref() is, under the hood, actually doing two important things. First, it is interpolating the schema into your model file to allow you to change your deployment schema via configuration. Second, it is using these references between models to automatically build the dependency graph. This will enable dbt to deploy models in the correct order when using dbt run. [Source](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)
+
+
 
 ## BUILD A DBT MODEL
 
