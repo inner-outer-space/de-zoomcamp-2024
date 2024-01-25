@@ -6,7 +6,7 @@
 
 [Analytics Enginnering](#analytics-engineering-background) •
 [dbt Background](#what-is-dbt) •
-[dbt & BigQuery](#start-a-dbt-project-with-big-query) •
+[dbt & BigQuery](#start-a-dbt-cloud-project-with-big-query) •
 [dbt & Postgres](#start-a-dbt-project-with-postgres) •
 [Build a Model](#build-a-dbt-model)  <br>
 [Testing & Documentation](#testing-and-documentation) •
@@ -177,11 +177,15 @@ Starting a dbt project using dbt Cloud and BigQuery
    - set up a new dbt project
    - connect to the git hub repo
    - connect to BigQuery
+5. Create a branch
+   - change name 'my_new_project' to one of your choice
+   - under models change 'my_new_project' to the chosed name
+   - delete the example under this model 
 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/19732238-2567-49af-b931-44267e99e430" width="300" height="auto">
 <br>
-
-4. On the dbt project page 
+<br>
+4. On the dbt project page  
 <table>
     <tr>
         <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d42636e8-1931-417c-acfb-3996ac7741fb" width="auto" height="300"></td>
@@ -190,27 +194,26 @@ Starting a dbt project using dbt Cloud and BigQuery
     </tr>
 </table>
 <br>
+<br>
+Among the files and folders downloaded are: <br>
+    
+- `.gitignore` file <br>
+    - Set up to ignore target/, dbt_packages/, logs/  
+    - Note: compile code is held in the target folder
+- `dbt_project.yml` file <br>
+    - can define global settings and vatiables
+    - set a database profile 
+    - dbt uses this to adapt the ddl it creates to the target DB. 
+    - If you want to work in different DBs in the project, you can change the setting here and run in a different db.
+    - define whether the output will be a view or a table
+- `models` folder <br>
+    - this is where we will store models
+    - a couple demo models are provided here 
 
-Among the files and folders downloaded are: 
-    `.gitignore` file
-        - set up to ignore target/, dbt_packages/, logs/  
-        - Note: compile code is held in the target folder. 
-    `dbt_project.yml` file
-        - can define global settings and vatiables
-        - set a database profile 
-            - dbt uses this to adapt the ddl it creates to the target DB. 
-            - If you want to work in different DBs in the project, you can change the setting here and run in a different db.
-        - define whether the output will be a view or a table
-    `models` folder
-        - this is where we will store models
-        - a couple demo models are provided here 
-
-5. Create a branch and update the dbt_project.yml
-    - change name 'my_new_project' to one of your choice
-    - under models change 'my_new_project' to the chosed name
-    - delete the example under this model 
-
-
+5. Create a branch
+   - change name 'my_new_project' to one of your choice
+   - under models change 'my_new_project' to the chosed name
+   - delete the example under this model 
 
 
 ## START A DBT PROJECT WITH POSTGRES
