@@ -101,7 +101,6 @@ Presentation<br>
 <br>
 <br>
 
-
 ## WHAT IS DBT 
 dbt, data build tool, is a transformation tool that allows anyone with SQL knowledge to deploy analytics code following software engineering best practices like modularity, portability, CI/CD, and documenation. 
 <br>
@@ -135,7 +134,7 @@ dbt, data build tool, is a transformation tool that allows anyone with SQL knowl
 - Includse a CLI interface
 
 `dbt CLOUD` 
-- SaaS application that extends the capabilities of dbt Core where you can develop and manage dbt projects
+- SaaS application that extends the capabilities of dbt Core 
 - web based IDE that allows you to develop, run and test a dbt project
 - Offers additional features such as
     - Job orchestration
@@ -165,9 +164,10 @@ Dataset
 
 
 
-## START A DBT PROJECT WITH BIGQUERY
-Starting a dbt project from scratch
-- first create a repository where you want to store the project.
+## START A DBT CLOUD PROJECT WITH BIGQUERY
+Starting a dbt project using dbt Cloud and BigQuery
+- [Follow the dbt Cloud Set Up Instructions](#https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/dbt_cloud_setup.md)
+- Create a new git repository to store the dbt project
 - use the strater project that dbt provides
 
 - important file dbt_project.yml.
