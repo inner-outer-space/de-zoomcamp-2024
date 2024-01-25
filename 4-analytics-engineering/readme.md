@@ -166,6 +166,23 @@ Dataset
 
 
 ## START A DBT PROJECT WITH BIGQUERY
+Starting a dbt project from scratch
+- first create a repository where you want to store the project.
+- use the strater project that dbt provides
+
+- important file dbt_project.yml.
+    - define global settings
+    - name and
+    - profile - configures which db dbt will use to run this project. You can change this and then run in a different db.
+            - dbt uses the profile db to adapt the ddl to the correct version
+    - view or table
+    - other global variables
+
+IN BIGQUERY
+- make sure that you have loaded the data into tables
+- create another table that will house the dbt models that you build - like a sandbox
+- production schema - where you run the models after deployment. 
+- 
 
 
 
