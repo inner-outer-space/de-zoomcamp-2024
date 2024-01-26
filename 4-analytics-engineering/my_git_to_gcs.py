@@ -20,7 +20,7 @@ Pre-reqs:
 init_url = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/'
 # switch out the bucketname
 #BUCKET = os.environ.get("GCP_GCS_BUCKET", "dtc-data-lake-bucketname")
-BUCKET = os.environ.get("GCP_GCS_BUCKET", "mage-zoomcamp-lulu")
+BUCKET = os.environ.get("GCP_GCS_BUCKET", "mage-zoomcamp-lulu-eu")
 
 
 def upload_to_gcs(bucket, object_name, local_file):
@@ -36,11 +36,66 @@ def upload_to_gcs(bucket, object_name, local_file):
     bucket = client.bucket(bucket)
     blob = bucket.blob(object_name)
     blob.upload_from_filename(local_file)
-
-
-
+    
 def web_to_gcs(year, service):
-    full_df_csv = pd.DataFrame()
+    if service == 'yellow':
+        data_types = {
+            'VendorID': 'float64',
+            'passenger_count': 'float64',
+            'trip_distance': 'float64',
+            'RatecodeID': 'float64',
+            'store_and_fwd_flag': 'object',
+            'PULocationid': 'int64',
+            'DULocationid': 'int64',
+            'payment_type': 'float64',
+            'fare_amount': 'float64',
+            'extra': 'float64',
+            'mta_tax': 'float64',
+            'tip_amount': 'float64',
+            'tolls_amount': 'float64',
+            'improvement_surcharge': 'float64',
+            'total_amount': 'float64',
+            'congestion_surcharge': 'float64'
+        }
+        date_cols = ['tpep_pickup_datetime', 'tpep_dropoff_datetime']
+
+    elif service == 'green':
+        data_types = {
+            'VendorID': 'float64',
+            'passenger_count': 'float64',
+            'trip_distance': 'float64',
+            'RatecodeID': 'float64',
+            'store_and_fwd_flag': 'object',
+            'PULocationID': 'int64',
+            'DOLocationID': 'int64',
+            'payment_type': 'float64',
+            'fare_amount': 'float64',
+            'extra': 'float64',
+            'mta_tax': 'float64',
+            'tip_amount': 'float64',
+            'tolls_amount': 'float64',
+            'improvement_surcharge': 'float64',
+            'total_amount': 'float64',
+            'payment_type': 'float64',
+            'trip_type': 'float64',
+            'congestion_surcharge': 'float64'
+        }
+        date_cols = ['lpep_pickup_datetime', 'lpep_dropoff_datetime']
+    
+    elif service == 'fhv':
+        data_types = {
+            'dispatching_base_num': 'object',
+            'PUlocationID': 'float64',
+            'DOlocationID': 'float64',
+            'SR_Flag': 'float64',
+            'Affiliated_base_number': 'object',
+        }
+        date_cols = ['pickup_datetime', 'dropOff_datetime']
+    
+    else:
+        warnings.warn(f"Unknown service: {service}. Please use 'yellow', 'green', or 'fhv'.")
+        return
+        
     for i in range(12):
         
         # sets the month part of the file_name string
@@ -50,31 +105,36 @@ def web_to_gcs(year, service):
         # csv file_name
         file_name = f"{service}_tripdata_{year}-{month}.csv.gz"
         
-        # read into a large df
+        # read into a df
         url = f"{init_url}{service}/{file_name}"
         print(url)
         r = requests.get(url)
-        df_csv = pd.read_csv(BytesIO(r.content), compression='gzip')
+        df_csv = pd.read_csv(BytesIO(r.content), compression='gzip', dtype=data_types, parse_dates=date_cols)
         
-        full_df_csv = pd.concat([full_df_csv, df_csv], ignore_index=True)
+        # define column dtypes and convert to lower
+        df_csv.columns = map(str.lower, df_csv.columns)
         
-        time.sleep(60)
+        # Convert DataFrame to Parquet format in memory
+        file_name = file_name.replace('.csv.gz', '.parquet')
+        df_csv.to_parquet(file_name, engine='pyarrow')
+        print(f"Parquet: {file_name}")
+        
+        # Upload Parquet data to GCS
+        gcs_object_name = f"{service}/{file_name}"
+        print(f'Bucket: {BUCKET}   Object: {gcs_object_name}')
+        upload_to_gcs(BUCKET, gcs_object_name, file_name)
+        print(f"GCS: {gcs_object_name}")
+        
+        # Check if the file exists locally before attempting to delete it
+        if os.path.exists(file_name):
+            os.remove(file_name)
+            print(f"Local file {file_name} deleted.")
+        else:
+            print(f"Local file {file_name} does not exist.")
 
-    # modify date columns and fix column names 
-            
-    # create a parquet file
-    file_name = f"{service}_trip_data_{year}.parquet"
-    full_df_csv.to_parquet(file_name, engine='pyarrow')
-    print(f"Parquet: {file_name}")
 
-    # upload it to gcs 
-    print(f'Bucket: {BUCKET}   Object: {service}/{file_name}')
-    upload_to_gcs(BUCKET, f"{service}/{file_name}", file_name)
-    print(f"GCS: {service}/{file_name}")
-
-
-web_to_gcs('2019', 'green')
+#web_to_gcs('2019', 'green')
 #web_to_gcs('2020', 'green')
 #web_to_gcs('2019', 'yellow')
-#web_to_gcs('2020', 'yellow')
-#web_to_gcs('2019', 'fhv')
+web_to_gcs('2020', 'yellow')
+web_to_gcs('2019', 'fhv')

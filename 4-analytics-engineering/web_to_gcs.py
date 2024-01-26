@@ -34,6 +34,31 @@ def upload_to_gcs(bucket, object_name, local_file):
 
 
 def web_to_gcs(year, service):
+    # Define the Pandas Series with data types
+    if service == 'yellow':
+        data_types = pd.Series({
+        'vendorid': 'int64',
+        'tpep_pickup_datetime': 'datetime64[us]',
+        'tpep_dropoff_datetime': 'datetime64[us]',
+        'passenger_count': 'int64',
+        'trip_distance': 'float64',
+        'ratecodeid': 'int64',
+        'store_and_fwd_flag': 'object',
+        'pulocationid': 'int64',
+        'dolocationid': 'int64',
+        'payment_type': 'int64',
+        'fare_amount': 'float64',
+        'extra': 'float64',
+        'mta_tax': 'float64',
+        'tip_amount': 'float64',
+        'tolls_amount': 'float64',
+        'improvement_surcharge': 'float64',
+        'total_amount': 'float64',
+        'congestion_surcharge': 'float64'
+        })
+    
+    
+    
     for i in range(12):
         
         # sets the month part of the file_name string
