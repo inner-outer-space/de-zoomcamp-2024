@@ -169,6 +169,7 @@ Starting a dbt project using dbt Cloud and BigQuery
 
 1. In Git:
    - Create a new git repository to store the dbt project
+   - Do not add a .gitignore or a readme. Those files will be added by dbt. 
 2. In BigQuery:
    - Make the data available in tables
    - Create a dev/sandbox schema that will house the dbt models that you build
@@ -177,7 +178,7 @@ Starting a dbt project using dbt Cloud and BigQuery
    - set up a new dbt project
    - connect to the git hub repo
    - connect to BigQuery
-5. Create a branch
+5. Create a branch and update the dbt yaml 
    - change name 'my_new_project' to one of your choice
    - under models change 'my_new_project' to the chosed name
    - delete the example under this model 
@@ -188,13 +189,15 @@ Starting a dbt project using dbt Cloud and BigQuery
 4. On the dbt project page  
 <table>
     <tr>
-        <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/d42636e8-1931-417c-acfb-3996ac7741fb" width="auto" height="300"></td>
+        <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/ea222d41-6033-46a7-a4b2-200072e37414" width="auto" height="300"></td>
          <td align="center">Click <b>INITIATIALIZE DBT PROJECT</b><br> to add the starter dbt project<br> files and folders to your folder<br><b> > > > > </b></td>
-        <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/9e9f55cb-7960-4536-b519-13b1e1de98f3" width="auto" height="300"></td>
+        <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/0cb772f2-a3e4-4435-8171-b7eaa88b7718" width="auto" height="300"></td>
     </tr>
 </table>
 <br>
 <br>
+
+
 Among the files and folders downloaded are: <br>
     
 - `.gitignore` file <br>
