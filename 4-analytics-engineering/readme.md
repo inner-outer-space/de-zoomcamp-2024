@@ -299,8 +299,8 @@ CREATE A MODEL IN DBT
 
 Add folders under the `Models` folder:
 
-- `Staging` folder - this is where we will create the modesl to process the raw data (e.g., apply type casting, rename columns)
-    - The goal of staging models is to clean and prepare individual source-conformed concepts for downstream usage.
+- `Staging` folder
+    - Is where we will create the modesl to process the raw data for downstream usage
     - The staging models should have a 1-to-1 relationship with the sources tables (e.g., one staging model for each source system table)
     - Best practice is to create one sub-directory per souce in the staging directory
     - Standard staging transformations
@@ -316,12 +316,31 @@ Add folders under the `Models` folder:
         - using views ensures that the downstream modesl will always get the freshest data possible
         - Conserves space in the data warehouse
     - Staging subdirectories contains at least:
-        - One staging model for each object (stg_<source>__<object>.sql --> e.g. stg_stripe__payments.sql)
-        - A <source>__sources.yml file - source definitions, tests, and documentation
-        - A <source>__models.yml file - documentation and tests for models in the same directory
+        - One staging model for each object (stg_\<source\>__\<object\>.sql --> e.g. stg_stripe__payments.sql)
+        - A _\<source\>__sources.yml file - source definitions, tests, and documentation
+        - A _\<source\>__models.yml file - documentation and tests for models in the same directory
             
-- `Intermediate` folder 
-- `Core or Marts` folder - this is where we will create the models that we will expose at the end to the stakeholders
+- `Intermediate` folder
+    - Are generally used to break up the complexity of Mart models and not needed for simple projects
+    - Common use cases:
+        - Strucutreal simplicfications - intermediate joins before the final joins in the mart models
+        - Re-graining - extend or collapse models to the right granularity
+        - Isolating complex operations  
+    - Subdirectories are based on business groupings (e.g., finance, marketing)
+    - Each subdirectory contains
+        - An \_int\_\<business grouping\>__models.yml file (e.g., \_int_finance__models.yml)
+        - Further transformation models (int\_\<entity\>s__\<verb\>s.sql --> e.g. int_payments_pivoted_to_orders.sql)
+    - Generally materialized ephemerally or as views in a custom schema with special permissions
+    - Not exposed to end users
+
+- `Core or Marts` folder
+    - This is where we will create the models that we will expose at the end to the stakeholders
+    - Subdirectories are based on business groupings (e.g., finance, marketing)
+    - Each subdirectory cotains:
+        - An \_\<business grouping\>__models.yml file (e.g., \_finance__models.yml)
+        - The models are named by entity (e.g., orders.sql, payments.sql, customers.sql)
+    - Materialized as tables or incremental models
+    - Wide and denormalized 
 
 Add a file under the `staging` folder:
     - stg_green_tripdata.sql
