@@ -172,16 +172,11 @@ Starting a dbt project using dbt Cloud and BigQuery
    - Do not add a .gitignore or a readme. Those files will be added by dbt. 
 2. In BigQuery:
    - Make the data available in tables
-   - Create a dev/sandbox schema that will house the dbt models that you build
-   - Create a production schema where you run the models after deployment. 
+   - dbt will create the schemas needed for your project when you run the models.
 3. Follow the [dbt Cloud Set Up Instructions](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/dbt_cloud_setup.md)
    - set up a new dbt project
    - connect to the git hub repo
    - connect to BigQuery
-5. Create a branch and update the dbt yaml 
-   - change name 'my_new_project' to one of your choice
-   - under models change 'my_new_project' to the chosed name
-   - delete the example under this model 
 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/19732238-2567-49af-b931-44267e99e430" width="300" height="auto">
 <br>
@@ -198,8 +193,15 @@ Starting a dbt project using dbt Cloud and BigQuery
 <br>
 
 
-Among the files and folders downloaded are: <br>
-    
+#### DBT STARTER PROJECT FILES AND FOLDERS ADDED TO THE REPO: 
+- `analysis` folder
+- `macros` folder 
+- `models` folder <br>
+    - this is where we will store models
+    - a couple demo models are provided here
+- `seeds` folder
+- `snapshots` folder
+- `tests` folder 
 - `.gitignore` file <br>
     - Set up to ignore target/, dbt_packages/, logs/  
     - Note: compile code is held in the target folder
@@ -209,9 +211,7 @@ Among the files and folders downloaded are: <br>
     - dbt uses this to adapt the ddl it creates to the target DB. 
     - If you want to work in different DBs in the project, you can change the setting here and run in a different db.
     - define whether the output will be a view or a table
-- `models` folder <br>
-    - this is where we will store models
-    - a couple demo models are provided here 
+
 
 5. Create a branch and edit the dbt_project.yml
    - change name 'my_new_project' to one of your choice
@@ -238,9 +238,10 @@ Among the files and folders downloaded are: <br>
     - use environmental variables in dbt projects for production deployments
     - control builds dependent on target
     - use query output to generate a second query
-    - abstract SQL snippets into macros  
+    - abstract SQL snippets into macros
+- You can view the end compiled code under the target folder
 
-CONFIG MACRO 
+CONFIG MACRO `{{ config(materialized='view') }}`
 - this will be defined in a jinja
 - this macro along with the defined parameters will add the ddl or dml to the model  
 
@@ -268,36 +269,34 @@ Python Default Materializations
 
 The dbt Model `FROM` Clause
 You can use Sources and Seeds to load data to the dbt model 
-Use a macro called `SOURCES`
+Use a macro called `source` - the source marco is only used in staging 
 - resolves the name of the source with the right schema
 - will build the dependencies automatically
 - can define source freshness
 - can run a source freshness check
 
 Use `Seeds` to upload CSV files 
-- this is essentially a copy
+- recommended for small data sets that don't change frequently such as lookup tables
+- using a seed for source essentially copies this to a table or view
 - the CSV files will be stored in our repository under the seed folder
 - benefits from version control
 - recommended for data that doesnt change often   
 
 The `Ref()` Macro 
-- Macro reverences the underlying tables and views that we have in the data warehouse
+- Macro reverences the underlying tables and views in the data warehouse created from dbt models or seeds 
 - Run the same code in any environment, it will resolve the correct schema for you
 - Dependencies are built automatically
-- dbt will resolve the names for you based on whether you are running in dev or prod 
+- dbt will resolve the names for you based on the environment you are working in
 - encapsulates the logic to define the paths, so we run the same code no matter what environment we are working in
 
 - ref() is, under the hood, actually doing two important things. First, it is interpolating the schema into your model file to allow you to change your deployment schema via configuration. Second, it is using these references between models to automatically build the dependency graph. This will enable dbt to deploy models in the correct order when using dbt run. [Source](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)
 
 CREATE A MODEL IN DBT 
+<details>
+<summary> More on dbt Model Structure</summary>
 [Documentation](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview)
 
-
 `Staging` >>> `Intermediate (for more complex projects) ` >>> `Marts`
-
- 
-
-Add folders under the `Models` folder:
 
 - `Staging` folder
     - Is where we will create the modesl to process the raw data for downstream usage
@@ -341,12 +340,88 @@ Add folders under the `Models` folder:
         - The models are named by entity (e.g., orders.sql, payments.sql, customers.sql)
     - Materialized as tables or incremental models
     - Wide and denormalized 
+</details>
+<br>
+<br>
+
+
+Add sub-folders under the `Models` folder:
+    - staging
+    - core 
 
 Add a file under the `staging` folder:
     - stg_green_tripdata.sql
     - copy the config block into the file and change to view `{{ config(materialized='view') }}`
-    - we want all the tables in the staging environment to be views so we wont need to refresh to get the latest data
+    - It is best to use views in staging to ensure we get the latest data when we use them
 
+Define the schema.yml 
+For BigQuery, set the database to the GCP project ID and the schema to the BigQuery dataset schema. You can define a freshness for each table. If you wanted to change the source of the data, simply update the source here. Since all staging models reference this file, there is no need to make any updates in the models themselves.  
+``` yaml
+version: 2
+
+sources: 
+  - name: staging 
+    database: aerobic-badge-408610
+    schema: all_ny_data
+
+    tables: 
+      - name: green_tripdata
+      - name: yellow_tripdata
+      - name: fhv_tripdata
+``` 
+
+Add a SELECT Statement to stg_green_tripdata.sql
+``` sql
+{{ config(materialized='view') }}
+
+select * from {{ source('staging','green_tripdata') }}
+limit 100
+```
+This sql will generate the following model: 
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/17448c8a-d5cc-4f42-abe1-2ab473f25233" width="350" height="auto">
+
+RUNNING A MODEL 
+- dbt run --select file_name --> to run a particular file
+- dbt run --> to run all files in a folder
+
+DEFINE THE FIELDS 
+Example for the green taxi data 
+```sql
+
+{{ config(materialized='view') }}
+
+select
+    -- identifiers
+    cast(vendorid as integer) as vendorid,
+    cast(ratecodeid as integer) as ratecodeid,
+    cast(pulocationid as integer) as  pickup_locationid,
+    cast(dolocationid as integer) as dropoff_locationid,
+
+    -- timestamps
+    cast(lpep_pickup_datetime as timestamp) as pickup_datetime,
+    cast(lpep_dropoff_datetime as timestamp) as dropoff_datetime,
+
+    -- trip info
+    store_and_fwd_flag,
+    cast(passenger_count as integer) as passenger_count,
+    cast(trip_distance as numeric) as trip_distance,
+    cast(trip_type as integer) as trip_type,
+
+    -- payment info
+    cast(fare_amount as numeric) as fare_amount,
+    cast(extra as numeric) as extra,
+    cast(mta_tax as numeric) as mta_tax,
+    cast(tip_amount as numeric) as tip_amount,
+    cast(tolls_amount as numeric) as tolls_amount,
+    cast(ehail_fee as numeric) as ehail_fee,
+    cast(improvement_surcharge as numeric) as improvement_surcharge,
+    cast(total_amount as numeric) as total_amount,
+    cast(payment_type as integer) as payment_type,
+    cast(congestion_surcharge as numeric) as congestion_surcharge
+
+from {{ source('staging', 'green_tripdata') }}
+limit 100
+```
 
 
 ## TESTING AND DOCUMENTATION
