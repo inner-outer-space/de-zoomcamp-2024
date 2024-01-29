@@ -222,15 +222,30 @@ Among the files and folders downloaded are: <br>
 ## START A DBT PROJECT WITH POSTGRES
 
 ## BUILD A DBT MODEL
-You will be able to write in jinja, a pythonic language, in the SQL files. You can identify a jinja block by the 2 curly brackets. 
-inside the jinja you can use a macro. 
+
+#### STRUCTURE OF A DBT MODEL 
+
+`Jinja`  
+- [DOCUMENTATION](https://docs.getdbt.com/docs/build/jinja-macros)
+- In dbt, Jinja can be used in any SQL file.
+- Jinja is a template engine that generates python like expressions
+- A jinja block is identifiec by the double curly braces
+    - {{    }} - expressions
+    - {{%  %}} - statement
+    - {{#  #}} - comments
+- Allows you to
+    - use control structues (e.g., if statements, for loops)
+    - use environmental variables in dbt projects for production deployments
+    - control builds dependent on target
+    - use query output to generate a second query
+    - abstract SQL snippets into macros  
 
 CONFIG MACRO 
 - this will be defined in a jinja
 - this macro along with the defined parameters will add the ddl or dml to the model  
 
 MATERIALIZATION STRATEGIES
-[dbt Materializations](https://docs.getdbt.com/docs/build/materializations) are strategies for persisting dbt models in a warehouse. DBT has a number of default materializations and you can also create custom materializations. The materialization is defined in the config macro. 
+[DOCUMETNATION](https://docs.getdbt.com/docs/build/materializations) are strategies for persisting dbt models in a warehouse. DBT has a number of default materializations and you can also create custom materializations. The materialization is defined in the config macro. 
 SQL Default Materializations 
     - Table 
         - model structure is re-calibrated on each run
@@ -275,9 +290,38 @@ The `Ref()` Macro
 - ref() is, under the hood, actually doing two important things. First, it is interpolating the schema into your model file to allow you to change your deployment schema via configuration. Second, it is using these references between models to automatically build the dependency graph. This will enable dbt to deploy models in the correct order when using dbt run. [Source](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)
 
 CREATE A MODEL IN DBT 
+[Documentation](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview)
+
+
+`Staging` >>> `Intermediate (for more complex projects) ` >>> `Marts`
+
+ 
+
 Add folders under the `Models` folder:
-    - `Staging` folder - this is where we will create the modesl to process the raw data (e.g., apply type casting, rename columns)
-    - `Core` folder - this is where we will create the models that we will expose at the end to the stakeholders
+
+- `Staging` folder - this is where we will create the modesl to process the raw data (e.g., apply type casting, rename columns)
+    - The goal of staging models is to clean and prepare individual source-conformed concepts for downstream usage.
+    - The staging models should have a 1-to-1 relationship with the sources tables (e.g., one staging model for each source system table)
+    - Best practice is to create one sub-directory per souce in the staging directory
+    - Standard staging transformations
+        - Renaming
+        - Type casting
+        - Basic computations
+        - Categorization
+        - Light cleaning (e.g, replaces empty strings with NULL)
+        - Flattening o
+        - Transformations that you want to see in every downstream model should be applied at this level to avoid repeated code
+    - Staging models are generally materialized as Views
+        - these are intended to be used downstream for further transformation and are not final products themselves
+        - using views ensures that the downstream modesl will always get the freshest data possible
+        - Conserves space in the data warehouse
+    - Staging subdirectories contains at least:
+        - One staging model for each object (stg_<source>__<object>.sql --> e.g. stg_stripe__payments.sql)
+        - A <source>__sources.yml file - source definitions, tests, and documentation
+        - A <source>__models.yml file - documentation and tests for models in the same directory
+            
+- `Intermediate` folder 
+- `Core or Marts` folder - this is where we will create the models that we will expose at the end to the stakeholders
 
 Add a file under the `staging` folder:
     - stg_green_tripdata.sql
