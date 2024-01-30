@@ -653,9 +653,47 @@ from {{ ref("taxi_zone_lookup")}}
 ```
 
 Create another new model in the core folder `fact_trips.sql`
+```sql
+```
 
+This creates this model 
+![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/dd25a077-484a-4118-9cf7-44036e79a9dc)
+
+When you dbt run this all of the models will run except for the seed. 
+
+dbt run --select fact_trips   runs the models 
+
+dbt build - will run models, seeds, and tests 
+
+dbt run --select +fact_trips  runs everything that fact trips needs including the seed. 
 
 ## TESTING AND DOCUMENTATION
+TESTS
+- A test is an assumption that we make about our data
+- Tests in dbt are essentially a select sql query
+- These assumptions get compiled to sql that returns the count of the failing records
+- Tests are defined on a column in the .yml file
+- dbt provides basic tests to check if the column values are
+    - unique
+    - not null
+    - accepted values
+    - a foreign key to another table
+ - You can create your custom tests as queries or macros or import packages
+
+DOCUMENTATION 
+- dbt provides a way to generate documentation for the whole projec tand render it as a website.
+- dbt docs can be hosted in dbt cloud or you can generate and serve them locally
+- The documentation includes:
+    - Project Information
+        - Model .sql and compiled code
+        - Model dependencies
+        - Sources
+        - Auto generated DAG from the ref and source macrs
+        - Descriptions from .yml files and tests
+    - Data Warehouse
+        - Column names and data types
+        - Table stats (e.g., size, rows)
+                 
 
 ## DEPLOY TO DBT CLOUD 
 
