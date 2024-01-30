@@ -24,17 +24,7 @@ The goal will be to construct an ETL pipeline that loads the data, performs some
 - Write your data as Parquet files to a bucket in GCP, partioned by `lpep_pickup_date`. Use the `pyarrow` library!
 - Schedule your pipeline to run daily at 5AM UTC.
 
-### Questions
-
-## Question 1. Data Loading
-
-Once the dataset is loaded, what's the shape of the data?
-
-* 266,855 rows x 20 columns ***THIS ONE***
-* 544,898 rows x 18 columns
-* 544,898 rows x 20 columns
-* 133,744 rows x 20 columns
-
+#### DATA LOADER 
 ``` python
 @data_loader
 def load_data_from_api(*args, **kwargs):
@@ -51,6 +41,53 @@ def load_data_from_api(*args, **kwargs):
 
     return full_df
 ```
+#### TRANSFORMER 
+```python
+
+@transformer
+def transform(data, *args, **kwargs):
+    # change columns to snake_case
+    data.columns = data.columns.str.lower()
+
+    # filter out rows with passenger_count = 0 or trip_distance = 0
+    data = data[(data['passenger_count'] > 0) & (data['trip_distance'] > 0)]
+
+    # add a date column based on the date time column
+    data.lpep_pickup_datetime= pd.to_datetime(data.lpep_pickup_datetime)
+    data.lpep_dropoff_datetime= pd.to_datetime(data.lpep_dropoff_datetime)
+    data['lpep_pickup_date'] = data['lpep_pickup_datetime'].dt.date 
+    print(data.shape)
+    return data
+
+
+@test
+def test_output(output, *args) -> None:
+    assert 'vendorid' in output.columns, 'vendorid does not exist'
+    
+@test
+def test_output(output, *args) -> None:
+    assert output['passenger_count'].isin([0]).sum() ==0, 'There are rides with zero passengers'
+
+@test
+def test_output(output, *args) -> None:
+    assert output['trip_distance'].isin([0]).sum() ==0,'There are rides distance = 0'
+```
+
+
+
+
+
+
+### Questions
+
+## Question 1. Data Loading
+
+Once the dataset is loaded, what's the shape of the data?
+
+* 266,855 rows x 20 columns ***THIS ONE***
+* 544,898 rows x 18 columns
+* 544,898 rows x 20 columns
+* 133,744 rows x 20 columns
 
 ## Question 2. Data Transformation
 
@@ -61,11 +98,6 @@ Upon filtering the dataset where the passenger count is equal to 0 _or_ the trip
 * 139,370 rows ***THIS ONE***
 * 266,856 rows
 
-```python
-
-data = data[(data['passenger_count'] > 0) & (data['trip_distance'] > 0)]
-
-```
 
 ## Question 3. Data Transformation
 
@@ -81,7 +113,7 @@ Which of the following creates a new column `lpep_pickup_date` by converting `lp
 What are the existing values of `VendorID` in the dataset?
 
 * 1, 2, or 3
-* 1 or 2   *** THIS ONE ***
+* 1 or 2   ***THIS ONE***
 * 1, 2, 3, 4
 * 1
 
