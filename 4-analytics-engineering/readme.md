@@ -194,7 +194,7 @@ Starting a dbt project using dbt Cloud and BigQuery
 <br>
 
 <details>
-<summary>#### DBT STARTER PROJECT FILES AND FOLDERS ADDED TO THE REPO </summmary> 
+<summary>#### DBT STARTER PROJECT FILES AND FOLDERS ADDED TO THE REPO </summary> 
 - `analysis` folder
 - `macros` folder 
 - `models` folder <br>
