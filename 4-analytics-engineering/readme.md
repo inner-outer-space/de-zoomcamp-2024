@@ -567,13 +567,13 @@ Compiled code
 - variables are useful for defining values that could be used across the project
 - With a macro, dbt allows us to get the data from the variables and translate during the compilation
 - To use a variable we use the {{ var('...') }} function
-- Variables can be defined in 2 ways
+- Variables can be defined in 2 ways:
     - in the dbt_project.yml
     ```sql
     vars:
     payment_type_values: [1, 2, 3, 4, 5, 6]
     ```
-    - from the command line
+    - from the command line<br>
     As an example, if your model included the var macro
     ```jinja
     {% if var('is_test_run', default=true) %}
@@ -583,9 +583,10 @@ Compiled code
     {% endif %}
     ```
     At the time that you build the model, you can pass a variable to the var macro that will override the default
-    ```
+    ```cli
     dbt build --m <your-model.sql> --var 'is_test_run: false'
-
+    ```
+    
 <br>
 <br>
 
