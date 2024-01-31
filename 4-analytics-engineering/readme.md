@@ -630,31 +630,33 @@ Create another model in the core folder `fact_trips.sql`
 - `dbt run --select fact_trips`  runs the fact_trips model only 
 - `dbt build` run models, seeds, and tests 
 - `dbt run --select +fact_trips` runs everything that fact trips needs including the seed. 
+<br>
+<br>
+
 
 ## TESTING AND DOCUMENTATION
 TESTS
-- A test is an assumption that we make about our data
-- Tests in dbt are essentially a select sql query
-- These assumptions get compiled to sql that returns the count of the failing records
-- Tests are defined on a column in the .yml file
+- Data tests are assertions that you make about your models and other resources in your dnt project. 
+- Tests in dbt are essentially sql queries that select for the failing records. 
+- Tests can be defined per column in the schema.yml file
 - dbt provides basic tests to check if the column values are
     - unique
     - not null
     - accepted values
     - a foreign key to another table
- - You can create your custom tests as queries or macros or import packages
+ - You can create custom tests as queries or macros or import packages
 
 DOCUMENTATION 
-- dbt provides a way to generate documentation for the whole projec tand render it as a website.
+- dbt provides a way to generate documentation for the whole project and render it as a website.
 - dbt docs can be hosted in dbt cloud or you can generate and serve them locally
 - The documentation includes:
     - Project Information
         - Model .sql and compiled code
         - Model dependencies
         - Sources
-        - Auto generated DAG from the ref and source macrs
+        - Auto generated DAG from the ref and source macros
         - Descriptions from .yml files and tests
-    - Data Warehouse
+    - Data Warehouse Information
         - Column names and data types
         - Table stats (e.g., size, rows)
 
@@ -713,7 +715,9 @@ seeds:
   ny_taxi_analytics:
     +column_types:
       LocationID: numeric 
-```             
+```  
+<br>
+<br>           
 
 ## DEPLOY TO DBT CLOUD 
 Deployment is the process of running the models that we created in the development environment in the production environment. 
@@ -736,9 +740,8 @@ Running a dbt project in production
 - When a PR is ready to be merged, a webhook is received in dnt Cloud that will trigger a new run of the specified job
 - The run of the CI job will be against a temporary schema
 - The PR will not be merged unless the run and the tests have completed successfully
-
-
-## DEPLOY LOCALLY 
+<br>
+<br>
 
 ## GOOGLE DATA STUDIO
 
