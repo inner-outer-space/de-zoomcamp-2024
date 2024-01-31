@@ -139,14 +139,9 @@ dbt, data build tool, is a transformation tool that allows anyone with SQL knowl
 #### HOW WE WILL USE DBT 
 We will use dbt to process the data and display it in a dashboard. 
 
-If working with data in BigQuery 
-- Use the cloud IDE for development 
-- No need for local installation of dbt core
-
-If working with data in Postgres
-- Install dbt core locally and connect to Postgres database
-- Develop using a local preferred IDE 
-- Run dbt models through the CLI
+| `If working with data in BigQuery`|`If working with data in Postgres`|
+|--|--|
+|- Use the cloud IDE for development <br>- No need for local installation of dbt core|- Install dbt core locally and connect to Postgres database<br>- Develop using a local preferred IDE<br>- Run dbt models through the CLI|
 
 #### DATASET 
 - Yellow taxi data - Years 2019 and 2020
