@@ -604,8 +604,8 @@ Compiled code
 <br>
 <br>
 
-##### MODEL BASED ON SEED 
-Create a new model in the core folder ` dim_zones.sql` 
+##### CREATE A MODEL USING A SEED 
+Create a new model in the core folder `dim_zones.sql` 
 ```sql
 {{ config(materialized='view') }}
 
@@ -617,20 +617,19 @@ select
 from {{ ref("taxi_zone_lookup")}}
 ```
 
-Create another new model in the core folder `fact_trips.sql`
+Create another model in the core folder `fact_trips.sql`
 ```sql
+
+
 ```
 
-This creates this model 
+#### COMPLETE PROJECT DATA FLOW 
 ![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/dd25a077-484a-4118-9cf7-44036e79a9dc)
 
-When you dbt run this all of the models will run except for the seed. 
-
-dbt run --select fact_trips   runs the models 
-
-dbt build - will run models, seeds, and tests 
-
-dbt run --select +fact_trips  runs everything that fact trips needs including the seed. 
+- `dbt run`  will run all models except for the seed. 
+- `dbt run --select fact_trips`  runs the fact_trips model only 
+- `dbt build` run models, seeds, and tests 
+- `dbt run --select +fact_trips` runs everything that fact trips needs including the seed. 
 
 ## TESTING AND DOCUMENTATION
 TESTS
