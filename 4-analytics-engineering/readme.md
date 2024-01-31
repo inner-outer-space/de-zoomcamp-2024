@@ -383,12 +383,14 @@ Its primary functions are:
 - Copy the config block into the file and change to view `{{ config(materialized='view') }}`
 - It is best to use views in staging to ensure we get the latest data when we use them
 
-`STEP 3` Create a schema.yml in the staging folder <br> 
+`STEP 3` Create a schema.yml in the staging folder 
+<br> 
 For BigQuery:
 - database = GCP project ID 
 - schema = BigQuery dataset schema.
 <br> 
-Here you can also set a freshness for each table. If you wanted to change the source of the data, simply update the source here. All staging models reference this file, so no changes would be needed in the models themselves.  
+If you wanted to change the source of the data, simply update the source in the schema.yml. All staging models reference this file, so no changes would be needed in the models themselves.  
+You can also set a freshness for each table here.   
 
 schema.yml
 ``` yaml
@@ -414,9 +416,6 @@ limit 100
 This sql will generate this dataflow as displayed on the lineage tab:<br> 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/17448c8a-d5cc-4f42-abe1-2ab473f25233" width="350" height="auto">
 
-RUNNING A MODEL 
-- `dbt run --select file_name` to run a particular file
-- `dbt run` to run all files in a folder
 
 `STEP 5` Expand the stg_green_tripdata model
 Define the data types and rename columns. 
@@ -458,6 +457,12 @@ select
 from {{ source('staging', 'green_tripdata') }}
 limit 100
 ```
+<br>
+<br>
+
+#### RUNNING A MODEL 
+- `dbt run --select file_name` to run a particular file
+- `dbt run` to run all files in a folder
 <br>
 <br>
 
