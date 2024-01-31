@@ -219,36 +219,49 @@ Starting a dbt project using dbt Cloud and BigQuery
    - change name 'my_new_project' to one of your choice
    - under models change 'my_new_project' to the chosen name
    - delete the example under this model 
-
-
-## START A DBT PROJECT WITH POSTGRES
+<br>
+<br>
 
 ## BUILD A DBT MODEL
 
-#### STRUCTURE OF A DBT MODEL 
+#### IMPORTANT COMPONENTS OF A DBT MODEL
 
-`Jinja`  
-- [DOCUMENTATION](https://docs.getdbt.com/docs/build/jinja-macros)
-- In dbt, Jinja can be used in any SQL file.
-- Jinja is a template engine that generates python like expressions
-- A jinja block is identifiec by the double curly braces
-    - {{.....}} - expressions
-    - {{%...%}} - statement
-    - {{#...#}} - comments
-- Allows you to
-    - use control structues (e.g., if statements, for loops)
-    - use environmental variables in dbt projects for production deployments
-    - control builds dependent on target
-    - use query output to generate a second query
-    - abstract SQL snippets into macros
-- You can view the end compiled code under the target folder
+`JINJA`  
+    - [JINJA DOCUMENTATION](https://docs.getdbt.com/docs/build/jinja-macros)
+    - Jinja is a template engine that generates python like expressions. 
+    - In dbt, Jinja can be used in any SQL file.
+    - A jinja block is identified by the double curly braces
+        - {{.....}} - expressions
+        - {{%...%}} - statement/ executables
+        - {{#...#}} - comments
+    - Allows you to
+        - use control structures (e.g., if statements, for loops)
+        - use environmental variables in dbt projects for production deployments
+        - control builds dependent on target
+        - use query output to generate a second query
+        - abstract SQL snippets into macros
+    - You can view the end compiled code under the target folder
 
-CONFIG MACRO `{{ config(materialized='view') }}`
-- this will be defined in a jinja
-- this macro along with the defined parameters will add the ddl or dml to the model  
+`CONFIG MACRO` 
+    - Models can be configured in one of 3 ways 
+        - using the config macro in the model file 
+        - using the config property in a .yml file 
+        - In the dbt_project.yml, under the models key 
+    - The config macro is used when you want to apply a configuration to that model only. 
+    - It is defined in a jinja 
+        - `{{ config(materialized='view') }}`
+        - ```jinja
+        {{
+            config(
+                materialized = "table",
+                sort = 'event_time',
+                dist = 'event_id'
+            )
+            }}
+        ```
 
-MATERIALIZATION STRATEGIES
-[DOCUMETNATION](https://docs.getdbt.com/docs/build/materializations) are strategies for persisting dbt models in a warehouse. DBT has a number of default materializations and you can also create custom materializations. The materialization is defined in the config macro. 
+`MATERIALIZATION STRATEGIES`
+[MATERIALIZATION DOCUMENTATION](https://docs.getdbt.com/docs/build/materializations) are strategies for persisting dbt models in a warehouse. DBT has a number of default materializations and you can also create custom materializations. The materialization is defined in the config macro. 
 SQL Default Materializations 
     - Table 
         - model structure is re-calibrated on each run
@@ -261,7 +274,7 @@ SQL Default Materializations
         - essentially a table 
         - allows you to run the model incrementally updating only the records that changed since the last time that source records were loaded
     - Ephemeral 
-        - lightweight and do not persist. They cannot be querried outside of dbt. 
+        - lightweight and do not persist. They cannot be queried outside of dbt. 
     - Materialized view
         - used to create a table materialized in your target database
     
@@ -269,7 +282,7 @@ Python Default Materializations
     - Table
     - Incremental
 
-The dbt Model `FROM` Clause
+`THE "FROM" CLAUSE`
 You can use Sources and Seeds to load data to the dbt model 
 Use a macro called `source` - the source marco is only used in staging 
 - resolves the name of the source with the right schema
@@ -277,26 +290,28 @@ Use a macro called `source` - the source marco is only used in staging
 - can define source freshness
 - can run a source freshness check
 
-Use `Seeds` to upload CSV files 
+`Seeds`
 - recommended for small data sets that don't change frequently such as lookup tables
 - using a seed for source essentially copies this to a table or view
 - the CSV files will be stored in our repository under the seed folder
 - benefits from version control
-- recommended for data that doesnt change often   
+- recommended for data that doesn't change often   
 
 The `Ref()` Macro 
-- Macro reverences the underlying tables and views in the data warehouse created from dbt models or seeds 
+- ref() is, under the hood, actually doing two important things. First, it is interpolating the schema into your model file to allow you to change your deployment schema via configuration. Second, it is using these references between models to automatically build the dependency graph. This will enable dbt to deploy models in the correct order when using dbt run. [Source](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)
+
+- Macro references the underlying tables and views in the data warehouse created from dbt models or seeds 
 - Run the same code in any environment, it will resolve the correct schema for you
 - Dependencies are built automatically
 - dbt will resolve the names for you based on the environment you are working in
 - encapsulates the logic to define the paths, so we run the same code no matter what environment we are working in
 
-- ref() is, under the hood, actually doing two important things. First, it is interpolating the schema into your model file to allow you to change your deployment schema via configuration. Second, it is using these references between models to automatically build the dependency graph. This will enable dbt to deploy models in the correct order when using dbt run. [Source](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)
+
 
 CREATE A MODEL IN DBT 
 <details>
 <summary> More on dbt Model Structure</summary>
-[Documentation](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview)
+[MODEL STRUCTURE BEST PRACTICES DOCUMENTATION](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview)
 
 `Staging` >>> `Intermediate (for more complex projects) ` >>> `Marts`
 
