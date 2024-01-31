@@ -237,21 +237,24 @@ Starting a dbt project using dbt Cloud and BigQuery
     - In the dbt_project.yml, under the models key 
 - The config macro is used when you want to apply a configuration to that model only. 
 - Examples: 
-``` jinja 
-{{ config(materialized='view') }}
+        ``` jinja 
+        {{ config(materialized='view') }}
+        -- OR     
+        {{
+            config(
+                materialized = "table",
+                sort = 'event_time',
+                dist = 'event_id'
+            )
+        }}
+        ```
 
-{{
-    config(
-        materialized = "table",
-        sort = 'event_time',
-        dist = 'event_id'
-    )
-}}
-```
-
-`MATERIALIZATION STRATEGIES`<br>
-strategies for persisting dbt models in a warehouse. DBT has a number of default materializations and you can also create custom materializations. <br> 
-SQL Default Materializations 
+`MATERIALIZATIONS`<br>
+are strategies for exposing the output of a dbt models in a warehouse as a table. view, or variation thereof. [MATERIALIZATION DOCUMENTATION](https://docs.getdbt.com/docs/build/materializations) 
+DBT has a number of default materializations and you can also create custom materializations. 
+<br>
+<br> 
+Default SQL Materializations 
 - Table 
     - model structure is re-calibrated on each run
     - existing table is dropped and a new one is added in the schema that you are working in 
@@ -267,19 +270,17 @@ SQL Default Materializations
 - Materialized view
     - used to create a table materialized in your target database
     
-Python Default Materializations
+Default Python Materializations
 - Table
 - Incremental
 
-[MATERIALIZATION DOCUMENTATION](https://docs.getdbt.com/docs/build/materializations) 
-<br>
 
 `THE "FROM" CLAUSE`
 - The from clause specifies the data source which can be a table, view, seed, or model 
 - Typically specified using the ref() or source() macro 
 - The dependency graph is built based off the relations specified in the from claus. 
 
-`THE "SOURCE()" MACRO`
+`THE "SOURCE()" MACRO`<br>
 "The 'source()' macro is used exclusively in the staging models to build the relationship between the source data and the current model being. 
 Its primary functions are:
 - Resolving Source Names: It resolves the correct name of the source data, including the schema, and creates dependencies between the source and the current model.
