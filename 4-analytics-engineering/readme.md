@@ -229,6 +229,8 @@ Starting a dbt project using dbt Cloud and BigQuery
     - use query output to generate a second query
     - abstract SQL snippets into macros
 - You can view the end compiled code under the target folder
+<br>
+<br>
 
 `CONFIG MACRO` 
 - Models can be configured in one of 3 ways 
@@ -248,10 +250,12 @@ Starting a dbt project using dbt Cloud and BigQuery
             )
         }}
         ```
+<br>
+<br>
 
 `MATERIALIZATIONS`<br>
-are strategies for exposing the output of a dbt models in a warehouse as a table. view, or variation thereof. [MATERIALIZATION DOCUMENTATION](https://docs.getdbt.com/docs/build/materializations) 
-DBT has a number of default materializations and you can also create custom materializations. 
+are strategies for exposing the output of a dbt models in a warehouse as a table. view, or variation thereof. 
+DBT has a number of default materializations and you can also create custom materializations - [MATERIALIZATION DOCUMENTATION](https://docs.getdbt.com/docs/build/materializations) 
 <br>
 <br> 
 Default SQL Materializations 
@@ -273,12 +277,15 @@ Default SQL Materializations
 Default Python Materializations
 - Table
 - Incremental
-
+<br>
+<br> 
 
 `THE "FROM" CLAUSE`
 - The from clause specifies the data source which can be a table, view, seed, or model 
 - Typically specified using the ref() or source() macro 
 - The dependency graph is built based off the relations specified in the from claus. 
+<br>
+<br> 
 
 `THE "SOURCE()" MACRO`<br>
 "The 'source()' macro is used exclusively in the staging models to build the relationship between the source data and the current model being. 
@@ -286,27 +293,33 @@ Its primary functions are:
 - Resolving Source Names: It resolves the correct name of the source data, including the schema, and creates dependencies between the source and the current model.
 - Freshness Definition: You can define rules for when and how often the source data should be considered fresh.
 - Source Freshness Checks: DBT can run source freshness checks based on the defined rules.
+<br>
+<br> 
 
 `THE REF() MACRO` 
 - Macro references the underlying tables and views in the data warehouse created from dbt models or seeds 
 - ref() is, under the hood, actually doing two important things. First, it is interpolating the schema into your model file to allow you to change your deployment schema via configuration. Second, it is using these references between models to automatically build the dependency graph. This will enable dbt to deploy models in the correct order when using dbt run. [Source](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)
+<br>
+<br> 
 
 `BENEFITS OF USING REF() OR SOURCE() MACRO`
 - Dependencies are built automatically
 - dbt will resolve the names for you based on the environment you are working in
 - Encapsulates the logic to define the paths, so you run the same code no matter what environment you are working in.
+<br>
+<br> 
 
 `SEEDS`
 - Seeds are CSV files in your dbt project that can be referenced the same way as referencing tables/models
 - Ideal for small data sets that don't change frequently such as lookup tables
 - The CSV files are stored in the repo under the seed folder and therefore benefit from version control  
 - Using a seed for source essentially copies this to a table or view
-
 <br>
 <br>
 
 
-CREATE A MODEL IN DBT 
+## CREATE A MODEL IN DBT 
+
 <details>
 <summary> More on dbt Model Structure</summary>
 [MODEL STRUCTURE BEST PRACTICES DOCUMENTATION](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview)
