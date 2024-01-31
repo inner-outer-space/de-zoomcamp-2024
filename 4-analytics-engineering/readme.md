@@ -588,124 +588,18 @@ Compiled code
     ```cli
     dbt build --m <your-model.sql> --var 'is_test_run: false'
     ```
-
-<br>
-<br>
-
-#### STAGING MODELS 
-<details>
-    <summary> Staging Green Taxi Rides Model</summary>
-    ```sql 
-    
-{{ config(materialized='view') }}
-
-select
-    -- identifiers
-    {{ dbt_utils.surrogate_key('vendorid', 'lpep_pickup_datetime')}} as trip_id,
-    cast(vendorid as integer) as vendorid,
-    cast(ratecodeid as integer) as ratecodeid,
-    cast(pulocationid as integer) as  pickup_locationid,
-    cast(dolocationid as integer) as dropoff_locationid,
-
-    -- timestamps
-    cast(lpep_pickup_datetime as timestamp) as pickup_datetime,
-    cast(lpep_dropoff_datetime as timestamp) as dropoff_datetime,
-
-    -- trip info
-    store_and_fwd_flag,
-    cast(passenger_count as integer) as passenger_count,
-    cast(trip_distance as numeric) as trip_distance,
-    cast(trip_type as integer) as trip_type,
-
-    -- payment info
-    cast(fare_amount as numeric) as fare_amount,
-    cast(extra as numeric) as extra,
-    cast(mta_tax as numeric) as mta_tax,
-    cast(tip_amount as numeric) as tip_amount,
-    cast(tolls_amount as numeric) as tolls_amount,
-    cast(ehail_fee as numeric) as ehail_fee,
-    cast(improvement_surcharge as numeric) as improvement_surcharge,
-    cast(total_amount as numeric) as total_amount,
-    cast(payment_type as integer) as payment_type,
-    {{ get_payment_type_description('payment_type')}} as payment_type_description,
-    cast(congestion_surcharge as numeric) as congestion_surcharge
-
-from {{ source('staging', 'green_tripdata') }}
-where vendorid is not null 
-
---dbt build --m <your-model.sql> --var 'is_test_run: false'
-{% if var('is_test_run', default=true) %}
-
-    limit 100
-
-{% endif %}
-
-
-    ```
-</details>
-
-<details>
-    <summary> Staging Yellow Taxi Rides Model</summary>
-    This is a copy of the green model with a handful of small changes on the lines indicated below
-    ```sql 
-    {{ config(materialized='view') }}
-
-    select
-        -- identifiers
-        {{ dbt_utils.surrogate_key('vendorid', 'tpep_pickup_datetime')}} as trip_id,
-        cast(vendorid as integer) as vendorid,
-        cast(ratecodeid as integer) as ratecodeid,
-        cast(pulocationid as integer) as  pickup_locationid,
-        cast(dolocationid as integer) as dropoff_locationid,
-    
-        -- timestamps
-        cast(tpep_pickup_datetime as timestamp) as pickup_datetime,    -- modified
-        cast(tpep_dropoff_datetime as timestamp) as dropoff_datetime,  -- modified
-    
-        -- trip info
-        store_and_fwd_flag,
-        cast(passenger_count as integer) as passenger_count,
-        cast(trip_distance as numeric) as trip_distance,
-        -- yellow cabs are always street hail 
-        1 as trip_type,                                                   -- modified
-    
-        -- payment info
-        cast(fare_amount as numeric) as fare_amount,
-        cast(extra as numeric) as extra,
-        cast(mta_tax as numeric) as mta_tax,
-        cast(tip_amount as numeric) as tip_amount,
-        cast(tolls_amount as numeric) as tolls_amount,
-        0 as ehail_fee,                                                  -- modified
-        cast(improvement_surcharge as numeric) as improvement_surcharge,
-        cast(total_amount as numeric) as total_amount,
-        cast(payment_type as integer) as payment_type,
-        {{ get_payment_type_description('payment_type')}} as payment_type_description,
-        cast(congestion_surcharge as numeric) as congestion_surcharge
-    from {{ source('staging', 'yellow_tripdata') }}                        -- modified
-    where vendorid is not null 
-    
-    --dbt build --m <your-model.sql> --var 'is_test_run: false'
-    {% if var('is_test_run', default=true) %}
-    
-        limit 100
-    
-    {% endif %}
-    ```
-</details>
-
 <br>
 <br>
 
 #### DBT SEEDS 
-- csv files that we can have in our repository that we can run and use as tables with the ref macro
-- meant for small files that don't change often
-- There isn't a way to upload the file through the UI. To get around that you can: 
+- DBT Seeds are csv files maintained in our repository that we can use as tables with the ref macro
+- There currently isn't a way to upload the file through the dbt UI. To get around that you can: 
     - if developing locally, copy paste under the seeds folder
-    - if working in the cloud, you can upload to your repo and the pull into dbt or creata a blank file and copy paste the data
+    - if working in the cloud, you can upload to your repo and the pull into dbt or create a blank file and copy paste the data
 - Then run `dbt seed`
-    - it will create a table in the DB and will define the data type for each field
-- Then you can go to the project yml and define the columns explicitly. If you only define some of the columns, then it will take first from the model and what is left from what was inferred at load time.
-- If you change something in the dbt seed file then it will get appended to the table. If you want the replace to happen instead then you need to do a dbt seed --full-refresh. Then the table will be dropped and recreated.
+    - this will create a table in the DB and infer the data type for each column
+- You can also define the data types explicitly in the dbt_project.yml. Any columns not defined will be inferred at load time.
+- A change to a dbt seed file will be appended to the existing data rather than replacing the original content.  If you want the replace to happen instead then you need to do a dbt seed --full-refresh. Then the table will be dropped and recreated.
 
 <br>
 <br>
