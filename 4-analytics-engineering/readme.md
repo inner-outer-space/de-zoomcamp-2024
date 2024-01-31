@@ -470,8 +470,10 @@ limit 100
 - Macros are reusable pieces of code analogous to functions. 
 - There are defined in .sql files in the macros folder using a combination of jinja and sql
 - each macro is defined within an executable jinja block {{%...%}}
-- macros follow this naming convention - ` macro name_of_macro(parameter) `
+- macros follow this naming convention - `{%}  macro name_of_macro(parameter)  %}`
 - the code that will be returned by the macro is defined between the macro start and end comment 
+
+<br>
 
 CUSTOM MACRO EXAMPLE  
 The following example would be useful in the case where you are aggregating payment data from multiple sources that use different naming conventions for payment types.
@@ -526,23 +528,26 @@ where vendorid is not null
 <br>
 
 ## PACKAGES
-- you can use macros from other projects in your project.
-- like libraries in other programming languages
-- stand alone dbt projects, with models and macros that tackle a specific problem area.
+- Similarly to libraries in other programming languages, you can import and use macros from other projects.
+- Packages are stand alone dbt projects, with models and macros that tackle a specific problem areas.
 - By adding a packages to your project, the packages's models and macros will become part of your own project.
-- Create a packages.yml file in the main directory of your project and define the packages you want to import
+- You can add packages to your project by creating a packages.yml file in your project's main and define the packages you want to import
+- A list of useful packages can be found on the [dbt package hub](https://hub.getdbt.com/)
+
 ```yaml
 packages:
   - package: dbt-labs/dbt_utils
     version: 0.8.0
 ``` 
-- Import by running `dbt deps` to download all dependencies
+- Import the packages and download all dependencies by running `dbt deps`. THe packages will appear under the dbt_packages folder.   
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/c5de84ef-f0b4-4450-9416-3fc30d673992" width="200" height="auto">
-- A list of useful packages can be found on the [dbt package hub](https://hub.getdbt.com/)
+<br>
+
 Example use of the imported package macro
 ```sql
   {{ dbt_utils.surrogate_key('vendorid', 'lpep_pickup_datetime')}} as trip_id,
 ```
+<br>
 Compiled code 
 ```sql
     to_hex(md5(cast(coalesce(cast(vendorid as 
