@@ -542,12 +542,14 @@ packages:
 - Import the packages and download all dependencies by running `dbt deps`. THe packages will appear under the dbt_packages folder.   
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/c5de84ef-f0b4-4450-9416-3fc30d673992" width="200" height="auto">
 <br>
+<br>
 
-Example use of the imported package macro
+Using an macro from a package
 ```sql
   {{ dbt_utils.surrogate_key('vendorid', 'lpep_pickup_datetime')}} as trip_id,
 ```
 <br>
+
 Compiled code 
 ```sql
     to_hex(md5(cast(coalesce(cast(vendorid as 
