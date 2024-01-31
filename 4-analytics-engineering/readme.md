@@ -90,11 +90,11 @@ DIMENSION TABLES
 
 <div align="center">
 
-<b>DIMENSIONAL MODELING ARCHITECTURE</b> 
+<b>DATA WAREHOUSING</b> 
 
 |`STAGING`| >>> |`PROCESSING`| >>>|`PRESENTATION`|
 |--|--|--|--|--|
-|- Raw data is imported into the data warehouse<br> - Data is not meant to be exposed to others||- Rata is transformed to data models<br>- focuses on efficiency and ensuring standards|| Data is exposed to end users| 
+|- Raw data is imported into the data warehouse<br> - Data is not meant to be exposed to others||- Data is transformed to data models<br>- focuses on efficiency and ensuring standards|| Data is exposed to end users| 
 
 </div>
 <br>
@@ -122,8 +122,9 @@ dbt, data build tool, is a transformation tool that allows anyone with SQL knowl
 #### HOW DOES DBT WORK
 - DBT adds a data transformation Layer on top of your raw data within your data warehouse.
 - The transformation logic is defined using SQL in the model files.
+- Each model file is essentially one SELECT statement that outputs a table or a view. 
 - You can also use Jinja, a templating language, to parameterize your SQL queries.
-- The .sql files that define the model and are essentially SELECT statements with no DDL (Data Definition Language) or DML (Data Manipulation Language) operations.
+- The .sql files that define the model do not contain DDL (Data Definition Language) or DML (Data Manipulation Language) operations. 
 - DBT compiles the .sql code and creates the DDL or DML statements needed to create and populate the tables based on the model and DB you are using.
 - The compiled sql is then executed in the data warehouse.
 - The final structured and transformed data is made available as tables or views in the data warehouse. 
@@ -249,7 +250,6 @@ Starting a dbt project using dbt Cloud and BigQuery
 ```
 
 `MATERIALIZATION STRATEGIES`<br>
-[MATERIALIZATION DOCUMENTATION](https://docs.getdbt.com/docs/build/materializations) 
 strategies for persisting dbt models in a warehouse. DBT has a number of default materializations and you can also create custom materializations. <br> 
 SQL Default Materializations 
 - Table 
@@ -270,6 +270,9 @@ SQL Default Materializations
 Python Default Materializations
 - Table
 - Incremental
+
+[MATERIALIZATION DOCUMENTATION](https://docs.getdbt.com/docs/build/materializations) 
+<br>
 
 `THE "FROM" CLAUSE`
 - The from clause specifies the data source which can be a table, view, seed, or model 
