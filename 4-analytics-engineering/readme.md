@@ -318,7 +318,7 @@ Its primary functions are:
 <br>
 
 
-## CREATE A MODEL IN DBT 
+#### CREATE A MODEL IN DBT 
 
 <details>
 <summary> More on dbt Model Structure</summary>
@@ -326,10 +326,10 @@ Its primary functions are:
 
 `Staging` >>> `Intermediate (for more complex projects) ` >>> `Marts`
 
-- `Staging` folder
-    - Is where we will create the modesl to process the raw data for downstream usage
+- `STAGING FOLDER`
+    - Is where we will create the model to process the raw data for downstream usage
     - The staging models should have a 1-to-1 relationship with the sources tables (e.g., one staging model for each source system table)
-    - Best practice is to create one sub-directory per souce in the staging directory
+    - Best practice is to create one sub-directory per source in the staging directory
     - Standard staging transformations
         - Renaming
         - Type casting
@@ -340,17 +340,17 @@ Its primary functions are:
         - Transformations that you want to see in every downstream model should be applied at this level to avoid repeated code
     - Staging models are generally materialized as Views
         - these are intended to be used downstream for further transformation and are not final products themselves
-        - using views ensures that the downstream modesl will always get the freshest data possible
+        - using views ensures that the downstream models will always get the freshest data possible
         - Conserves space in the data warehouse
     - Staging subdirectories contains at least:
         - One staging model for each object (stg_\<source\>__\<object\>.sql --> e.g. stg_stripe__payments.sql)
         - A _\<source\>__sources.yml file - source definitions, tests, and documentation
         - A _\<source\>__models.yml file - documentation and tests for models in the same directory
             
-- `Intermediate` folder
-    - Are generally used to break up the complexity of Mart models and not needed for simple projects
+- `INTERMEDIATE FOLDER` (*GENERAL INFO - NOT USED IN THIS PROJECT*) 
+    - Are generally used to break up the complexity of Mart models (not needed for simple projects)
     - Common use cases:
-        - Strucutreal simplicfications - intermediate joins before the final joins in the mart models
+        - Structural simplifications - intermediate joins before the final joins in the mart models
         - Re-graining - extend or collapse models to the right granularity
         - Isolating complex operations  
     - Subdirectories are based on business groupings (e.g., finance, marketing)
@@ -360,10 +360,10 @@ Its primary functions are:
     - Generally materialized ephemerally or as views in a custom schema with special permissions
     - Not exposed to end users
 
-- `Core or Marts` folder
+- `MARTS FOLDER` (*Core in this project*)
     - This is where we will create the models that we will expose at the end to the stakeholders
     - Subdirectories are based on business groupings (e.g., finance, marketing)
-    - Each subdirectory cotains:
+    - Each subdirectory contains:
         - An \_\<business grouping\>__models.yml file (e.g., \_finance__models.yml)
         - The models are named by entity (e.g., orders.sql, payments.sql, customers.sql)
     - Materialized as tables or incremental models
@@ -373,17 +373,20 @@ Its primary functions are:
 <br>
 
 
-Add sub-folders under the `Models` folder:
+`STEP 1` Add sub-folders under the `Models` folder:
     - staging
     - core 
 
-Add a file under the `staging` folder:
+`STEP 2` Add a file under the `staging` folder:
     - stg_green_tripdata.sql
-    - copy the config block into the file and change to view `{{ config(materialized='view') }}`
+    - Copy the config block into the file and change to view `{{ config(materialized='view') }}`
     - It is best to use views in staging to ensure we get the latest data when we use them
 
-Define the schema.yml 
-For BigQuery, set the database to the GCP project ID and the schema to the BigQuery dataset schema. You can define a freshness for each table. If you wanted to change the source of the data, simply update the source here. Since all staging models reference this file, there is no need to make any updates in the models themselves.  
+`STEP 3` Define the schema.yml <br> 
+For BigQuery:
+    - database = GCP project ID 
+    - schema = BigQuery dataset schema. 
+Here you can also set a freshness for each table. If you wanted to change the source of the data, simply update the source here. All staging models reference this file, so no changes would be needed in the models themselves.  
 ``` yaml
 version: 2
 
@@ -395,17 +398,16 @@ sources:
     tables: 
       - name: green_tripdata
       - name: yellow_tripdata
-      - name: fhv_tripdata
 ``` 
 
-Add a SELECT Statement to stg_green_tripdata.sql
+`STEP 4` Add a SELECT Statement to stg_green_tripdata.sql
 ``` sql
 {{ config(materialized='view') }}
 
 select * from {{ source('staging','green_tripdata') }}
 limit 100
 ```
-This sql will generate the following model: 
+This sql will generate the following model:<br> 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/17448c8a-d5cc-4f42-abe1-2ab473f25233" width="350" height="auto">
 
 RUNNING A MODEL 
