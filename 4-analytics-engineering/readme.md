@@ -38,7 +38,7 @@ Traditional analytics team roles:
 
 With the new tooling that is available, analysts end up writing more code. The problem is that they are not trained on good software development practices. On the other hand, the data engineers who are generally great software engineers, don't have the background to understand the business. 
 
-The concept of an "Analytics Engineer" has emerged as a bridge between the traditional roles of Data Engineer and Data Analyst. The data engineer has a strong foundation in both engineering and analytics with a good understanding of both business and engineering best practices.  
+The concept of an **"Analytics Engineer"** has emerged as a bridge between the traditional roles of Data Engineer and Data Analyst. The data engineer has a strong foundation in both engineering and analytics with a good understanding of both business and engineering best practices.  
 
 [More on the analytics engineer role](https://www.kdnuggets.com/2019/02/analytics-engineer-data-team.html)
 
@@ -199,8 +199,10 @@ Starting a dbt project using dbt Cloud and BigQuery
     - If you want to work in different DBs in the project, you can change the setting here and run in a different db.
     - define whether the output will be a view or a table
 </details>
+<br>
 
-5. Create a branch and edit the dbt_project.yml
+
+5. Edit the dbt_project.yml
    - change name 'my_new_project' to one of your choice
    - under models change 'my_new_project' to the chosen name
    - delete the example under this model 
@@ -212,60 +214,60 @@ Starting a dbt project using dbt Cloud and BigQuery
 #### IMPORTANT COMPONENTS OF A DBT MODEL
 
 `JINJA`  
-    - [JINJA DOCUMENTATION](https://docs.getdbt.com/docs/build/jinja-macros)
-    - Jinja is a template engine that generates python like expressions. 
-    - In dbt, Jinja can be used in any SQL file.
-    - A jinja block is identified by the double curly braces
-        - {{.....}} - expressions
-        - {{%...%}} - statement/ executables
-        - {{#...#}} - comments
-    - Allows you to
-        - use control structures (e.g., if statements, for loops)
-        - use environmental variables in dbt projects for production deployments
-        - control builds dependent on target
-        - use query output to generate a second query
-        - abstract SQL snippets into macros
-    - You can view the end compiled code under the target folder
+- [JINJA DOCUMENTATION](https://docs.getdbt.com/docs/build/jinja-macros)
+- Jinja is a template engine that generates python like expressions. 
+- In dbt, Jinja can be used in any SQL file.
+- A jinja block is identified by the double curly braces
+    - {{.....}} - expressions
+    - {{%...%}} - statement/ executables
+    - {{#...#}} - comments
+- Allows you to
+    - use control structures (e.g., if statements, for loops)
+    - use environmental variables in dbt projects for production deployments
+    - control builds dependent on target
+    - use query output to generate a second query
+    - abstract SQL snippets into macros
+- You can view the end compiled code under the target folder
 
 `CONFIG MACRO` 
-    - Models can be configured in one of 3 ways 
-        - using the config macro in the model file 
-        - using the config property in a .yml file 
-        - In the dbt_project.yml, under the models key 
-    - The config macro is used when you want to apply a configuration to that model only. 
-    - It is defined in a jinja 
-        - `{{ config(materialized='view') }}`
-        - ```jinja
-        {{
-            config(
-                materialized = "table",
-                sort = 'event_time',
-                dist = 'event_id'
-            )
-            }}
-        ```
+- Models can be configured in one of 3 ways 
+    - using the config macro in the model file 
+    - using the config property in a .yml file 
+    - In the dbt_project.yml, under the models key 
+- The config macro is used when you want to apply a configuration to that model only. 
+- It is defined in a jinja 
+    - `{{ config(materialized='view') }}`
+    - ```jinja
+    {{
+        config(
+            materialized = "table",
+            sort = 'event_time',
+            dist = 'event_id'
+        )
+        }}
+    ```
 
 `MATERIALIZATION STRATEGIES`
 [MATERIALIZATION DOCUMENTATION](https://docs.getdbt.com/docs/build/materializations) are strategies for persisting dbt models in a warehouse. DBT has a number of default materializations and you can also create custom materializations. The materialization is defined in the config macro. 
 SQL Default Materializations 
-    - Table 
-        - model structure is re-calibrated on each run
-        - existing table is dropped and a new one is added in the schema that you are working in 
-        - newly added source data is not auto-added to the Tables you create
-    - View
-        - model structure is re-calibrated every time you run a view
-        - will always contain the latest data records
-    - Incremental 
-        - essentially a table 
-        - allows you to run the model incrementally updating only the records that changed since the last time that source records were loaded
-    - Ephemeral 
-        - lightweight and do not persist. They cannot be queried outside of dbt. 
-    - Materialized view
-        - used to create a table materialized in your target database
+- Table 
+    - model structure is re-calibrated on each run
+    - existing table is dropped and a new one is added in the schema that you are working in 
+    - newly added source data is not auto-added to the Tables you create
+- View
+    - model structure is re-calibrated every time you run a view
+    - will always contain the latest data records
+- Incremental 
+    - essentially a table 
+    - allows you to run the model incrementally updating only the records that changed since the last time that source records were loaded
+- Ephemeral 
+    - lightweight and do not persist. They cannot be queried outside of dbt. 
+- Materialized view
+    - used to create a table materialized in your target database
     
 Python Default Materializations
-    - Table
-    - Incremental
+- Table
+- Incremental
 
 `THE "FROM" CLAUSE`
 You can use Sources and Seeds to load data to the dbt model 
