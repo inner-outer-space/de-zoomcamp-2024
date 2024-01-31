@@ -101,7 +101,7 @@ DIMENSION TABLES
 <br>
 
 ## WHAT IS DBT 
-dbt, data build tool, is a transformation tool that allows anyone with SQL knowledge to deploy analytics code following software engineering best practices like modularity, portability, CI/CD, and documenation. 
+dbt, data build tool, is a transformation tool that allows anyone with SQL knowledge to deploy analytics code following software engineering best practices like modularity, portability, CI/CD, and documentation. 
 <br>
 <br>
 <div align = "center">
@@ -109,10 +109,12 @@ dbt, data build tool, is a transformation tool that allows anyone with SQL knowl
 <br>
 <br>
 
-|||
-|--|--|
-|After data is extracted and loaded into a data warehouse,<br> DBT helps us transform raw data following good software<br> development practices. It allows you to<br> develope models, test, execute, and deploy<br> using version control. |<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/608ed128-067c-4775-b7e4-95cbce80b7cc" width="350" height="auto">|
-
+<table>
+<tr>
+<td>After data is extracted and loaded into a data warehouse,<br> DBT helps us transform raw data following good software<br> development practices. It allows you to<br> develope models, test, execute, and deploy<br> using version control. </td>
+<td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/608ed128-067c-4775-b7e4-95cbce80b7cc" width="350" height="auto"></td>
+</tr>
+</table>
 </div>
 <br>
 <br>
@@ -123,14 +125,14 @@ dbt, data build tool, is a transformation tool that allows anyone with SQL knowl
 - The .sql files that define the model and are essentially SELECT statements with no DDL (Data Definition Language) or DML (Data Manipulation Language) operations.
 - DBT compiles the .sql code and creates the DDL or DML statements needed to create and populate the tables based on the model.
 - The compute is pushed out to the data warehouse
-- The final sturctured and transformed data is made available as tables or views in the data warehouse. 
+- The final structured and transformed data is made available as tables or views in the data warehouse. 
 
 `dbt CORE` 
 - essence of dbt
 - open source project that provides the core data transformation and modeling functionality 
 - builds and runs a dbt project
 - includes SQL compilation logic, macros and database adapters
-- Includse a CLI interface
+- Include a CLI interface
 
 `dbt CLOUD` 
 - SaaS application that extends the capabilities of dbt Core 
