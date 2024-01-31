@@ -693,9 +693,86 @@ DOCUMENTATION
     - Data Warehouse
         - Column names and data types
         - Table stats (e.g., size, rows)
-                 
+
+ADD TESTS AND DESCRIPTIONS TO SCHEMA.YML 
+
+```yml
+    - name: stg_yellow_tripdata
+      description: > 
+        Trips made by New York City's iconic yellow taxis. 
+        Yellow taxis are the only vehicles permitted to respond to a street hail from a passenger in all five
+        boroughs. They may also be hailed using an e-hail app like Curb or Arro.
+        The records were collected and provided to the NYC Taxi and Limousine Commission (TLC) by
+        technology service providers. 
+      columns:
+          - name: tripid
+            description: Primary key for this table, generated with a concatenation of vendorid+pickup_datetime
+            tests:
+                - unique:
+                    severity: warn
+                - not_null:
+```
+
+OTHER TEST EXAMPLES 
+```yml
+-- checks that values is in lookup table
+      - name: Pickup_locationid
+        description: locationid where the meter was engaged.
+        tests:
+          - relationships:
+              to: ref('taxi_zone_lookup')
+              field: locationid
+              severity: warn
+
+-- uses a variable to test
+      - name: Payment_type 
+        description: >
+          A numeric code signifying how the passenger paid for the trip.
+          tests:
+            - accepted_values:
+              values: "{{ var('payment_type_values') }}"
+              severity: warn
+              quote: false
+ 
+```
+
+DEFINE VARIABLES IN THE project.yml 
+```yml 
+models:
+  ny_taxi_analytics:
+    # Applies to all files under models/example/
+
+vars:
+  payment_type_values: [1,2,3,4,5,6]
+
+seeds: 
+  ny_taxi_analytics:
+    +column_types:
+      LocationID: numeric 
+```             
 
 ## DEPLOY TO DBT CLOUD 
+Deployment is the process of running the models that we created in the development environment in the production environment. 
+
+Running a dbt project in production
+- dbt cloud includes a scheduler where to create jobs to run in production
+- the jobs will create the models in the production DB
+- A single job can run multiple commands
+- Jobs can be triggered manually or on a schedule
+- Each job will keep a log of the runs over time
+- Each run will have the logs for each command
+- A job could also generate documentation, that could be viewwed under the run information
+- If dbt source freshness was run, the results can also be viewed at the end of a job
+
+#### CONTINUOUS INTEGRATION (CI) 
+- CI is the practice of regularly merging dev branches into a central repository, that then builds automatically and runs tests.
+- The goal is to reduce adding bugs to production code and maintain a more stable project
+- dbt allows us to enable CI on pull requests
+- Triggered via webhooks from GitHub or GitLab
+- When a PR is ready to be merged, a webhook is received in dnt Cloud that will trigger a new run of the specified job
+- The run of the CI job will be against a temporary schema
+- The PR will not be merged unless the run and the tests have completed successfully
+
 
 ## DEPLOY LOCALLY 
 
