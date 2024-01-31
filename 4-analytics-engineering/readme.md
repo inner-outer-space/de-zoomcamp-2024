@@ -590,7 +590,7 @@ Compiled code
 <br>
 <br>
 
-#### DBT SEEDS 
+## DBT SEEDS 
 - DBT Seeds are csv files maintained in our repository that we can use as tables with the ref macro
 - There currently isn't a way to upload the file through the dbt UI. To get around that you can: 
     - if developing locally, copy paste under the seeds folder
@@ -622,7 +622,7 @@ Create another model in the core folder `fact_trips.sql`
 
 ```
 
-#### COMPLETE PROJECT DATA FLOW 
+## COMPLETE PROJECT DATA FLOW 
 ![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/dd25a077-484a-4118-9cf7-44036e79a9dc)
 
 - `dbt run`  will run all models except for the seed. 
@@ -722,23 +722,23 @@ seeds:
 <br>           
 
 ## DEPLOY TO DBT CLOUD 
-Deployment is the process of running the models that were created in the development environment in the production environment. 
+Deployment is the process of running the models that were created in development in the production environment. 
 
 Running a dbt project in production
-- dbt cloud includes a scheduler where you can create jobs to run in production
-- A single job can run multiple commands
-- Jobs can be triggered manually or on a schedule
-- Each job will keep a log of the runs over time
-- A job could also generate documentation, that could be viewed under the run information
-- If dbt source freshness was run, the results could also be viewed at the end of a job
+- dbt cloud includes a scheduler where you can create jobs to run in production.
+- A single job can run multiple commands.
+- Jobs can be triggered manually or on a schedule.
+- Each job will keep a log of the runs over time.
+- A job can also generate documentation, that could be viewed under the run information.
+- If dbt source freshness is included in the run, then the results could also be viewed at the end of a job.
 
 #### CONTINUOUS INTEGRATION (CI) 
 - CI is the practice of regularly merging dev branches into a central repository, that then builds automatically and runs tests.
 - The goal is to prevent the introduction of bugs into production and maintain project stability. 
-- In dbt you can set up CI jobs to be triggered on GIT pull requests
-- When a PR is ready to be merged, a webhook is received from GitHub, GitLab, or Azure DevOps in dbt Cloud that will trigger a new run of the specified job
+- In dbt you can set up CI jobs to be triggered on GIT pull requests.
+- When a PR is ready to be merged, a webhook is received from GitHub, GitLab, or Azure DevOps in dbt Cloud that will trigger a new run of the specified job.
 - dbt Cloud creates a temporary schema to test the new changes without affecting production.  
-- The PR will not be merged unless the run and the tests have completed successfully
+- The PR will not be merged unless the run and the tests have completed successfully.
 <br>
 <br>
 
