@@ -732,7 +732,7 @@ Running a dbt project in production
 - A job can also generate documentation, that could be viewed under the run information.
 - If dbt source freshness is included in the run, then the results could also be viewed at the end of a job.
 
-#### CONTINUOUS INTEGRATION (CI) 
+## CONTINUOUS INTEGRATION (CI) 
 - CI is the practice of regularly merging dev branches into a central repository, that then builds automatically and runs tests.
 - The goal is to prevent the introduction of bugs into production and maintain project stability. 
 - In dbt you can set up CI jobs to be triggered on GIT pull requests.
