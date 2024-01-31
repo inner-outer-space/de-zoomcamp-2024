@@ -231,23 +231,24 @@ Starting a dbt project using dbt Cloud and BigQuery
 
 `CONFIG MACRO` 
 - Models can be configured in one of 3 ways 
-    - using the config macro in the model file 
+    - using the config macro defined in jinja in the model file 
     - using the config property in a .yml file 
     - In the dbt_project.yml, under the models key 
 - The config macro is used when you want to apply a configuration to that model only. 
-- It is defined in a jinja 
-    - `{{ config(materialized='view') }}`
-    - ```jinja
-    {{
-        config(
-            materialized = "table",
-            sort = 'event_time',
-            dist = 'event_id'
-        )
-        }}
-    ```
+- Examples: 
+``` jinja 
+{{ config(materialized='view') }}`
 
-`MATERIALIZATION STRATEGIES`
+{{
+    config(
+        materialized = "table",
+        sort = 'event_time',
+        dist = 'event_id'
+    )
+    }}
+```
+
+`MATERIALIZATION STRATEGIES`<br>
 [MATERIALIZATION DOCUMENTATION](https://docs.getdbt.com/docs/build/materializations) are strategies for persisting dbt models in a warehouse. DBT has a number of default materializations and you can also create custom materializations. The materialization is defined in the config macro. 
 SQL Default Materializations 
 - Table 
@@ -284,7 +285,7 @@ Use a macro called `source` - the source marco is only used in staging
 - benefits from version control
 - recommended for data that doesn't change often   
 
-The `Ref()` Macro 
+`The Ref() Macro` 
 - ref() is, under the hood, actually doing two important things. First, it is interpolating the schema into your model file to allow you to change your deployment schema via configuration. Second, it is using these references between models to automatically build the dependency graph. This will enable dbt to deploy models in the correct order when using dbt run. [Source](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)
 
 - Macro references the underlying tables and views in the data warehouse created from dbt models or seeds 
