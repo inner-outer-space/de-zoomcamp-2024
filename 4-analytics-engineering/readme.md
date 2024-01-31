@@ -239,17 +239,17 @@ Starting a dbt project using dbt Cloud and BigQuery
     - In the dbt_project.yml, under the models key 
 - The config macro is used when you want to apply a configuration to that model only. 
 - Examples: 
-        ``` jinja 
-        {{ config(materialized='view') }}
-        -- OR     
-        {{
-            config(
-                materialized = "table",
-                sort = 'event_time',
-                dist = 'event_id'
-            )
-        }}
-        ```
+``` jinja 
+{{ config(materialized='view') }}
+-- OR     
+{{
+    config(
+        materialized = "table",
+        sort = 'event_time',
+        dist = 'event_id'
+    )
+}}
+```
 <br>
 <br>
 
