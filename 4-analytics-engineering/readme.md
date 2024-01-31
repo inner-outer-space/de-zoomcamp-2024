@@ -194,7 +194,8 @@ Starting a dbt project using dbt Cloud and BigQuery
 <br>
 
 <details>
-<summary>#### DBT STARTER PROJECT FILES AND FOLDERS ADDED TO THE REPO </summary> 
+<summary><b>DBT STARTER PROJECT FILES AND FOLDERS ADDED TO THE REPO</b> </summary> 
+
 - `analysis` folder
 - `macros` folder 
 - `models` folder <br>
@@ -207,7 +208,7 @@ Starting a dbt project using dbt Cloud and BigQuery
     - Set up to ignore target/, dbt_packages/, logs/  
     - Note: compile code is held in the target folder
 - `dbt_project.yml` file <br>
-    - can define global settings and vatiables
+    - can define global settings and variables
     - set a database profile 
     - dbt uses this to adapt the ddl it creates to the target DB. 
     - If you want to work in different DBs in the project, you can change the setting here and run in a different db.
@@ -216,7 +217,7 @@ Starting a dbt project using dbt Cloud and BigQuery
 
 5. Create a branch and edit the dbt_project.yml
    - change name 'my_new_project' to one of your choice
-   - under models change 'my_new_project' to the chosed name
+   - under models change 'my_new_project' to the chosen name
    - delete the example under this model 
 
 
