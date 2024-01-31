@@ -70,19 +70,19 @@ The concept of an "Analytics Engineer" has emerged as a bridge between the tradi
 
 #### KIMBALLS'S DIMENSIONAL MODELING
 OBJECTIVES 
-- deliver data that is understandable to the business user
-- optimize query performance
-- Does not prioritize reducing redundancy
+- Deliver understandable data 
+- Optimize query performance
+- Minimal emphasis on reducing redundancy
+- Other notable approaches: Bill Inmon, Data Vauld 
 
-- Other approaches: Bill Inmon, Data Vauld 
-
+KEY COMPONENTS: Fact and Dimension Tables
 FACT TABLES 
 - Contain measurements, metrics or facts corresponding to a business process
-- Verbs such as Sales, Orders etc. 
+- Fact tables are associated with action oriented **verbs** such as Sales, Orders etc. 
 
 DIMENSION TABLES 
 - Correspond to a business entity and provides context to a business process
-- Nouns such as Customer, Product etc.
+- Dimension tables are associated with descriptive **nouns** such as Customer, Product etc.
 <br>
 <br>
 
