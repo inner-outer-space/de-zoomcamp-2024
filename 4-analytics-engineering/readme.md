@@ -152,7 +152,7 @@ We will use dbt to process the data and display it in a dashboard.
 <br>
 <br>
 
-## START A DBT CLOUD PROJECT WITH BIGQUERY
+## DBT CLOUD PROJECT WITH BIGQUERY
 Starting a dbt project using dbt Cloud and BigQuery
 
 1. In Git:
@@ -210,9 +210,7 @@ Starting a dbt project using dbt Cloud and BigQuery
 <br>
 <br>
 
-## BUILD A DBT MODEL
-
-#### IMPORTANT COMPONENTS OF A DBT MODEL
+## DBT MODEL COMPONENTS
 
 `JINJA`  
 - [JINJA DOCUMENTATION](https://docs.getdbt.com/docs/build/jinja-macros)
@@ -318,7 +316,7 @@ Its primary functions are:
 <br>
 
 
-#### BUILDING A PROJECT IN DBT 
+## BUILDING A DBT PROJECT 
 
 <details>
 <summary> More on dbt Project Structure</summary>
@@ -416,6 +414,7 @@ limit 100
 ```
 This sql will generate this dataflow as displayed on the lineage tab:<br> 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/17448c8a-d5cc-4f42-abe1-2ab473f25233" width="400" height="auto">
+<br>
 
 #### RUNNING A MODEL 
 - `dbt run --select file_name` to run a particular file
