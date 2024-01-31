@@ -46,6 +46,7 @@ The concept of an "Analytics Engineer" has emerged as a bridge between the tradi
 
 <div align="center">
 <b>TOOLS USED BY AN ANALYTICS TEAM</b> 
+
 |STEP|TOOLS|RESPONSIBLE ROLE|
 |--|--|--|
 |**Ingestion**|fivetran stitch|Data Engineer or Analytics Engineer|
