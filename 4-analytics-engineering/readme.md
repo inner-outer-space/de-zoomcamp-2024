@@ -88,12 +88,14 @@ DIMENSION TABLES
 
 
 <div align="center">
+
 <b>DIMENSIONAL MODELING ARCHITECTURE</b> 
 |Staging| >>> | Processing| >>>|Presentation
 |- Raw data not meant to be exposed to others||
 - Raw data is transformed to data models<br>
 - focuses on efficiency and ensuring standards|| 
 - Data is exposed to end users| 
+
 <br>
 <br>
 
