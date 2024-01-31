@@ -76,7 +76,7 @@ OBJECTIVES
 - Minimal emphasis on reducing redundancy
 - Other notable approaches: Bill Inmon, Data Vauld 
 
-KEY COMPONENTS: Fact and Dimension Tables
+KEY COMPONENTS: Fact and Dimension Tables<br>
 FACT TABLES 
 - Contain measurements, metrics or facts corresponding to a business process
 - Fact tables are associated with action oriented **verbs** such as Sales, Orders etc. 
@@ -96,6 +96,7 @@ DIMENSION TABLES
 |--|--|--|--|--|
 |- Raw data is imported into the data warehouse<br> - Data is not meant to be exposed to others||- Rata is transformed to data models<br>- focuses on efficiency and ensuring standards|| Data is exposed to end users| 
 
+</div>
 <br>
 <br>
 
