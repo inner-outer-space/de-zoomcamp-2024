@@ -4,7 +4,7 @@
 (*for Linux*)
 <hr />
 
-[Analytics Enginnering](#analytics-engineering-background) •
+[Analytics Engineering](#analytics-engineering-background) •
 [dbt Background](#what-is-dbt) •
 [dbt & BigQuery](#start-a-dbt-cloud-project-with-big-query) •
 [dbt & Postgres](#start-a-dbt-project-with-postgres) •
@@ -12,7 +12,7 @@
 [Testing & Documentation](#testing-and-documentation) •
 [Deploy to dbt Cloud](#deploy-to-dbt-cloud) •
 [Deploy Locally](#deploy-dbt-locally) •
-[Goodle Data Studio](#google-data-studio) •
+[Google Data Studio](#google-data-studio) •
 [Metabase](#metabase) 
 </div>
 
@@ -24,12 +24,12 @@
  Advancements in technology have changed the data landscape. In order to understand the analytics engineering role, it is helpful to look at the developments in the analytics domain. 
 
 #### DOMAIN DEVELOPMENTS 
-- Cloud data warehouses like Snowflake, BigQuery and Redshift have lowered the cost of storage and computing 
-- Data loading tools like Fivetran and Stitch have simplified the ETL process
-- SQL-first tools like Looker have increased SQL awareness 
-- Version control has introduced engineering best practices
-- Self service analytics like tableau made data more accessible to non technical people
-- Data governance has changed the way data analysts work and the way that stakeholders consume data
+- **Cloud Data Warehouses** like Snowflake, BigQuery and Redshift have lowered the cost of storage and computing 
+- **Data Loading Tools** like Fivetran and Stitch have simplified the ETL process
+- **SQL-first Tools** like Looker have increased SQL awareness 
+- **Version Control** has introduced engineering best practices
+- **Self Service Analytics** like tableau made data more accessible to non technical people
+- **Data Governance** has changed the way data analysts work and the way that stakeholders consume data
 
 #### ANALYTICS TEAM ROLES AND RESPONSIBILITIES  
 Traditional analytics team roles: 
