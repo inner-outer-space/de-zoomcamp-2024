@@ -19,34 +19,35 @@
 <hr/>
 <br>
 
-## ANALYTICS ENGINNERING BACKGROUND
+## ANALYTICS ENGINEERING BACKGROUND
 
- Advancements in technology have changed the data landscape. In order to undestand the analytics engineering role, it is helpful to look at the developements in the analytics domain. 
+ Advancements in technology have changed the data landscape. In order to understand the analytics engineering role, it is helpful to look at the developments in the analytics domain. 
 
 #### DOMAIN DEVELOPMENTS 
-- Cloud data warehouses like Snowflake, BigQuery and Redshift lowered the cost of storage and computing 
-- Data loading tools like Fivetran and Stitch simplified the ETL process
-- SQL-first tools like Looker increased SQL awareness 
-- Version control introduced engineering best practices
-- Self service analytics like tableau made data more accesible to non technical people
-- Data governance changed the way data analysts work and the way that stakeholders consume data
-<br>
+- Cloud data warehouses like Snowflake, BigQuery and Redshift have lowered the cost of storage and computing 
+- Data loading tools like Fivetran and Stitch have simplified the ETL process
+- SQL-first tools like Looker have increased SQL awareness 
+- Version control has introduced engineering best practices
+- Self service analytics like tableau made data more accessible to non technical people
+- Data governance has changed the way data analysts work and the way that stakeholders consume data
 <br>
 
-#### ANALYTICS TEAM 
-A traditional analytics team consists of a 
+#### ANALYTICS TEAM ROLES AND RESPONSIBILITIES  
+Traditional analytics team roles: 
 - Data Engineer - prepare and maintain the infrastructure 
 - Data Analyst - uses the data to answer questions and solve problems
 
-With all the new tooling that is available in the data space, analysts end up writing more code. The problem is that they are not trained on good software development practices. On the other hand, the data engineers are generally great sorftware engineers, but they don't have the background to understand the business. 
+With the new tooling that is available, analysts end up writing more code. The problem is that they are not trained on good software development practices. On the other hand, the data engineers who are generally great software engineers, don't have the background to understand the business. 
 
 The concept of an "Analytics Engineer" has emerged as a bridge between the traditional roles of Data Engineer and Data Analyst. The data engineer has a strong foundation in both engineering and analytics with a good understanding of both business and engineering best practices.  
-<br>
+
+[More on the analytics engineer role](https://www.kdnuggets.com/2019/02/analytics-engineer-data-team.html)
+
 <br>
 
 <div align="center">
 
-<b>TOOLS USED BY A DATA ENGINEER</b> 
+<b>TOOLS USED BY AN ANALYTICS TEAM</b> 
 |STEP|TOOLS|RESPONSIBLE ROLE|
 |--|--|--|
 |**Ingestion**|fivetran stitch|Data Engineer or Analytics Engineer|

@@ -5,6 +5,7 @@ import pandas as pd
 from io import BytesIO
 import warnings 
 from google.cloud import storage
+import pyarrow as pa
 import time 
 
 # ADDED A 60 SECOND PAUSE TO AVOID OVERLOADING THE SERVER
@@ -57,6 +58,25 @@ def web_to_gcs(year, service):
             'total_amount': 'float64',
             'congestion_surcharge': 'float64'
         }
+        schema = pa.schema([
+            ('VendorID', pa.float64()),
+            ('passenger_count', pa.float64()),
+            ('trip_distance', pa.float64()),
+            ('RatecodeID', pa.float64()),
+            ('store_and_fwd_flag', pa.string()),  # Use 'pa.string()' for 'object' type
+            ('PULocationID', pa.int64()),  # Use 'pa.int64()' for 'int64' type
+            ('DOLocationID', pa.int64()),
+            ('payment_type', pa.float64()),
+            ('fare_amount', pa.float64()),
+            ('extra', pa.float64()),
+            ('mta_tax', pa.float64()),
+            ('tip_amount', pa.float64()),
+            ('tolls_amount', pa.float64()),
+            ('improvement_surcharge', pa.float64()),
+            ('total_amount', pa.float64()),
+            ('trip_type', pa.float64()),
+            ('congestion_surcharge', pa.float64()),
+        ])
         date_cols = ['tpep_pickup_datetime', 'tpep_dropoff_datetime']
 
     elif service == 'green':
@@ -122,7 +142,7 @@ def web_to_gcs(year, service):
         
         # Convert DataFrame to Parquet format in memory
         file_name = file_name.replace('.csv.gz', '.parquet')
-        df_csv.to_parquet(file_name, engine='pyarrow', schema=data_types)
+        df_csv.to_parquet(file_name, engine='pyarrow', schema=schema)
         print(f"Parquet: {file_name}")
         
         # Upload Parquet data to GCS
