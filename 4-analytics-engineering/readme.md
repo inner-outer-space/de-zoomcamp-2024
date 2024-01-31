@@ -237,7 +237,7 @@ Starting a dbt project using dbt Cloud and BigQuery
 - The config macro is used when you want to apply a configuration to that model only. 
 - Examples: 
 ``` jinja 
-{{ config(materialized='view') }}`
+{{ config(materialized='view') }}
 
 {{
     config(
@@ -245,11 +245,12 @@ Starting a dbt project using dbt Cloud and BigQuery
         sort = 'event_time',
         dist = 'event_id'
     )
-    }}
+}}
 ```
 
 `MATERIALIZATION STRATEGIES`<br>
-[MATERIALIZATION DOCUMENTATION](https://docs.getdbt.com/docs/build/materializations) are strategies for persisting dbt models in a warehouse. DBT has a number of default materializations and you can also create custom materializations. The materialization is defined in the config macro. 
+[MATERIALIZATION DOCUMENTATION](https://docs.getdbt.com/docs/build/materializations) 
+strategies for persisting dbt models in a warehouse. DBT has a number of default materializations and you can also create custom materializations. <br> 
 SQL Default Materializations 
 - Table 
     - model structure is re-calibrated on each run
@@ -271,8 +272,10 @@ Python Default Materializations
 - Incremental
 
 `THE "FROM" CLAUSE`
-You can use Sources and Seeds to load data to the dbt model 
-Use a macro called `source` - the source marco is only used in staging 
+- You can use Sources and Seeds to load data to the dbt model 
+
+` THE SOURCE MACRO`
+- the source marco is only used in staging 
 - resolves the name of the source with the right schema
 - will build the dependencies automatically
 - can define source freshness
