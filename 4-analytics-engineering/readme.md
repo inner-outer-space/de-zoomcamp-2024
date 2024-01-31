@@ -582,11 +582,13 @@ Compiled code
 
     {% endif %}
     ```
-    At the time that you build the model, you can pass a variable to the var macro that will override the default
+    
+    When you call dbt build in the command line, you can pass a variable to the var macro that will override the default
+    
     ```cli
     dbt build --m <your-model.sql> --var 'is_test_run: false'
     ```
-    
+
 <br>
 <br>
 
