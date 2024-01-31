@@ -192,7 +192,6 @@ Starting a dbt project using dbt Cloud and BigQuery
     </tr>
 </table>
 <br>
-<br>
 
 <details>
 <summary>#### DBT STARTER PROJECT FILES AND FOLDERS ADDED TO THE REPO </summmary> 
