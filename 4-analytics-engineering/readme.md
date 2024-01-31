@@ -76,14 +76,14 @@ OBJECTIVES
 - Minimal emphasis on reducing redundancy
 - Other notable approaches: Bill Inmon, Data Vauld 
 
-KEY COMPONENTS: Fact and Dimension Tables<br>
+#### KEY COMPONENTS: Fact and Dimension Tables
 FACT TABLES 
 - Contain measurements, metrics or facts corresponding to a business process
-- Fact tables are associated with action oriented **verbs** such as Sales, Orders etc. 
+- Fact tables are associated with action oriented **VERBS** such as Sales, Orders etc. 
 
 DIMENSION TABLES 
 - Correspond to a business entity and provides context to a business process
-- Dimension tables are associated with descriptive **nouns** such as Customer, Product etc.
+- Dimension tables are associated with descriptive **NOUNS** such as Customer, Product etc.
 <br>
 <br>
 
@@ -92,7 +92,7 @@ DIMENSION TABLES
 
 <b>DIMENSIONAL MODELING ARCHITECTURE</b> 
 
-|Staging| >>> | Processing| >>>|Presentation|
+|`STAGING`| >>> |`PROCESSING`| >>>|`PRESENTATION`|
 |--|--|--|--|--|
 |- Raw data is imported into the data warehouse<br> - Data is not meant to be exposed to others||- Rata is transformed to data models<br>- focuses on efficiency and ensuring standards|| Data is exposed to end users| 
 
@@ -128,21 +128,22 @@ dbt, data build tool, is a transformation tool that allows anyone with SQL knowl
 - The compiled sql is then executed in the data warehouse.
 - The final structured and transformed data is made available as tables or views in the data warehouse. 
 
-`dbt CORE` 
-- Is the essence of dbt 
+
+|`dbt CORE`| `dbt CLOUD`|
+|--|--|
+|- Is the essence of dbt 
 - Open source project that provides the core data transformation and modeling functionality 
 - Builds and runs a dbt project
 - Includes SQL compilation logic, macros and database adapters
-- Includes a CLI interface
-
-`dbt CLOUD` 
+- Includes a CLI interface|
 - SaaS application that extends the capabilities of dbt Core 
 - Web based IDE that allows you to develop, run and test a dbt project
 - Offers additional features such as
     - Job orchestration
     - Logging and Alerting
     - Integrated documentation
-- There is a free tier for individuals 
+- There is a free tier for individuals|
+
 <br>
 <br>
 
