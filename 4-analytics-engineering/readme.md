@@ -466,8 +466,7 @@ limit 100
 <br>
 <br>
 
-
-#### MACROS 
+`MACROS` 
 - defined in a file under the macros folder using a combination of jinja and sql
 - each macro is defined within an executable jinja block {{%...%}}
 - macros follow this naming convention - ` macro name_of_macro(parameter) `
@@ -526,7 +525,7 @@ where vendorid is not null
 <br>
 <br>
 
-#### PACKAGES 
+`PACKAGES`
 - you can use macros from other projects in your project.
 - like libraries in other programming languages
 - stand alone dbt projects, with models and macros that tackle a specific problem area.
@@ -557,7 +556,7 @@ Compiled code
 <br>
 <br>
 
-#### VARIABLES 
+`VARIABLES`
 - variables are useful for defining values that could be used across the project
 - With a macro, dbt allows us to get the data from the variables and translate during the compilation
 - To use a variable we use the {{ var('...') }} function
