@@ -634,7 +634,7 @@ Create another model in the core folder `fact_trips.sql`
 <br>
 
 
-## TESTING AND DOCUMENTATION
+## TESTS AND DOCUMENTATION
 TESTS
 - Data tests are assertions that you make about your models and other resources in your dnt project. 
 - Tests in dbt are essentially sql queries that select for the failing records. 
@@ -645,6 +645,7 @@ TESTS
     - accepted values
     - a foreign key to another table
  - You can create custom tests as queries or macros or import packages
+<br>
 
 DOCUMENTATION 
 - dbt provides a way to generate documentation for the whole project and render it as a website.
@@ -659,9 +660,9 @@ DOCUMENTATION
     - Data Warehouse Information
         - Column names and data types
         - Table stats (e.g., size, rows)
+<br>
 
-ADD TESTS AND DESCRIPTIONS TO SCHEMA.YML 
-
+ADDING TESTS AND DESCRIPTIONS TO THE SCHEMA.YML 
 ```yml
     - name: stg_yellow_tripdata
       description: > 
@@ -678,6 +679,7 @@ ADD TESTS AND DESCRIPTIONS TO SCHEMA.YML
                     severity: warn
                 - not_null:
 ```
+<br>
 
 OTHER TEST EXAMPLES 
 ```yml
@@ -701,8 +703,9 @@ OTHER TEST EXAMPLES
               quote: false
  
 ```
+<br>
 
-DEFINE VARIABLES IN THE project.yml 
+DEFINING VARIABLES IN THE project.yml 
 ```yml 
 models:
   ny_taxi_analytics:
@@ -720,25 +723,22 @@ seeds:
 <br>           
 
 ## DEPLOY TO DBT CLOUD 
-Deployment is the process of running the models that we created in the development environment in the production environment. 
+Deployment is the process of running the models that were created in the development environment in the production environment. 
 
 Running a dbt project in production
-- dbt cloud includes a scheduler where to create jobs to run in production
-- the jobs will create the models in the production DB
+- dbt cloud includes a scheduler where you can create jobs to run in production
 - A single job can run multiple commands
 - Jobs can be triggered manually or on a schedule
 - Each job will keep a log of the runs over time
-- Each run will have the logs for each command
-- A job could also generate documentation, that could be viewwed under the run information
-- If dbt source freshness was run, the results can also be viewed at the end of a job
+- A job could also generate documentation, that could be viewed under the run information
+- If dbt source freshness was run, the results could also be viewed at the end of a job
 
 #### CONTINUOUS INTEGRATION (CI) 
 - CI is the practice of regularly merging dev branches into a central repository, that then builds automatically and runs tests.
-- The goal is to reduce adding bugs to production code and maintain a more stable project
-- dbt allows us to enable CI on pull requests
-- Triggered via webhooks from GitHub or GitLab
-- When a PR is ready to be merged, a webhook is received in dnt Cloud that will trigger a new run of the specified job
-- The run of the CI job will be against a temporary schema
+- The goal is to prevent the introduction of bugs into production and maintain project stability. 
+- In dbt you can set up CI jobs to be triggered on GIT pull requests
+- When a PR is ready to be merged, a webhook is received from GitHub, GitLab, or Azure DevOps in dbt Cloud that will trigger a new run of the specified job
+- dbt Cloud creates a temporary schema to test the new changes without affecting production.  
 - The PR will not be merged unless the run and the tests have completed successfully
 <br>
 <br>
