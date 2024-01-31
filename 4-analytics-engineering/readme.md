@@ -492,9 +492,8 @@ The following example would be useful in the case where you are aggregating paym
 {% endmacro %}
 ```
 <br>
-<br>
 
-USING A MACRO  
+USING THE MACRO  <br>
 You can use a macro in your sql code by calling it within double curly brackets and providing the necessary parameter 
 ```sql 
 select
@@ -503,11 +502,9 @@ select
 from {{ source('staging','green_tripdata') }}
 where vendorid is not null
 ```
-
-<br>
 <br>
 
-COMPILED MACRO CODE 
+COMPILED MACRO CODE <br>
 Once compiled, the sql code would appear as follows. You can see the compiled code under the target folder 
 
 ```sql
