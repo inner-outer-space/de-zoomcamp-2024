@@ -131,18 +131,9 @@ dbt, data build tool, is a transformation tool that allows anyone with SQL knowl
 
 |`dbt CORE`| `dbt CLOUD`|
 |--|--|
-|- Is the essence of dbt 
-- Open source project that provides the core data transformation and modeling functionality 
-- Builds and runs a dbt project
-- Includes SQL compilation logic, macros and database adapters
-- Includes a CLI interface|
-- SaaS application that extends the capabilities of dbt Core 
-- Web based IDE that allows you to develop, run and test a dbt project
-- Offers additional features such as
-    - Job orchestration
-    - Logging and Alerting
-    - Integrated documentation
-- There is a free tier for individuals|
+|- Is the essence of dbt<br> - Open source project that provides the core data transformation and modeling functionality<br> - Builds and runs a dbt project <br>
+- Includes SQL compilation logic, macros and database adapters<br>- Includes a CLI interface|- SaaS application that extends the capabilities of dbt Core<br> 
+- Web based IDE that allows you to develop, run and test a dbt project<br> - Offers additional features such as<br> - Job orchestration<br> - Logging and Alerting<br> - Integrated documentation<br> - There is a free tier for individuals|
 
 <br>
 <br>
