@@ -30,12 +30,11 @@
 - Version control has introduced engineering best practices
 - Self service analytics like tableau made data more accessible to non technical people
 - Data governance has changed the way data analysts work and the way that stakeholders consume data
-<br>
 
 #### ANALYTICS TEAM ROLES AND RESPONSIBILITIES  
 Traditional analytics team roles: 
-- Data Engineer - prepare and maintain the infrastructure 
-- Data Analyst - uses the data to answer questions and solve problems
+- `Data Engineer` - prepare and maintain the infrastructure 
+- `Data Analyst` - uses the data to answer questions and solve problems
 
 With the new tooling that is available, analysts end up writing more code. The problem is that they are not trained on good software development practices. On the other hand, the data engineers who are generally great software engineers, don't have the background to understand the business. 
 
@@ -46,7 +45,6 @@ The concept of an "Analytics Engineer" has emerged as a bridge between the tradi
 <br>
 
 <div align="center">
-
 <b>TOOLS USED BY AN ANALYTICS TEAM</b> 
 |STEP|TOOLS|RESPONSIBLE ROLE|
 |--|--|--|
@@ -54,7 +52,6 @@ The concept of an "Analytics Engineer" has emerged as a bridge between the tradi
 |**Storage**| Cloud data warehouses<br>like Snowflake, BigQuery, Redshift|Data Engineer or Analytics Engineer|
 |**Modeling**| Tools like dbt or Dataform |Analytics Engineer|
 |**Visualization**|BI Tools like looker, mode,<br>google data studio or tableau |Data Analyst or Analytics Engineer|
-
 </div>
 <br>
 <br>
@@ -70,8 +67,6 @@ The concept of an "Analytics Engineer" has emerged as a bridge between the tradi
 
 </div>
 <br>
-<br>
-
 
 #### KIMBALLS'S DIMENSIONAL MODELING
 OBJECTIVES 
@@ -82,7 +77,7 @@ OBJECTIVES
 - Other approaches: Bill Inmon, Data Vauld 
 
 FACT TABLES 
-- Contain meaurements, metrics or facts corresponding to a business process
+- Contain measurements, metrics or facts corresponding to a business process
 - Verbs such as Sales, Orders etc. 
 
 DIMENSION TABLES 
@@ -91,14 +86,14 @@ DIMENSION TABLES
 <br>
 <br>
 
-#### ARCHITECURE OF DIMENSIONAL MODELING  
-Staging<br> 
-- Raw data not meant to be exposed to others
-Processing<br>
-- Raw data is transformed to data models
-- focuses on efficiency and ensuring standards 
-Presentation<br> 
-- Data is exposed to end users 
+
+<div align="center">
+<b>DIMENSIONAL MODELING ARCHITECTURE</b> 
+|Staging| >>> | Processing| >>>|Presentation
+|- Raw data not meant to be exposed to others||
+- Raw data is transformed to data models<br>
+- focuses on efficiency and ensuring standards|| 
+- Data is exposed to end users| 
 <br>
 <br>
 
