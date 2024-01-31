@@ -318,11 +318,12 @@ Its primary functions are:
 <br>
 
 
-#### CREATE A MODEL IN DBT 
+#### BUILDING A PROJECT IN DBT 
 
 <details>
-<summary> More on dbt Model Structure</summary>
-[MODEL STRUCTURE BEST PRACTICES DOCUMENTATION](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview)
+<summary> More on dbt Project Structure</summary>
+
+[PROJECT STRUCTURE BEST PRACTICES](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview)
 
 `Staging` >>> `Intermediate (for more complex projects) ` >>> `Marts`
 
@@ -406,7 +407,7 @@ sources:
       - name: yellow_tripdata
 ``` 
 
-`STEP 4` Add a SELECT Statement to stg_green_tripdata.sql model
+`STEP 4` Add a simple SELECT Statement to the stg_green_tripdata.sql model
 ``` sql
 {{ config(materialized='view') }}
 
@@ -414,8 +415,13 @@ select * from {{ source('staging','green_tripdata') }}
 limit 100
 ```
 This sql will generate this dataflow as displayed on the lineage tab:<br> 
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/17448c8a-d5cc-4f42-abe1-2ab473f25233" width="350" height="auto">
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/17448c8a-d5cc-4f42-abe1-2ab473f25233" width="400" height="auto">
 
+#### RUNNING A MODEL 
+- `dbt run --select file_name` to run a particular file
+- `dbt run` to run all files in a folder
+<br>
+<br>
 
 `STEP 5` Expand the stg_green_tripdata model
 Define the data types and rename columns. 
@@ -460,11 +466,6 @@ limit 100
 <br>
 <br>
 
-#### RUNNING A MODEL 
-- `dbt run --select file_name` to run a particular file
-- `dbt run` to run all files in a folder
-<br>
-<br>
 
 #### MACROS 
 - defined in a file under the macros folder using a combination of jinja and sql
