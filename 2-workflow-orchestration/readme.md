@@ -17,7 +17,6 @@
 [Backfills](#pipeline-backfills) •
 [Deployment Prerequisites](#deployment-prerequisites) •
 [Deploying to GCP](#deploying-to-gcp) •
-[Next Steps](#next-steps)
 
 </div>
 
@@ -886,6 +885,5 @@ There is a lot that you can do with your Mage instance in Google Run
 - set up CI/CD
 - mount volumes to cloud storage or bigquery **(double check)**
 
-## Next Steps
 
 
