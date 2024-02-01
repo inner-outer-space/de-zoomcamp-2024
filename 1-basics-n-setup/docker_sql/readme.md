@@ -172,7 +172,7 @@ job finished successfully for day = 2021-12-15
 <hr />
 
 ## POSTGRES GENERAL INFO
-PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. To run postgres we use the official docker image `postgres:13`. Eventually we will use docker compose but the first example will use the command line.<br><br>
+PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. To run postgres we use the official docker image `postgres:13`. Eventually we will use docker compose, but the first example, we will use the command line.<br><br>
 <b>This command sets up a postgres container</b> <br>
 ###### *note: make sure there are no spaces following the backslash*
 ```bash
