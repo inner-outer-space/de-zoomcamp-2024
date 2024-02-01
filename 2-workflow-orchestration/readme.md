@@ -211,7 +211,7 @@ On the Pipeline Overview page you'll find an example_pipeline that you can click
 On the left side of the screen, you can access the files structure and have a list view of the current blocks included in the pipeline. 
 <br>
 <br>
-The blocks and their code are displayed in the center fo the page. From here, you can edit and run each block individually. You can also run all blocks together by going to the last block in the pipeline and clicking `Execute with all upstream blocks` 
+The blocks and their code are displayed in the center of the page. From here, you can edit and run each block individually. You can also run all blocks together by going to the last block in the pipeline and clicking `Execute with all upstream blocks` 
 <br> 
 <br>
 The Pipeline Tree is displayed in the section on the right. Connections between the blocks can be added and deleted directly in the tree. When 2 blocks are connected in the pipeline, it means that the output dataframe of the first will be passed as input to the next. 
