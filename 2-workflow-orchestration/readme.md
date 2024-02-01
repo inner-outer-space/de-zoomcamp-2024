@@ -236,7 +236,7 @@ The example_pipeline loads the Titanic data set, performs a transformation, and 
 Configuring the postgres client so that we can connect to the local Postgres DB in the Docker container where Mage lives. 
 <br> 
 
-The docker-compose.yaml file references environmental variables defined in the .env file. Since the .env file is not uploaded to GIT, the postgres credentials will be safe there. 
+The docker-compose.yaml file references environmental variables defined in the .env file. Since the .env file is not uploaded to GIT, the postgres credentials will be safe there. <br>
 THE POSTGRES SERVICE DEFINED IN DOCKER-COMPOSE.YAML
 ```yaml
   # PostgreSQL Service defined in docker-compose 
@@ -489,7 +489,7 @@ The docker-compose.yaml specifies that the mage project directory will be mounte
 - Go back to the test_config pipeline
 - Change the Data Loader to BigQuery and set the profile to Default
 - Click Run
-- This query connects to the cloud, runs the query there, and returns a answer on our computer. Receiving an answer confirms that we have a good connection.   
+- This query connects to the cloud, runs the query there, and returns an answer on our computer. Receiving an answer confirms that we have a good connection.   
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/56849adc-4706-4ab2-a19c-4534c01f1ff7" width="auto" height="250">
 <br>
 <br>
@@ -530,7 +530,7 @@ Make sure that the blocks are connected correctly in the tree on the right<br>
 <br>
 <br>
 
-The pipeline is now set up now to import and transform the data. Now we need to write the data to Google Cloud Storage.
+The pipeline is set up to import and transform the data. Now we need to write the data to Google Cloud Storage.
 - Add a `Python > Google Cloud Storage Data Exporter` and rename it 'taxi_to_gcs_parquet'
 - Modify the following variables
     - bucket_name = 'your_bucket_name'
@@ -543,7 +543,7 @@ This will load the data, clean it, and upload it directly to GCS. It will be vis
 <br>
 
 ### PARTITIONING DATA 
-Very often, datasets are too large to be written to a single file. In such cases, you'll want to partition the dataset into multiple files, breaking it up based on a specific row or characteristic. Using the date is a good way to partition the taxi dataset because it creates an even distribution of rides and provides a natural way to query the data."
+Very often, datasets are too large to be written to a single file. In such cases, you'll want to partition the dataset into multiple files, breaking it up based on a specific row or characteristic. Using the date is a good way to partition the taxi dataset because it creates an even distribution of rides and provides a natural way to query the data.
 
 - Add a `Python > Generic (No Template) Data Exporter` and rename to 'taxi_to_gcs_partitioned_parquet'
 - The new block gets automatically added after the 'taxi_to_gcs_parquet' block. This is not where we want it. Click on the connection, delete it, and then add a connection directly from the transformer to the 'taxi_to_gcs_partitioned_parquet' block. Now the 2 export blocks will be run in parallel rather than sequentially. <br>
@@ -634,7 +634,7 @@ def load_from_google_cloud_storage(*args, **kwargs):
 #### TRANSFORM THE DATA
 The dataset is now loaded. The next step is to transfom it. 
 1. Add a `Python > Generic(no Template) Transformer` and rename it to 'transformed_staged_data'
-2. Add a transformation that standardizes the column names to be all lower case with no spaces.
+2. Add a transformation that standardizes the column names to lower case with no spaces.
 ```python
 @transformer
 def transform(data, *args, **kwargs):
@@ -660,9 +660,9 @@ Now that the data is loaded and transformed, we can export it.
     - database: nyc_taxi
     - yellow_cab_data 
 3. The transform block is going to return a dataframe. The cool thing about mage is that you can select directly from that DF.
-Make sure
-- there are spaces between the curly brackets and the df_1 in the SQL query
-- that your google locaion variable is set correctly `GOOGLE_LOCATION: EU` 
+4. Make sure that
+    - there are spaces between the curly brackets and the df_1 in the SQL query
+    - that your google location variable in the io_config file is set correctly `GOOGLE_LOCATION: EU` 
 <br>
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/af0301cb-eca0-47a9-b96e-4d66731468f1" width="500" height="auto">
 <br>
