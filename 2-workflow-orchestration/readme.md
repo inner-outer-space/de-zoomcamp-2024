@@ -89,7 +89,7 @@ Mage's main components are projects, pipelines, and blocks. Within an instance o
 </div>
 <br>
 
-Other types of Built In Mage blocks:
+Other types of built-in Mage blocks:
 - Sensors - trigger on some event 
 - Conditionals
 - Dynamics - can create dynamic children
@@ -657,7 +657,7 @@ Now that the data is loaded and transformed, we can export it.
     - database: nyc_taxi
     - yellow_cab_data 
 3. The transform block is going to return a dataframe. The cool thing about mage is that you can select directly from that DF.
-4. Make sure that
+4. Make sure that:
     - there are spaces between the curly brackets and the df_1 in the SQL query
     - that your google location variable in the io_config file is set correctly `GOOGLE_LOCATION: EU` 
 <br>
@@ -680,19 +680,19 @@ This module will cover loading partial datasets or loading datasets dependent on
 
 In this example, we will use the taxi data set and create a different file for each day that the job is being run. This is useful if you want to write to output files on a daily basis. Note: This particular example can also be done using Pyarrow  
 
-`Step 1` Right click on the load_to_gcs pipeline and clone it
+`Step 1` Right click on the load_to_gcs pipeline and clone it<br>
 Note: Blocks are global. Any edits made to blocks in this pipeline, will be reflected anywhere they are used. 
 
-`Step 2` Delete the Partitioned File Data Exporter 
+`Step 2` Delete the Partitioned File Data Exporter<br> 
 This only deletes the block from the project. It does not delete it entirely. 
 
-`Step 3` Add a `Python > Generic(no template) Data Exporter` and copy the exiting Exporters code into it. 
+`Step 3` Add a `Python > Generic(no template) Data Exporter` and copy the exiting Exporters code into it.<br> 
 We don' want to modify the exporter that is in the pipeline because those changes will be propagated to our other pipelines. Instead we'll create a new generic exporter and copy the code from the existing exporter into it. 
 
-`Step 4` Delete the old exporter
+`Step 4` Delete the old exporter<br>
 Delete the connections between the old exporter and the other blocks and delete the old exporter block. 
 
-`Step 5` Update Pipeline Tree and Rename Pipeline 
+`Step 5` Update Pipeline Tree and Rename Pipeline<br> 
 Add connections in the pipeline tree to the new exporter and rename the pipeline to load_to_gcp_parameterized
 
 `Note on **kwargs` Every mage block has a key words argument. kwargs allows you to pass a variable number of keyword arguments to a function, and these arguments are then gathered into a dictionary within the function. There are a number of these variables that you can access in mage by default. Here is an example:
@@ -715,7 +715,7 @@ def export_data(data, *args, **kwargs):
     print(now.strftime("%Y/%m/%d"))
 ```
 
-`Step 6` Use the Keyword argument to write incremental data
+`Step 6` Use the Keyword argument to write incremental data<br>
 You can use the custom now date string to add year, month, and day folders to the file name. This way each file will be written to a folder specific to its date.   
 - Use the now date string to define the file path `now_fpath = now.strftime("%Y/%m/%d")`
 - then use that file path as a variable in the object_key `object_key = f'{now_fpath}/ny_taxi_data.parquet'`
@@ -773,9 +773,9 @@ There are a number of custom ways to do this in Mage
 <br>
 
 ## Pipeline Backfills
-This module covers backfilling pipelines. In the case of lost or missing data, you would need to build a script that will simulate each pipeline to recapture that missing data. 
+This module covers backfilling pipelines. In the case of lost or missing data, you want to build a script that will simulate each pipeline in order to recapture the missing data. 
 
-Mage has built in easy to use backfill functionality. It is especially useful for pipelines that are parameterized by date.  
+Mage has built-in, easy-to-use backfill functionality that is especially useful for pipelines that are parameterized by date.  
 
 Click into any parameterized pipeline, navigate to the Backfills page, and create a new Backfill.
 Set the fields as follows. Note that the date range includes the last day, so this will produce 8 files. It will assign the execution date variable that we specified in the last module to each day in this pipeline. <br>
@@ -806,7 +806,7 @@ If you want to limit the permissions then replace owner with the following:
 ## DEPLOYING TO GCP
 Configuring the Mage Terraform 
 
-First download the Mage Terraform templates from GIT. You'll find Terraform templates for each cloud provider in this folder. 
+First download the Mage Terraform templates from GIT. You'll find Terraform templates for each cloud provider in this folder. <br>
 `git clone https://github.com/mage-ai/mage-ai-terraform-templates.git`
 
 In the GCP folder you'll find the resources you need to terraform a mage container to GCP. 
@@ -842,7 +842,7 @@ variable "zone" {
 ```
 #### RUNNING TERRAFORM TO DEPLOY THE MAGE CONTAINER
 
-1. Navigate to the GPC Terrraform folder
+1. Navigate to the GCP Terrraform folder
 2. Initialize google cloud cli `gcloud init`
 3. `gcloud auth application-default login`  terraform can then acces the credentials
 4. Run `Terraform Init`
