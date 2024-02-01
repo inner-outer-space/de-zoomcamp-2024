@@ -89,7 +89,7 @@ Mage's main components are projects, pipelines, and blocks. Within an instance o
 </div>
 <br>
 
-Other types of built In Mage blocks:
+Other types of Built In Mage blocks:
 - Sensors - trigger on some event 
 - Conditionals
 - Dynamics - can create dynamic children
