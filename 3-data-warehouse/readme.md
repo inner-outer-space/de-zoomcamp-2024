@@ -408,7 +408,7 @@ FROM `taxi-rides-ny.nytaxi.yellow_tripdata_partitoned` WHERE fare_amount != 0;
 #### CAST DATA TYPES OF COLUMNS 
 The PULocationID, DOLocationID, and payment_type are all categorical data represented by numbers. In the case of Location, it is likely that the number was assigned alphabetically to the location and has therefor no relation to the difference between locations. The model will attempt to find a meaningful mathematical relationship between these numbers and the target variable, which will give us misleading results. 
 
-One-hot encoding avoids this issue by transforming the categorical column into N binary columns one for each category. While this technique can help the model avoid spurious relatinships, it can lead to high dimensionality if you have a large number of unique categories.
+One-hot encoding avoids this issue by transforming the categorical column into N binary columns one for each category. While this technique can help the model avoid spurious relationships, it can also lead to high dimensionality if you have a large number of unique categories.
 
 In this example the integer data type of the categorical columns is cast to string so that BigQuery will handle the encoding of these columns as part of the automatic feature engineering step. 
 ```sql
@@ -425,7 +425,7 @@ CREATE OR REPLACE TABLE `taxi-rides-ny.nytaxi.yellow_tripdata_ml` (
 ) AS (
 SELECT passenger_count, trip_distance, cast(PULocationID AS STRING), CAST(DOLocationID AS STRING),
 CAST(payment_type AS STRING), fare_amount, tolls_amount, tip_amount
-FROM `taxi-rides-ny.nytaxi.yellow_tripdata_partitoned` WHERE fare_amount != 0
+FROM `taxi-rides-ny.nytaxi.yellow_tripdata_partitioned` WHERE fare_amount != 0
 );
 ```
 <br>
@@ -455,7 +455,7 @@ tip_amount IS NOT NULL;
 Once the model completes training, more information will be available under these tabs: 
 - `details` -  model, loss, and optimization details 
 - `training` - loss and duration graphs
-- `evaluatin` - evalutation metrics 
+- `evaluation` - evaluation metrics 
 - `schema` 
 <br>
 <br>
@@ -601,7 +601,7 @@ You can make a prediction by submitting a JSON payload that includes the input f
 # POST REQUEST
 http://localhost:8501/v1/models/tip_model:predict
 ```
-Or using cURL dirctly in the command line 
+Or using cURL directly in the command line 
 ```cli
 curl -d '{"instances": [{"passenger_count":1, "trip_distance":12.2, "PULocationID":"193", "DOLocationID":"264", "payment_type":"2","fare_amount":20.4,"tolls_amount":0.0}]}' -X POST http://localhost:8501/v1/models/tip_model:predict
 ```
