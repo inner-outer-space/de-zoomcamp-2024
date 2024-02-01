@@ -25,9 +25,9 @@ HashiCorp terraform is an infrastructure as code (IaC) tool that lets you define
 
 **ADVANTAGES** 
 - You can provision infrastructure resources (VMs, containers, storage etc.) with declarative configuration files instead of a GUI
-- Supports devops best practices for change management
+- Supports developer best practices for change management
 - Simple to keep track of and manage infrastructure
-- You can create, deploy, destroy an entire cluster of resources together
+- You can create, deploy, and destroy an entire cluster of resources together
 - Easy to ensure resources are removed
 - Easy to collaborate
 - Reproducible

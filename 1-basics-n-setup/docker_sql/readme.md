@@ -172,7 +172,7 @@ job finished successfully for day = 2021-12-15
 <hr />
 
 ## POSTGRES GENERAL INFO
-PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. To run postgres we use the official docker image `postgres:13`. Eventually we will use docker compose but the first example will use the command line.<br><br>
+PostgreSQL is an object relational database management system (ORDBMS) with SQL capability. To run postgres we use the official docker image `postgres:13`. Eventually we will use docker compose, but the first example, we will use the command line.<br><br>
 <b>This command sets up a postgres container</b> <br>
 ###### *note: make sure there are no spaces following the backslash*
 ```bash
@@ -221,7 +221,10 @@ BASIC PGCLI COMMANDS<br>
 <hr />
 
 ## LOAD DATA TO POSTGRES WITH JUPYTER  
-the jupyter notebook upload_data.ipynb contains the steps needed to load the CSV data to the database. The following steps do the same for the Parquet file.  
+the jupyter notebook upload_data.ipynb contains the steps needed to load the CSV data to the database. 
+
+<details>
+<summary> Same steps for the Parquet file. </summary>  
 
 1. `wget` download the files. make sure to add .parquet to the .gitignore    
 2. `read_parquet` import data to a dataframe
@@ -245,6 +248,7 @@ df = pd.read_parquet(yellow_cab_trip_data_jan_2021.parquet)
 df_zones = pd.read_csv('yellow_cab_zone_lookup.csv')
 ```
 <br>
+</details>
 
 #### CREATE THE CONNECTION/ ENGINE 
 `create_engine` creates the connection to the DB. 

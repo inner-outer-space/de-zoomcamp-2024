@@ -6,21 +6,14 @@ This repo contains notes and assignments for the 2024 [Data Talks Data Engineeri
 </div>
 
 ## NOTES 
-#### WEEK 1 
-- [Docker & SQL](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/week_1_basics_n_setup/docker_sql/readme.md)
-- [Terraform & GCP](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/week_1_basics_n_setup/terraform_gcp/readme.md)
-#### WEEK 2 
-- [Orchestration & Mage]()
-#### WEEK 3 
-- [Data Warehouses & BigQuery]()
-#### WEEK 4 
-- []()
-#### WEEK 5 
-- []()
-#### WEEK 6 
-- [Streaming with Kafka]()
-
-
+WEEK 1:  [Docker & SQL](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/week_1_basics_n_setup/docker_sql/readme.md) • [Terraform & GCP](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/week_1_basics_n_setup/terraform_gcp/readme.md) <br>
+WEEK 2:  [Orchestration with Mage](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/2-workflow-orchestration) <br>
+WEEK 3:  [Data Warehouses with BigQuery](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/3-data-warehouse) <br>
+WEEK 4:  [Analytics Engineering with dbt](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/4-analytics-engineering) <br>
+WEEK 5:  [Batch with Spark](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/5-batch) <br>
+WEEK 6:  [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/6-streaming)
+<br>
+<br>
 ## RESOURCES
 
 <details>
@@ -73,4 +66,5 @@ This repo contains notes and assignments for the 2024 [Data Talks Data Engineeri
   - [Mage Dox]()
 </details>
 
+[dbt resources](https://github.com/Hiflylabs/awesome-dbt)
 

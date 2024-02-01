@@ -17,7 +17,6 @@
 [Backfills](#pipeline-backfills) •
 [Deployment Prerequisites](#deployment-prerequisites) •
 [Deploying to GCP](#deploying-to-gcp) •
-[Next Steps](#next-steps)
 
 </div>
 
@@ -90,7 +89,7 @@ Mage's main components are projects, pipelines, and blocks. Within an instance o
 </div>
 <br>
 
-Other types of built In Mage blocks:
+Other types of Built In Mage blocks:
 - Sensors - trigger on some event 
 - Conditionals
 - Dynamics - can create dynamic children
@@ -108,14 +107,12 @@ Other notable functionality:
 <table>
     <tr>
     <td>Hybrid Environment  </td>
-    <td>- Use the gui or develop completely outside of the tool and sync.<br>
-        - Use blocks as testable, reusable pieces of code
+    <td>- Use the gui or develop completely outside of the tool and sync.
     </td>
     </tr>
     <tr>
     <td>Improved Developer Experience  </td>
-    <td>- Code and test in parallel <br>
-        - Reduce the dependencies on different tools and the need to switch between them
+    <td> - Use blocks as testable, reusable pieces of code<br> - Code and test in parallel <br> - Reduce the dependencies on different tools and the need to switch between them
     </td>
     </tr>
     <tr>
@@ -214,7 +211,7 @@ On the Pipeline Overview page you'll find an example_pipeline that you can click
 On the left side of the screen, you can access the files structure and have a list view of the current blocks included in the pipeline. 
 <br>
 <br>
-The blocks and their code are displayed in the center fo the page. From here, you can edit and run each block individually. You can also run all blocks together by going to the last block in the pipeline and clicking `Execute with all upstream blocks` 
+The blocks and their code are displayed in the center of the page. From here, you can edit and run each block individually. You can also run all blocks together by going to the last block in the pipeline and clicking `Execute with all upstream blocks` 
 <br> 
 <br>
 The Pipeline Tree is displayed in the section on the right. Connections between the blocks can be added and deleted directly in the tree. When 2 blocks are connected in the pipeline, it means that the output dataframe of the first will be passed as input to the next. 
@@ -886,6 +883,5 @@ There is a lot that you can do with your Mage instance in Google Run
 - set up CI/CD
 - mount volumes to cloud storage or bigquery **(double check)**
 
-## Next Steps
 
 
