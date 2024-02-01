@@ -107,14 +107,12 @@ Other notable functionality:
 <table>
     <tr>
     <td>Hybrid Environment  </td>
-    <td>- Use the gui or develop completely outside of the tool and sync.<br>
-        - Use blocks as testable, reusable pieces of code
+    <td>- Use the gui or develop completely outside of the tool and sync.
     </td>
     </tr>
     <tr>
     <td>Improved Developer Experience  </td>
-    <td>- Code and test in parallel <br>
-        - Reduce the dependencies on different tools and the need to switch between them
+    <td> - Use blocks as testable, reusable pieces of code<br> - Code and test in parallel <br> - Reduce the dependencies on different tools and the need to switch between them
     </td>
     </tr>
     <tr>
