@@ -73,4 +73,5 @@ This repo contains notes and assignments for the 2024 [Data Talks Data Engineeri
   - [Mage Dox]()
 </details>
 
+[dbt resources](https://github.com/Hiflylabs/awesome-dbt)
 
