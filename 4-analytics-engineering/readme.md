@@ -753,9 +753,9 @@ Now that we have prepared the data, we can visualize using Looker Studio (_the a
 Note: For partitioned tables, you will be able select to use the partitioning attribute as a dimension. 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/25608084-348b-4e82-8dfb-14051459324b" width="400" height="auto">
 
-`Step 3` Update default aggregation to None <br> 
+`Step 3` Adjust field settings <br> 
 
-Aggregation defaults to sum for all numeric fields, but is not appropriate in all cases.<br> 
+The field aggregation defaults to sum for all numeric fields, but that is not appropriate in all cases.<br> 
 Change the defualt aggregation to None for: 
 - dropoff_zone
 - dropoff_locationid
@@ -764,8 +764,12 @@ Change the defualt aggregation to None for:
 - ratecodeid
 - vendorid
 
-You can create your own aggregations and fields on this page or later after creating the report. 
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/cdb0575e-d58b-40a8-80ae-7772b1217913" width="400" height="auto">
+From this screen you can create your own aggregations and fields, but we will do this later after creating the report. You can also add field descriptions, change the name of the table to something better understood by the end users, and set the data freshness. 
+
+`Step 4` Create a Report
+We will delete the table that the report is added with and add a timeseries charet from the "Add a chart" drop down. 
+
+
 
 ## METABASE
 
