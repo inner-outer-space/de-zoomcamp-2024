@@ -75,7 +75,7 @@ A partitioned table is a type of database table in which the data is divided int
 #### BIGQUERY EXTERNAL TABLES 
 An external table in BigQuery references data stored in external data sources, typically in GCS or other external storage systems. External tables allow you to query and analyze data that is located in different storage locations without having to load the data into BigQuery tables. This is cost efficient, as it costs less to store data in GCS than it does to store it in BigQuery. 
 
-External tables support various data formats, including Avro, Parquet, ORC, JSON, and CSV.  BigQuery can automatically infer the schema of external data sources when you create an external table, or you can specify the schema manually.  There are alsoSince the data is not in BigQuery, it will not be able to estimate the cost of the query prior to running it. Additionally, queries run slower when the data is housed externally. This may be an issue when dealing with large datasets.  
+External tables support various data formats, including Avro, Parquet, ORC, JSON, and CSV.  BigQuery can automatically infer the schema of external data sources when you create an external table, or you can specify the schema manually. Since the data is not in BigQuery, it will not be able to estimate the cost of the query prior to running it. Additionally, queries run slower when the data is housed externally. This may be an issue when dealing with large datasets.  
 
 We have already imported the New York taxi CSV files into GCS. Now we will create an external table in BigQuery that points to that data.  
 The format of the external table name in BQ = `PROJECT_ID.DATASET.EXTERNAL_TABLE_NAME`
@@ -130,7 +130,7 @@ WHERE DATE(tpep_pickup_datetime) BETWEEN '2019-06-01' AND '2019-06-30';
 <br>
 
 #### PARTITIONING DETAILS 
-Each dataset contains an information schema that includes a partitions table. Querying this table allows us to access information about the size of individual partitions. It is helpful to check the size of each partition to ensure that data is evenly distributed.
+The information schema of a partitioned dataset includes a partitions table. Querying this table allows us to access information about the size of individual partitions. It is helpful to check the size of each partition to ensure that data is evenly distributed.
 
 ```sql
 -- Let's look into the partitions
@@ -143,7 +143,7 @@ ORDER BY total_rows DESC;
 <br>
 
 #### CLUSTERING IN BIGQUERY
-Clustering groups similar data together based on specific attributes or criteria. Within a partition you can further cluster the data by another attribute, for example by vendorid. Data will then be grouped within the partition by the clustering attribute. This can also increase querying efficiency. 
+Clustering groups data based on specific attributes or criteria. Within a partition you can further cluster the data by another attribute, for example by vendorid. Data will then be grouped within the partition by the clustering attribute. This can also increase querying efficiency. 
 
 It is best to create clusters based on the attributes frequently used to query the data.  
 ```sql
@@ -157,7 +157,7 @@ SELECT * FROM taxi-rides-ny.nytaxi.external_yellow_tripdata;
 <br>
 
 #### COMPARING PROCESSING VOLUME - Partitioned vs Partitioned & Clustered 
-Comparing the same query against a partitioned vs a partitioned and clustered DB, we see that the clustering further decreases the amount of data that needs to be processed. 
+Comparing the same query against a partitioned vs a partitioned and clustered DB, we see that clustering further decreases the amount of data that needs to be processed. 
 ```sql
 # PARTITIONED ONLY
 -- Query scans 1.1 GB
@@ -185,7 +185,7 @@ In BigQuery you can partition on:
 - Ingestion time
 - Integer column 
 
-In the case of time columns and contingent on the type of time column, you can specify the granularity of the partitions as:
+Depending on the type of time column, you can specify the granularity of the partitions as:
 - hourly
 - daily (default)
 - monthly
@@ -240,7 +240,7 @@ Choose clustering instead of partitioning if
 <br>
 
 #### AUTOMATIC RECLUSTERING 
-Source: [GCloud Reclustering Doc](#https://cloud.google.com/bigquery/docs/clustered-tables)
+Source: [GCloud Reclustering Doc](https://cloud.google.com/bigquery/docs/clustered-tables)
 <br>
 As data is added to a clustered table, the new data is organized into blocks, which might create new storage blocks or update existing ones. Block optimization is required for optimal query and storage performance because new data might not be grouped with existing data that has the same cluster values.
 
@@ -251,10 +251,10 @@ Note: Automatic reclustering does not incur costs on GCloud
 <br>
  
 ## BEST PRACTICES 
-#### COST REDUCTION 
+#### FOR COST REDUCTION 
 - Avoid SELECT *
     - Cost is based on the amount of data being read. Don't select more than you need, instead specify the names of the columns that you are interested in. 
-- Consider the price your queries before running them
+- Consider the price of your queries before running them
     - an estimate of the cost of the query is displayed on the upper right hand side of the table.     
 - Use clustered or partitioned tables
 - Use streaming inserts with caution as these can increase costs drastically  
@@ -263,12 +263,12 @@ Note: Automatic reclustering does not incur costs on GCloud
 <br>
 <br>
 
-#### QUERY PERFORMANCE 
+#### FOR IMPROVED QUERY PERFORMANCE 
 - **Partitioning and Clustering:** Partitioning tables and clustering data in BigQuery can significantly improve query performance by limiting the amount of data scanned.
 - **Avoid Oversharding Tables:** Avoid creating too many table partitions (shards), as this can lead to suboptimal query performance.
 - **Denormalize Data:** Consider using nested or repeated columns instead of excessive normalization to reduce the need for joins and improve performance.
 - **Filter Data Before Joining:** Apply filters to your data before performing joins to reduce the amount of data being joined.
-- **Do Not Treat the WITH Clause as Prepared Statements:** ??? This is unclear to me. I thought WITH helped with performance. ???
+- **Do Not Treat the WITH Clause as Prepared Statements:** A prepared statement is run and optimized once. It is not reevaluated by the query optimizer each time the query is run.  
 - **Avoid JavaScript User-Defined Functions:** They may not perform as efficiently as native BigQuery functions. 
 - **Use Approximate Aggregate Functions (HyperLog++):** When exact precision is not required, consider using approximate aggregate functions for faster results.
 - **Order By Last:** If possible, use ORDER BY as the last operation in your query for better performance.
@@ -285,9 +285,10 @@ Note: Automatic reclustering does not incur costs on GCloud
 
 **Colossus**
 <br> 
-- BigQuery stores data in columnar format in a a separate storage called Colossus, which is more efficient for aggregations. 
+- BigQuery stores data in a a separate storage area called Colossus. 
+- Data is stored in columnar format, which is more efficient for aggregations. 
 - BigQuery does not query all the columns at once. The general pattern is to query a few columns and filter and aggregate on different parts. 
-- It is a relatively inexpensive form of storage.
+- Colossus is a relatively inexpensive form of storage.
 - Most costs are incurred when the compute engine reads or writes the data. 
 <br>
 <div align = center>
@@ -311,7 +312,7 @@ RECORD VS COLUMN ORIENTED STRUCTURE <br>
 <br>
 <div align = center>
 SUBSETTING OF BQ QUERY <br>
-<img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/3d00a91f-aec3-4620-867f-83ce7e345135" width ="350" height = "auto">
+<img src = "https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/3d00a91f-aec3-4620-867f-83ce7e345135" width ="500" height = "auto">
 </div>
 <br>
 <br>
@@ -328,16 +329,16 @@ SUBSETTING OF BQ QUERY <br>
 This module covers ML in BigQuery. We are going to build a model, export it, and run it with Docker. 
 
 ### OVERVIEW
-- The tool is mean for Data Analysts and Managers.
+- The ML tool is meant for Data Analysts and Managers.
 - You can build, run, and deploy a model in SQL, no need for other languages like python or R.
 - The model can be built directly in the data warehouse. There is no need to export data into a different system. 
 - BigQuery can automatically handle many aspects of the ML process:  
     - Feature engineering
     - Hyperparameter tuning
     - Data splitting
-- Selection of basic ML models and the ability to create a custom model in TensorFlow.
-- Provides various error metrics for model evaluation.
-- Model deployment using docker 
+- BigQuery provides a selection of basic ML models and the ability to create custom models in TensorFlow.
+- BigQuery provides various error metrics for model evaluation.
+- The ML Model can be deployed using docker 
 <br>
 <br>
 
