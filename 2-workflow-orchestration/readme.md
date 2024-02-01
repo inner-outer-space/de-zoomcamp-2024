@@ -233,7 +233,7 @@ The example_pipeline loads the Titanic data set, performs a transformation, and 
 Configuring the postgres client so that we can connect to the local Postgres DB in the Docker container where Mage lives. 
 <br> 
 
-The docker-compose.yaml file references environmental variables defined in the .env file. Since the .env file is not uploaded to GIT, the postgres credentials will be safe there. <br>
+The docker-compose.yaml file references environmental variables defined in the .env file. Since the .env file is not uploaded to GIT, the postgres credentials will be safe there.<br>
 THE POSTGRES SERVICE DEFINED IN DOCKER-COMPOSE.YAML
 ```yaml
   # PostgreSQL Service defined in docker-compose 
