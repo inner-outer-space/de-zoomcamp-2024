@@ -221,7 +221,10 @@ BASIC PGCLI COMMANDS<br>
 <hr />
 
 ## LOAD DATA TO POSTGRES WITH JUPYTER  
-the jupyter notebook upload_data.ipynb contains the steps needed to load the CSV data to the database. The following steps do the same for the Parquet file.  
+the jupyter notebook upload_data.ipynb contains the steps needed to load the CSV data to the database. 
+
+<details>
+<summary> Same steps for the Parquet file. </summary>  
 
 1. `wget` download the files. make sure to add .parquet to the .gitignore    
 2. `read_parquet` import data to a dataframe
@@ -245,6 +248,7 @@ df = pd.read_parquet(yellow_cab_trip_data_jan_2021.parquet)
 df_zones = pd.read_csv('yellow_cab_zone_lookup.csv')
 ```
 <br>
+</details>
 
 #### CREATE THE CONNECTION/ ENGINE 
 `create_engine` creates the connection to the DB. 
