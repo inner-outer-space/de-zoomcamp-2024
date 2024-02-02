@@ -743,7 +743,7 @@ Running a dbt project in production
 <br>
 
 ## GOOGLE DATA STUDIO
-Now that we have prepared the data, we can visualize using Looker Studio (_the artisit formerly known as Data Studio_) 
+Now that we have transformed our data and run it in production using `dbt run --vars 'is_test_run: false'`, we can visualize using it Looker Studio (_the artisit formerly known as Data Studio_) 
 
 `Step 1` Go to Looker Studio and add a BigQuery data source
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/2f2808c5-8fb4-42f5-a976-18445e2e16e1" width="250" height="auto">
