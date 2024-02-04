@@ -5,9 +5,6 @@ import pandas as pd
 from io import BytesIO
 import warnings 
 from google.cloud import storage
-import time 
-
-# ADDED A 60 SECOND PAUSE TO AVOID OVERLOADING THE SERVER
 
 """
 Pre-reqs: 
@@ -109,20 +106,14 @@ def web_to_gcs(year, service):
         url = f"{init_url}{service}/{file_name}"
         print(url)
         r = requests.get(url)
-        #df_csv = pd.read_csv(BytesIO(r.content), compression='gzip', dtype=data_types, parse_dates=date_cols)
-        df_csv = pd.read_csv(BytesIO(r.content), compression='gzip',  parse_dates=date_cols)
-        
-        # table = pv.read_csv(src_file)
-        # table = table.cast(table_schema)
-        # pq.write_table(table, src_file.replace(‘.csv’, ‘.parquet’))
-        
+        df_csv = pd.read_csv(BytesIO(r.content), compression='gzip', dtype=data_types, parse_dates=date_cols)
         
         # define column dtypes and convert to lower
         df_csv.columns = map(str.lower, df_csv.columns)
         
         # Convert DataFrame to Parquet format in memory
         file_name = file_name.replace('.csv.gz', '.parquet')
-        df_csv.to_parquet(file_name, engine='pyarrow', schema=data_types)
+        df_csv.to_parquet(file_name, engine='pyarrow')
         print(f"Parquet: {file_name}")
         
         # Upload Parquet data to GCS
@@ -139,8 +130,8 @@ def web_to_gcs(year, service):
             print(f"Local file {file_name} does not exist.")
 
 
-#web_to_gcs('2019', 'green')
+web_to_gcs('2019', 'green')
 #web_to_gcs('2020', 'green')
 #web_to_gcs('2019', 'yellow')
-web_to_gcs('2020', 'yellow')
-web_to_gcs('2019', 'fhv')
+#web_to_gcs('2020', 'yellow')
+#web_to_gcs('2019', 'fhv')
