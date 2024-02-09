@@ -9,12 +9,12 @@
 [What is dbt](#what-is-dbt) •
 [dbt & BigQuery](#dbt-cloud-project-with-bigquery) •
 [dbt & Postgres](#dbt-project-with-postgres) <br>
-[dbt Model](dbt-model-components) •
-[dbt Project](dbt-project) • 
-[Macros](macros) • 
-[Packages](packages) • 
-[Variables](variables) • 
-[Seeds](seeds) <br> 
+[dbt Model](#dbt-model-components) •
+[dbt Project](#dbt-project) • 
+[Macros](#macros) • 
+[Packages](#packages) • 
+[Variables](#variables) • 
+[Seeds](#seeds) <br> 
 [Testing & Documentation](#testing-and-documentation) •
 [Deploy to dbt Cloud](#deploy-to-dbt-cloud) •
 [Deploy Locally](#deploy-dbt-locally) •
