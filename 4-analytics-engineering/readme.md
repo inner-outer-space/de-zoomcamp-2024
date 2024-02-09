@@ -285,13 +285,13 @@ Default Python Materializations
 
 `THE "FROM" CLAUSE`
 - The from clause specifies the data source which can be a table, view, seed, or model 
-- Typically specified using the ref() or source() macro 
+- Typically specified using the ref( ) or source( ) macro 
 - The dependency graph is built based off the relations specified in the from claus. 
 <br>
 <br> 
 
-`THE "SOURCE()" MACRO`<br>
-"The 'source()' macro is used exclusively in the staging models to build the relationship between the source data and the current model being. 
+`THE "SOURCE( )" MACRO`<br>
+"The 'source( )' macro is used exclusively in the staging models to build the relationship between the source data and the current model. <br>
 Its primary functions are:
 - Resolving Source Names: It resolves the correct name of the source data, including the schema, and creates dependencies between the source and the current model.
 - Freshness Definition: You can define rules for when and how often the source data should be considered fresh.
@@ -299,9 +299,11 @@ Its primary functions are:
 <br>
 <br> 
 
-`THE REF() MACRO` 
+`THE REF( ) MACRO` 
 - Macro references the underlying tables and views in the data warehouse created from dbt models or seeds 
-- ref() is, under the hood, actually doing two important things. First, it is interpolating the schema into your model file to allow you to change your deployment schema via configuration. Second, it is using these references between models to automatically build the dependency graph. This will enable dbt to deploy models in the correct order when using dbt run. [Source](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)
+- Under the hood ref( ) is doing two important things. 
+    1. Interpolates the schema into your model file to allow you to change your deployment schema via configuration. 
+    2. Uses these references between models to automatically build the dependency graph enabling dbt to deploy models in the correct order when using dbt run. [Source](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)
 <br>
 <br> 
 
