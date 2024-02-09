@@ -596,7 +596,7 @@ Compiled code
 <br>
 <br>
 
-## DBT SEEDS 
+## SEEDS 
 - DBT Seeds are csv files maintained in our repository that we can use as tables with the ref macro
 - There currently isn't a way to upload the file through the dbt UI. To get around that you can: 
     - if developing locally, copy paste under the seeds folder
