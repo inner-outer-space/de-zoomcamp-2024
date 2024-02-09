@@ -234,12 +234,12 @@ Starting a dbt project using dbt Cloud and BigQuery
 <br>
 
 `CONFIG MACRO` 
-- Models can be configured in one of 3 ways 
+- Models can be configured in one of 3 ways: 
     1. using the config macro defined in jinja in the model file 
     2. using the config property in a .yml file 
     3. In the dbt_project.yml, under the models key 
 - The config macro is used when you want to apply a configuration to that model only. 
-- Examples: 
+Examples: 
 ``` sql
 {{ config(materialized='view') }}
 -- OR     
