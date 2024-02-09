@@ -9,7 +9,7 @@
 [What is dbt](#what-is-dbt) •
 [dbt & BigQuery](#dbt-cloud-project-with-bigquery) •
 [dbt & Postgres](#dbt-project-with-postgres) <br>
-[dbt Model](dbt-model) •
+[dbt Model](dbt-model-components) •
 [dbt Project](dbt-project) • 
 [Macros](macros) • 
 [Packages](packages) • 
@@ -216,9 +216,8 @@ Starting a dbt project using dbt Cloud and BigQuery
 <br>
 <br>
 
-## DBT MODEL 
 
-#### COMPONENTS
+## DBT MODEL COMPONENTS
 `JINJA`  
 - [JINJA DOCUMENTATION](https://docs.getdbt.com/docs/build/jinja-macros)
 - Jinja is a template engine that generates python like expressions. 
