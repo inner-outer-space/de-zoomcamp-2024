@@ -753,36 +753,6 @@ Running a dbt project in production
 <br>
 <br>
 
-## GOOGLE DATA STUDIO
-Now that we have transformed our data and run it in production using `dbt run --vars 'is_test_run: false'`, we can visualize using it Looker Studio (_formerly known as Data Studio_) 
-
-`Step 1` Go to Looker Studio and add a BigQuery data source <br>
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/2f2808c5-8fb4-42f5-a976-18445e2e16e1" width="250" height="auto">
-
-`Step 2` Select the your_project > production > fact_trips table and Connect 
-
-Note: For partitioned tables, you will be able select to use the partitioning attribute as a dimension. 
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/25608084-348b-4e82-8dfb-14051459324b" width="400" height="auto">
-
-`Step 3` Adjust field settings <br> 
-
-The field aggregation defaults to sum for all numeric fields, but that is not appropriate in all cases.<br> 
-Change the default aggregation to None for: 
-- dropoff_zone
-- dropoff_locationid
-- payment_type
-- pickup_locationid
-- ratecodeid
-- vendorid
-
-From this screen you can create your own aggregations and fields, but we will do this later after creating the report. You can also add field descriptions, change the name of the table to something better understood by the end users, and set the data freshness. 
-
-`Step 4` Create a Report <br>
-We will delete the table that the report is added with and add a time-series chart from the "Add a chart" drop down. 
-
-
-
-## METABASE
 
 
 
