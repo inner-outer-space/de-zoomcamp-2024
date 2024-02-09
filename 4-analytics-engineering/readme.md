@@ -223,7 +223,7 @@ Starting a dbt project using dbt Cloud and BigQuery
     - {{.....}} - expressions
     - {{%...%}} - statement/ executables
     - {{#...#}} - comments
-- Allows you to
+- Allows you to:
     - use control structures (e.g., if statements, for loops)
     - use environmental variables in dbt projects for production deployments
     - control builds dependent on target
@@ -262,12 +262,12 @@ DBT has a number of default materializations and you can also create custom mate
 <br> 
 Default SQL Materializations 
 - Table 
-    - model is rebuilt as a table on each run
+    - the model is rebuilt as a table on each run
     - existing table is dropped and a new one is added in the schema that you are working in 
     - newly added source data is not auto-added to the Tables you create
     - faster to query than a view
 - View
-    - model is rebuilt as a view on each run
+    - the model is rebuilt as a view on each run
     - will always contain the latest data records
 - Incremental 
     - essentially a table 
@@ -283,15 +283,15 @@ Default Python Materializations
 <br>
 <br> 
 
-`THE FROM CLAUSE`
-- The from clause specifies the data source which can be a table, view, seed, or model 
-- Typically specified using the ref( ) or source( ) macro 
+`THE 'FROM' CLAUSE`
+- The 'from' clause specifies the data source, which can be a table, view, seed, or model 
+- Typically specified using the 'ref()' or 'source()' macro 
 - The dependency graph is built based off the relations specified in the from claus. 
 <br>
 <br> 
 
-`THE SOURCE() MACRO`<br>
-"The source() macro is used exclusively in the staging models to build the relationship between the source data and the current model. <br>
+`THE 'SOURCE()' MACRO`<br>
+"The 'source()' macro is used exclusively in the staging models to build the relationship between the source data and the current model. <br>
 Its primary functions are:
 - Resolving Source Names: It resolves the correct name of the source data, including the schema, and creates dependencies between the source and the current model.
 - Freshness Definition: You can define rules for when and how often the source data should be considered fresh.
@@ -299,15 +299,15 @@ Its primary functions are:
 <br>
 <br> 
 
-`THE REF() MACRO` 
+`THE 'REF()' MACRO` 
 - Macro references the underlying tables and views in the data warehouse created from dbt models or seeds 
-- Under the hood ref() is doing two important things: 
+- Under the hood 'ref()' is doing two important things: 
     1. Interpolates the schema into your model file to allow you to change your deployment schema via configuration. 
     2. Uses these references between models to automatically build the dependency graph enabling dbt to deploy models in the correct order when using dbt run. [Source](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)
 <br>
 <br> 
 
-`BENEFITS OF USING REF() OR SOURCE() MACRO`
+`BENEFITS OF USING 'REF()' OR 'SOURCE()' MACRO`
 - Dependencies are built automatically
 - dbt will resolve the names for you based on the environment you are working in
 - Encapsulates the logic to define the paths, so you run the same code no matter what environment you are working in.
