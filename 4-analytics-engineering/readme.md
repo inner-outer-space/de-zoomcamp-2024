@@ -259,17 +259,19 @@ Starting a dbt project using dbt Cloud and BigQuery
 <br>
 
 `MATERIALIZATIONS`<br>
-are strategies for exposing the output of a dbt models in a warehouse as a table. view, or variation thereof. 
-DBT has a number of default materializations and you can also create custom materializations - [MATERIALIZATION DOCUMENTATION](https://docs.getdbt.com/docs/build/materializations) 
+are strategies for exposing the output of a dbt models in a warehouse as a table, view, or variation thereof. <br>
+DBT has a number of default materializations and you can also create custom materializations<br> 
+[MATERIALIZATION DOCUMENTATION](https://docs.getdbt.com/docs/build/materializations) 
 <br>
 <br> 
 Default SQL Materializations 
 - Table 
-    - model structure is re-calibrated on each run
+    - model is rebuilt as a table on each run
     - existing table is dropped and a new one is added in the schema that you are working in 
     - newly added source data is not auto-added to the Tables you create
+    - faster to query than a view
 - View
-    - model structure is re-calibrated every time you run a view
+    - model is rebuilt as a view on each run
     - will always contain the latest data records
 - Incremental 
     - essentially a table 
@@ -277,7 +279,7 @@ Default SQL Materializations
 - Ephemeral 
     - lightweight and do not persist. They cannot be queried outside of dbt. 
 - Materialized view
-    - used to create a table materialized in your target database
+    - used to create a view in your target database
     
 Default Python Materializations
 - Table
