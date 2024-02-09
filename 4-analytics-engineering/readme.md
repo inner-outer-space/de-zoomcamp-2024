@@ -7,8 +7,7 @@
 [Analytic Engineering](#analytics-engineering-background) •
 [Data Modeling Concepts](#data-modeling-concepts) •
 [What is dbt](#what-is-dbt) •
-[dbt & BigQuery](#dbt-cloud-project-with-bigquery) •
-[dbt & Postgres](#dbt-project-with-postgres) <br>
+[dbt & BigQuery](#dbt-cloud-project-with-bigquery) <br>
 [dbt Model](#dbt-model-components) •
 [dbt Project](#dbt-project) • 
 [Macros](#macros) • 
@@ -17,9 +16,7 @@
 [Seeds](#seeds) <br> 
 [Testing & Documentation](#testing-and-documentation) •
 [Deploy to dbt Cloud](#deploy-to-dbt-cloud) •
-[Deploy Locally](#deploy-dbt-locally) •
-[Google Data Studio](#google-data-studio) •
-[Metabase](#metabase) 
+[Continuous Integration](#continuous-integration) •
 </div>
 
 <hr/>
