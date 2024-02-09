@@ -276,7 +276,7 @@ Default SQL Materializations
 - Ephemeral 
     - lightweight and do not persist. They cannot be queried outside of dbt. 
 - Materialized view
-    - used to create a table materialized in your target database
+    - used to create a view in your target database
     
 Default Python Materializations
 - Table
