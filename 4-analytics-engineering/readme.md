@@ -4,11 +4,17 @@
 (*for Linux*)
 <hr />
 
-[Analytics Engineering](#analytics-engineering-background) •
-[dbt Background](#what-is-dbt) •
+[Analytic Engineering](#analytics-engineering-background) •
+[Data Moderling Concepts](#data-modeling-concepts) •
+[What is dbt](#what-is-dbt) •
 [dbt & BigQuery](#start-a-dbt-cloud-project-with-big-query) •
-[dbt & Postgres](#start-a-dbt-project-with-postgres) •
-[Build a Model](#build-a-dbt-model)  <br>
+[dbt & Postgres](#start-a-dbt-project-with-postgres) <br>
+[dbt Model](dbt-model) •
+[dbt Project](dbt-project) • 
+[Macros](macros) • 
+[Packages](packages) • 
+[Variables](variables) • 
+[Seeds](seeds) <br> 
 [Testing & Documentation](#testing-and-documentation) •
 [Deploy to dbt Cloud](#deploy-to-dbt-cloud) •
 [Deploy Locally](#deploy-dbt-locally) •
@@ -210,8 +216,9 @@ Starting a dbt project using dbt Cloud and BigQuery
 <br>
 <br>
 
-## DBT MODEL COMPONENTS
+## DBT MODEL 
 
+#### COMPONENTS
 `JINJA`  
 - [JINJA DOCUMENTATION](https://docs.getdbt.com/docs/build/jinja-macros)
 - Jinja is a template engine that generates python like expressions. 
@@ -316,7 +323,7 @@ Its primary functions are:
 <br>
 
 
-## BUILDING A DBT PROJECT 
+## DBT PROJECT 
 
 <details>
 <summary> More on dbt Project Structure</summary>
