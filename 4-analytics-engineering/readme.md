@@ -283,15 +283,15 @@ Default Python Materializations
 <br>
 <br> 
 
-`THE "FROM" CLAUSE`
+`THE FROM CLAUSE`
 - The from clause specifies the data source which can be a table, view, seed, or model 
 - Typically specified using the ref( ) or source( ) macro 
 - The dependency graph is built based off the relations specified in the from claus. 
 <br>
 <br> 
 
-`THE "SOURCE( )" MACRO`<br>
-"The 'source( )' macro is used exclusively in the staging models to build the relationship between the source data and the current model. <br>
+`THE SOURCE() MACRO`<br>
+"The source() macro is used exclusively in the staging models to build the relationship between the source data and the current model. <br>
 Its primary functions are:
 - Resolving Source Names: It resolves the correct name of the source data, including the schema, and creates dependencies between the source and the current model.
 - Freshness Definition: You can define rules for when and how often the source data should be considered fresh.
@@ -299,9 +299,9 @@ Its primary functions are:
 <br>
 <br> 
 
-`THE REF( ) MACRO` 
+`THE REF() MACRO` 
 - Macro references the underlying tables and views in the data warehouse created from dbt models or seeds 
-- Under the hood ref( ) is doing two important things. 
+- Under the hood ref() is doing two important things: 
     1. Interpolates the schema into your model file to allow you to change your deployment schema via configuration. 
     2. Uses these references between models to automatically build the dependency graph enabling dbt to deploy models in the correct order when using dbt run. [Source](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)
 <br>
@@ -315,10 +315,10 @@ Its primary functions are:
 <br> 
 
 `SEEDS`
-- Seeds are CSV files in your dbt project that can be referenced the same way as referencing tables/models
-- Ideal for small data sets that don't change frequently such as lookup tables
-- The CSV files are stored in the repo under the seed folder and therefore benefit from version control  
-- Using a seed for source essentially copies this to a table or view
+- Seeds are CSV files in your dbt project that can be referenced in the same way as tables/models.
+- Ideal for small data sets that don't change frequently, such as lookup tables.
+- The CSV files are stored in the repository under the seed folder, thereby benefiting from version control.  
+- Using a seed as a source essentially copies its to a table or view.
 <br>
 <br>
 
@@ -342,7 +342,7 @@ Its primary functions are:
         - Basic computations
         - Categorization
         - Light cleaning (e.g, replaces empty strings with NULL)
-        - Flattening o
+        - Flattening 
         - Transformations that you want to see in every downstream model should be applied at this level to avoid repeated code
     - Staging models are generally materialized as Views
         - these are intended to be used downstream for further transformation and are not final products themselves
@@ -395,9 +395,8 @@ For BigQuery:
 - database = GCP project ID 
 - schema = BigQuery dataset schema.
 <br> 
-If you wanted to change the source of the data, simply update the source in the schema.yml. All staging models reference this file, so no changes would be needed in the models themselves.  
-You can also set a freshness for each table here.   
-
+If you wanted to change the source of the data, simply update the source in the schema.yml. Since all staging models reference this file, you won't need to make changes in the models themselves.  You can also set a freshness for each table here.   
+<br>
 schema.yml
 ``` yaml
 version: 2
@@ -424,12 +423,14 @@ This sql will generate this dataflow as displayed on the lineage tab:<br>
 <br>
 
 #### RUNNING A MODEL 
+- `dbt run` to run all files 
 - `dbt run --select file_name` to run a particular file
-- `dbt run` to run all files in a folder
+- `dbt run --models file_name` to run a particular file
+- `dbt run --models directory` to run all files in a folder
 <br>
 <br>
 
-`STEP 5` Expand the stg_green_tripdata model
+`STEP 5` Expand the stg_green_tripdata model<br>
 Define the data types and rename columns. 
 
 Example for the green taxi data 
@@ -474,7 +475,7 @@ limit 100
 
 ## MACROS
 - Macros are reusable pieces of code analogous to functions. 
-- There are defined in .sql files in the macros folder using a combination of jinja and sql
+- They are defined in .sql files in the macros folder using a combination of jinja and sql
 - each macro is defined within an executable jinja block {{%...%}}
 - macros follow this naming convention - `{%}  macro name_of_macro(parameter)  %}`
 - the code that will be returned by the macro is defined between the macro start and end comment 
@@ -535,7 +536,7 @@ where vendorid is not null
 
 ## PACKAGES
 - Similarly to libraries in other programming languages, you can import and use macros from other projects.
-- Packages are stand alone dbt projects, with models and macros that tackle a specific problem areas.
+- Packages are stand alone dbt projects, with models and macros that tackle specific problem areas.
 - By adding a packages to your project, the packages's models and macros will become part of your own project.
 - You can add packages to your project by creating a packages.yml file in your project's main and define the packages you want to import
 - A list of useful packages can be found on the [dbt package hub](https://hub.getdbt.com/)
@@ -545,12 +546,13 @@ packages:
   - package: dbt-labs/dbt_utils
     version: 0.8.0
 ``` 
-- Import the packages and download all dependencies by running `dbt deps`. THe packages will appear under the dbt_packages folder.   
+- Import the packages and download all dependencies by running `dbt deps`. 
+- The packages will appear under the dbt_packages folder.   
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/c5de84ef-f0b4-4450-9416-3fc30d673992" width="200" height="auto">
 <br>
 <br>
 
-Using an macro from a package
+#### Using a Package Macro 
 ```sql
   {{ dbt_utils.surrogate_key('vendorid', 'lpep_pickup_datetime')}} as trip_id,
 ```
@@ -571,15 +573,15 @@ Compiled code
 
 ## VARIABLES
 - variables are useful for defining values that could be used across the project
-- With a macro, dbt allows us to get the data from the variables and translate during the compilation
+- With a macro, dbt allows us to get the data from the variables and translate during compilation
 - To use a variable we use the {{ var('...') }} function
 - Variables can be defined in 2 ways:
-    - in the dbt_project.yml
+    1. in the dbt_project.yml
     ```sql
     vars:
     payment_type_values: [1, 2, 3, 4, 5, 6]
     ```
-    - from the command line<br>
+    2. from the command line<br>
     As an example, if your model included the var macro
     ```jinja
     {% if var('is_test_run', default=true) %}
