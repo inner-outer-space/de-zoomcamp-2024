@@ -16,7 +16,7 @@
 [Seeds](#seeds) <br> 
 [Testing & Documentation](#testing-and-documentation) •
 [Deploy to dbt Cloud](#deploy-to-dbt-cloud) •
-[Continuous Integration](#continuous-integration) •
+[Continuous Integration](#continuous-integration) 
 </div>
 
 <hr/>
