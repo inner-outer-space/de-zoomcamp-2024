@@ -7,7 +7,7 @@
 [Analytic Engineering](#analytics-engineering-background) •
 [Data Modeling Concepts](#data-modeling-concepts) •
 [What is dbt](#what-is-dbt) •
-[dbt & BigQuery](#dbt-cloud-project-with-big-query) •
+[dbt & BigQuery](#dbt-cloud-project-with-bigquery) •
 [dbt & Postgres](#dbt-project-with-postgres) <br>
 [dbt Model](dbt-model) •
 [dbt Project](dbt-project) • 
