@@ -38,7 +38,7 @@ Traditional analytics team roles:
 
 With the new tooling that is available, analysts end up writing more code. The problem is that they are not trained on good software development practices. On the other hand, the data engineers who are generally great software engineers, don't have the background to understand the business. 
 
-The concept of an **"Analytics Engineer"** has emerged as a bridge between the traditional roles of Data Engineer and Data Analyst. The data engineer has a strong foundation in both engineering and analytics with a good understanding of both business and engineering best practices.  
+The concept of an `**"Analytics Engineer"**` has emerged as a bridge between the traditional roles of Data Engineer and Data Analyst. The data engineer has a strong foundation in both engineering and analytics with a good understanding of both business and engineering best practices.  
 
 [More on the analytics engineer role](https://www.kdnuggets.com/2019/02/analytics-engineer-data-team.html)
 
