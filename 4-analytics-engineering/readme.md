@@ -5,10 +5,10 @@
 <hr />
 
 [Analytic Engineering](#analytics-engineering-background) •
-[Data Moderling Concepts](#data-modeling-concepts) •
+[Data Modeling Concepts](#data-modeling-concepts) •
 [What is dbt](#what-is-dbt) •
-[dbt & BigQuery](#start-a-dbt-cloud-project-with-big-query) •
-[dbt & Postgres](#start-a-dbt-project-with-postgres) <br>
+[dbt & BigQuery](#dbt-cloud-project-with-big-query) •
+[dbt & Postgres](#dbt-project-with-postgres) <br>
 [dbt Model](dbt-model) •
 [dbt Project](dbt-project) • 
 [Macros](macros) • 
