@@ -7,19 +7,16 @@
 [Analytic Engineering](#analytics-engineering-background) •
 [Data Modeling Concepts](#data-modeling-concepts) •
 [What is dbt](#what-is-dbt) •
-[dbt & BigQuery](#dbt-cloud-project-with-big-query) •
-[dbt & Postgres](#dbt-project-with-postgres) <br>
-[dbt Model](dbt-model) •
-[dbt Project](dbt-project) • 
-[Macros](macros) • 
-[Packages](packages) • 
-[Variables](variables) • 
-[Seeds](seeds) <br> 
+[dbt & BigQuery](#dbt-cloud-project-with-bigquery) <br>
+[dbt Model](#dbt-model-components) •
+[dbt Project](#dbt-project) • 
+[Macros](#macros) • 
+[Packages](#packages) • 
+[Variables](#variables) • 
+[Seeds](#seeds) <br> 
 [Testing & Documentation](#testing-and-documentation) •
 [Deploy to dbt Cloud](#deploy-to-dbt-cloud) •
-[Deploy Locally](#deploy-dbt-locally) •
-[Google Data Studio](#google-data-studio) •
-[Metabase](#metabase) 
+[Continuous Integration](#continuous-integration) 
 </div>
 
 <hr/>
@@ -216,9 +213,8 @@ Starting a dbt project using dbt Cloud and BigQuery
 <br>
 <br>
 
-## DBT MODEL 
 
-#### COMPONENTS
+## DBT MODEL COMPONENTS
 `JINJA`  
 - [JINJA DOCUMENTATION](https://docs.getdbt.com/docs/build/jinja-macros)
 - Jinja is a template engine that generates python like expressions. 
@@ -599,7 +595,7 @@ Compiled code
 <br>
 <br>
 
-## DBT SEEDS 
+## SEEDS 
 - DBT Seeds are csv files maintained in our repository that we can use as tables with the ref macro
 - There currently isn't a way to upload the file through the dbt UI. To get around that you can: 
     - if developing locally, copy paste under the seeds folder
@@ -642,7 +638,7 @@ Create another model in the core folder `fact_trips.sql`
 <br>
 
 
-## TESTS AND DOCUMENTATION
+## TESTING AND DOCUMENTATION
 TESTS
 - Data tests are assertions that you make about your models and other resources in your dnt project. 
 - Tests in dbt are essentially sql queries that select for the failing records. 
