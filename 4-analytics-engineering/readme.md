@@ -285,13 +285,13 @@ Default Python Materializations
 
 `THE 'FROM' CLAUSE`
 - The 'from' clause specifies the data source, which can be a table, view, seed, or model 
-- Typically specified using the 'ref()' or 'source()' macro 
-- The dependency graph is built based off the relations specified in the from claus. 
+- It is typically specified using the 'ref()' or 'source()' macro 
+- The dependency graph is built based on the relations specified in the from claus. 
 <br>
 <br> 
 
-`THE 'SOURCE()' MACRO`<br>
-"The 'source()' macro is used exclusively in the staging models to build the relationship between the source data and the current model. <br>
+`THE 'source()' MACRO`<br>
+"The 'source()' macro is used exclusively in staging models to build the relationship between the source data and the current model. <br>
 Its primary functions are:
 - Resolving Source Names: It resolves the correct name of the source data, including the schema, and creates dependencies between the source and the current model.
 - Freshness Definition: You can define rules for when and how often the source data should be considered fresh.
@@ -299,15 +299,15 @@ Its primary functions are:
 <br>
 <br> 
 
-`THE 'REF()' MACRO` 
-- Macro references the underlying tables and views in the data warehouse created from dbt models or seeds 
+`THE 'ref()' MACRO` 
+- The 'ref()' macro references the underlying tables and views in the data warehouse created from dbt models or seeds 
 - Under the hood 'ref()' is doing two important things: 
     1. Interpolates the schema into your model file to allow you to change your deployment schema via configuration. 
     2. Uses these references between models to automatically build the dependency graph enabling dbt to deploy models in the correct order when using dbt run. [Source](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)
 <br>
 <br> 
 
-`BENEFITS OF USING 'REF()' OR 'SOURCE()' MACRO`
+`BENEFITS OF USING 'ref()' OR 'source()' MACRO`
 - Dependencies are built automatically
 - dbt will resolve the names for you based on the environment you are working in
 - Encapsulates the logic to define the paths, so you run the same code no matter what environment you are working in.
@@ -395,8 +395,9 @@ For BigQuery:
 - database = GCP project ID 
 - schema = BigQuery dataset schema.
 <br> 
-If you wanted to change the source of the data, simply update the source in the schema.yml. Since all staging models reference this file, you won't need to make changes in the models themselves.  You can also set a freshness for each table here.   
-<br>
+If you wish to change the data source, simply update the source in the schema.yml file. Since all staging models reference this file, there's no need to modify the models themselves. Additionally, you can set a freshness threshold for each table within this file. 
+
+
 schema.yml
 ``` yaml
 version: 2
@@ -430,10 +431,10 @@ This sql will generate this dataflow as displayed on the lineage tab:<br>
 <br>
 <br>
 
-`STEP 5` Expand the stg_green_tripdata model<br>
+`STEP 5` Add to the stg_green_tripdata model<br><br>
 Define the data types and rename columns. 
 
-Example for the green taxi data 
+Green Taxi Example 
 ```sql
 
 {{ config(materialized='view') }}
@@ -591,7 +592,8 @@ Compiled code
     {% endif %}
     ```
     
-    When you call dbt build in the command line, you can pass a variable to the var macro that will override the default [Variables Documentation](https://docs.getdbt.com/docs/build/project-variables) 
+    When you call dbt build in the command line, you can pass a variable to the var macro that will override the default<br> 
+    [Variables Documentation](https://docs.getdbt.com/docs/build/project-variables) 
     
     ```cli
     dbt build --m <your-model.sql> --vars 'is_test_run: false'
@@ -612,7 +614,7 @@ Compiled code
 <br>
 <br>
 
-##### CREATE A MODEL USING A SEED 
+##### CREATE A MODEL BASED ON A SEED 
 Create a new model in the core folder `dim_zones.sql` 
 ```sql
 {{ config(materialized='view') }}
@@ -752,9 +754,9 @@ Running a dbt project in production
 <br>
 
 ## GOOGLE DATA STUDIO
-Now that we have transformed our data and run it in production using `dbt run --vars 'is_test_run: false'`, we can visualize using it Looker Studio (_the artisit formerly known as Data Studio_) 
+Now that we have transformed our data and run it in production using `dbt run --vars 'is_test_run: false'`, we can visualize using it Looker Studio (_formerly known as Data Studio_) 
 
-`Step 1` Go to Looker Studio and add a BigQuery data source
+`Step 1` Go to Looker Studio and add a BigQuery data source <br>
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/2f2808c5-8fb4-42f5-a976-18445e2e16e1" width="250" height="auto">
 
 `Step 2` Select the your_project > production > fact_trips table and Connect 
@@ -765,7 +767,7 @@ Note: For partitioned tables, you will be able select to use the partitioning at
 `Step 3` Adjust field settings <br> 
 
 The field aggregation defaults to sum for all numeric fields, but that is not appropriate in all cases.<br> 
-Change the defualt aggregation to None for: 
+Change the default aggregation to None for: 
 - dropoff_zone
 - dropoff_locationid
 - payment_type
@@ -775,8 +777,8 @@ Change the defualt aggregation to None for:
 
 From this screen you can create your own aggregations and fields, but we will do this later after creating the report. You can also add field descriptions, change the name of the table to something better understood by the end users, and set the data freshness. 
 
-`Step 4` Create a Report
-We will delete the table that the report is added with and add a timeseries charet from the "Add a chart" drop down. 
+`Step 4` Create a Report <br>
+We will delete the table that the report is added with and add a time-series chart from the "Add a chart" drop down. 
 
 
 
