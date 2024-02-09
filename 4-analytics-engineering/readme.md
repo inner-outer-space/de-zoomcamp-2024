@@ -639,7 +639,7 @@ Create another model in the core folder `fact_trips.sql`
 <br>
 
 
-## TESTS AND DOCUMENTATION
+## TESTING AND DOCUMENTATION
 TESTS
 - Data tests are assertions that you make about your models and other resources in your dnt project. 
 - Tests in dbt are essentially sql queries that select for the failing records. 
