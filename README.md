@@ -56,7 +56,7 @@ WEEK 6:  [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomcamp
 </details>
 
 <details>
-<summary> GCloud </summary>
+<summary> Google Cloud Platform </summary>
   
   - [CLI Auth Login](https://mahira-technology.medium.com/gcloud-auth-login-using-cli-658ba1a0268f)
 </details>
@@ -67,5 +67,20 @@ WEEK 6:  [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomcamp
   - [Mage Dox]()
 </details>
 
-[dbt resources](https://github.com/Hiflylabs/awesome-dbt)
+<details>
+<summary> dbt - data build tool </summary>
+  
+  - [dbt resources](https://github.com/Hiflylabs/awesome-dbt)
+</details>
 
+<details>
+<summary> dlt - data loader tool </summary>
+  
+  - [dlt practice api sources](https://dlthub.com/docs/blog/practice-api-sources)
+</details>
+
+<details>
+<summary> Duck DB</summary>
+  
+  - [duck DB](https://motherduck.com/blog/duckdb-tutorial-for-beginners/)
+</details>
