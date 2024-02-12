@@ -63,6 +63,7 @@ When to use Spark
 
 Spark Session is an object that we use to interact with spark. This is our main entry point to spark.  
 
+#### Master UI 
 When you create a spark session locally you can monitor the jobs via the web browser. If not local then forward port 4040 to view in your web browser. 
 http://localhost:4040/jobs/
 
@@ -79,4 +80,4 @@ schema = types.StructType([
     types.StructField('SR_Flag', types.StringType(), True)
 ])
 ```
-
+## SPARK DATAFRAMES 
