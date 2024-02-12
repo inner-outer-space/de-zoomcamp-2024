@@ -2,6 +2,10 @@
 fhvhv/
 5-batch/*.csv
 
+# DuckDB
+*.duckdb
+*.duckdb.wal
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
