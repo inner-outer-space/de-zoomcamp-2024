@@ -8,7 +8,7 @@
 [Spark Intro](#intro-to-spark) •
 [Instaling Spark](#instaling-spark) •
 [Spark & PySpark](#spark-and-pyspark) •
-[Spark Dataframes](#spark-dataframes) /n
+[Spark Dataframes](#spark-dataframes) <br>
 [Taxi Data Prep](#taxi-data-preparation) •
 [Spark & SQL](#spark-and-sql) •
 [Spark Internals](#spark-internals) •
