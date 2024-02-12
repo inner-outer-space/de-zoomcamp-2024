@@ -78,6 +78,8 @@ WEEK 6:  [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomcamp
   
   - [dlt practice api sources](https://dlthub.com/docs/blog/practice-api-sources)
   - [Building a dbt Pipeline](https://dlthub.com/docs/build-a-pipeline-tutorial)
+  - [dlt Demos](https://github.com/dlt-hub/dlt_demos)
+  - [dlt Blog](https://dlthub.com/docs/blog)
 </details>
 
 <details>
