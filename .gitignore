@@ -1,5 +1,6 @@
 # data folders
 fhvhv/
+5-batch/*.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
