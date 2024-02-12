@@ -80,7 +80,7 @@ WEEK 6:  [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomcamp
 </details>
 
 <details>
-<summary> dlt - data loader tool </summary>
+<summary> Duck DB</summary>
   
   - [duck DB](https://motherduck.com/blog/duckdb-tutorial-for-beginners/)
 </details>
