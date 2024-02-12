@@ -77,10 +77,12 @@ WEEK 6:  [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomcamp
 <summary> dlt - data loader tool </summary>
   
   - [dlt practice api sources](https://dlthub.com/docs/blog/practice-api-sources)
+  - [Building a dbt Pipeline](https://dlthub.com/docs/build-a-pipeline-tutorial)
 </details>
 
 <details>
 <summary> Duck DB</summary>
   
   - [duck DB](https://motherduck.com/blog/duckdb-tutorial-for-beginners/)
+  - 
 </details>
