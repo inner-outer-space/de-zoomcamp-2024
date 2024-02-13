@@ -88,6 +88,14 @@ WEEK 6:  [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomcamp
   - [duck DB](https://motherduck.com/blog/duckdb-tutorial-for-beginners/)
   - 
 </details>
+<summary> Duck DB </summary>
+  
+  - [duck DB](https://motherduck.com/blog/duckdb-tutorial-for-beginners/)
+  - 
+</details>
+
+
+
 <summary> Batch Processing - Apache Spark </summary>
   
   - [Apache Spark](https://spark.apache.org/docs/latest/index.html)
