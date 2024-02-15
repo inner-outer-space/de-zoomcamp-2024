@@ -98,6 +98,7 @@ WEEK 6:  [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomcamp
   - [Deploy Spark Cluster on AWS](https://blog.insightdatascience.com/create-a-cluster-of-instances-on-aws-899a9dc5e4d0)
   - [MapReduce vs. Spark](https://www.knowledgehut.com/blog/big-data/apache-spark-and-mapreduce-comparison)
   - [PySpark Job in DataProc](https://cloud.yandex.com/en/docs/data-proc/tutorials/run-spark-job)
+  - [Spark Context vs Spark Session](https://medium.com/@akhilasaineni7/exploring-sparkcontext-and-sparksession-8369e60f658e#:~:text=Internally%2C%20Spark%20Session%20creates%20a,worry%20about%20creating%20difference%20contexts.)
 
 </details>
 
