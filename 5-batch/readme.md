@@ -98,7 +98,8 @@ df = spark.read \
 df.show()
 ```
 
-We can use pandas to infer the data types and then use that create a schema for the spark dataframe. Pandas will not do this perfectly either but it will be a better place to start from<br>
+We can use pandas to infer the data types and then use that create a schema for the spark dataframe. <br>
+Pandas will not do this perfectly either but it will be a better place to start from<br>
 `step 1` - create a pandas df from a sample set of the data<br>
 `step 2` - convert the pandas df to a spark df using a spark session method called createDataFrame<br> 
 `step 3` - output the spark schema which now contains pandas best guess at the schema <br>
