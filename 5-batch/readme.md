@@ -66,15 +66,17 @@ Spark can handle both batch and streaming data processing. Spark processes conti
 
 #### APACHE SPARK COMPONENTS 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bca3c2f0-ba69-4c40-9fa4-c0bd1d1784ce" width = "500" height="auto">
+
 [Spark Components Documentation](https://spark.apache.org/docs/latest/cluster-overview.html)
 
 <br>
 <br>
 
-
+#### SPARKSESSION
+The SparkSession is the unified entry point to Spark's SQL, DataFrame, and Dataset APIs. It encapsulates the functionality of the SparkContext, SQLContext, and HiveContext, providing a single interface for working with structured data in Spark. The SparkSession simplifies the process of interacting with Spark by providing a cohesive API for reading data from various sources, executing SQL queries, and performing data processing tasks using DataFrames and Datasets. It also manages the underlying SparkContext and automatically creates it when needed. In Spark applications, the SparkSession is typically created using the SparkSession.builder() method.
 Spark Session is an object that we use to interact with spark. This is our main entry point to spark.  
 
-#### Master UI 
+#### MASTER UI 
 When you create a spark session locally you can monitor the jobs via the web browser. If not local then forward port 4040 to view in your web browser. 
 http://localhost:4040/jobs/
 
@@ -232,6 +234,9 @@ Most of the time you won't ever use RDDs but you can do some operations on RDDs.
 
 DFs - have a schema 
 RDD - distributed collection of objects 
+
+#### SPARKCONTEXT
+The SparkContext (often abbreviated as sc) is the entry point to any Spark functionality. It represents the connection to a Spark cluster and serves as the gateway for creating RDDs (Resilient Distributed Datasets), the fundamental data structure in Spark. The SparkContext is responsible for coordinating the execution of operations across the cluster, managing resources, and handling fault tolerance. However, with the introduction of DataFrame and Dataset APIs in Spark 2.0, the use of SparkContext has been largely superseded by the SparkSession.
 
 #### Operations 
 Implementing WHERE on an RDD
