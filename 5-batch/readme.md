@@ -90,6 +90,14 @@ http://localhost:4040/jobs/
 #### READING IN DATASOURCES 
 Spark does not try to infer the types of the fields being read in. It treats everything as string. 
 
+```python
+df = spark.read \
+    .option("header", "true") \
+    .csv('fhvhv_tripdata_2021-01.csv')
+
+df.show()
+```
+
 We can use pandas to infer the data types and then use that create a schema for the spark dataframe. Pandas will not do this perfectly either but it will be a better place to start from<br>
 `step 1` - create a pandas df from a sample set of the data<br>
 `step 2` - convert the pandas df to a spark df using a spark session method called createDataFrame<br> 
@@ -97,12 +105,18 @@ We can use pandas to infer the data types and then use that create a schema for 
 
 `spark.createDataFrame(df_pandas).schema` <br>
 
-`step 4` Convert the StructType output into python code. (StructType comes from scala)  
+`step 4` Convert the StructType output into python code. (StructType comes from scala) 
+I only needed to add types, but in the video he needed to capitalize true and add quotes.  
 ```scala
-StructType([StructField('hvfhs_license_num', StringType(), True), StructField('dispatching_base_num', StringType(), True), \
-    StructField('pickup_datetime', StringType(), True), StructField('dropoff_datetime', StringType(), True), \
-    StructField('PULocationID', LongType(), True), StructField('DOLocationID', LongType(), True), \
-    StructField('SR_Flag', DoubleType(), True)])
+StructType([
+    StructField('hvfhs_license_num', StringType(), True),
+    StructField('dispatching_base_num', StringType(), True), 
+    StructField('pickup_datetime', StringType(), True),
+    StructField('dropoff_datetime', StringType(), True), 
+    StructField('PULocationID', LongType(), True),
+    StructField('DOLocationID', LongType(), True), 
+    StructField('SR_Flag', DoubleType(), True)
+])
 ```
 Python 
 ```python
@@ -116,7 +130,14 @@ schema = types.StructType([
     types.StructField('SR_Flag', types.StringType(), True)
 ])
 ```
+Now you can read the files in with a schema 
 
+```python
+df = spark.read \
+    .option("header", "true") \
+    .schema(schema) \
+    .csv('fhvhv_tripdata_2021-01.csv')
+```
 
 ## SPARK DATAFRAMES 
 Actions vs transformations 
