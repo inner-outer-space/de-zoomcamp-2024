@@ -53,9 +53,9 @@
 ## APACHE SPARK 
 Apache Spark is a unified analytics engine for large-scale data processing. It provides high-level APIs in Java, Scala, Python and R, and an optimized engine that supports general execution graphs. It also supports a rich set of higher-level tools including Spark SQL for SQL and structured data processing, pandas API on Spark for pandas workloads, MLlib for machine learning, GraphX for graph processing, and Structured Streaming for incremental computation and stream processing. [Apache Spark Dox](https://spark.apache.org/docs/latest/)
 
-Spark operates on a master/worker architecture, where the central coordinator is referred to as the driver, and the distributed workers execute tasks. The driver orchestrates the distribution of data and tasks to the workers, enabling parallel processing of data across the cluster.
+Spark is especially useful for parallel processing of distributed data with iterative algorithms. Spark operates on a master/worker architecture, where the central coordinator is referred to as the driver, and the distributed workers execute tasks. The driver orchestrates the distribution of data and tasks to the workers, enabling parallel processing of data across the cluster.
 
-Similar to Hadoop's MapReduce paradigm, Spark employs a combination of Map and Reduce functions to process data. But unlike Hadoop, Spark leverages in-memory processing and caching, resulting in much faster processing.
+Similar to the MapReduce paradigm, Spark employs a combination of Map and Reduce functions to process data. But unlike MapReduce, Spark leverages in-memory processing and caching, resulting in much faster processing.
 
 Spark can handle both batch and streaming data processing. Spark processes continuous data by breaking it down into a sequence of small batch jobs. 
 
