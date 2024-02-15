@@ -21,30 +21,28 @@
 || Batch Processing | Streaming |
 |--|--|--|
 |DEFINITION|Data is processed in discrete batches generally based on time intervals or when a threshold is reached. | Data is processed in near real time as it is created and/or when an event is triggered.|
-|USE CASE| Used for non time-time-sensitive tasks such as periodic reporting | Used for applications that require real-time analytics such as IoT, financial trading platforms, and social media analytics)| 
+|USE CASES| Used for non time-time-sensitive tasks such as periodic reporting | Used for applications that require real-time analytics such as IoT, financial trading platforms, and social media analytics)| 
 
-INTERVALS 
-_(can run at any interval you choose) _
-- weekly
-- daily
-- hourly
-- 3x /hr
-- every 5 min
-
-TECHNOLOGIES 
-- Python Scripts run in Kubernetics, AWS, etc 
-- SQL 
-- Spark
-- Flink
-- Orchestrator such as Airflow or Mage
-
-ADVANGTAGES 
-- convenient and easy to manage - tools can parameterize the scripts
-- automatic retry
-- easy to scale
-
-DISADVANTAGE 
-- delay (need to wait until the end of the interval before you start processing the data)
+#### BATCH PROCESSING 
+- TYPICAL INTERVALS: 
+    - weekly
+    - daily
+    - hourly
+    - 3x /hr
+    - every 5 min
+- TECHNOLOGIES:
+    - Python Scripts run in Kubernetics, AWS, etc 
+    - SQL 
+    - Spark
+    - Flink
+    - Orchestrator such as Airflow or Mage
+- ADVANTAGES: 
+    - convenient and easy to manage - tools can parameterize the scripts
+    - automatic retry
+    - easy to scale
+- DISADVANTAGE: 
+    - latency and limited freshness of data
+    - Not suited for real-time analytics
 
 ## APACHE SPARK 
 Apache Spark is a unified analytics engine for large-scale data processing. It provides high-level APIs in Java, Scala, Python and R, and an optimized engine that supports general execution graphs. It also supports a rich set of higher-level tools including Spark SQL for SQL and structured data processing, pandas API on Spark for pandas workloads, MLlib for machine learning, GraphX for graph processing, and Structured Streaming for incremental computation and stream processing. [Apache Spark Dox](https://spark.apache.org/docs/latest/)
