@@ -23,7 +23,8 @@
 |DEFINITION|Data is processed in discrete batches generally based on time intervals or when a threshold is reached. | Data is processed in near real time as it is created and/or when an event is triggered.|
 |USE CASES| Used for non time-time-sensitive tasks such as periodic reporting | Used for applications that require real-time analytics such as IoT, financial trading platforms, and social media analytics| 
 
-
+<br>
+<br>
 
 #### BATCH PROCESSING 
 - TYPICAL INTERVALS: 
@@ -46,10 +47,21 @@
     - latency and limited freshness of data
     - Not suited for real-time analytics
 
-
+<br>
+<br>
 
 ## APACHE SPARK 
 Apache Spark is a unified analytics engine for large-scale data processing. It provides high-level APIs in Java, Scala, Python and R, and an optimized engine that supports general execution graphs. It also supports a rich set of higher-level tools including Spark SQL for SQL and structured data processing, pandas API on Spark for pandas workloads, MLlib for machine learning, GraphX for graph processing, and Structured Streaming for incremental computation and stream processing. [Apache Spark Dox](https://spark.apache.org/docs/latest/)
+
+Similar to Hadoop's MapReduce paradigm, Spark employs a combination of Map and Reduce functions to process data. But unlike Hadoop, Spark leverages in-memory processing and caching, resulting in much faster processing.
+
+#### APACHE SPARK COMPONENTS 
+![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bca3c2f0-ba69-4c40-9fa4-c0bd1d1784ce)
+
+Spark applications run as independent sets of processes on a cluster, coordinated by the SparkContext object in your main program (called the driver program).
+
+Specifically, to run on a cluster, the SparkContext can connect to several types of cluster managers (either Spark’s own standalone cluster manager, Mesos, YARN or Kubernetes), which allocate resources across applications. Once connected, Spark acquires executors on nodes in the cluster, which are processes that run computations and store data for your application. Next, it sends your application code (defined by JAR or Python files passed to SparkContext) to the executors. Finally, SparkContext sends tasks to the executors to run. [Spark Components Documentation](https://spark.apache.org/docs/latest/cluster-overview.html)
+
 
 spark pulls data to its executers and then outputs again to a warehouse or data lake. 
 It is distributed cluster
@@ -59,7 +71,7 @@ also a wrapper for R
 
 Spark is used for executing batch jobs and it can also be used for streaming. You deal with a stream of data as sequence of small batch jobs and handle it similarly to batch jobs. 
 
-When to use Spark
+#### WHEN TO USE SPARK 
 - your data is in a data lake (s3/ gcs with files in parquet) 
 - there are ways to work on this data with sql using Hive or Presto/ Athena or in BigQuery using external tables
 - But if you need more than just SQL (e.g., the transofrmations are too complex, your want to implement a lot of unit tests, implementing or applying an ML model) then you can use spark. 
