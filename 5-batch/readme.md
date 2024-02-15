@@ -90,7 +90,7 @@ http://localhost:4040/jobs/
 #### READING IN DATASOURCES 
 Spark does not try to infer the types of the fields being read in. It treats everything as string. 
 
-We can use pandas to infer the data types and then use that create a schema for the spark dataframe. Pandas will not do this perfectly <br>
+We can use pandas to infer the data types and then use that create a schema for the spark dataframe. Pandas will not do this perfectly either but it will be a better place to start from<br>
 `step 1` - create a pandas df from a sample set of the data<br>
 `step 2` - convert the pandas df to a spark df using a spark session method called createDataFrame<br> 
 `step 3` - output the spark schema which now contains pandas best guess at the schema <br>
@@ -99,7 +99,10 @@ We can use pandas to infer the data types and then use that create a schema for 
 
 `step 4` Convert the StructType output into python code. (StructType comes from scala)  
 ```scala
-StructType([StructField('hvfhs_license_num', StringType(), True), StructField('dispatching_base_num', StringType(), True), StructField('pickup_datetime', StringType(), True), StructField('dropoff_datetime', StringType(), True), StructField('PULocationID', LongType(), True), StructField('DOLocationID', LongType(), True), StructField('SR_Flag', DoubleType(), True)])
+StructType([StructField('hvfhs_license_num', StringType(), True), StructField('dispatching_base_num', StringType(), True), \
+    StructField('pickup_datetime', StringType(), True), StructField('dropoff_datetime', StringType(), True), \
+    StructField('PULocationID', LongType(), True), StructField('DOLocationID', LongType(), True), \
+    StructField('SR_Flag', DoubleType(), True)])
 ```
 Python 
 ```python
