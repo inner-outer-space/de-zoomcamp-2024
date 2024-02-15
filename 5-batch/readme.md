@@ -57,26 +57,19 @@ Spark operates on a master/worker architecture, where the central coordinator is
 
 Similar to Hadoop's MapReduce paradigm, Spark employs a combination of Map and Reduce functions to process data. But unlike Hadoop, Spark leverages in-memory processing and caching, resulting in much faster processing.
 
-#### APACHE SPARK COMPONENTS 
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bca3c2f0-ba69-4c40-9fa4-c0bd1d1784ce" width = "500" height="auto">
-
-Spark applications run as independent sets of processes on a cluster, coordinated by the SparkContext object in your main program (called the driver program).
-
-Specifically, to run on a cluster, the SparkContext can connect to several types of cluster managers (either Spark’s own standalone cluster manager, Mesos, YARN or Kubernetes), which allocate resources across applications. Once connected, Spark acquires executors on nodes in the cluster, which are processes that run computations and store data for your application. Next, it sends your application code (defined by JAR or Python files passed to SparkContext) to the executors. Finally, SparkContext sends tasks to the executors to run. [Spark Components Documentation](https://spark.apache.org/docs/latest/cluster-overview.html)
-
-
-spark pulls data to its executers and then outputs again to a warehouse or data lake. 
-It is distributed cluster
-Spark is written in scala, you can use java too
-there is a wrapper for python - pyspark 
-also a wrapper for R
-
-Spark is used for executing batch jobs and it can also be used for streaming. You deal with a stream of data as sequence of small batch jobs and handle it similarly to batch jobs. 
+Spark can handle both batch and streaming data processing. Spark processes continuous data by breaking it down into a sequence of small batch jobs. 
 
 #### WHEN TO USE SPARK 
-- your data is in a data lake (s3/ gcs with files in parquet) 
-- there are ways to work on this data with sql using Hive or Presto/ Athena or in BigQuery using external tables
-- But if you need more than just SQL (e.g., the transofrmations are too complex, your want to implement a lot of unit tests, implementing or applying an ML model) then you can use spark. 
+- Large Amounts of Data: Spark is suitable for processing large volumes of data efficiently due to its distributed computing capabilities.
+- Data Stored in a Data Lake: Spark is compatible with distributed file systems like HDFS, S3, and GCS, enabling seamless integration with data stored in these environments.
+- Complex Transformations Needed: Spark supports multiple programming languages including Java, Scala, Python, and R. These are well-suited for handling complex transformations, implementing unit tests, and applying machine learning models, etc.
+
+#### APACHE SPARK COMPONENTS 
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bca3c2f0-ba69-4c40-9fa4-c0bd1d1784ce" width = "500" height="auto">
+[Spark Components Documentation](https://spark.apache.org/docs/latest/cluster-overview.html)
+
+<br>
+<br>
 
 
 Spark Session is an object that we use to interact with spark. This is our main entry point to spark.  
