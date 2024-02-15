@@ -16,7 +16,7 @@
 
 <hr />
 <br>
-
+https://www.altexsoft.com/blog/apache-spark-pros-cons/
 
 || Batch Processing | Streaming |
 |--|--|--|
@@ -51,7 +51,7 @@
 <br>
 
 ## APACHE SPARK 
-Apache Spark is a unified analytics engine for large-scale data processing. It provides high-level APIs in Java, Scala, Python and R, and an optimized engine that supports general execution graphs. It also supports a rich set of higher-level tools including Spark SQL for SQL and structured data processing, pandas API on Spark for pandas workloads, MLlib for machine learning, GraphX for graph processing, and Structured Streaming for incremental computation and stream processing. [Apache Spark Dox](https://spark.apache.org/docs/latest/)
+Apache Spark is a unified analytics engine for large-scale data processing. It provides high-level APIs in Java, Scala, Python(PySpark) and R, and an optimized engine that supports general execution graphs. It also supports a rich set of higher-level tools including Spark SQL for SQL and structured data processing, pandas API on Spark for pandas workloads, MLlib for machine learning, GraphX for graph processing, and Structured Streaming for incremental computation and stream processing. [Apache Spark Dox](https://spark.apache.org/docs/latest/)
 
 Spark is especially useful for parallel processing of distributed data with iterative algorithms. It operates on a master/worker architecture, where the central coordinator is referred to as the driver, and the distributed workers execute tasks. The driver orchestrates the distribution of data and tasks to the workers, enabling parallel processing of data across the cluster.
 
@@ -60,9 +60,11 @@ Similar to the MapReduce paradigm, Spark employs a combination of Map and Reduce
 Spark can handle both batch and streaming data processing. Spark processes continuous data by breaking it down into a sequence of small batch jobs. 
 
 #### WHEN TO USE SPARK 
-- Large Amounts of Data: Spark is suitable for processing large volumes of data efficiently due to its distributed computing capabilities.
 - Data Stored in a Data Lake: Spark is compatible with distributed file systems like HDFS, S3, and GCS, enabling seamless integration with data stored in these environments.
-- Complex Transformations Needed: Spark supports multiple programming languages including Java, Scala, Python, and R. These are well-suited for handling complex transformations, implementing unit tests, and applying machine learning models, etc.
+- Large Amounts of Data: Spark is suitable for processing large volumes of data efficiently due to its distributed computing capabilities.
+- Complex Transformations Needed: Spark supports multiple programming languages including Java, Scala, Python, and R. These are well-suited for handling complex transformations, implementing unit tests, training and applying machine learning models, etc.
+
+Note: If you can express your jobs in SQL only then it is recommended to use another tool like Presto or Athena or simply work with materialized tables in BigQuery. You can also use these tools to handle all the SQL preprocessing and then pass the data to Spark for the more complex transformations. 
 
 #### APACHE SPARK COMPONENTS 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bca3c2f0-ba69-4c40-9fa4-c0bd1d1784ce" width = "500" height="auto">
@@ -77,13 +79,30 @@ Spark can handle both batch and streaming data processing. Spark processes conti
 - `Executors or Worker Nodes` are responsible for the task completion. They process tasks on the partitioned RDDs and return the result back to SparkContext.
 <br>
 <br>
-#### MASTER UI 
-When you create a spark session locally you can monitor the jobs via the web browser. If not local then forward port 4040 to view in your web browser. 
+
+Reading CSV Files 
+Partitions
+Saving data to Parquet for local experiments
+#### SPARK MASTER UI 
+Spark has a master UI that includes cluster status, resource consumption, details about jobs, stages, executors, and environment, an event timeline, and logging.  Locally, it can be accessed via the web browser. If not local then forward port 4040 to view in your web browser. <br>
 http://localhost:4040/jobs/
 
-Use this schema 
+#### READING IN DATASOURCES 
+Spark does not try to infer the types of the fields being read in. It treats everything as string. 
 
-```python
+We can use pandas to infer the data types and then use that create a schema for the spark dataframe. Pandas will not do this perfectly
+`step 1` - create a pandas df from a sample set of the data
+`step 2` - convert the pandas df to a spark df using a spark session method called createDataFrame 
+`step 3` - output the spark schema which now contains pandas best guess at the schema 
+
+`spark.createDataFrame(df_pandas).schema`
+
+`step 4` Convert the StructType output into python code. (StructType comes from scala)  
+```scala
+StructType([StructField('hvfhs_license_num', StringType(), True), StructField('dispatching_base_num', StringType(), True), StructField('pickup_datetime', StringType(), True), StructField('dropoff_datetime', StringType(), True), StructField('PULocationID', LongType(), True), StructField('DOLocationID', LongType(), True), StructField('SR_Flag', DoubleType(), True)])
+```
+Python 
+```
 schema = types.StructType([
     types.StructField('hvfhs_license_num', types.StringType(), True),
     types.StructField('dispatching_base_num', types.StringType(), True), 
@@ -94,10 +113,7 @@ schema = types.StructType([
     types.StructField('SR_Flag', types.StringType(), True)
 ])
 ```
-Reading CSV Files 
-Partitions
-Saving data to Parquet for local experiments
-Spark Master UI 
+
 
 ## SPARK DATAFRAMES 
 Actions vs transformations 
