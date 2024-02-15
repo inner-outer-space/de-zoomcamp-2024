@@ -93,6 +93,7 @@ WEEK 6:  [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomcamp
 <summary> Batch Processing - Apache Spark </summary>
   
   - [Apache Spark](https://spark.apache.org/docs/latest/index.html)
+  - [Spark 101](https://developer.hpe.com/blog/spark-101-what-is-it-what-it-does-and-why-it-matters/)
   - [Spark - Stand Alone Mode](https://spark.apache.org/docs/latest/spark-standalone.html)
   - [Deploy Spark Cluster on AWS](https://blog.insightdatascience.com/create-a-cluster-of-instances-on-aws-899a9dc5e4d0)
   - [MapReduce vs. Spark](https://www.knowledgehut.com/blog/big-data/apache-spark-and-mapreduce-comparison)
