@@ -18,8 +18,10 @@
 <br>
 
 
-Batch Processing - data is processed in chunks (e.g., all the data for a particular day).
-Streaming - data is processed as it is created, when an event is triggered. 
+|| Batch Processing | Streaming |
+|--|--|--|
+|DEFINITION|Data is processed in discrete batches generally based on time intervals or when a threshold is reached. | Data is processed in near real time as it is created and/or when an event is triggered.|
+|USE CASE| Used for non time-time-sensitive tasks such as periodic reporting | Used for applications that require real-time analytics such as IoT, financial trading platforms, and social media analytics)| 
 
 INTERVALS 
 _(can run at any interval you choose) _
