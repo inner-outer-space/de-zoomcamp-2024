@@ -70,6 +70,7 @@ Spark can handle both batch and streaming data processing. Spark processes conti
 [Spark Components Documentation](https://spark.apache.org/docs/latest/cluster-overview.html)
 
 <br>
+
 - `SparkSession` is the main entry point to Spark's SQL, DataFrame, and Dataset APIs. It encapsulates the functionality of the SparkContext, SQLContext, and HiveContext, providing a single interface for working with structured data in Spark. The SparkSession simplifies the process of interacting with Spark by providing a cohesive API for reading data from various sources, executing SQL queries, and performing data processing tasks using DataFrames and Datasets. It also manages the underlying various SparkContexts and automatically creates them when needed. In Spark applications, the SparkSession is typically created using the SparkSession.builder() method.
 - `SparkContext` communicates with the Cluster Manager to supervise jobs, partitions the job into tasks, and assigns these tasks to worker nodes. 
 - `Cluster Manager` is responsible for allocating resources in the cluster.  
