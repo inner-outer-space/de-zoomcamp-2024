@@ -4,13 +4,13 @@
 (*for Linux*)
 <hr />
 
-[Intro](#intro)
-[Spark & PySpark](#spark-and-pyspark) •
+[Intro](#intro) • 
+[Spark & PySpark](#spark-and-pyspark) • 
 [Spark Dataframes](#spark-dataframes) <br>
-[Taxi Data Prep](#taxi-data-preparation) •
-[Spark & SQL](#spark-and-sql) •
-[Spark Internals](#spark-internals) •
-[Resilient Distributed Datasets](#resilient-distributed-datasets) •
+[Taxi Data Prep](#taxi-data-preparation) • 
+[Spark & SQL](#spark-and-sql) • 
+[Spark Internals](#spark-internals) • 
+[Resilient Distributed Datasets](#resilient-distributed-datasets) • 
 [Spark in the Cloud](#spark-in-the-cloud) 
 </div>
 
