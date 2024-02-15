@@ -70,11 +70,12 @@ Spark can handle both batch and streaming data processing. Spark processes conti
 [Spark Components Documentation](https://spark.apache.org/docs/latest/cluster-overview.html)
 
 <br>
+- `SparkSession` is the main entry point to Spark's SQL, DataFrame, and Dataset APIs. It encapsulates the functionality of the SparkContext, SQLContext, and HiveContext, providing a single interface for working with structured data in Spark. The SparkSession simplifies the process of interacting with Spark by providing a cohesive API for reading data from various sources, executing SQL queries, and performing data processing tasks using DataFrames and Datasets. It also manages the underlying various SparkContexts and automatically creates them when needed. In Spark applications, the SparkSession is typically created using the SparkSession.builder() method.
+- `SparkContext` communicates with the Cluster Manager to supervise jobs, partitions the job into tasks, and assigns these tasks to worker nodes. 
+- `Cluster Manager` is responsible for allocating resources in the cluster.  
+- `Executors or Worker Nodes` are responsible for the task completion. They process tasks on the partitioned RDDs and return the result back to SparkContext.
 <br>
-The SparkSession is the main entry point to Spark's SQL, DataFrame, and Dataset APIs. It encapsulates the functionality of the SparkContext, SQLContext, and HiveContext, providing a single interface for working with structured data in Spark. The SparkSession simplifies the process of interacting with Spark by providing a cohesive API for reading data from various sources, executing SQL queries, and performing data processing tasks using DataFrames and Datasets. It also manages the underlying various SparkContexts and automatically creates them when needed. In Spark applications, the SparkSession is typically created using the SparkSession.builder() method.
-
-The SparkContext communicates with the Cluster Manager to supervise jobs, partitions the job into tasks, and assigns these tasks to worker nodes. The Cluster Manager is responsible for allocating resources in the cluster.  The Executors or Worker Nodes are responsible for the task completion. They process tasks on the partitioned RDDs and return the result back to SparkContext.
-
+<br>
 #### MASTER UI 
 When you create a spark session locally you can monitor the jobs via the web browser. If not local then forward port 4040 to view in your web browser. 
 http://localhost:4040/jobs/
