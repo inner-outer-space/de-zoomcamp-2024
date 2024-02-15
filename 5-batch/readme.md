@@ -53,7 +53,7 @@
 ## APACHE SPARK 
 Apache Spark is a unified analytics engine for large-scale data processing. It provides high-level APIs in Java, Scala, Python and R, and an optimized engine that supports general execution graphs. It also supports a rich set of higher-level tools including Spark SQL for SQL and structured data processing, pandas API on Spark for pandas workloads, MLlib for machine learning, GraphX for graph processing, and Structured Streaming for incremental computation and stream processing. [Apache Spark Dox](https://spark.apache.org/docs/latest/)
 
-Spark is especially useful for parallel processing of distributed data with iterative algorithms. Spark operates on a master/worker architecture, where the central coordinator is referred to as the driver, and the distributed workers execute tasks. The driver orchestrates the distribution of data and tasks to the workers, enabling parallel processing of data across the cluster.
+Spark is especially useful for parallel processing of distributed data with iterative algorithms. It operates on a master/worker architecture, where the central coordinator is referred to as the driver, and the distributed workers execute tasks. The driver orchestrates the distribution of data and tasks to the workers, enabling parallel processing of data across the cluster.
 
 Similar to the MapReduce paradigm, Spark employs a combination of Map and Reduce functions to process data. But unlike MapReduce, Spark leverages in-memory processing and caching, resulting in much faster processing.
 
@@ -73,8 +73,9 @@ Spark can handle both batch and streaming data processing. Spark processes conti
 <br>
 
 #### SPARKSESSION
-The SparkSession is the unified entry point to Spark's SQL, DataFrame, and Dataset APIs. It encapsulates the functionality of the SparkContext, SQLContext, and HiveContext, providing a single interface for working with structured data in Spark. The SparkSession simplifies the process of interacting with Spark by providing a cohesive API for reading data from various sources, executing SQL queries, and performing data processing tasks using DataFrames and Datasets. It also manages the underlying SparkContext and automatically creates it when needed. In Spark applications, the SparkSession is typically created using the SparkSession.builder() method.
-Spark Session is an object that we use to interact with spark. This is our main entry point to spark.  
+The SparkSession is the main entry point to Spark's SQL, DataFrame, and Dataset APIs. It encapsulates the functionality of the SparkContext, SQLContext, and HiveContext, providing a single interface for working with structured data in Spark. The SparkSession simplifies the process of interacting with Spark by providing a cohesive API for reading data from various sources, executing SQL queries, and performing data processing tasks using DataFrames and Datasets. It also manages the underlying various SparkContexts and automatically creates them when needed which greatly simplified working with spark. 
+
+In Spark applications, the SparkSession is typically created using the SparkSession.builder() method.
 
 #### MASTER UI 
 When you create a spark session locally you can monitor the jobs via the web browser. If not local then forward port 4040 to view in your web browser. 
