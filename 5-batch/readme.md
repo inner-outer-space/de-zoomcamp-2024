@@ -413,8 +413,43 @@ This will create a tuple that contains an iterator and the row values
 #### CREATING A LOCAL SPARK CLUSTER
 
 1. Create a local cluster
-2. Turning a notebook into a script
-3. Using spark-submit for submitting spark jobs
+Start a standalone spark session
+- run `./sbin/start-master.sh` in the spark directory
+- you can find your spark directory by typing `echo $SPARK_HOME` in your terminal
+- This creates a spark master at port 8080. You can access it at `localhost:8080`
+
+To connect a session to this master, you can use the URL in the info
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/43c9b8f8-7e65-4540-afa3-597c8eb48b11" width="400" height="auto">
+
+```python
+spark = SparkSession.builder \
+    .master("spark://pepper:7077") \
+    .appName('test') \
+    .getOrCreate()
+```
+
+Once you connect to master than you will see the application id in the UI. 
+![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/527cc4db-6ad1-4952-8f09-edb5695a16a5)
+
+Trying to run something throws an erro 
+- 24/02/14 19:01:03 WARN TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered 
+
+We have only started a master, now we need to also start some workers. 
+
+- run `./sbin/start-worker.sh <master-spark-URL>` in the spark directory -- `./sbin/start-worker.sh spark://pepper:7077`
+
+Now when you refresh you see a worker 
+![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/309d8b54-a1f4-4dde-8e44-228ca4400d9e)
+
+You also have to manually stop the workser and master 
+
+from within the spark folder, run in the command line. 
+./sbin/stop-worker.sh
+
+./sbin/stop-master.sh
+
+3. Turning a notebook into a script
+4. Using spark-submit for submitting spark jobs
 
 #### SETTING UP A DATAPROC CLUSTER 
 1. Creating a cluster
