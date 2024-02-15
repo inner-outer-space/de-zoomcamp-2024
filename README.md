@@ -96,6 +96,7 @@ WEEK 6:  [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomcamp
   - [Spark - Stand Alone Mode](https://spark.apache.org/docs/latest/spark-standalone.html)
   - [Deploy Spark Cluster on AWS](https://blog.insightdatascience.com/create-a-cluster-of-instances-on-aws-899a9dc5e4d0)
   - [MapReduce vs. Spark](https://www.knowledgehut.com/blog/big-data/apache-spark-and-mapreduce-comparison)
+  - [PySpark Job in DataProc](https://cloud.yandex.com/en/docs/data-proc/tutorials/run-spark-job)
 
 </details>
 
