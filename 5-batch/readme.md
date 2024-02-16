@@ -343,6 +343,25 @@ When processing data, Spark operates on partitions, where each partition typical
 
 ## SPARK IMPLEMENTATION OF GROUPBY 
 
+```python
+df_green_revenue = spark.sql("""
+SELECT 
+    date_trunc('hour', lpep_pickup_datetime) AS hour, 
+    PULocationID AS zone,
+
+    SUM(total_amount) AS amount,
+    COUNT(1) as number_records
+FROM
+    green
+WHERE 
+    lpep_pickup_datetime >= '2020-01-01 00:00:00'
+GROUP BY
+    1, 2
+ORDER BY
+    1, 2 
+""")
+```
+
 Groupby stage #2 
 reshuffling - if the group by is being done on col 1 and 2, then that is basically the key for that record. Records with the same key get moved into the same partition. Then the final group by can be done. You can have multiple keys in one partition. Just that all of the same kind should end up in the same partition. This is an external merge sort. Now you can combine the results. 
 
@@ -350,79 +369,91 @@ Shuffling is an extensive operation because you need to move a lot of data aroun
 
 If you had Order By then there will another stage where that is handled. 
 
-`STEP 1` Initial GroupBy: 
+`STEP 1` Initial GroupBy <br>
 - Each executor retrieves a partition of the data.
 - All executors independently execute filtering and group by operations within their respective partitions.
 - This stage is limited to processing data within individual partitions, resulting in incomplete group by results.
 
-` STEP 2 ` Reshuffling
+` STEP 2 ` Reshuffling <br>
 - Records with the same group by key (a composite of the values of the grouped columns) are redistributed to ensure that records with identical keys are co-located within the same partition.
 - Reshuffling is analogous to an external merge sort.
 - This is an expensive operations, so you want to reshuffle as little data as possible. 
 
-`Step 3` Final GroupBy:
+`Step 3` Final GroupBy <br>
 - With records consolidated based on groupby keys within partitions, the final group by operation is executed.
 
 Order By:
 - If an "Order By" operation is specified, there will be an additional stage to handle the sorting.
 
 #### SPARK IMPLEMENTATION OF JOINS
-1. first you have yellow and green data partitioned
-2. for each record, creates a complex record that has the key that the record is joinging on. In our example that was hour and zone. This is done for every record seperated in the same partitions.
-3. Then there is a reshuffling so that all of the records with the same keys end up in the same partitions.
-4. reduce step - reduce multiple records into one. If there is a green and yellow then those will go together. Since this is an outer join, then there will be 0s in the other columns where there is no match.
 
-Reshuffling is external merge sort is the algorithm that handles this reshuffling. 
+EXAMPLE: OUTER JOIN ON 2 COLUMNS 
+```python
+df_join = df_green_revenue_tmp.join(df_yellow_revenue_tmp, on = ['hour', 'zone'], how='outer')
+```
+`STEP 1`  Organize the data in each partition<br>
+-  within each partition of the original green and yellow data, a complex record is created with a composite key created from the values in the columns that are being joined on. 
+`STEP 2` Reshuffling <br> 
+- Records with the same join keys are reshuffled to the same partition, enabling localized join operations within each partition.
+`STEP 3` Reduce within a partition<br>
+- Within each partition, a local join operation is performed on the records sharing the same join keys.
+`STEP 4` Final Reduce <br>
+- The results of local join operations within each partition are aggregated to produce the final joined dataset.
 
-#### WHEN YOU HAVE A SMALL TABLE - BROADCASTING 
-there are a bunch of executers that get a partition of the large df and each executer gets a full copy of the small df. The small df is broadcast to all executer. 
-no shuffling is required. This is much faster. 
+
+
+EXAMPLE: BROADCASTING: JOINING A LARGE AND SMALL DF  
+In Spark, broadcasting is used to optimize join operations between a large and small DataFrame. The smaller DataFrame is broadcasted to all executors, eliminating the need for shuffling and enabling local join processing, resulting in significantly faster execution times.
 
 
 
 ## RESILIENT DISTRIBUTED DATASETS
-Dataframes on top of RDDs. Internally they are RDDs but they have a structure and a schema. 
-The first versions of spark had these. They are a layer of abstraction on top of the RDDs. 
+Earlier versions of Spark relied heavily on RDDs (Resilient Distributed Datasets), which represent unstructured collections of objects. DataFrames, introduced later, provide a higher-level abstraction built on top of RDDs. They offer structured data with a defined schema, simplifying data manipulation tasks. While DataFrames are more commonly used due to their ease of use, RDDs still offer flexibility and control over data processing workflows. 
 
-Most of the time you won't ever use RDDs but you can do some operations on RDDs. This section will provide history on how spark was used. 
 
-DFs - have a schema 
-RDD - distributed collection of objects 
+#### CREATE AN RDD 
+The `.rdd method`  converts a spark dataframe into and rdd. 
+```python
+rdd = df_green \
+    .select('lpep_pickup_datetime', 'PULocationID', 'total_amount') \
+    .rdd
+```
 
-#### SPARKCONTEXT
-The SparkContext (often abbreviated as sc) is the entry point to any Spark functionality. It represents the connection to a Spark cluster and serves as the gateway for creating RDDs (Resilient Distributed Datasets), the fundamental data structure in Spark. The SparkContext is responsible for coordinating the execution of operations across the cluster, managing resources, and handling fault tolerance. However, with the introduction of DataFrame and Dataset APIs in Spark 2.0, the use of SparkContext has been largely superseded by the SparkSession.
+#### RDD OPERATIONS  
 
-#### Operations 
-Implementing WHERE on an RDD
-filter returns T or F 
+Use the `.filter` method to implement WHERE on an RDD. Note: filter returns a boolean.  
 ```python
 # selects all objects in the RDD
 rdd.filter(lambda row: True).take(1)
 
-start = dataetime (year=2020, month=1, day=1)
 # selects objecs based on time filter
+start = dataetime (year=2020, month=1, day=1)
 rdd.filter(lambda row: row.lpep_pickup_datetime >= start).take(1)
 ```
-Ideal to use a function instead of lambda
+<br>
+
+It is ideal to use a function rather than lambda. 
 ```python
 def filter_outliers(row):
     return row.lpep_pickup_datetime >= start
 
 rdd.filter(filter_outliers).take(1)
 ```
-Implementing SELECT and GROUPBY 
-map takes in an object, applies a transformation, and spits out another object. 
+<br>
+
+Use the `.map` method to implement SELECT and GROUPBY 
+map takes in an object, applies a transformation, and returns another object. 
 To do group by, you first need to reorder the data so that it has a key = group by values and value = the rest of the values in the row
 Then you do the aggregations. 
 ```python
-def prepare_for_grouping(row):
+def prepare_for_grouping(row): 
     hour = row.lpep_pickup_datetime.replace(minute=0, second=0, microsecond=0)
     zone = row.PULocationID
-key = (hour, zone)
-
+    key = (hour, zone)
+    
     amount = row.total_amount
     count = 1
-    value = (amount, count) 
+    value = (amount, count)
 
     return (key, value)
 ```
@@ -449,9 +480,8 @@ rdd.filter(fitler_outliers) \
     .take(10)
 
 ```
-
-Now to unnest the results and turn back to a DF. This function creates a tuple that returns all the elements. 
-
+<br>
+Un-nest the results and revert back to a DF. This function creates a tuple that returns all the elements. 
 ```python
 def unwrap(row):
     return (row[0][0], row[0][1], row[1][0], row [1][1])
