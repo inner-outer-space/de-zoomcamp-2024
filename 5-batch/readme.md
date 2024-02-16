@@ -408,7 +408,7 @@ In Spark, broadcasting is used to optimize join operations between a large and s
 
 
 ## RESILIENT DISTRIBUTED DATASETS
-Earlier versions of Spark relied heavily on RDDs (Resilient Distributed Datasets), which represent unstructured collections of objects. DataFrames, introduced later, provide a higher-level abstraction built on top of RDDs. They offer structured data with a defined schema, simplifying data manipulation tasks. While DataFrames are more commonly used due to their ease of use, RDDs still offer flexibility and control over data processing workflows. 
+Earlier versions of Spark relied heavily on RDDs (Resilient Distributed Datasets), which represent a distributed unstructured collections of objects. DataFrames, introduced later, provide a higher-level abstraction built on top of RDDs. They offer structured data with a defined schema, simplifying data manipulation tasks. While DataFrames are more commonly used due to their ease of use, RDDs offer flexibility and control over data processing workflows. 
 
 
 #### CREATE AN RDD 
@@ -421,7 +421,7 @@ rdd = df_green \
 
 #### RDD OPERATIONS  
 
-Use the `.filter` method to implement WHERE on an RDD. Note: filter returns a boolean.  
+WHERE - Use the `.filter` method to implement WHERE on an RDD. Note: filter returns a boolean.  
 ```python
 # selects all objects in the RDD
 rdd.filter(lambda row: True).take(1)
@@ -441,10 +441,25 @@ rdd.filter(filter_outliers).take(1)
 ```
 <br>
 
-Use the `.map` method to implement SELECT and GROUPBY 
-map takes in an object, applies a transformation, and returns another object. 
-To do group by, you first need to reorder the data so that it has a key = group by values and value = the rest of the values in the row
-Then you do the aggregations. 
+SELECT AND GROUPBY 
+Implementing the following SQL on an RDD 
+```sql
+SELECT 
+    date_trunc('hour', lpep_pickup_datetime) AS hour, 
+    PULocationID AS zone,
+
+    SUM(total_amount) AS amount,
+    COUNT(1) AS number_records
+FROM
+    green
+WHERE
+    lpep_pickup_datetime >= '2020-01-01 00:00:00'
+GROUP BY
+    1, 2
+```
+
+To perform a group by operation, the data needs to be restuctured so that each row is represented as a tuple where the first element is the key (corresponding to the group by values) and the second element is a tuple or list containing the rest of the values in the row. Once the data is appropriately structured, aggregations can be applied to compute summaries or statistics within each group.
+
 ```python
 def prepare_for_grouping(row): 
     hour = row.lpep_pickup_datetime.replace(minute=0, second=0, microsecond=0)
@@ -457,22 +472,19 @@ def prepare_for_grouping(row):
 
     return (key, value)
 ```
+Use the `.map` method to apply the restructuring function. Map takes in an object, applies a transformation, and returns another object. 
 
-Now we need to aggregate all the values using Reduce. Input key, value and the output is Key, reduced.value. After reduction there is only one element with each key and an value that was aggregated from all the inputs with that key. 
-
-Reduce is executed pairwise through the whole set. 
+After restructuring the data, aggregation is performed using the calculate_revenue function. For each key, the values associated with that key are combined to produce a single aggregated value. 
+The `.reduceByKey` method takes in elements with (key, value) and returns (key, reduced_value). There will be only one record for each key. 
 ```python
-
-reduce(left_value, right_value):
+def calculate_revenue(left_value, right_value):
     left_amount, left_count = left_value
     right_amount, right_count = right_value
-
+    
     output_amount = left_amount + right_amount
     output_count = left_count + right_count
-    output_value = (output_amount, output_count)
-
+    
     return (output_amount, output_count)
-    output_amount = ou
 
 rdd.filter(fitler_outliers) \
     .map(prepare_for_grouping) \
@@ -481,8 +493,10 @@ rdd.filter(fitler_outliers) \
 
 ```
 <br>
-Un-nest the results and revert back to a DF. This function creates a tuple that returns all the elements. 
+
+The results of these tranformations are nested. They must first be un-nested before the data can be reverted back to a DF.   
 ```python
+# This function creates a tuple that returns all the elements.
 def unwrap(row):
     return (row[0][0], row[0][1], row[1][0], row [1][1])
 
@@ -493,8 +507,10 @@ rdd.filter(fitler_outliers) \
     .toDF() \
     .take(10)
 ```
-The DF will not have columns becuase those are lost in this operation. You can add back a header row.  
+
+The column names of original DF were lost in the transformations. This unwrap function adds them back in as a header row.    
 ```python
+from collections import namedtuple
 RevenueRow = namedtuple('RevenueRow', ['hour', 'zone', 'revenu', 'count']
 
 def unwrap(row):
@@ -504,17 +520,33 @@ def unwrap(row):
         revenue = row[1][0],
         count = row [1][1])
 ```
-If you run this as is, then it will try to infer the schema. It will run much faster if you provide the schema. 
 
-There are 2 stages in this DAG. One stage for the map function and a second for the reshuffling and reduce function. 
+If there is not a schema, then Spark will attempt to infer it. The transformation will run much faster if a schema is supplied. 
+```python
 
-rdd
-Map 
-Reduce 
-mapPartition
-this operation is similar to map. It just applies the function to an entire partition rather than a single object. This effectively chunks the data and processes in chunks. This is particularly useful for ML. 
+result_schema = types.StructType([
+    types.StructField('hour', types.TimestampType(), True),
+    types.StructField('zone', types.IntegerType(), True),
+    types.StructField('revenue', types.DoubleType(), True),
+    types.StructField('count', types.IntegerType(), True)
+])
 
-Example: Create a service that predicts the duration of a trip
+df_result = rdd \
+    .filter(filter_outliers) \
+    .map(prepare_for_grouping) \
+    .reduceByKey(calculate_revenue) \
+    .map(unwrap) \
+    .toDF(result_schema)
+```
+
+There will be two stages in the DAG for Group By: one stage for the map function and a second for the reshuffling and reduce function.
+<br>
+<br>
+
+#### mapPartition
+This mapPartition operation is similar to map but it applies a function to an entire partition of data rather than a single object. By chunking the data in this way, it facilitates processing large datasets efficiently, making it particularly useful for machine learning tasks where computations can be parallelized across partitions.
+
+EXAMPLE: Create a service that predicts the duration of a trip
 
 `Step 1` Create the RDD with the columns of interest
 ```python
@@ -525,18 +557,18 @@ duration_rdd = df_green \
     .rdd
 ```
 
-`Step 2` Now we want to apply the model to batches of the data
+`Step 2` Apply a simple model to batches of the data<br>
+mapPartitions takes an iterable as input, hence the function returns a list rather than the single number 1. 
 ```python
 def apply_model_in_batch(partition):
     return [1]  
 
 rdd.mapPartitions(apply_model_in_batch).collect()
 ```
-mapPartitions needs an input that is iterable, hence the list is returned by the function rather than the single number 1.
+The list \[1,1,1,1] is returned indicating that there are 4 partitions.  
 
-This will return \[1,1,1,1], which indicates that we have 4 partitions.  
-
-Applying a more complex function. Since the partitions are not a python lists, you can't use len but you can loop through the rows and count. 
+`Step 3` Apply a more complex function. 
+Since the partitions are not a python lists, you can't use len but you can loop through the rows and count. 
 ```python
 def apply_model_in_batch(partition):
     cnt = 0
@@ -549,7 +581,7 @@ rdd.mapPartitions(apply_model_in_batch).collect()
 ```
 We see that by default the partitions are not very well balanced in size. You could deal with that by repartitioning. 
 
-`step 3` convert the RDD back to a pandas df
+`step 4` Convert RDD back to Pandas df
 
 ```python
 rows = duration_rdd.take(10)
@@ -597,10 +629,24 @@ def apply_model_in_batch(rows):
     duration_rdd.mapPartitions(apply_model_in_batch).take(10)
 ```
 
-side note - an iterator cannot be seen right away. It must be materialized with something like list.
+side note: to view an iterator, it must be materialized with something like list. This will create a tuple that contains an iterator and the row values
+``` python 
 df = pd.DataFrame(rows, columns=columns)
 list(df.itertuples())
-This will create a tuple that contains an iterator and the row values
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
