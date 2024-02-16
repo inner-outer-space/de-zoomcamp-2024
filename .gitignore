@@ -3,6 +3,7 @@ fhvhv/
 zones/
 5-batch/*.csv
 5-batch/*.parquet
+data/
 
 # DuckDB
 *.duckdb
