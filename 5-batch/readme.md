@@ -167,7 +167,14 @@ df = spark.read \
 ```
 
 #### PARTITIONS 
-In order to take advantage of Sparks distributed workers and parallel processing, you want to partition the data 
+In order to take advantage of Sparks distributed workers and parallel processing, you want to partition the data. You can use the repartition function to do this prior to writing the data to a file. Spark will then create multiple files based on the number of partitions specified. 
+
+```python
+df = df.repartition(24)
+
+df.write.parquet('fhvhv/2021/01/', mode="overwrite")
+```
+
 
 
 
