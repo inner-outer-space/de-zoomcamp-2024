@@ -341,9 +341,7 @@ Once the code is submitted, it is dispatched by the master and executed by the w
 When processing data, Spark operates on partitions, where each partition typically represents a portion of the dataset stored in a distributed file system, such as S3 or a data lake. In the past, with technologies like Hadoop and HDFS, the partitions were stored on the same machines as the executors with redundancy. Source code was then sent to the machines that already had the data which minimized the amount of data transfer needed.  Since it is now common for the data lake and spark cluster to live within the same storage infrastructure, the concept of data locality has become less critical. 
 
 
-## HOW SPARK IMPLEMENTS GROUPBY 
-
-each executer pulls a partition. first executer is handling the filtering and the initial group by. But since it is only on one partitioned this is not the complete group by. Each executer does the filering and group by within their own partition. They spit out some intermediate results, which then need to be pulled together in another stage. 
+## SPARK IMPLEMENTATION OF GROUPBY 
 
 Groupby stage #2 
 reshuffling - if the group by is being done on col 1 and 2, then that is basically the key for that record. Records with the same key get moved into the same partition. Then the final group by can be done. You can have multiple keys in one partition. Just that all of the same kind should end up in the same partition. This is an external merge sort. Now you can combine the results. 
@@ -352,7 +350,23 @@ Shuffling is an extensive operation because you need to move a lot of data aroun
 
 If you had Order By then there will another stage where that is handled. 
 
-#### JOINS IN SPARK
+`STEP 1` Initial GroupBy: 
+- Each executor retrieves a partition of the data.
+- All executors independently execute filtering and group by operations within their respective partitions.
+- This stage is limited to processing data within individual partitions, resulting in incomplete group by results.
+
+` STEP 2 ` Reshuffling
+- Records with the same group by key (a composite of the values of the grouped columns) are redistributed to ensure that records with identical keys are co-located within the same partition.
+- Reshuffling is analogous to an external merge sort.
+- This is an expensive operations, so you want to reshuffle as little data as possible. 
+
+`Step 3` Final GroupBy:
+- With records consolidated based on groupby keys within partitions, the final group by operation is executed.
+
+Order By:
+- If an "Order By" operation is specified, there will be an additional stage to handle the sorting.
+
+#### SPARK IMPLEMENTATION OF JOINS
 1. first you have yellow and green data partitioned
 2. for each record, creates a complex record that has the key that the record is joinging on. In our example that was hour and zone. This is done for every record seperated in the same partitions.
 3. Then there is a reshuffling so that all of the records with the same keys end up in the same partitions.
