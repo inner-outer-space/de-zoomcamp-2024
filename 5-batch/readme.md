@@ -193,18 +193,18 @@ df.select('pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID')
 
 #### ACTIONS VS TRANSFORMATIONS 
 `Transformations` are Lazy, meaning they are not executed right away.  Instead they are executed when the next action is called.  <br>
-    - selecting columns
-    - filtering
-    - joins
-    - groupby
-    - any kind of transofrmation
-    - note: it is recommended to use SQL for joins and groupbys because it is more expressive 
-for complicated conditionality use python - easier to test.
+- selecting columns
+- filtering
+- joins
+- groupby
+- any kind of transofrmation
+- note: it is recommended to use SQL for joins and groupbys because it is more expressive 
+for complicated conditionality use python - easier to test. <br>
 `Actions` are eager, meaning they are executed right away. <br>
-    - show()
-    - take()
-    - hea() 
-    - write() 
+- show()
+- take()
+- hea() 
+- write() 
 
 #### PySPARK FUNCTIONS 
 Pyspark comes with a multitude of build in fucntions 
