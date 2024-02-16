@@ -64,7 +64,7 @@ Spark can handle both batch and streaming data processing. Spark processes conti
 - Large Amounts of Data: Spark is suitable for processing large volumes of data efficiently due to its distributed computing capabilities.
 - Complex Transformations Needed: Spark supports multiple programming languages including Java, Scala, Python, and R. These are well-suited for handling complex transformations, implementing unit tests, training and applying machine learning models, etc.
 
-Note: If you can express your jobs in SQL only then it is recommended to use another tool like Presto or Athena or simply work with materialized tables in BigQuery. You can also use these tools to handle all the SQL preprocessing and then pass the data to Spark for the more complex transformations. 
+Note: If you can express your jobs in SQL only, then it is recommended to use another tool like Presto or Athena. Alternatively, you could also use these tools to handle all the SQL preprocessing and then pass the data to Spark for the more complex transformations. 
 
 #### APACHE SPARK COMPONENTS 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bca3c2f0-ba69-4c40-9fa4-c0bd1d1784ce" width = "500" height="auto">
@@ -88,7 +88,7 @@ Spark has a master UI that includes cluster status, resource consumption, detail
 http://localhost:4040/jobs/
 
 #### READING IN DATASOURCES 
-Spark does not try to infer the types of the fields being read in. It treats everything as string. 
+The default data format in Spark is parquet, unless otherwise specified. Spark does not try to infer the types of the fields being read in. It treats everything as string. 
 
 ```python
 df = spark.read \
