@@ -66,7 +66,7 @@ Spark can handle both batch and streaming data processing. Spark processes conti
 
 Note: If you can express your jobs in SQL only, then it is recommended to use another tool like Presto or Athena. Alternatively, you could also use these tools to handle all the SQL preprocessing and then pass the data to Spark for the more complex transformations. 
 
-#### APACHE SPARK COMPONENTS 
+#### APACHE SPARK ARCHITECTURE 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bca3c2f0-ba69-4c40-9fa4-c0bd1d1784ce" width = "500" height="auto">
 
 [Spark Components Documentation](https://spark.apache.org/docs/latest/cluster-overview.html)
@@ -80,8 +80,18 @@ Note: If you can express your jobs in SQL only, then it is recommended to use an
 <br>
 <br>
 
+SETTING UP SPARK LOCALLY 
+``` python
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .master("local[*]") \
+    .appName('test') \
+    .getOrCreate()
+````
+
 #### SPARK MASTER UI 
-Spark has a master UI that includes cluster status, resource consumption, details about jobs, stages, executors, and environment, an event timeline, and logging.  Locally, it can be accessed via the web browser. 
+Once the Spark Session has been initiated, then you can access the master UI via the web browser. It that includes cluster status, resource consumption, details about jobs, stages, executors, and environment, an event timeline, and logging. 
 `http://localhost:4040/jobs/`
 
 If not working locally, then forward port 4040 to view in the web browser. <br>
@@ -321,26 +331,17 @@ GROUP BY
 <br>
 
 ## SPARK ARCHITECTURE 
-Spark Cluster 
+_(see above)_
+In a Spark cluster setup, the orchestration of tasks begins with a central Spark master, which manages the distribution of workloads across the cluster.  
 
-So far we have experimented with spark locally. 
+Once we have created a script in Python, Scala, Java, etc, the job is submitted by the driver to the Spark master using `spark-submit`. The driver can be your personal laptop or an orchestrator. 
 
-When we set up spark context, we specify the master. (master local *) 
+Once the code is submitted, it is dispatched by the master and executed by the worker nodes within the cluster. These worker nodes, known as executors, retrieves a partition of the data and completes the task. In case of any executor failures during execution, the Spark master automatically redistributes the pending tasks to other available executors.
 
-Create a script in Python, Scala, Java etc ... you have a package with some spark code. 
+When processing data, Spark operates on partitions, where each partition typically represents a portion of the dataset stored in a distributed file system, such as S3 or a data lake. In the past, with technologies like Hadoop and HDFS, the partitions were stored on the same machines as the executors with redundancy. Source code was then sent to the machines that already had the data which minimized the amount of data transfer needed.  Since it is now common for the data lake and spark cluster to live within the same storage infrastructure, the concept of data locality has become less critical. 
 
-In the cluster you have a spark master. Submit the package to the spark master (locally that is localhost:4040 - entry point to a spark cluster)
 
-You use spark submit 
-
-on the cluster you have computers that execute these jobs. These are the computers that execute the jobs - executers
-If one of the executers falls out then master doesnt send jobs to it. 
-
-Each partition is a parquet file. When we submit a job to a master. Master gives jobs to the executer. The executer then goes and grabs a partition. One by one they process the partitions in a dataframe. 
-
-The dfs normally live in s3 or data lake ... before used Hadoop and HDFS. They followed the concept of data locality. THey didnt download data they downloaded the code with data in it. But these days because cloud provider storage... and that the code and data are now living in the same storage center, it makes sense to just keep the files in storage and grab when you need it, process and then send back to cloud storage. 
-
-#### What happens with a group by 
+## HOW SPARK IMPLEMENTS GROUPBY 
 
 each executer pulls a partition. first executer is handling the filtering and the initial group by. But since it is only on one partitioned this is not the complete group by. Each executer does the filering and group by within their own partition. They spit out some intermediate results, which then need to be pulled together in another stage. 
 
