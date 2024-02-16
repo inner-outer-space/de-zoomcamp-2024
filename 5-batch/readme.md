@@ -544,7 +544,7 @@ There will be two stages in the DAG for Group By: one stage for the map function
 <br>
 
 #### mapPartition
-This mapPartition operation is similar to map but it applies a function to an entire partition of data rather than a single object. By chunking the data in this way, it facilitates processing large datasets efficiently, making it particularly useful for machine learning tasks where computations can be parallelized across partitions.
+This mapPartition operation is similar to map but it applies a function to an entire partition of data rather than a single object. The input is an RDD and the output is another RDD. By chunking the data in this way, it facilitates processing large datasets efficiently, making it particularly useful for machine learning tasks where computations can be parallelized across partitions.
 
 EXAMPLE: Create a service that predicts the duration of a trip
 
@@ -568,7 +568,8 @@ rdd.mapPartitions(apply_model_in_batch).collect()
 The list \[1,1,1,1] is returned indicating that there are 4 partitions.  
 
 `Step 3` Apply a more complex function. 
-Since the partitions are not a python lists, you can't use len but you can loop through the rows and count. 
+This function will return the size of each partitions. <br>
+The partitions of objects of type = itertools.chain. They have no length, so the function loops throug the rows and counts them.  
 ```python
 def apply_model_in_batch(partition):
     cnt = 0
@@ -579,17 +580,9 @@ def apply_model_in_batch(partition):
 
 rdd.mapPartitions(apply_model_in_batch).collect()
 ```
-We see that by default the partitions are not very well balanced in size. You could deal with that by repartitioning. 
+We see that the partitions are not very well balanced in size. You could deal with that by repartitioning. 
 
-`step 4` Convert RDD back to Pandas df
-
-```python
-rows = duration_rdd.take(10)
-pd.DataFrame(rows, columns = columns)
-```
-
-Add this into the function 
-The df 
+Another option is to marterialize the RDD/Partition as a pandas dataframe and then use the len function. If needed, the python iter library can be used to slice it into subpartitions. 
 ```python
 def apply_model_in_batch(rows):
     pd.DataFrame(rows, columns = columns)
@@ -598,9 +591,8 @@ def apply_model_in_batch(rows):
 
 duration_rdd.mapPartitions(apply_model_in_batch).collect()
 ```
-This puts the entire partition in a dataframe. You can use python iter library to slice it into smaller dfs. 
 
-Now with an actual quasi model 
+`Step 4` Apply an actual quasi ML model 
 ``` python 
 # define the model 
 # model = ....
@@ -620,13 +612,14 @@ def apply_model_in_batch(rows):
     predictions = model_predict(df)    # this is an array with a prediction for each row in df. 
     df['predicted_duration'] = predictions
 
-    # you need to output each element of the dataframe - use pandas iterables
-    # spark will take all the output for all the partitions and flatten them. 
-    for row in df.itertuples:
-        yield row 
+# you need to output each element of the dataframe - use pandas iterables
+# spark will take all the output for all the partitions and flatten them.
 
-    # Dont want to use collect because it will materialize all the data. 
-    duration_rdd.mapPartitions(apply_model_in_batch).take(10)
+for row in df.itertuples:
+    yield row 
+
+# Dont want to use collect because it will materialize all the data. 
+duration_rdd.mapPartitions(apply_model_in_batch).take(10)
 ```
 
 side note: to view an iterator, it must be materialized with something like list. This will create a tuple that contains an iterator and the row values
