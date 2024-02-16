@@ -107,7 +107,6 @@ Pandas will not do this perfectly either but it will be a better place to start 
 `spark.createDataFrame(df_pandas).schema` <br>
 
 `step 4` Convert the StructType output into python code. (StructType comes from scala) 
-I only needed to add types, but in the video he needed to capitalize true and add quotes.  
 ```scala
 StructType([
     StructField('hvfhs_license_num', StringType(), True),
@@ -139,6 +138,11 @@ df = spark.read \
     .schema(schema) \
     .csv('fhvhv_tripdata_2021-01.csv')
 ```
+
+#### PARTITIONS 
+In order to take advantage of Sparks distributed workers and parallel processing, you want to partition the data 
+
+
 
 ## SPARK DATAFRAMES 
 Actions vs transformations 
