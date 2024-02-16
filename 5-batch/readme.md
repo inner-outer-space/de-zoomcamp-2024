@@ -38,7 +38,7 @@ https://www.altexsoft.com/blog/apache-spark-pros-cons/
     - SQL 
     - Spark
     - Flink
-    - Orchestrator such as Airflow or Mage
+    - Orchestrators such as Airflow or Mage
 - ADVANTAGES: 
     - convenient and easy to manage - tools can parameterize the scripts
     - automatic retry
