@@ -178,6 +178,11 @@ df.write.parquet('fhvhv/2021/01/', mode="overwrite")
 <br>
 <br>
 
+When transforming a dataframe, by default spark will partition it. To avoid the DF being writtend to multiple files you can use coalesce. 
+```python
+df_result.coalesce(1).write.parquet('data/report/revenue', mode='overwrite')
+```
+
 ## SPARK DATAFRAMES 
 You can do similar things with a spark df as with a pandas df. 
 
@@ -225,9 +230,10 @@ df \
 ```
 
 #### USER DEFINED FUNCTIONS 
-You also have the ability to define your own functions in spark. <br> 
+You also have the ability to define your own functions in spark. 
+<br> <br> 
 EXAMPLE: <br>
-Any ordinary python function 
+Any function that you define  
 ```python
 def crazy_stuff(base_num):
     num = int(base_num[1:])
@@ -244,7 +250,7 @@ can be can be converted into a user defined function
 crazy_stuff_udf=F.udf(crazy_stuff,  returnType= types.StringType())
 ```
 
-and then applied similarly to a predefined function 
+and then applied similarly to a predefined function. 
 ```python
 df \
     .withColumn('pickup_date', F.to_date(df.pickup_datetime)) \
@@ -254,10 +260,67 @@ df \
 ```
 
 ## SPARK AND SQL 
-Spark allows you to use both python and sql in your transformations. 
+In order to use SQL queries with DataFrames in Spark, you need to register the DataFrame as a temporary view or table. 
+- .registerTempTable or .registerTempView
+- .createOrReplaceTempTable or .createOrReplaceTempView
 
+```python
 
-## SPARK INTERNALS 
+df_trips_data.registerTempTable('trips_data')
+
+```
+
+Once registered, you can query the table by referrencing the name. 
+
+```python
+spark.sql("""
+SELECT * from trips_data LIMIT 5;
+""").show()
+```
+
+``` python
+spark.sql("""
+SELECT 
+    service_type,
+    COUNT(*) as trip_count
+FROM
+    trips_data
+GROUP BY
+    service_type
+""").show()
+```
+
+``` python
+df_result = spark.sql("""
+SELECT 
+    -- Revenue grouping 
+    PULocationID AS revenue_zone,
+    date_trunc('month', pickup_datetime) AS revenue_month, 
+    service_type, 
+
+    -- Revenue calculation 
+    SUM(fare_amount) AS revenue_monthly_fare,
+    SUM(extra) AS revenue_monthly_extra,
+    SUM(mta_tax) AS revenue_monthly_mta_tax,
+    SUM(tip_amount) AS revenue_monthly_tip_amount,
+    SUM(tolls_amount) AS revenue_monthly_tolls_amount,
+    SUM(improvement_surcharge) AS revenue_monthly_improvement_surcharge,
+    SUM(total_amount) AS revenue_monthly_total_amount,
+    SUM(congestion_surcharge) AS revenue_monthly_congestion_surcharge,
+
+    -- Additional calculations
+    AVG(passenger_count) AS avg_montly_passenger_count,
+    AVG(trip_distance) AS avg_montly_trip_distance
+FROM
+    trips_data
+GROUP BY
+    1, 2, 3
+""")
+```
+<br>
+<br>
+
+## SPARK ARCHITECTURE 
 Spark Cluster 
 
 So far we have experimented with spark locally. 
@@ -489,8 +552,7 @@ def apply_model_in_batch(rows):
     duration_rdd.mapPartitions(apply_model_in_batch).take(10)
 ```
 
-side note
-an iterator cannot be seen right away. It must be materialized with something like list.
+side note - an iterator cannot be seen right away. It must be materialized with something like list.
 df = pd.DataFrame(rows, columns=columns)
 list(df.itertuples())
 This will create a tuple that contains an iterator and the row values
