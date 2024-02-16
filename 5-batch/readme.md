@@ -199,7 +199,8 @@ df.select('pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID')
 - groupby
 - any kind of transofrmation
 - note: it is recommended to use SQL for joins and groupbys because it is more expressive 
-for complicated conditionality use python - easier to test. <br>
+for complicated conditionality use python - easier to test. <br><br>
+
 `Actions` are eager, meaning they are executed right away. <br>
 - show()
 - take()
@@ -207,8 +208,11 @@ for complicated conditionality use python - easier to test. <br>
 - write() 
 
 #### PySPARK FUNCTIONS 
-Pyspark comes with a multitude of build in fucntions 
-Example 
+Pyspark comes with many build in fucntions. Typing F. will display a list of available functions. 
+<br>
+Example
+F.to_date() - extracts the data from the time stamp
+df.withColumn() adds a new column to a df. If the columns already exist, it will be overwritten.  
 ```python
 from pyspark.sql import functions as F
 
@@ -217,52 +221,12 @@ df \
     .withColumn('dropoff_date', F.to_date(df.dropoff_datetime)) \
     .select('pickup_date', 'dropoff_date', 'PULocationID', 'DOLocationID') \
     .show()
+
 ```
 
 #### USER DEFINED FUNCTIONS 
-
-prquets contain the information about the schema, so you don't need to specify the schema 
-
-.printSchema() is a nicer way to print the schema. 
-
-Parquet files are smaller because they know the schema and can compress the file better. 
-
-
-
-Spark only executes something when you use .show()
-
-The selecting and filtering is 
-
-Transformations - not executed right away - lazy
-    - selecting columns, filtering, etc. 
-    - join
-    - groupby 
- 
-
-
-Actions - executed/ evaluated  immediately - the computation shows - eager 
-    - show() 
-    - take() 
-    - head() 
-    - write() 
-
-from pyspark.sql import functions as F 
-write F. and you can see all the functions that are available. 
-F.to_date() 
-
-df.withColumn() adds a new column to a df
-this will overwrite columns if the columns already exist. 
-```python 
-df \
-    .withColumn('pickup_date', F.to_date(df.pickup_datetime)) \
-    .withColumn('dropoff_date', F.to_date(df.dropoff_datetime)) \
-    .show()
-```
-
-
-#### User Defined Functions 
-Spark comes with a large selection of predefined functions and the ability to define your own functions. 
-
+You also have the ability to define your own functions in spark. <br> 
+EXAMPLE: <br>
 Any ordinary python function 
 ```python
 def crazy_stuff(base_num):
@@ -280,7 +244,7 @@ can be can be converted into a user defined function
 crazy_stuff_udf=F.udf(crazy_stuff,  returnType= types.StringType())
 ```
 
-and then applied similarly to the predefined functions 
+and then applied similarly to a predefined function 
 ```python
 df \
     .withColumn('pickup_date', F.to_date(df.pickup_datetime)) \
@@ -289,10 +253,10 @@ df \
     .show()
 ```
 
-Spark allows you to use both python and sql in your transformations which is very useful 
-
-
 ## SPARK AND SQL 
+Spark allows you to use both python and sql in your transformations. 
+
+
 ## SPARK INTERNALS 
 Spark Cluster 
 
@@ -324,7 +288,7 @@ Shuffling is an extensive operation because you need to move a lot of data aroun
 
 If you had Order By then there will another stage where that is handled. 
 
-#### JOINING IN SPARK
+#### JOINS IN SPARK
 1. first you have yellow and green data partitioned
 2. for each record, creates a complex record that has the key that the record is joinging on. In our example that was hour and zone. This is done for every record seperated in the same partitions.
 3. Then there is a reshuffling so that all of the records with the same keys end up in the same partitions.
