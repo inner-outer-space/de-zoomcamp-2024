@@ -179,16 +179,47 @@ df.write.parquet('fhvhv/2021/01/', mode="overwrite")
 <br>
 
 ## SPARK DATAFRAMES 
-Spark DataFrames are similar to Pandas DataFrames. 
+You can do similar things with a spark df as with a pandas df. 
 
-Some Spark DF functions
-    - df.schema 
-    - df.printSchema
-    - df.select('pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID')
-    - df.filter(df.hvfhs_license_num == 'HV0003')
+print the schema 
+```python
+df.schema or df.printSchema
+```
+selecting columnse and filtering 
+```python 
+df.select('pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID') \
+    .filter(df.hvfhs_license_num == 'HV0003')
+```
 
-Actions vs transformations 
-Functions and UDFs 
+#### ACTIONS VS TRANSFORMATIONS 
+`Transformations` are Lazy, meaning they are not executed right away.  Instead they are executed when the next action is called.  <br>
+    - selecting columns
+    - filtering
+    - joins
+    - groupby
+    - any kind of transofrmation
+    - note: it is recommended to use SQL for joins and groupbys because it is more expressive 
+for complicated conditionality use python - easier to test.
+`Actions` are eager, meaning they are executed right away. <br>
+    - show()
+    - take()
+    - hea() 
+    - write() 
+
+#### PySPARK FUNCTIONS 
+Pyspark comes with a multitude of build in fucntions 
+Example 
+```python
+from pyspark.sql import functions as F
+
+df \
+    .withColumn('pickup_date', F.to_date(df.pickup_datetime)) \
+    .withColumn('dropoff_date', F.to_date(df.dropoff_datetime)) \
+    .select('pickup_date', 'dropoff_date', 'PULocationID', 'DOLocationID') \
+    .show()
+```
+
+#### USER DEFINED FUNCTIONS 
 
 prquets contain the information about the schema, so you don't need to specify the schema 
 
@@ -196,13 +227,7 @@ prquets contain the information about the schema, so you don't need to specify t
 
 Parquet files are smaller because they know the schema and can compress the file better. 
 
-You can do similar things with a spark df as with a pandas df. 
 
-selecting and filtering 
-```python 
-df.select('pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID') \
-    .filter(df.hvfhs_license_num == 'HV0003')
-```
 
 Spark only executes something when you use .show()
 
@@ -212,8 +237,7 @@ Transformations - not executed right away - lazy
     - selecting columns, filtering, etc. 
     - join
     - groupby 
-note: it is recommended to use SQL for joins and groupbys because it is more expressive 
-for complicated conditionality use python - easier to test. 
+ 
 
 
 Actions - executed/ evaluated  immediately - the computation shows - eager 
