@@ -167,18 +167,26 @@ df = spark.read \
 ```
 
 #### PARTITIONS 
-In order to take advantage of Sparks distributed workers and parallel processing, you want to partition the data. You can use the repartition function to do this prior to writing the data to a file. Spark will then create multiple files based on the number of partitions specified. 
+In order to take advantage of Sparks distributed workers and parallel processing, you want to partition the data. The repartition function can be used to partition a Spark DF.  When this DF is written to a file, Spark will then create multiple files based on the number of partitions specified. 
 
+Note: Repartition is a lazy function that will only be executed when the next action is called. In this case, it will be executed with write. 
 ```python
 df = df.repartition(24)
 
 df.write.parquet('fhvhv/2021/01/', mode="overwrite")
 ```
-
-
-
+<br>
+<br>
 
 ## SPARK DATAFRAMES 
+Spark DataFrames are similar to Pandas DataFrames. 
+
+Some Spark DF functions
+    - df.schema 
+    - df.printSchema
+    - df.select('pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID')
+    - df.filter(df.hvfhs_license_num == 'HV0003')
+
 Actions vs transformations 
 Functions and UDFs 
 
