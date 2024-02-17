@@ -17,6 +17,8 @@
 <hr />
 <br>
 https://www.altexsoft.com/blog/apache-spark-pros-cons/
+client vs cluster mode https://medium.com/@sephinreji98/understanding-spark-cluster-modes-client-vs-cluster-vs-local-d3c41ea96073
+stand alone internals https://books.japila.pl/spark-standalone-internals/overview/#scheduleexecutorsonworkers
 
 || Batch Processing | Streaming |
 |--|--|--|
@@ -80,7 +82,8 @@ Note: If you can express your jobs in SQL only, then it is recommended to use an
 <br>
 <br>
 
-SETTING UP SPARK LOCALLY 
+#### LOCAL SPARK 
+Initiate a Spark session with SparkSession.builder() and define the master as local.  
 ``` python
 from pyspark.sql import SparkSession
 
@@ -89,7 +92,11 @@ spark = SparkSession.builder \
     .appName('test') \
     .getOrCreate()
 ````
+When finished, close the spark session with 
 
+```Python
+spark.stop()
+```
 #### SPARK MASTER UI 
 Once the Spark Session has been initiated, then you can access the master UI via the web browser. It that includes cluster status, resource consumption, details about jobs, stages, executors, and environment, an event timeline, and logging. 
 `http://localhost:4040/jobs/`
@@ -644,21 +651,91 @@ list(df.itertuples())
 
 
 ## SPARK IN THE CLOUD
+
 #### CONNECTING TO GCS FROM LOCAL SPARK
-1. Uploading data to GCS
-2. Connecting Spark jobs to GCS
+When you want to connect Spark to Google Cloud services, such as Google Cloud Storage (GCS) or BigQuery, you need additional libraries or connectors that provide the necessary functionality to interact with these services. The connector is packaged in a JAR (Java ARchive) file, which contains the necessary Java classes and dependencies to enable Spark to communicate with the Google Cloud services. 
 
-#### CREATING A LOCAL SPARK CLUSTER
+1. Configure Spark Application
+2. Create Spark Context
+3. Create Spark Session 
 
-1. Create a local cluster
-Start a standalone spark session
-- run `./sbin/start-master.sh` in the spark directory
-- you can find your spark directory by typing `echo $SPARK_HOME` in your terminal
-- This creates a spark master at port 8080. You can access it at `localhost:8080`
+`Step 1` CONFIGURE SPARK APPLICATION <br>
+Use the SparkConf() class to define the configuration parameters needed to connect to google cloud prior to initiating a SparkSession. 
+- specify the .jar file containing the GCS connector
+- enable service account authentication
+- specify the location of the JSON key used for service account auth
 
-To connect a session to this master, you can use the URL in the info
+```python
+credentials_location = 'path-to-key.json'
+
+conf = SparkConf() \
+    .setMaster('local[*]') \
+    .setAppName('test') \
+    .set("spark.jars", "lib/gcs-connector-hadoop3-latest.jar") \
+    .set("spark.hadoop.google.cloud.auth.service.account.enable", "true") \
+    .set("spark.hadoop.google.cloud.auth.service.account.json.keyfile", credentials_location)
+```
+
+Note: If you are only working with RDDs, this can be done directly with spark-submit, which will initialize a SparkContext. 
+
+`Step 2` CREATE A SPARK CONTEXT <br>
+In the previous examples, we initiated a Spark application with the SparkSession.builder() method, which creates a SparkContext. For connecting to GCS, it is common practice to first explicitly define the sparkContext with Hadoop config properties related to GCS and then create a session.  
+
+The abstract (URIs gs://) and concrete FileSystem implementations are defined here with classes in the connector specified in the config. Using this implementation when interacting with GCS ensures that Spark Hadoop can read and write to GCS correctly. 
+
+```python
+sc = SparkContext(conf=conf)
+
+hadoop_conf = sc._jsc.hadoopConfiguration()
+
+hadoop_conf.set("fs.AbstractFileSystem.gs.impl",  "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS")
+hadoop_conf.set("fs.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem")
+hadoop_conf.set("fs.gs.auth.service.account.json.keyfile", credentials_location)
+hadoop_conf.set("fs.gs.auth.service.account.enable", "true")
+```
+
+`Step 3` Set up the Spark Session 
+Create a spark session with a reference to the predefined spark config
+```python
+spark = SparkSession.builder \
+    .config(conf=sc.getConf()) \
+    .getOrCreate()
+```
+
+Once the session has been activated then you can read data from GCS into your spark dfs 
+```python
+# read in data
+df_green = spark.read.parquet('gs://ny-taxi-data-for-spark/pq/green/*/*')
+```
+## SPARK MODES 
+1. Local Mode - Single Machine Environment Non-Cluster Environment
+    - the driver and the workers are run in one JVM.
+    - The number of cores is specified with `local[n]`
+    - Spark Master manages resources available to the single JVM
+2. Stand Alone - Single Machine Cluster Environment 
+    - The driver and the workers are run in different JVMs on the same machine 
+    - you can specify number of cores per JVM
+    - In a distributed environment you need to specify a persistance layer (storage system)
+3. Cluster mode with 3rd party resource managers (YARN, Kubernetes, Mesos, Amazon EMR)
+    - Utilizes external resource managers rather than Spark Master
+    - Typically deployed on a remote cluster
+    - The driver can be local or colacted with the workers
+    - Allows sharing cluster resources among multiple applications and frameworks.
+   
+#### CREATING A STANDALONE LOCAL SPARK CLUSTER
+Unlike distributed Spark clusters, where multiple machines (nodes) collaborate to process data in parallel, a standalone local Spark cluster runs entirely on a single machine. All Spark components, including the master and worker nodes, run on the same machine. This lightweight environment is ideal for development and testing.  
+
+`Step 1` Manually start the SparkMaster 
+This creates a spark master that can be accessed at `localhost:8080`
+- Navigate to the Spark directory
+- Run `./sbin/start-master.sh`
+- Note: `echo $SPARK_HOME` provides info on the spark directory
+
+`Step 2` Connect the Master to a Session  
+Pass the Master URL to the Spark Session 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/43c9b8f8-7e65-4540-afa3-597c8eb48b11" width="400" height="auto">
 
+This establishes a connection between your Spark application and the Spark master, allowing your application to submit jobs to the Spark cluster managed by the standalone master.
 ```python
 spark = SparkSession.builder \
     .master("spark://pepper:7077") \
@@ -667,24 +744,29 @@ spark = SparkSession.builder \
 ```
 
 Once you connect to master than you will see the application id in the UI. 
-![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/527cc4db-6ad1-4952-8f09-edb5695a16a5)
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/527cc4db-6ad1-4952-8f09-edb5695a16a5" width="400" height="auto">
 
-Trying to run something throws an erro 
+`Step 3` Manually stert Spark workers. 
+At this point the Session has been initialied and the master has been defined, but there are no workers. Running anything at this point, will throw an error. 
+```python
 - 24/02/14 19:01:03 WARN TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered 
-
-We have only started a master, now we need to also start some workers. 
-
-- run `./sbin/start-worker.sh <master-spark-URL>` in the spark directory -- `./sbin/start-worker.sh spark://pepper:7077`
+```
+To add workers 
+- Navigate to the Spark directory 
+- run `./sbin/start-worker.sh <master-spark-URL>` to create one worker node.
+- to deploy multiple workers, you can run the command multiple times or speciy instances  ./sbin/start-worker.sh <master-spark-URL> --instances 3 
+- you can also specify number of cores and memory per worker node ./sbin/start-worker.sh <master-spark-URL> --cores 2 --memory 4G
 
 Now when you refresh you see a worker 
-![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/309d8b54-a1f4-4dde-8e44-228ca4400d9e)
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/309d8b54-a1f4-4dde-8e44-228ca4400d9e" width="400" height="auto">
 
-You also have to manually stop the workser and master 
+`Step 4` Manually stop the worker and master 
 
-from within the spark folder, run in the command line. 
+run the following from within the spark folder
+```cli 
 ./sbin/stop-worker.sh
-
 ./sbin/stop-master.sh
+```
 
 3. Turning a notebook into a script
 4. Using spark-submit for submitting spark jobs
