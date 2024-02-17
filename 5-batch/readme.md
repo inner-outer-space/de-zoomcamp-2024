@@ -708,27 +708,34 @@ Once the session has been activated then you can read data from GCS into your sp
 df_green = spark.read.parquet('gs://ny-taxi-data-for-spark/pq/green/*/*')
 ```
 ## SPARK MODES 
-1. Local Mode
+1. Local Mode - Single Machine Environment Non-Cluster Environment
     - the driver and the workers are run in one JVM.
     - The number of cores is specified with `local[n]`
-2. Stand Alone - Sparks built-in Cluster Environment
-    - the driver and the workers are run in multiple JVMs using Sparks built in resource manager
-    - limited to one worker per JVM
+    - Spark Master manages resources available to the single JVM
+2. Stand Alone - Single Machine Cluster Environment 
+    - The driver and the workers are run in different JVMs on the same machine 
     - you can specify number of cores per JVM
     - In a distributed environment you need to specify a persistance layer (storage system)
-3. Cluster mode with 3rd party resource managers (YARN, Mesos, etc) 
+3. Cluster mode with 3rd party resource managers (YARN, Kubernetes, Mesos, Amazon EMR)
+    - Utilizes external resource managers rather than Spark Master
+    - Typically deployed on a remote cluster
+    - The driver can be local or colacted with the workers
+    - Allows sharing cluster resources among multiple applications and frameworks.
+   
 #### CREATING A STANDALONE LOCAL SPARK CLUSTER
-Unlike distributed Spark clusters, where multiple machines (nodes) collaborate to process data in parallel, a standalone local Spark cluster runs entirely on a single machine. All Spark components, including the master and worker nodes, run on the same machine. This lightweight environment is ideal for development and testing. 
+Unlike distributed Spark clusters, where multiple machines (nodes) collaborate to process data in parallel, a standalone local Spark cluster runs entirely on a single machine. All Spark components, including the master and worker nodes, run on the same machine. This lightweight environment is ideal for development and testing.  
 
-1. Create a local cluster
-Start a standalone spark session
-- run `./sbin/start-master.sh` in the spark directory
-- you can find your spark directory by typing `echo $SPARK_HOME` in your terminal
-- This creates a spark master at port 8080. You can access it at `localhost:8080`
+`Step 1` Manually start the SparkMaster 
+This creates a spark master that can be accessed at `localhost:8080`
+- Navigate to the Spark directory
+- Run `./sbin/start-master.sh`
+- Note: `echo $SPARK_HOME` provides info on the spark directory
 
-To connect a session to this master, you can use the URL in the info
+`Step 2` Connect the Master to a Session  
+Pass the Master URL to the Spark Session 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/43c9b8f8-7e65-4540-afa3-597c8eb48b11" width="400" height="auto">
 
+This establishes a connection between your Spark application and the Spark master, allowing your application to submit jobs to the Spark cluster managed by the standalone master.
 ```python
 spark = SparkSession.builder \
     .master("spark://pepper:7077") \
@@ -737,24 +744,29 @@ spark = SparkSession.builder \
 ```
 
 Once you connect to master than you will see the application id in the UI. 
-![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/527cc4db-6ad1-4952-8f09-edb5695a16a5)
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/527cc4db-6ad1-4952-8f09-edb5695a16a5" width="400" height="auto">
 
-Trying to run something throws an erro 
+`Step 3` Manually stert Spark workers. 
+At this point the Session has been initialied and the master has been defined, but there are no workers. Running anything at this point, will throw an error. 
+```python
 - 24/02/14 19:01:03 WARN TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered 
-
-We have only started a master, now we need to also start some workers. 
-
-- run `./sbin/start-worker.sh <master-spark-URL>` in the spark directory -- `./sbin/start-worker.sh spark://pepper:7077`
+```
+To add workers 
+- Navigate to the Spark directory 
+- run `./sbin/start-worker.sh <master-spark-URL>` to create one worker node.
+- to deploy multiple workers, you can run the command multiple times or speciy instances  ./sbin/start-worker.sh <master-spark-URL> --instances 3 
+- you can also specify number of cores and memory per worker node ./sbin/start-worker.sh <master-spark-URL> --cores 2 --memory 4G
 
 Now when you refresh you see a worker 
-![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/309d8b54-a1f4-4dde-8e44-228ca4400d9e)
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/309d8b54-a1f4-4dde-8e44-228ca4400d9e" width="400" height="auto">
 
-You also have to manually stop the workser and master 
+`Step 4` Manually stop the worker and master 
 
-from within the spark folder, run in the command line. 
+run the following from within the spark folder
+```cli 
 ./sbin/stop-worker.sh
-
 ./sbin/stop-master.sh
+```
 
 3. Turning a notebook into a script
 4. Using spark-submit for submitting spark jobs
