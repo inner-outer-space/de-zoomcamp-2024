@@ -80,7 +80,8 @@ Note: If you can express your jobs in SQL only, then it is recommended to use an
 <br>
 <br>
 
-SETTING UP SPARK LOCALLY 
+#### LOCAL SPARK 
+Initiate a Spark session with SparkSession.builder() and define the master as local.  
 ``` python
 from pyspark.sql import SparkSession
 
@@ -89,7 +90,11 @@ spark = SparkSession.builder \
     .appName('test') \
     .getOrCreate()
 ````
+When finished, close the spark session with 
 
+```Python
+spark.stop()
+```
 #### SPARK MASTER UI 
 Once the Spark Session has been initiated, then you can access the master UI via the web browser. It that includes cluster status, resource consumption, details about jobs, stages, executors, and environment, an event timeline, and logging. 
 `http://localhost:4040/jobs/`
@@ -644,9 +649,62 @@ list(df.itertuples())
 
 
 ## SPARK IN THE CLOUD
+
 #### CONNECTING TO GCS FROM LOCAL SPARK
-1. Uploading data to GCS
-2. Connecting Spark jobs to GCS
+When you want to connect Spark to Google Cloud services, such as Google Cloud Storage (GCS) or BigQuery, you need additional libraries or connectors that provide the necessary functionality to interact with these services. The connector is packaged in a JAR (Java ARchive) file, which contains the necessary Java classes and dependencies to enable Spark to communicate with the Google Cloud services. 
+
+1. Configure the Spark Application
+2. Create a Spark Context
+3. Create a Spark Session 
+
+`Step 1` CONFIGURE SPARK APPLICATION <br>
+Use the SparkConf() class to define the configuration parameters needed to connect to google cloud prior to initiating a SparkSession. 
+- specify the .jar file containing the GCS connector
+- enable service account authentication
+- specify the location of the JSON key used for service account auth
+
+```python
+credentials_location = 'path-to-key.json'
+
+conf = SparkConf() \
+    .setMaster('local[*]') \
+    .setAppName('test') \
+    .set("spark.jars", "lib/gcs-connector-hadoop3-2.2.5.jar") \
+    .set("spark.hadoop.google.cloud.auth.service.account.enable", "true") \
+    .set("spark.hadoop.google.cloud.auth.service.account.json.keyfile", credentials_location)
+```
+
+Note: If you are only working with RDDs, this can be done directly with spark-submit, which will initialize a SparkContext. 
+
+`Step 2` CREATE A SPARK CONTEXT <br>
+In the previous examples, we initiated a Spark application with the SparkSession.builder() method, which creates a SparkContext. For connecting to GCS, it is common practice to first explicitly define the sparkContext with Hadoop config properties related to GCS and then create a session.  
+
+The abstract (URIs gs://) and concrete FileSystem implementations are defined here with classes in the connector specified in the config. Using this implementation when interacting with GCS ensures that Spark Hadoop can read and write to GCS correctly. 
+
+```python
+sc = SparkContext(conf=conf)
+
+hadoop_conf = sc._jsc.hadoopConfiguration()
+
+hadoop_conf.set("fs.AbstractFileSystem.gs.impl",  "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS")
+hadoop_conf.set("fs.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem")
+hadoop_conf.set("fs.gs.auth.service.account.json.keyfile", credentials_location)
+hadoop_conf.set("fs.gs.auth.service.account.enable", "true")
+```
+
+`Step 3` Set up the Spark Session 
+Create a spark session with a reference to the predefined spark config
+```python
+spark = SparkSession.builder \
+    .config(conf=sc.getConf()) \
+    .getOrCreate()
+```
+
+Once the session has been activated then you can read data from GCS into your spark dfs 
+```python
+# read in data
+df_green = spark.read.parquet('gs://ny-taxi-data-for-spark/pq/green/*/*')
+```
 
 #### CREATING A LOCAL SPARK CLUSTER
 
