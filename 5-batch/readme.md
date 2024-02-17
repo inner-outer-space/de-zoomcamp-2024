@@ -732,7 +732,7 @@ This creates a spark master that can be accessed at `localhost:8080`
 - Note: `echo $SPARK_HOME` provides info on the spark directory
 
 `Step 2` Connect the Master to a Session  
-Pass the Master URL to the Spark Session 
+Pass the Master URL to the Spark Session. This is being run on my local machine instead of on a VM in Google Cloud.  
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/43c9b8f8-7e65-4540-afa3-597c8eb48b11" width="400" height="auto">
 
 This establishes a connection between your Spark application and the Spark master, allowing your application to submit jobs to the Spark cluster managed by the standalone master.
@@ -753,14 +753,30 @@ At this point the Session has been initialied and the master has been defined, b
 ```
 To add workers 
 - Navigate to the Spark directory 
-- run `./sbin/start-worker.sh <master-spark-URL>` to create one worker node.
+- run `./sbin/start-worker.sh <master-spark-URL>` to create one worker node.  (./sbin/start-worker.sh spark://pepper:7077)
 - to deploy multiple workers, you can run the command multiple times or speciy instances  ./sbin/start-worker.sh <master-spark-URL> --instances 3 
 - you can also specify number of cores and memory per worker node ./sbin/start-worker.sh <master-spark-URL> --cores 2 --memory 4G
 
 Now when you refresh you see a worker 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/309d8b54-a1f4-4dde-8e44-228ca4400d9e" width="400" height="auto">
 
-`Step 4` Manually stop the worker and master 
+
+
+### NOTE: If running the spark on a virtual machine do not forget to export the path 
+
+`Step 4` Submit a Job with spark-submit
+Spark-submit is a script that comes with spark that is used to submit jobs to spark. There are a quite a few options that can be specified with spark-submit including the location of the master and the .jar file.  
+It is best to specify the master in spark-submit rather than in the script for reusability purposes. 
+``` python
+spark-submit \
+       --master spark://pepper:7077 \ 
+       5-batch/07_spark_sql.py \ 
+           --input_green data/pq/green/2020/* \ 
+           --input_yellow data/pq/yellow/2020/* \
+           --output data/pq/output
+```
+
+`Step 5` Manually stop the worker and master 
 
 run the following from within the spark folder
 ```cli 
@@ -768,12 +784,64 @@ run the following from within the spark folder
 ./sbin/stop-master.sh
 ```
 
-3. Turning a notebook into a script
-4. Using spark-submit for submitting spark jobs
-
 #### SETTING UP A DATAPROC CLUSTER 
-1. Creating a cluster
-2. Running a spark job with Dataproc
-3. Submitting the job with the cloud SDK
+Dataproc is a fully managed cloud service provided by Google Cloud Platform (GCP) for running Apache Spark and Apache Hadoop clusters. It abstracts the complexities of managing infrastructure, allowing users to focus on analyzing and processing data without worrying about cluster management tasks such as installation, configuration, and monitoring. Dataproc provides features such as automatic cluster provisioning, automatic scaling, integration with other GCP services like BigQuery and Cloud Storage, and support for various cluster configurations. It is particularly well-suited for running data processing and analytics workloads at scale in a cloud environment. 
+
+CREATE A CLUSTER ON DATAPROC 
+**** Make sure that you are using a service account that has permissions to submit to DataProc****
+
+On the dataproc clusters page, click `create cluster` and then create cluster on Compute Engine. 
+
+For the purposes of this excercise select: 
+- Cluster Type: Single Node (1 master, 0 workers)
+- Region: europe-west6 (same zone as bucket)
+- Optional components: Jupyter and Docker
+- leave all other defaults 
+
+Creating the cluster will spin up a virtual machine for master. Connect to this machine to see the Master UI. 
+Remember to shut it down when finished. 
+
+
+SUBMIT A JOB TO DATAPROC 
+There are 3 ways to submit a job to Dataproc:
+1. Web ui
+2. Google cloud sdk
+3. Rest api
+
+WEB UI 
+In order to submit a job via the Web UI, the python script first needs to be uploaded to a bucket. **Note:**  It is important that master in not defined in the script because you want to use the dataproc resource manager not the spark master. Dataprocs is configured to connect to google cloud storage, therefore a connector and the configuration for the connector are not needed.  
+```cli
+# from the folder where the script lives
+gsutil cp 07_spark_sql.py gs://ny-taxi-data-for-spark/code/07_spark_sql.py
+```
+
+**Submitting a Job**
+- Click on the cluster to get to the Cluster Details page and then click `Submit Job`
+- Set Job Type: PySpark
+- Specify Main python File: gs://ny-taxi-data-for-spark/code/07_spark_sql.py
+- Additional python files: None, There are no dependencies so you dont need to specify any other files.
+- Jar files: None
+- Job arguments:  using the bucket names rather than the local file paths. 
+    - `--input_green=gs://ny-taxi-data-for-spark/pq/green/2020/*`
+    - `--input_yellow=gs://ny-taxi-data-for-spark/pq/yellow/2020/*`
+    - `--output=gs://ny-taxi-data-for-spark/pq/report-2020`
+- Click Submit
+
+**Google Cloud SDK**
+``` python
+gcloud dataproc jobs submit pyspark \
+    --cluster=de-datatalks \  # dataprocs cluster name
+    --region=europe-west6 \
+    gs://ny-taxi-data-for-spark/code/07_spark_sql.py \
+    -- \
+        --input_green=gs://ny-taxi-data-for-spark/pq/green/2020/*/ \
+        --input_yellow=gs://ny-taxi-data-for-spark/pq/yellow/2020/*/ \
+        --output=gs://ny-taxi-data-for-spark/pq/output/report-2020
+```
+
+**Rest API**
+You can find an example of the Rest API call for a job on the configuration tab of the rest details.  
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/ffbb2e4d-9cf5-45cf-9743-760e2fd6c410" width="400" height="auto"> 
+
 
 #### Spark and BigQuery
