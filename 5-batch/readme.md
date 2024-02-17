@@ -17,6 +17,8 @@
 <hr />
 <br>
 https://www.altexsoft.com/blog/apache-spark-pros-cons/
+client vs cluster mode https://medium.com/@sephinreji98/understanding-spark-cluster-modes-client-vs-cluster-vs-local-d3c41ea96073
+stand alone internals https://books.japila.pl/spark-standalone-internals/overview/#scheduleexecutorsonworkers
 
 || Batch Processing | Streaming |
 |--|--|--|
@@ -653,9 +655,9 @@ list(df.itertuples())
 #### CONNECTING TO GCS FROM LOCAL SPARK
 When you want to connect Spark to Google Cloud services, such as Google Cloud Storage (GCS) or BigQuery, you need additional libraries or connectors that provide the necessary functionality to interact with these services. The connector is packaged in a JAR (Java ARchive) file, which contains the necessary Java classes and dependencies to enable Spark to communicate with the Google Cloud services. 
 
-1. Configure the Spark Application
-2. Create a Spark Context
-3. Create a Spark Session 
+1. Configure Spark Application
+2. Create Spark Context
+3. Create Spark Session 
 
 `Step 1` CONFIGURE SPARK APPLICATION <br>
 Use the SparkConf() class to define the configuration parameters needed to connect to google cloud prior to initiating a SparkSession. 
@@ -669,7 +671,7 @@ credentials_location = 'path-to-key.json'
 conf = SparkConf() \
     .setMaster('local[*]') \
     .setAppName('test') \
-    .set("spark.jars", "lib/gcs-connector-hadoop3-2.2.5.jar") \
+    .set("spark.jars", "lib/gcs-connector-hadoop3-latest.jar") \
     .set("spark.hadoop.google.cloud.auth.service.account.enable", "true") \
     .set("spark.hadoop.google.cloud.auth.service.account.json.keyfile", credentials_location)
 ```
@@ -705,8 +707,18 @@ Once the session has been activated then you can read data from GCS into your sp
 # read in data
 df_green = spark.read.parquet('gs://ny-taxi-data-for-spark/pq/green/*/*')
 ```
-
-#### CREATING A LOCAL SPARK CLUSTER
+## SPARK MODES 
+1. Local Mode
+    - the driver and the workers are run in one JVM.
+    - The number of cores is specified with `local[n]`
+2. Stand Alone - Sparks built-in Cluster Environment
+    - the driver and the workers are run in multiple JVMs using Sparks built in resource manager
+    - limited to one worker per JVM
+    - you can specify number of cores per JVM
+    - In a distributed environment you need to specify a persistance layer (storage system)
+3. Cluster mode with 3rd party resource managers (YARN, Mesos, etc) 
+#### CREATING A STANDALONE LOCAL SPARK CLUSTER
+Unlike distributed Spark clusters, where multiple machines (nodes) collaborate to process data in parallel, a standalone local Spark cluster runs entirely on a single machine. All Spark components, including the master and worker nodes, run on the same machine. This lightweight environment is ideal for development and testing. 
 
 1. Create a local cluster
 Start a standalone spark session
