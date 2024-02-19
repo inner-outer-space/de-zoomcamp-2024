@@ -153,7 +153,7 @@ df_csv = pd.read_csv('small_fhvhv_tripdata_2021-01.csv')
 spark_df=spark.createDataFrame(df_csv)
 ```
 
-`step 3` Output the Spark schema, which now contains Pandas best guess at the schema <br>
+`step 3` Output the Spark schema, which now contains the Pandas best guess at the schema <br>
 ```python 
 `spark.createDataFrame(df_pandas).schema` <br>
 ```
@@ -195,9 +195,12 @@ df = spark.read \
 <br>
 
 #### PARTITIONS 
-In order to take advantage of Sparks distributed workers and parallel processing, you want to partition the data. The repartition function can be used to partition a Spark DF.  The dataframe will be written to multiple files based on the number of partitions specified. 
+The data should be partitioned and written to multiple files in order to take advantage of Sparks distributed workers and parallel processing. 
 
-_Note: Repartition is a lazy function that will only be executed when the next action is called. In this case, it will be executed with write. _
+The repartition function can be used to partition a Spark DF.  The number of files is determined by the number of partitions specified.  
+
+_Note: Repartition is a lazy function that will only be executed when the next action is called. In this case, it will be executed with write. _#
+
 ```python
 df = df.repartition(24)
 
