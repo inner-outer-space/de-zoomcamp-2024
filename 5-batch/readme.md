@@ -78,13 +78,22 @@ _Note: If the job can be expressed solely in SQL, then it's recommended to use a
 
 <br>
 <br>
+#### SPARK WORKFLOW 
+In a Spark cluster setup, the orchestration of tasks begins with the Spark master, which manages the distribution of workloads across the cluster.  
+
+Once we have created a script in Python, Scala, Java, etc, the job is submitted by the driver to the Spark master using `spark-submit`. The driver can be on your personal laptop or it can be colocated with the cluster. Once the Spark master receives a job submission via spark-submit, it communicates with the cluster manager to request resources for the job. The cluster manager is responsible for allocating resources such as memory and CPU cores to the Spark application. 
+
+Once the code is submitted, the driver defines the jobs based on the series of tranfromations and determines the necesary tasks. It then dispatched the tasks to the executors within the cluster. Each executor retrieves a partition of the data and completes the task. In case of any executor failures, the Spark master automatically redistributes the pending tasks to other available executors. Once the executor has completed the task, they return the results to the driver for aggregation. 
+
+When processing data, Spark operates on partitions, where each partition typically represents a portion of the dataset stored in a distributed file system, such as S3 or a data lake. In the past, with technologies like Hadoop and HDFS, the partitions were stored on the same machines as the executors with redundancy. Source code was then sent to the machines that already had the data which minimized the amount of data transfer needed.  Since it is now common for the data lake and spark cluster to live within the same storage infrastructure, the concept of data locality has become less critical. 
+<br>
+<br>
 
 |.........................|SPARK MODES |
 |--|--|
 |  ` Local Mode `  |- Single Machine Non-Clustered Environment.<br>- The driver and the workers are run in one JVM.<br>- The number of threads is specified by n in `local[n]`<br>- Spark Master manages resources available to the single JVM
 |` Cluster Mode `|- Uses either an external resource manager (YARN, Kubernetes, Mesos) <br> or the built-in Spark resource manager (Stand-Alone). <br>- Typically deployed on a remote cluster, but can also be deployed locally in a pseudo-distributed cluster.<br>- The driver is colocated with the workers.<br>- This is a distributed environment, so you need to specify a persistance layer (storage system) so that data can be shared between the nodes.|
 |` Client Mode `|- Similar to Cluster Mode, but the driver is on the client machine that submitted the job.| 
-
 
 <br>
 <br>
@@ -382,16 +391,8 @@ GROUP BY
 <br>
 <br>
 
-## SPARK ARCHITECTURE 
-_(see above)_
-In a Spark cluster setup, the orchestration of tasks begins with the Spark master, which manages the distribution of workloads across the cluster.  
-
-Once we have created a script in Python, Scala, Java, etc, the job is submitted by the driver to the Spark master using `spark-submit`. The driver can be your personal laptop or an orchestrator. 
-
-Once the code is submitted, it is dispatched by the master and executed by the worker nodes within the cluster. These worker nodes, known as executors, retrieves a partition of the data and completes the task. In case of any executor failures during execution, the Spark master automatically redistributes the pending tasks to other available executors.
-
-When processing data, Spark operates on partitions, where each partition typically represents a portion of the dataset stored in a distributed file system, such as S3 or a data lake. In the past, with technologies like Hadoop and HDFS, the partitions were stored on the same machines as the executors with redundancy. Source code was then sent to the machines that already had the data which minimized the amount of data transfer needed.  Since it is now common for the data lake and spark cluster to live within the same storage infrastructure, the concept of data locality has become less critical. 
-
+#### SPARK INTERNALS 
+_(see [Spark Architecture](#spark-architecture)  above)_
 
 #### SPARK IMPLEMENTATION OF GROUPBY 
 
@@ -777,7 +778,7 @@ spark = SparkSession.builder \
 Once you connect to master than you will see the application id in the UI. 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/527cc4db-6ad1-4952-8f09-edb5695a16a5" width="400" height="auto">
 
-`Step 3` Manually stert Spark workers. 
+`Step 3` Manually start Spark workers. 
 At this point the Session has been initialied and the master has been defined, but there are no workers. Running anything at this point, will throw an error. 
 ```python
 - 24/02/14 19:01:03 WARN TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered 
