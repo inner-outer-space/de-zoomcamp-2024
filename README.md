@@ -1,6 +1,6 @@
 # DataTalks Data Engineering ZoomCamp 2024 
 This repo contains my notes and homework assignments for the 2024 [Data Talks Data Engineering Zoomcamp](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main)
-The final project for this course can be found in this repo [FINAL PROJECT]()
+The final project for this course can be found in this repo [FINAL PROJECT TBD]()
 <div align="center">
   <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/2689b1a3-60af-4b13-9ca5-dde96f28773c" width="400" height="225" style="margin: 0 auto;">
 </div>
