@@ -81,8 +81,16 @@ _Note: If the job can be expressed solely in SQL, then it's recommended to use a
 #### SPARK MODES 
 <table>
 <tr>
-    <td>`Local Mode`</td>
+    <td>**Local Mode**</td>
     <td>- Single Machine Non-Clustered Environment.<br>- The driver and the workers are run in one JVM.<br>- The number of threads is specified by n in `local[n]`<br>- Spark Master manages resources available to the single JVM</td>
+</tr>
+<tr>
+    <td>Cluster Mode</td>
+    <td>- Uses either an external resource manager (YARN, Kubernetes, Mesos) or the built-in Spark resource manager (Stand-Alone). <br>- Typically deployed on a remote cluster, but can also be deployed locally in a pseudo-distributed cluster.<br>- The driver is colocated with the workers.<br>- This is a distributed environment, so you need to specify a persistance layer (storage system)</td>
+</tr>
+<tr>
+    <td>Client Mode</td>
+    <td>- Similar to Cluster Mode, but the driver is on the client machine that submitted the job.</td>
 </tr>
 </table>
 
