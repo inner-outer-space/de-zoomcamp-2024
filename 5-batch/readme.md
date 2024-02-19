@@ -261,10 +261,11 @@ df.select('pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID')
 |TRANSFORMATIONS|ACTIONS|
 |--|--|
 |`Transformations` are Lazy, meaning they are not executed right away<br> but rather when the next action is called.| `Actions` are eager, meaning they are executed right away.|
-|- selecting columns <br>- filtering<br>- joins<br>- groupby<br>- any kind of transofrmation|- show()<br>- take()<br>- head()- write()|
-  
-- note: it is recommended to use SQL for joins and groupbys because it is more expressive 
-for complicated conditionality use python - easier to test. <br><br>
+|- selecting columns <br>- filtering<br>- joins<br>- groupby<br>- any kind of transofrmation|- show()<br>- take()<br>- head()<br>- write()|
+_note: for joins and group-bys, it is recommended to use SQL because it is more expressive and python is recommended for more complicated conditionality because it is easier to specify and test._
+
+<br>
+<br>
 
 #### PYSPARK BUILT-IN FUNCTIONS 
 Pyspark comes with many build in fucntions. Typing F. will display a list of available functions. 
