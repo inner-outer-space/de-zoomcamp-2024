@@ -31,7 +31,7 @@ Today, the two primary methods for handling big data are `batch` and `streaming`
 
 #### MORE ON BATCH PROCESSING 
 |**TYPICAL TIME INTERVALS**|**TECNOLOGIES USE**|**ADVANTAGES**|**DISADVANTAGE**| 
-|--|--|
+|--|--|--|--|
 |- Weekly<br>- Daily<br>- Hourly<br>- 3x /hr<br>- Every 5 min|- Python Scripts run in Kubernetics, AWS, etc<br>- SQL<br>- Spark<br>- Flink- Orchestrators such as Airflow or Mage|- Convenient and easy to manage<br>- tools can parameterize the scripts<br>- Automatic retry<br>- Easy to scale|- Latency and limited freshness of data<br>- Not suited for real-time analytics|
 
 <br>
