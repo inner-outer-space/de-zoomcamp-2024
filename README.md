@@ -6,12 +6,12 @@ The final project for this course can be found in this repo [FINAL PROJECT]()
 </div>
 
 ## NOTES 
-WEEK 1:  [Docker & SQL](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/week_1_basics_n_setup/docker_sql/readme.md) • [Terraform & GCP](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/week_1_basics_n_setup/terraform_gcp/readme.md) <br>
-WEEK 2:  [Orchestration with Mage](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/2-workflow-orchestration) <br>
-WEEK 3:  [Data Warehouses with BigQuery](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/3-data-warehouse) <br>
-WEEK 4:  [Analytics Engineering with dbt](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/4-analytics-engineering) <br>
-WEEK 5:  [Batch with Spark](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/5-batch) <br>
-WEEK 6:  [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/6-streaming)
+MODULE 1:  [Docker & SQL](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/week_1_basics_n_setup/docker_sql/readme.md) • [Terraform & GCP](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/week_1_basics_n_setup/terraform_gcp/readme.md) <br>
+MODULE 2:  [Orchestration with Mage](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/2-workflow-orchestration) <br>
+MODULE 3:  [Data Warehouses with BigQuery](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/3-data-warehouse) <br>
+MODULE 4:  [Analytics Engineering with dbt](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/4-analytics-engineering) <br>
+MODULE 5:  [Batch with Spark](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/5-batch) <br>
+MODULE 6:  [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/6-streaming)
 <br>
 <br>
 ## RESOURCES
