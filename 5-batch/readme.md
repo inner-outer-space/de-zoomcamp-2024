@@ -58,20 +58,27 @@ Spark is especially useful for parallel processing of distributed data with iter
 Similar to the MapReduce paradigm, Spark employs a combination of Map and Reduce functions to process data. But unlike MapReduce, Spark leverages in-memory processing, resulting in much faster processing.
 
 Spark can handle both batch and streaming data processing. In the case of streaming data, Spark processes it by breaking it down into a sequence of small batch jobs. 
+<br>
+<br>
 
 #### WHEN TO USE SPARK 
-- **Data is Stored in a Data Lake:** Spark is compatible with distributed file systems like HDFS, S3, and GCS, enabling seamless integration with data stored in these environments.
-- `There are Large Amounts of Data:` Spark is suitable for processing large volumes of data efficiently due to its distributed computing capabilities.
-- Complex Transformations are Needed: Spark supports SQL as well as Java, Scala, Python, and R. These other languages are well-suited for handling complex transformations, implementing unit tests, training and applying machine learning models, etc.
+- `Data is Stored in a Data Lake` Spark is compatible with distributed file systems like HDFS, S3, and GCS, enabling seamless integration with data stored in these environments.
+- `There are Large Amounts of Data` Spark is suitable for processing large volumes of data efficiently due to its distributed computing capabilities.
+- `Complex Transformations are Needed` Spark supports SQL as well as Java, Scala, Python, and R. These other languages are well-suited for handling complex transformations, implementing unit tests, training and applying machine learning models, etc.
 
 Note: If the job can be expressed solely in SQL, then it's recommended to use a more light weight tool such as Presto or Athena. Alternatively, you could also utilize these tools to handle for SQL preprocessing and then pass the data to Spark for more complex transformations. 
+<br>
+<br>
 
 #### APACHE SPARK ARCHITECTURE 
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bca3c2f0-ba69-4c40-9fa4-c0bd1d1784ce" width = "500" height="auto">
+<div align="center"> 
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bca3c2f0-ba69-4c40-9fa4-c0bd1d1784ce" width = "600" height="auto">
 
 [Spark Components Documentation](https://spark.apache.org/docs/latest/cluster-overview.html)
+</div> 
 
 <br>
+
 - `SparkSession` is the main entry point to Spark's SQL, DataFrame, and Dataset APIs. It encapsulates the functionality of the SparkContext, SQLContext, and HiveContext, providing a single interface for working with structured data in Spark. In the past, a developer had to start and stop each Context as needed. SparkSession now manages the underlying various SparkContexts and automatically creates them when needed. It SparkSession simplifies the process of interacting with Spark by providing a cohesive API for reading data from various sources, executing SQL queries, and performing data processing tasks using DataFrames and Datasets.
 - `SparkContext` communicates with the Cluster Manager to supervise jobs, partitions the job into tasks, and assigns these tasks to worker nodes. It is the base context for creating RDDs and performing basic Spark operations. Since Spark 2.0, it is automatically created by SparkSession. Create a SparkContext if you want to work directly with RDDs, otherwise let SparkSession create it.  
 - `Cluster Manager` is responsible for allocating resources in the cluster.  
