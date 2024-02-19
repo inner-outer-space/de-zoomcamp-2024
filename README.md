@@ -99,7 +99,9 @@ WEEK 6:  [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomcamp
   - [MapReduce vs. Spark](https://www.knowledgehut.com/blog/big-data/apache-spark-and-mapreduce-comparison)
   - [PySpark Job in DataProc](https://cloud.yandex.com/en/docs/data-proc/tutorials/run-spark-job)
   - [Spark Context vs Spark Session](https://medium.com/@akhilasaineni7/exploring-sparkcontext-and-sparksession-8369e60f658e#:~:text=Internally%2C%20Spark%20Session%20creates%20a,worry%20about%20creating%20difference%20contexts.)
-
+  - [Spark Pros Cons](https://www.altexsoft.com/blog/apache-spark-pros-cons/)
+  - [Cluster vs Client Mode](client vs cluster mode https://medium.com/@sephinreji98/understanding-spark-cluster-modes-client-vs-cluster-vs-local-d3c41ea96073)
+  - [Stand Alone Internals](stand alone internals https://books.japila.pl/spark-standalone-internals/overview/#scheduleexecutorsonworkers)
 </details>
 
 <details>
