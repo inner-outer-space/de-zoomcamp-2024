@@ -135,7 +135,7 @@ df = spark.read \
 df.show()
 ```
 
-Spark will attempt to infer the schema for a CSV file but it may end up reading everything in as string.  Therefore, it is best to provide the schema.  
+In the case of a CSV file, Spark will attempt to infer the schema but it may end up reading everything in as string.  Therefore, it is best to provide the schema.  
 
 The following is a workaround for using Pandas to assist in creating the schema. We can utilize Pandas to infer the data types, which can then be used to construct a schema for the Spark DataFrame. While Pandas may not provide a perfect inference, it serves as a better starting point for schema creation.
 
