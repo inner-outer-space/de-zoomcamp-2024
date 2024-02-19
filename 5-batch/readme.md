@@ -66,11 +66,11 @@ Spark can handle both batch and streaming data processing. In the case of stream
 - `There are Large Amounts of Data` Spark is suitable for processing large volumes of data efficiently due to its distributed computing capabilities.
 - `Complex Transformations are Needed` Spark supports SQL as well as Java, Scala, Python, and R. These other languages are well-suited for handling complex transformations, implementing unit tests, training and applying machine learning models, etc.
 
-Note: If the job can be expressed solely in SQL, then it's recommended to use a more light weight tool such as Presto or Athena. Alternatively, you could also utilize these tools to handle for SQL preprocessing and then pass the data to Spark for more complex transformations. 
+_Note: If the job can be expressed solely in SQL, then it's recommended to use a more light weight tool such as Presto or Athena. Alternatively, you could also utilize these tools to handle for SQL preprocessing and then pass the data to Spark for more complex transformations. _
 <br>
 <br>
 
-#### APACHE SPARK ARCHITECTURE 
+#### SPARK ARCHITECTURE 
 <div align="center"> 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bca3c2f0-ba69-4c40-9fa4-c0bd1d1784ce" width = "600" height="auto">
 
@@ -79,36 +79,14 @@ Note: If the job can be expressed solely in SQL, then it's recommended to use a 
 
 <br>
 
-- `SparkSession` is the main entry point to Spark's SQL, DataFrame, and Dataset APIs. It encapsulates the functionality of the SparkContext, SQLContext, and HiveContext, providing a single interface for working with structured data in Spark. In the past, a developer had to start and stop each Context as needed. SparkSession now manages the underlying various SparkContexts and automatically creates them when needed. It SparkSession simplifies the process of interacting with Spark by providing a cohesive API for reading data from various sources, executing SQL queries, and performing data processing tasks using DataFrames and Datasets.
+- `SparkSession` is the driver program in the image above. It is the main entry point to Spark's SQL, DataFrame, and Dataset APIs. It encapsulates the functionality of the SparkContext, SQLContext, and HiveContext, providing a single interface for working with structured data in Spark. In the past, a developer had to start and stop each Context as needed. SparkSession now manages the underlying various SparkContexts and automatically creates them when needed. It simplifies the process of interacting with Spark by providing a cohesive API for reading data from various sources, executing SQL queries, and performing data processing tasks using DataFrames and Datasets.
 - `SparkContext` communicates with the Cluster Manager to supervise jobs, partitions the job into tasks, and assigns these tasks to worker nodes. It is the base context for creating RDDs and performing basic Spark operations. Since Spark 2.0, it is automatically created by SparkSession. Create a SparkContext if you want to work directly with RDDs, otherwise let SparkSession create it.  
 - `Cluster Manager` is responsible for allocating resources in the cluster.  
 - `Worker Nodes` are responsible for the task completion. They process tasks on the partitioned RDDs and return the result back to SparkContext/SparkSession. A worker node can have multiple executors determined by the SparkSession config setting spark.executor.instances. 
-- `Executors` is a process that is launched for a Spark application on a worker node. An executor can run multiple concurrent tasks/processes simultaneously, up to the number of cores allocated to it.
+- `Executors` is a process that is launched on a worker node. An executor can run multiple concurrent tasks/processes simultaneously, up to the number of cores allocated to it.
 
 <br>
 <br>
-
-#### LOCAL SPARK 
-Initiate a Spark session with SparkSession.builder() and define the master as local.  
-``` python
-from pyspark.sql import SparkSession
-
-spark = SparkSession.builder \
-    .master("local[*]") \
-    .appName('test') \
-    .getOrCreate()
-````
-When finished, close the spark session with 
-
-```Python
-spark.stop()
-```
-#### SPARK MASTER UI 
-Once the Spark Session has been initiated, then you can access the master UI via the web browser. It that includes cluster status, resource consumption, details about jobs, stages, executors, and environment, an event timeline, and logging. 
-`http://localhost:4040/jobs/`
-
-If not working locally, then forward port 4040 to view in the web browser. <br>
-
 
 #### INGESTING DATA
 Data can be ingested into Spark by establishing a connection to an external database or by directly loading a data file. Spark accepts many data formats (Parquet, Text, CSV, JSON, XML, ORC, Binary, Avro, TFRecord, Sequence Files) but defaults to parquet, unless otherwise specified. When reading Parquet files, Spark infers datatypes from the schema and automatically converts all columns to be nullable for compatibility reasons.
@@ -134,6 +112,48 @@ Data is read into a:
     - Offers more control over the execution flow compared to DataFrames and Datasets.
 <br>
 <br>
+
+#### SPARK MODES 
+1. Local Mode - Single Machine Environment Non-Cluster Environment
+    - the driver and the workers are run in one JVM.
+    - The number of cores is specified with `local[n]`
+    - Spark Master manages resources available to the single JVM
+2. Stand Alone - Single Machine Cluster Environment 
+    - The driver and the workers are run in different JVMs on the same machine 
+    - you can specify number of cores per JVM
+    - In a distributed environment you need to specify a persistance layer (storage system)
+3. Cluster mode with 3rd party resource managers (YARN, Kubernetes, Mesos, Amazon EMR)
+    - Utilizes external resource managers rather than Spark Master
+    - Typically deployed on a remote cluster
+    - The driver can be local or colacted with the workers
+    - Allows sharing cluster resources among multiple applications and frameworks.
+
+
+#### LOCAL MODE  
+Initiate a Spark session with SparkSession.builder() and define the master as local.  
+``` python
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .master("local[*]") \
+    .appName('test') \
+    .getOrCreate()
+````
+When finished, close the spark session with 
+
+```Python
+spark.stop()
+```
+#### MASTER UI 
+Once the Spark Session has been initiated, the master UI can be viewed in a web browser. It that includes cluster status, resource consumption, details about jobs, stages, executors, and environment, an event timeline, and logging. 
+
+For Local Spark 
+`http://localhost:4040/jobs/`
+
+If not working locally, then forward port 4040 to view in the web browser. <br>
+
+
+
 
 
 #### READING IN A CSV FILE EXAMPLE IN VIDEO 
@@ -713,20 +733,6 @@ Once the session has been activated then you can read data from GCS into your sp
 # read in data
 df_green = spark.read.parquet('gs://ny-taxi-data-for-spark/pq/green/*/*')
 ```
-## SPARK MODES 
-1. Local Mode - Single Machine Environment Non-Cluster Environment
-    - the driver and the workers are run in one JVM.
-    - The number of cores is specified with `local[n]`
-    - Spark Master manages resources available to the single JVM
-2. Stand Alone - Single Machine Cluster Environment 
-    - The driver and the workers are run in different JVMs on the same machine 
-    - you can specify number of cores per JVM
-    - In a distributed environment you need to specify a persistance layer (storage system)
-3. Cluster mode with 3rd party resource managers (YARN, Kubernetes, Mesos, Amazon EMR)
-    - Utilizes external resource managers rather than Spark Master
-    - Typically deployed on a remote cluster
-    - The driver can be local or colacted with the workers
-    - Allows sharing cluster resources among multiple applications and frameworks.
    
 #### CREATING A STANDALONE LOCAL SPARK CLUSTER
 Unlike distributed Spark clusters, where multiple machines (nodes) collaborate to process data in parallel, a standalone local Spark cluster runs entirely on a single machine. All Spark components, including the master and worker nodes, run on the same machine. This lightweight environment is ideal for development and testing.  
