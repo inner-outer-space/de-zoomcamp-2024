@@ -77,23 +77,6 @@ _Note: If the job can be expressed solely in SQL, then it's recommended to use a
 <br>
 <br>
 
-
-#### SPARK MODES 
-<table>
-<tr>
-    <td><b>Local Mode</b></td>
-    <td>- Single Machine Non-Clustered Environment.<br>- The driver and the workers are run in one JVM.<br>- The number of threads is specified by n in `local[n]`<br>- Spark Master manages resources available to the single JVM</td>
-</tr>
-<tr>
-    <td><b>Cluster Mode</b></td>
-    <td>- Uses either an external resource manager (YARN, Kubernetes, Mesos) or<br> the built-in Spark resource manager (Stand-Alone). <br>- Typically deployed on a remote cluster, but can also be deployed locally in a pseudo-distributed cluster.<br>- The driver is colocated with the workers.<br>- This is a distributed environment, so you need to specify a persistance layer (storage system)</td>
-</tr>
-<tr>
-    <td><b>Client Mode</b></td>
-    <td>- Similar to Cluster Mode, but the driver is on the client machine that submitted the job.</td>
-</tr>
-</table>
-
 | |SPARK MODES |
 |--|--|
 |`Local Mode`|- Single Machine Non-Clustered Environment.<br>- The driver and the workers are run in one JVM.<br>- The number of threads is specified by n in `local[n]`<br>- Spark Master manages resources available to the single JVM
@@ -104,7 +87,7 @@ _Note: If the job can be expressed solely in SQL, then it's recommended to use a
 <br>
 <br>
 
-#### LOCAL MODE  
+#### SETTING UP LOCAL MODE  
 In local mode, Spark runs on a single JVM, but it can still utilize multiple cores if available. The number of threads specified with * instructs Spark to use as many worker threads as logical cores on your machine. Each thread can execute tasks concurrently, simulating parallel processing even though it's all within a single JVM.
 ``` python
 from pyspark.sql import SparkSession
@@ -122,13 +105,15 @@ spark.stop()
 <br>
 <br>
 
-#### MASTER UI 
-Once the Spark Session has been initiated, the master UI can be viewed in a web browser. It includes cluster status, resource consumption, details about jobs, stages, executors, and environment, an event timeline, and logging. 
+#### MONITORING THE SPARK APPLICATION WITH SPARK MASTER UI
+Once the Local SparkSession has been initiated, the SPARK Master UI can be viewed in a web browser. It includes cluster status, resource consumption, details about jobs, stages, executors, and environment, an event timeline, and logging for a specific Spark application. 
 
 For Local Spark 
 `http://localhost:4040/jobs/`
 
-If not working locally, then forward port 4040 to view in the web browser. <br>
+If not working on your local machine, you can still access the Spark UI by forwarding port 4040. <br>
+
+_Note: The 3rd party resource maangers like YARN and Kubernetes also provide web based UIs with dashboards and tools for monitoring and managing the cluster and its applications._ 
 
 <br>
 <br>
