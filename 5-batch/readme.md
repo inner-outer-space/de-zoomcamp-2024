@@ -131,7 +131,7 @@ Data is read into a:
 <br>
 
 #### LOCAL MODE  
-In local mode, Spark runs on a single JVM, but it can still utilize multiple cores if available. The number of threads specified with * instructs Spark to use as many threads as there are available cores on the machine. Each thread can execute tasks concurrently, simulating parallel processing even though it's all within a single JVM.
+In local mode, Spark runs on a single JVM, but it can still utilize multiple cores if available. The number of threads specified with * instructs Spark to use as many worker threads as logical cores on your machine. Each thread can execute tasks concurrently, simulating parallel processing even though it's all within a single JVM.
 ``` python
 from pyspark.sql import SparkSession
 
@@ -156,8 +156,10 @@ For Local Spark
 
 If not working locally, then forward port 4040 to view in the web browser. <br>
 
+<br>
+<br>
 
-#### READING IN A CSV FILE EXAMPLE IN VIDEO 
+#### INGESTING NY TAXI CSV 
 
 According to the documentation, Spark will attempt to infer the schema for a CSV file. But it may end up reading everything in as string.  Therefore, it is best to provide the schema for CSV files.  
 
@@ -209,6 +211,8 @@ df = spark.read \
     .schema(schema) \
     .csv('fhvhv_tripdata_2021-01.csv')
 ```
+<br>
+<br>
 
 #### PARTITIONS 
 In order to take advantage of Sparks distributed workers and parallel processing, you want to partition the data. The repartition function can be used to partition a Spark DF.  The dataframe will be written to multiple files based on the number of partitions specified. 
@@ -226,6 +230,8 @@ When transforming a dataframe, by default spark will partition it. To avoid the 
 ```python
 df_result.coalesce(1).write.parquet('data/report/revenue', mode='overwrite')
 ```
+<br>
+<br>
 
 ## SPARK DATAFRAMES 
 You can do similar things with a spark df as with a pandas df. 
