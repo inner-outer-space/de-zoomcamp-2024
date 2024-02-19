@@ -49,17 +49,18 @@ Spark can handle both batch and streaming data processing. In the case of stream
 <br>
 
 #### WHEN TO USE SPARK 
-- `Data is Stored in a Data Lake` Spark is compatible with distributed file systems like HDFS, S3, and GCS, enabling seamless integration with data stored in these environments.
-- `There are Large Amounts of Data` Spark is suitable for processing large volumes of data efficiently due to its distributed computing capabilities.
-- `Complex Transformations are Needed` Spark supports SQL as well as Java, Scala, Python, and R. These other languages are well-suited for handling complex transformations, implementing unit tests, training and applying machine learning models, etc.
+- `Data is stored in a data lake` Spark is compatible with distributed file systems like HDFS, S3, and GCS, enabling seamless integration with data stored in these environments.
+- `There are large amounts of data` Spark is suitable for processing large volumes of data efficiently due to its distributed computing capabilities.
+- `Complex transformations are needed` Spark supports SQL as well as Java, Scala, Python, and R. These other languages are well-suited for handling complex transformations, implementing unit tests, training and applying machine learning models, etc.
 
 _Note: If the job can be expressed solely in SQL, then it's recommended to use a more light weight tool such as Presto or Athena. Alternatively, you could also utilize these tools to handle for SQL preprocessing and then pass the data to Spark for more complex transformations. _
+
 <br>
 <br>
 
 #### SPARK ARCHITECTURE 
 <div align="center"> 
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bca3c2f0-ba69-4c40-9fa4-c0bd1d1784ce" width = "600" height="auto">
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bca3c2f0-ba69-4c40-9fa4-c0bd1d1784ce" width = "700" height="auto">
 
 [Spark Components Documentation](https://spark.apache.org/docs/latest/cluster-overview.html)
 </div> 
