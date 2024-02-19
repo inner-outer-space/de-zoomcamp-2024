@@ -198,7 +198,7 @@ df = spark.read \
 #### PARTITIONS 
 The data should be partitioned and written to multiple files in order to take advantage of Sparks distributed workers and parallel processing. 
 
-The repartition function can be used to partition a Spark DF.  The number of files is determined by the number of partitions specified.  
+The number of files that the DataFrame is written to is determined by the number of partitions.  When transforming a DataFrame, by default, Spark partitions the data to enable parallel processing. Repartition allows you to have control over the number of partitions. 
 
 _Note: Repartition is a lazy function that will only be executed when the next action is called. In this case, it will be executed with write._
 
@@ -210,7 +210,7 @@ df.write.parquet('fhvhv/2021/01/', mode="overwrite")
 <br>
 <br>
 
-When transforming a DataFrame, by default, Spark partitions the data to enable parallel processing. Repartition allows you to have control over the number of partitions. To avoid the DataFrame being written to multiple files, you can use coalesce.
+To avoid the DataFrame being written to multiple files, you can use coalesce.
 ```python
 df_result.coalesce(1).write.parquet('data/report/revenue', mode='overwrite')
 ```
