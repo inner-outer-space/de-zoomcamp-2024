@@ -113,7 +113,7 @@ Once the Local SparkSession has been initiated, the SPARK Master UI can be viewe
 For Local Spark 
 `http://localhost:4040/jobs/`
 
-If not working on your local machine, you can still access the Spark UI by forwarding port 4040. <br>
+If not working on your local machine, you can still access the Spark Master UI by forwarding port 4040. <br>
 
 _Note: The 3rd party resource maangers like YARN and Kubernetes also provide web based UIs with dashboards and tools for monitoring and managing the cluster and its applications._ 
 
@@ -167,7 +167,7 @@ StructType([
 ])
 ```
 
-`step 4` Convert the StructType output into python code. 
+`step 4` Convert the StructType output into python code. <br>
 Python Schema
 ```python
 schema = types.StructType([
@@ -194,7 +194,7 @@ df = spark.read \
 #### PARTITIONS 
 The data should be partitioned and written to multiple files in order to take advantage of Sparks distributed workers and parallel processing. 
 
-The number of files that the DataFrame is written to is determined by the number of partitions.  When transforming a DataFrame, by default, Spark partitions the data to enable parallel processing. Repartition allows you to have control over the number of partitions. 
+The number of files to which the DataFrame is written is determined by the number of partitions. When transforming a DataFrame, Spark partitions the data by default to facilitate parallel processing. The repartition method allows you to control the number of partitions explicitly.
 
 _Note: Repartition is a lazy function that will only be executed when the next action is called. In this case, it will be executed with write._
 
@@ -253,7 +253,8 @@ SELECT COLUMNS AND FILTER
 df.select('pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID') \
     .filter(df.hvfhs_license_num == 'HV0003')
 ```
-
+<br>
+<br>
 #### SPARK ACTIONS VS TRANSFORMATIONS 
 |TRANSFORMATIONS|ACTIONS|
 |--|--|
@@ -266,7 +267,7 @@ _note: for joins and group-bys, it is recommended to use SQL because it is more 
 <br>
 
 #### PYSPARK BUILT-IN FUNCTIONS 
-Pyspark comes with many build in fucntions. Typing `F.` will display a list of available functions. 
+Pyspark comes with many built-in fucntions. Typing `F.` will display a list of available functions. 
 <br>
 <br>
 Example<br> 
@@ -329,7 +330,9 @@ df_trips_data.registerTempTable('trips_data')
 ```
 <br>
 Once registered, you'll be able to query the table by referrencing the name (trips_data). 
-<br><br>
+<br>
+<br>
+
 SAMPLE SQL QUERRIES 
 ```python
 spark.sql("""
