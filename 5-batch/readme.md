@@ -260,16 +260,8 @@ df.select('pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID')
 #### ACTIONS VS TRANSFORMATIONS 
 |TRANSFORMATIONS|ACTIONS|
 |--|--|
-|`Transformations` are Lazy, meaning they are not executed right away but rather when the next action is called.| `Actions` are eager, meaning they are executed right away.|
-|- selecting columns
-- filtering
-- joins
-- groupby
-- any kind of transofrmation|
-- show()
-- take()
-- hea() 
-- write()|
+|`Transformations` are Lazy, meaning they are not executed right away<br> but rather when the next action is called.| `Actions` are eager, meaning they are executed right away.|
+|- selecting columns <br>- filtering<br>- joins<br>- groupby<br>- any kind of transofrmation|- show()<br>- take()<br>- head()- write()|
   
 - note: it is recommended to use SQL for joins and groupbys because it is more expressive 
 for complicated conditionality use python - easier to test. <br><br>
