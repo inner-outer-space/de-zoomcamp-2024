@@ -4,8 +4,8 @@
 (*for Linux*)
 <hr />
 
-[Intro](#intro) • 
-[Spark & PySpark](#spark-and-pyspark) • 
+[Intro](#introduction) • 
+[Apache Spark](#apache-spark) • 
 [Spark Dataframes](#spark-dataframes) <br>
 [Taxi Data Prep](#taxi-data-preparation) • 
 [Spark & SQL](#spark-and-sql) • 
@@ -76,30 +76,6 @@ _Note: If the job can be expressed solely in SQL, then it's recommended to use a
 <br>
 <br>
 
-#### DATA STRUCTURES 
-Data can be ingested into Spark by establishing a connection to an external database or by directly loading a data file. Spark accepts many data formats (Parquet, Text, CSV, JSON, XML, ORC, Binary, Avro, TFRecord, Sequence Files) but defaults to parquet, unless otherwise specified. When reading Parquet files, Spark infers datatypes from the schema and automatically converts all columns to be nullable for compatibility reasons.
-
-The 3 main datastructures available for working with distributed data in Spark are: 
-- DataFrame:
-    - Easiest data strucutre to work with, with an extensive number of functions and libraries available. 
-    - Built on top of RDDs for optimization.
-    - Represents structured data organized in rows and columns.
-    - Operations are lazily evaluated, meaning that transformations are not executed until an action is called.
-    - When an action is called, Spark creates a directed acyclic graph (DAG) and optimizes it for execution.
-
-- Dataset:
-    - Available in Java and Scala with limited Python support.
-    - Suitable for both structured and unstructured data, supporting custom classes and types. 
-    - Strongly typed and provides type-saftey. 
-    - Operations are lazily evaluated.
-    - When an action is called, Spark creates a DAG and optimizes it for execution.
-
-- RDD:
-    - Fundamental data abstraction in Spark.
-    - Lazily evaluated, but without building a logical plan.
-    - Offers more control over the execution flow compared to DataFrames and Datasets.
-<br>
-<br>
 
 #### SPARK MODES 
 1. Local Mode - Single Machine Environment Non-Cluster Environment
@@ -147,7 +123,7 @@ If not working locally, then forward port 4040 to view in the web browser. <br>
 <br>
 <br>
 
-#### INGESTING NY TAXI CSV 
+## INGESTING NY TAXI CSV 
 
 According to the documentation, Spark will attempt to infer the schema for a CSV file. But it may end up reading everything in as string.  Therefore, it is best to provide the schema for CSV files.  
 
@@ -222,13 +198,42 @@ df_result.coalesce(1).write.parquet('data/report/revenue', mode='overwrite')
 <br>
 
 ## SPARK DATAFRAMES 
-You can do similar things with a spark df as with a pandas df. 
 
-print the schema 
+#### SPARK DATA STRUCTURES 
+Data can be ingested into Spark by establishing a connection to an external database or by directly loading a data file. Spark accepts many data formats (Parquet, Text, CSV, JSON, XML, ORC, Binary, Avro, TFRecord, Sequence Files) but defaults to parquet, unless otherwise specified. When reading Parquet files, Spark infers datatypes from the schema and automatically converts all columns to be nullable for compatibility reasons.
+
+The 3 main datastructures available for working with distributed data in Spark are: 
+- DataFrame:
+    - Easiest data strucutre to work with, with an extensive number of functions and libraries available. 
+    - Built on top of RDDs for optimization.
+    - Represents structured data organized in rows and columns.
+    - Operations are lazily evaluated, meaning that transformations are not executed until an action is called.
+    - When an action is called, Spark creates a directed acyclic graph (DAG) and optimizes it for execution.
+
+- Dataset:
+    - Available in Java and Scala with limited Python support.
+    - Suitable for both structured and unstructured data, supporting custom classes and types. 
+    - Strongly typed and provides type-saftey. 
+    - Operations are lazily evaluated.
+    - When an action is called, Spark creates a DAG and optimizes it for execution.
+
+- RDD:
+    - Fundamental data abstraction in Spark.
+    - Lazily evaluated, but without building a logical plan.
+    - Offers more control over the execution flow compared to DataFrames and Datasets.
+<br>
+<br>
+
+#### SPARK DATA FRAMES  
+Dataframes are the most commonly used data structure when working with python and spark. PySpark, the Python API for Spark, allows you to work with spark dataframes in a mannar similar to working with dataframes in python. It also provides additional functionality, such as partitioning, which allows us to take advantage of the parallel processing capabilities of spark.  
+
+**EXAMPLES** 
+
+PRINT SCHEMA 
 ```python
 df.schema or df.printSchema
 ```
-selecting columnse and filtering 
+SELECT COLUMNS AND FILTER 
 ```python 
 df.select('pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID') \
     .filter(df.hvfhs_license_num == 'HV0003')
