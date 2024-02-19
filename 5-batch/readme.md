@@ -608,9 +608,9 @@ There will be two stages in the DAG for Group By: one stage for the map function
 The mapPartition operation is similar to map, but it applies a function to an entire partition of data rather than a single object. It takes an RDD as input and returns another RDD. Chunking the data in this way, facilitates processing large datasets efficiently, and is particularly useful for machine learning tasks where computations can be parallelized across partitions.
 
 EXAMPLE: <br>
-Create a service that predicts the duration of a trip
+Create a service that predicts the duration of a trip.
 
-`Step 1` Create the RDD with the columns of interest
+`Step 1` Create the RDD with the columns of interest.
 ```python
 columns = ['VendorID', 'lpep_pickup_datetime', 'PULocationID', 'DOLocationID', 'trip_distance']
 
@@ -619,7 +619,7 @@ duration_rdd = df_green \
     .rdd
 ```
 
-`Step 2` Apply a simple model to batches of the data<br>
+`Step 2` Apply a simple model to batches of the data.<br>
 mapPartitions takes an iterable as input, hence the function returns a list rather than the single number 1. 
 ```python
 def apply_model_in_batch(partition):
@@ -629,9 +629,9 @@ rdd.mapPartitions(apply_model_in_batch).collect()
 ```
 The list \[1,1,1,1] is returned indicating that there are 4 partitions.  
 
-`Step 3` Apply a more complex function. 
+`Step 3` Apply a more complex function. <br>
 This function will return the size of each partitions. <br>
-The partitions of objects of type = itertools.chain. They have no length, so the function loops throug the rows and counts them.  
+The partitions are objects of type itertools.chain. They have no length, so instead of using len, the function loops through the rows and counts them.
 ```python
 def apply_model_in_batch(partition):
     cnt = 0
@@ -642,7 +642,8 @@ def apply_model_in_batch(partition):
 
 rdd.mapPartitions(apply_model_in_batch).collect()
 ```
-We see that the partitions are not very well balanced in size. You could deal with that by repartitioning. 
+<br>
+
 
 Another option is to marterialize the RDD/Partition as a pandas dataframe and then use the len function. If needed, the python iter library can be used to slice it into subpartitions. 
 ```python
@@ -653,6 +654,7 @@ def apply_model_in_batch(rows):
 
 duration_rdd.mapPartitions(apply_model_in_batch).collect()
 ```
+<br>
 
 `Step 4` Apply an actual quasi ML model 
 ``` python 
@@ -689,33 +691,21 @@ side note: to view an iterator, it must be materialized with something like list
 df = pd.DataFrame(rows, columns=columns)
 list(df.itertuples())
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<br>
+<br>
 
 ## SPARK IN THE CLOUD
 
 #### CONNECTING TO GCS FROM LOCAL SPARK
 When you want to connect Spark to Google Cloud services, such as Google Cloud Storage (GCS) or BigQuery, you need additional libraries or connectors that provide the necessary functionality to interact with these services. The connector is packaged in a JAR (Java ARchive) file, which contains the necessary Java classes and dependencies to enable Spark to communicate with the Google Cloud services. 
 
+Steps to connect to GCS from Local Spark: 
 1. Configure Spark Application
 2. Create Spark Context
 3. Create Spark Session 
 
 `Step 1` CONFIGURE SPARK APPLICATION <br>
-Use the SparkConf() class to define the configuration parameters needed to connect to google cloud prior to initiating a SparkSession. 
+Use the `SparkConf()` class to define the configuration parameters needed to connect to google cloud prior to initiating a SparkSession. 
 - specify the .jar file containing the GCS connector
 - enable service account authentication
 - specify the location of the JSON key used for service account auth
@@ -732,9 +722,11 @@ conf = SparkConf() \
 ```
 
 Note: If you are only working with RDDs, this can be done directly with spark-submit, which will initialize a SparkContext. 
+<br>
+<br>
 
 `Step 2` CREATE A SPARK CONTEXT <br>
-In the previous examples, we initiated a Spark application with the SparkSession.builder() method, which creates a SparkContext. For connecting to GCS, it is common practice to first explicitly define the sparkContext with Hadoop config properties related to GCS and then create a session.  
+In the previous examples, we initiated a Spark application with the `SparkSession.builder()` method, which creates a SparkContext. For connecting to GCS, it is common practice to first explicitly define the sparkContext with Hadoop config properties related to GCS and then create a session.  
 
 The abstract (URIs gs://) and concrete FileSystem implementations are defined here with classes in the connector specified in the config. Using this implementation when interacting with GCS ensures that Spark Hadoop can read and write to GCS correctly. 
 
@@ -748,6 +740,8 @@ hadoop_conf.set("fs.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSy
 hadoop_conf.set("fs.gs.auth.service.account.json.keyfile", credentials_location)
 hadoop_conf.set("fs.gs.auth.service.account.enable", "true")
 ```
+<br>
+<br>
 
 `Step 3` Set up the Spark Session 
 Create a spark session with a reference to the predefined spark config
@@ -762,19 +756,21 @@ Once the session has been activated then you can read data from GCS into your sp
 # read in data
 df_green = spark.read.parquet('gs://ny-taxi-data-for-spark/pq/green/*/*')
 ```
-   
-#### CREATING A STANDALONE LOCAL SPARK CLUSTER
-Unlike distributed Spark clusters, where multiple machines (nodes) collaborate to process data in parallel, a standalone local Spark cluster runs entirely on a single machine. All Spark components, including the master and worker nodes, run on the same machine. This lightweight environment is ideal for development and testing.  
+<br>
+<br>
 
-`Step 1` Manually start the SparkMaster 
+#### CREATING A STANDALONE LOCAL PSEUDO-DISTRIBUTED SPARK CLUSTER
+Unlike distributed Spark clusters, where multiple machines (nodes) collaborate to process data in parallel, we'll set up this standalone local pseudo-distributed Spark cluster to run entirely on a single machine. All Spark components, including the master and worker nodes, will run on the same machine. This lightweight environment is ideal for development and testing.  
+
+`Step 1` Manually start the SparkMaster<br> 
 This creates a spark master that can be accessed at `localhost:8080`
 - Navigate to the Spark directory
 - Run `./sbin/start-master.sh`
 - Note: `echo $SPARK_HOME` provides info on the spark directory
 
-`Step 2` Connect the Master to a Session  
+`Step 2` Connect the Master to a Session <br> 
 Pass the Master URL to the Spark Session. This is being run on my local machine instead of on a VM in Google Cloud.  
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/43c9b8f8-7e65-4540-afa3-597c8eb48b11" width="400" height="auto">
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/43c9b8f8-7e65-4540-afa3-597c8eb48b11" width="500" height="auto">
 
 This establishes a connection between your Spark application and the Spark master, allowing your application to submit jobs to the Spark cluster managed by the standalone master.
 ```python
@@ -784,10 +780,10 @@ spark = SparkSession.builder \
     .getOrCreate()
 ```
 
-Once you connect to master than you will see the application id in the UI. 
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/527cc4db-6ad1-4952-8f09-edb5695a16a5" width="400" height="auto">
+Once you connect to master than you will see the application id in the UI. <br>
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/527cc4db-6ad1-4952-8f09-edb5695a16a5" width="500" height="auto">
 
-`Step 3` Manually start Spark workers. 
+`Step 3` Manually start Spark workers. <br>
 At this point the Session has been initialied and the master has been defined, but there are no workers. Running anything at this point, will throw an error. 
 ```python
 - 24/02/14 19:01:03 WARN TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered 
@@ -798,14 +794,12 @@ To add workers
 - to deploy multiple workers, you can run the command multiple times or speciy instances  ./sbin/start-worker.sh <master-spark-URL> --instances 3 
 - you can also specify number of cores and memory per worker node ./sbin/start-worker.sh <master-spark-URL> --cores 2 --memory 4G
 
-Now when you refresh you see a worker 
+Now when you refresh you see a worker <br>
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/309d8b54-a1f4-4dde-8e44-228ca4400d9e" width="400" height="auto">
-
-
-
+<br>
 ### NOTE: If running the spark on a virtual machine do not forget to export the path 
 
-`Step 4` Submit a Job with spark-submit
+`Step 4` Submit a Job with spark-submit<br>
 Spark-submit is a script that comes with spark that is used to submit jobs to spark. There are a quite a few options that can be specified with spark-submit including the location of the master and the .jar file.  
 It is best to specify the master in spark-submit rather than in the script for reusability purposes. 
 ``` python
@@ -817,8 +811,7 @@ spark-submit \
            --output data/pq/output
 ```
 
-`Step 5` Manually stop the worker and master 
-
+`Step 5` Manually stop the worker and master <br>
 run the following from within the spark folder
 ```cli 
 ./sbin/stop-worker.sh
