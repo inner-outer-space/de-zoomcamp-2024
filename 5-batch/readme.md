@@ -444,6 +444,7 @@ OUTER JOIN ON 2 COLUMNS
 df_join = df_green_revenue_tmp.join(df_yellow_revenue_tmp, on = ['hour', 'zone'], how='outer')
 ```
 <br>
+
 `STEP 1`  Organize the data in each partition<br>
 within each partition of the original green and yellow data, a complex record is created with a composite key created from the values in the columns that are being joined on. <br> 
 `STEP 2` Reshuffling <br> 
