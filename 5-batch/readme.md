@@ -22,19 +22,19 @@ stand alone internals https://books.japila.pl/spark-standalone-internals/overvie
 
 || Batch Processing | Streaming |
 |--|--|--|
-|DEFINITION|Data is processed in discrete batches generally based on time intervals or when a threshold is reached. | Data is processed in near real time as it is created and/or when an event is triggered.|
-|USE CASES| Used for non time-time-sensitive tasks such as periodic reporting | Used for applications that require real-time analytics such as IoT, financial trading platforms, and social media analytics| 
+|DEFINITION|Data is processed in discrete batches, generally based on time intervals or when a threshold is reached. | Data is processed in near real-time as it is created or when an event is triggered.|
+|USE CASES| Used for non time-time-sensitive tasks, such as periodic reporting | Used for applications that require real-time analytics such as IoT, financial trading platforms, and social media analytics| 
 
 <br>
 <br>
 
 #### BATCH PROCESSING 
 - TYPICAL INTERVALS: 
-    - weekly
-    - daily
-    - hourly
+    - Weekly
+    - Daily
+    - Hourly
     - 3x /hr
-    - every 5 min
+    - Every 5 min
 - TECHNOLOGIES:
     - Python Scripts run in Kubernetics, AWS, etc 
     - SQL 
@@ -42,11 +42,11 @@ stand alone internals https://books.japila.pl/spark-standalone-internals/overvie
     - Flink
     - Orchestrators such as Airflow or Mage
 - ADVANTAGES: 
-    - convenient and easy to manage - tools can parameterize the scripts
-    - automatic retry
-    - easy to scale
+    - Convenient and easy to manage - tools can parameterize the scripts
+    - Automatic retry
+    - Easy to scale
 - DISADVANTAGE: 
-    - latency and limited freshness of data
+    - Latency and limited freshness of data
     - Not suited for real-time analytics
 
 <br>
@@ -62,11 +62,11 @@ Similar to the MapReduce paradigm, Spark employs a combination of Map and Reduce
 Spark can handle both batch and streaming data processing. Spark processes continuous data by breaking it down into a sequence of small batch jobs. 
 
 #### WHEN TO USE SPARK 
-- Data Stored in a Data Lake: Spark is compatible with distributed file systems like HDFS, S3, and GCS, enabling seamless integration with data stored in these environments.
-- Large Amounts of Data: Spark is suitable for processing large volumes of data efficiently due to its distributed computing capabilities.
-- Complex Transformations Needed: Spark supports multiple programming languages including Java, Scala, Python, and R. These are well-suited for handling complex transformations, implementing unit tests, training and applying machine learning models, etc.
+- Data is Stored in a Data Lake: Spark is compatible with distributed file systems like HDFS, S3, and GCS, enabling seamless integration with data stored in these environments.
+- There are Large Amounts of Data: Spark is suitable for processing large volumes of data efficiently due to its distributed computing capabilities.
+- Complex Transformations are Needed: Spark supports SQL as well as Java, Scala, Python, and R. These other languages are well-suited for handling complex transformations, implementing unit tests, training and applying machine learning models, etc.
 
-Note: If you can express your jobs in SQL only, then it is recommended to use another tool like Presto or Athena. Alternatively, you could also use these tools to handle all the SQL preprocessing and then pass the data to Spark for the more complex transformations. 
+Note: If the job can be expressed solely in SQL, then it's recommended to use a more light weight tool such as Presto or Athena. Alternatively, you could also utilize these tools to handle for SQL preprocessing and then pass the data to Spark for more complex transformations. 
 
 #### APACHE SPARK ARCHITECTURE 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/bca3c2f0-ba69-4c40-9fa4-c0bd1d1784ce" width = "500" height="auto">
@@ -74,11 +74,12 @@ Note: If you can express your jobs in SQL only, then it is recommended to use an
 [Spark Components Documentation](https://spark.apache.org/docs/latest/cluster-overview.html)
 
 <br>
-
-- `SparkSession` is the main entry point to Spark's SQL, DataFrame, and Dataset APIs. It encapsulates the functionality of the SparkContext, SQLContext, and HiveContext, providing a single interface for working with structured data in Spark. The SparkSession simplifies the process of interacting with Spark by providing a cohesive API for reading data from various sources, executing SQL queries, and performing data processing tasks using DataFrames and Datasets. It also manages the underlying various SparkContexts and automatically creates them when needed. In Spark applications, the SparkSession is typically created using the SparkSession.builder() method.
-- `SparkContext` communicates with the Cluster Manager to supervise jobs, partitions the job into tasks, and assigns these tasks to worker nodes. 
+- `SparkSession` is the main entry point to Spark's SQL, DataFrame, and Dataset APIs. It encapsulates the functionality of the SparkContext, SQLContext, and HiveContext, providing a single interface for working with structured data in Spark. In the past, a developer had to start and stop each Context as needed. SparkSession now manages the underlying various SparkContexts and automatically creates them when needed. It SparkSession simplifies the process of interacting with Spark by providing a cohesive API for reading data from various sources, executing SQL queries, and performing data processing tasks using DataFrames and Datasets.
+- `SparkContext` communicates with the Cluster Manager to supervise jobs, partitions the job into tasks, and assigns these tasks to worker nodes. It is the base context for creating RDDs and performing basic Spark operations. Since Spark 2.0, it is automatically created by SparkSession. Create a SparkContext if you want to work directly with RDDs, otherwise let SparkSession create it.  
 - `Cluster Manager` is responsible for allocating resources in the cluster.  
-- `Executors or Worker Nodes` are responsible for the task completion. They process tasks on the partitioned RDDs and return the result back to SparkContext.
+- `Worker Nodes` are responsible for the task completion. They process tasks on the partitioned RDDs and return the result back to SparkContext/SparkSession. A worker node can have multiple executors determined by the SparkSession config setting spark.executor.instances. 
+- `Executors` is a process that is launched for a Spark application on a worker node. An executor can run multiple concurrent tasks/processes simultaneously, up to the number of cores allocated to it.
+
 <br>
 <br>
 
