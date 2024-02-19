@@ -19,9 +19,9 @@
 
 ## INTRODUCTION 
 
-Today the two primary methods for handling big data are batch and streaming processing. 
+Today, the two primary methods for handling big data are `batch` and `streaming` processing. 
 
-|| Batch Processing | Streaming |
+|| Batch Processing | Streaming Processing |
 |--|--|--|
 |DEFINITION| A large volume of data is processed at once, in predefined discrete batches, generally based on time intervals or when a threshold is reached. | Data is processed in near real-time as it is created or when an event is triggered.|
 |USE CASES| Used for non time-time-sensitive tasks, such as periodic reporting, performing analytics on historical data, and running periodic ETL (Extract, Transform, Load) jobs. | Used for applications that require real-time analytics such as IoT, financial trading platforms, and social media analytics| 
@@ -29,12 +29,12 @@ Today the two primary methods for handling big data are batch and streaming proc
 <br>
 <br>
 
-#### BATCH PROCESSING 
+#### MORE ON BATCH PROCESSING 
 |**TYPICAL TIME INTERVALS**|**TECNOLOGIES USE**D|
 |--|--|
 |- Weekly<br>- Daily<br>- Hourly<br>- 3x /hr<br>- Every 5 min|- Python Scripts run in Kubernetics, AWS, etc<br>- SQL<br>- Spark<br>- Flink- Orchestrators such as Airflow or Mage|
 |**ADVANTAGES**|**DISADVANTAGE**| 
-|- Convenient and easy to manage<br>- tools can parameterize the scripts<br>- Automatic retry>br>- Easy to scale|- Latency and limited freshness of data<br>- Not suited for real-time analytics|
+|- Convenient and easy to manage<br>- tools can parameterize the scripts<br>- Automatic retry<br>- Easy to scale|- Latency and limited freshness of data<br>- Not suited for real-time analytics|
 
 <br>
 <br>
