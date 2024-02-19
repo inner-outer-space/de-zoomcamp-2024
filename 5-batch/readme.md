@@ -17,6 +17,8 @@
 <hr />
 <br>
 
+
+
 ## INTRODUCTION 
 
 The two primary methods for handling big data are `batch` and `streaming` processing. 
@@ -67,10 +69,10 @@ _Note: If the job can be expressed solely in SQL, then it's recommended to use a
 
 <br>
 
-- `Driver Program` is a Java process. This is the process where the main() method of the Scala, Java, Python program runs. It executes the user code and creates a SparkSession or SparkContext.
+- `Driver Program`  Spark Driver executes the user code and creates a SparkSession or SparkContext. It contains various other components such as DAG Scheduler, Task Scheduler, Backend Scheduler, and Block Manager, which are responsible for translating the user-written code into jobs that are actually executed on the cluster. 
 - `SparkSession` is a high level-interface for working with structured data and managing the underlying SparkContexts. It is the main entry point to Spark's SQL, DataFrame, and Dataset APIs encapsulating the functionality of the SparkContext, SQLContext, and HiveContext, providing a single interface for working with structured data in Spark. In the past, a developer had to start and stop each Context as needed. SparkSession now manages the underlying various SparkContexts and automatically creates and destroys them when needed. It provides a cohesive API for reading data from various sources, executing SQL queries, and performing data processing tasks using DataFrames and Datasets.
 - `SparkContext` communicates with the Cluster Manager to supervise jobs, partitions the job into tasks, and assigns these tasks to worker nodes. It is the base context for creating RDDs and performing basic Spark operations. Since Spark 2.0, it is automatically created by SparkSession. If you want to work with the RDD abstraction of the data rather than with a dataframe, then you will need to explicitly create a SparkContext; otherwise let SparkSession create the underlying SparkContext.  
-- `Cluster Manager` is responsible for allocating resources in the cluster. Spark can be run on its own built-in cluster manager or on an external cluster manager that also supports other applications (YARN, Kubernetes, 
+- `Cluster Manager` is responsible for allocating resources in the cluster and instructing the workers to execute the tasks. Spark can be run on its own built-in cluster manager or on an external cluster manager that also supports other applications (YARN, Kubernetes, 
 - `Worker Nodes` are responsible for the task completion. They process tasks on the partitioned RDDs and return the result back to SparkContext/SparkSession. A worker node can have multiple executors determined by the SparkSession config setting spark.executor.instances. 
 - `Executors` is a process that is launched on a worker node. An executor can run multiple concurrent tasks/processes simultaneously, up to the number of cores allocated to it. It runs tasks and returns the results to the driver. 
 
