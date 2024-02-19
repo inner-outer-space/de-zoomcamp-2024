@@ -431,25 +431,27 @@ ORDER BY
 `Step 3` Final GroupBy <br>
 - With records consolidated based on groupby keys within partitions, the final group by operation is executed.
 
-Order By:
+`Step 4` Order By<br>
 - If an "Order By" operation is specified, there will be an additional stage to handle the sorting.
 <br>
 <br>
 
 #### SPARK IMPLEMENTATION OF JOINS
 
-EXAMPLE: OUTER JOIN ON 2 COLUMNS 
+EXAMPLE: <br>
+OUTER JOIN ON 2 COLUMNS 
 ```python
 df_join = df_green_revenue_tmp.join(df_yellow_revenue_tmp, on = ['hour', 'zone'], how='outer')
 ```
+<br>
 `STEP 1`  Organize the data in each partition<br>
--  within each partition of the original green and yellow data, a complex record is created with a composite key created from the values in the columns that are being joined on. <br> 
+within each partition of the original green and yellow data, a complex record is created with a composite key created from the values in the columns that are being joined on. <br> 
 `STEP 2` Reshuffling <br> 
-- Records with the same join keys are reshuffled to the same partition, enabling localized join operations within each partition.<br> 
+Records with the same join keys are reshuffled to the same partition, enabling localized join operations within each partition.<br> 
 `STEP 3` Reduce within a partition<br>
-- Within each partition, a local join operation is performed on the records sharing the same join keys.<br> 
+Within each partition, a local join operation is performed on the records sharing the same join keys.<br> 
 `STEP 4` Final Reduce <br>
-- The results of local join operations within each partition are aggregated to produce the final joined dataset.<br> 
+The results of local join operations within each partition are aggregated to produce the final joined dataset.<br> 
 <br> 
 <br> 
 
