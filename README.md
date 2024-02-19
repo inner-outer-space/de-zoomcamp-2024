@@ -86,6 +86,7 @@ MODULE 6:  [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomca
 <summary> Duck DB </summary>
   
   - [duck DB](https://motherduck.com/blog/duckdb-tutorial-for-beginners/)
+  - [Video - Why should you care about DuckDB](https://www.youtube.com/watch?v=q55UMyQapKA)
   - 
 </details>
 
