@@ -17,6 +17,7 @@
 <hr />
 <br>
 
+## INTRODUCTION 
 || Batch Processing | Streaming |
 |--|--|--|
 |DEFINITION|Data is processed in discrete batches, generally based on time intervals or when a threshold is reached. | Data is processed in near real-time as it is created or when an event is triggered.|
