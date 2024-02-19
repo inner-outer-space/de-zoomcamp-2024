@@ -261,7 +261,7 @@ df.select('pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID')
 #### SPARK ACTIONS VS TRANSFORMATIONS 
 |TRANSFORMATIONS|ACTIONS|
 |--|--|
-|`Transformations` are Lazy, meaning they are not executed right away<br> but rather when the next action is called. These are operations that manipulate the data or trigger computations| `Actions` are eager, meaning they are executed right away. These include functions that return results or write data to a file.|
+|`Transformations` are Lazy, meaning they are not executed right away but rather when the next action is called. These are operations that manipulate the data or trigger computations| `Actions` are eager, meaning they are executed right away. These include functions that return results or write data to a file.|
 |- selecting columns <br>- filtering<br>- joins<br>- groupby<br>- any kind of transofrmation|- show()<br>- take()<br>- head()<br>- write()|
 
 _note: for joins and group-bys, it is recommended to use SQL because it is more expressive and python is recommended for more complicated conditionality because it is easier to specify and test._
