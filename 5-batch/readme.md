@@ -468,11 +468,11 @@ In Spark, broadcasting is used to optimize join operations between a large and s
 
 
 ## RESILIENT DISTRIBUTED DATASETS
-Earlier versions of Spark relied heavily on RDDs (Resilient Distributed Datasets), which represent a distributed unstructured collections of objects. DataFrames, introduced later, provide a higher-level abstraction built on top of RDDs. They offer structured data with a defined schema, simplifying data manipulation tasks. While DataFrames are more commonly used due to their ease of use, RDDs offer flexibility and control over data processing workflows. 
+Earlier versions of Spark relied heavily on RDDs (Resilient Distributed Datasets), which represent distributed unstructured collections of objects. DataFrames, introduced later, provide a higher-level abstraction built on top of RDDs. They offer structured data with a defined schema, simplifying data manipulation tasks. While DataFrames are more commonly used due to their ease of use, RDDs offer flexibility and control over data processing workflows. 
 
 
 #### CREATE AN RDD 
-The `.rdd method`  converts a spark dataframe into and rdd. 
+The `.rdd` method converts a spark dataframe into and rdd. 
 ```python
 rdd = df_green \
     .select('lpep_pickup_datetime', 'PULocationID', 'total_amount') \
@@ -481,7 +481,8 @@ rdd = df_green \
 
 #### RDD OPERATIONS  
 
-WHERE - Use the `.filter` method to implement WHERE on an RDD. Note: filter returns a boolean.  
+**WHERE**<br>
+Use the `.filter` method to implement WHERE on an RDD. Note: filter returns a boolean.  
 ```python
 # selects all objects in the RDD
 rdd.filter(lambda row: True).take(1)
@@ -492,7 +493,7 @@ rdd.filter(lambda row: row.lpep_pickup_datetime >= start).take(1)
 ```
 <br>
 
-It is ideal to use a function rather than lambda. 
+It is preferable to use a function rather than a lambda. 
 ```python
 def filter_outliers(row):
     return row.lpep_pickup_datetime >= start
@@ -501,8 +502,8 @@ rdd.filter(filter_outliers).take(1)
 ```
 <br>
 
-SELECT AND GROUPBY 
-Implementing the following SQL on an RDD 
+**SELECT AND GROUPBY**<br> 
+The following is a walk through of how to implement the following SQL on an RDD.  
 ```sql
 SELECT 
     date_trunc('hour', lpep_pickup_datetime) AS hour, 
@@ -518,7 +519,7 @@ GROUP BY
     1, 2
 ```
 
-To perform a group by operation, the data needs to be restuctured so that each row is represented as a tuple where the first element is the key (corresponding to the group by values) and the second element is a tuple or list containing the rest of the values in the row. Once the data is appropriately structured, aggregations can be applied to compute summaries or statistics within each group.
+To perform a group by operation, the data needs to be restructured so that each row is represented as a tuple where the first element is the key (corresponding to the group by values), and the second element is a tuple or list containing the rest of the values in the row. Once the data is appropriately structured, aggregations can be applied to compute summaries or statistics within each group.
 
 ```python
 def prepare_for_grouping(row): 
@@ -532,10 +533,10 @@ def prepare_for_grouping(row):
 
     return (key, value)
 ```
-Use the `.map` method to apply the restructuring function. Map takes in an object, applies a transformation, and returns another object. 
+Use the `.map` method to apply the restructuring function. Map takes an object as an input, applies a transformation, and returns another object. 
 
-After restructuring the data, aggregation is performed using the calculate_revenue function. For each key, the values associated with that key are combined to produce a single aggregated value. 
-The `.reduceByKey` method takes in elements with (key, value) and returns (key, reduced_value). There will be only one record for each key. 
+After restructuring the data, an aggregation is performed using the calculate_revenue function. For each key, the values associated with that key are combined to produce a single aggregated value. 
+The `.reduceByKey` method takes in elements with (key, value) and returns (key, reduced_value). When complete, there will be only one record for each key. 
 ```python
 def calculate_revenue(left_value, right_value):
     left_amount, left_count = left_value
@@ -554,7 +555,7 @@ rdd.filter(fitler_outliers) \
 ```
 <br>
 
-The results of these tranformations are nested. They must first be un-nested before the data can be reverted back to a DF.   
+The results of these tranformations are nested. Before we can convert this back to a DataFrame the results must be un-nested.   
 ```python
 # This function creates a tuple that returns all the elements.
 def unwrap(row):
@@ -568,7 +569,7 @@ rdd.filter(fitler_outliers) \
     .take(10)
 ```
 
-The column names of original DF were lost in the transformations. This unwrap function adds them back in as a header row.    
+The column names of original DataFrame were lost in the transformations. This unwrap function adds them back in as a header row.    
 ```python
 from collections import namedtuple
 RevenueRow = namedtuple('RevenueRow', ['hour', 'zone', 'revenu', 'count']
@@ -581,7 +582,7 @@ def unwrap(row):
         count = row [1][1])
 ```
 
-If there is not a schema, then Spark will attempt to infer it. The transformation will run much faster if a schema is supplied. 
+In the absence of a schema, Spark will attempt to infer it. The transformation will run much faster if a schema is supplied. 
 ```python
 
 result_schema = types.StructType([
@@ -603,10 +604,11 @@ There will be two stages in the DAG for Group By: one stage for the map function
 <br>
 <br>
 
-#### mapPartition
-This mapPartition operation is similar to map but it applies a function to an entire partition of data rather than a single object. The input is an RDD and the output is another RDD. By chunking the data in this way, it facilitates processing large datasets efficiently, making it particularly useful for machine learning tasks where computations can be parallelized across partitions.
+#### MAPPARTITION
+The mapPartition operation is similar to map, but it applies a function to an entire partition of data rather than a single object. It takes an RDD as input and returns another RDD. Chunking the data in this way, facilitates processing large datasets efficiently, and is particularly useful for machine learning tasks where computations can be parallelized across partitions.
 
-EXAMPLE: Create a service that predicts the duration of a trip
+EXAMPLE: <br>
+Create a service that predicts the duration of a trip
 
 `Step 1` Create the RDD with the columns of interest
 ```python
