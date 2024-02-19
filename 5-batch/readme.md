@@ -139,13 +139,27 @@ According to the documentation, Spark will attempt to infer the schema for a CSV
 The following is a workaround for using Pandas to assist in creating the schema rather than having to create it from scratch. We can utilize Pandas to infer the data types, which can then be used to construct a schema for the Spark DataFrame. While Pandas may not provide a perfect inference, it serves as a better starting point for schema creation.
 
 
-`step 1` - create a pandas df from a smaller sample set of the data<br>
-`step 2` - convert the pandas df to a spark df using a spark session method called createDataFrame<br> 
-`step 3` - output the spark schema which now contains pandas best guess at the schema <br>
+`step 1` For manageability, create a Pandas DataFrame from a smaller sample set of the larger DataFrame<br>
+```python
+# write a subset of the data to a csv file 
+df.limit(1000).toPandas().to_csv('small_fhvhv_tripdata_2021-01.csv', index=False)
 
+# read the subset of data into a pandas df
+df_csv = pd.read_csv('small_fhvhv_tripdata_2021-01.csv')
+```
+
+`step 2` Convert the pandas df to a spark df using a spark session method called createDataFrame<br> 
+```python
+spark_df=spark.createDataFrame(df_csv)
+```
+
+`step 3` Output the spark schema, which now contains pandas best guess at the schema <br>
+```python 
 `spark.createDataFrame(df_pandas).schema` <br>
+```
 
-`step 4` Convert the StructType output into python code. (StructType comes from scala) 
+`step 4` Convert the StructType output into python code. 
+Output - StructType comes from scala
 ```scala
 StructType([
     StructField('hvfhs_license_num', StringType(), True),
@@ -157,7 +171,7 @@ StructType([
     StructField('SR_Flag', DoubleType(), True)
 ])
 ```
-Python 
+Python Schema
 ```python
 schema = types.StructType([
     types.StructField('hvfhs_license_num', types.StringType(), True),
@@ -169,8 +183,8 @@ schema = types.StructType([
     types.StructField('SR_Flag', types.StringType(), True)
 ])
 ```
-Now you can read the files in with a schema 
 
+`step 4` Read the full CSV file in with a schema. 
 ```python
 df = spark.read \
     .option("header", "true") \
