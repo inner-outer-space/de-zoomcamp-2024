@@ -18,34 +18,23 @@
 <br>
 
 ## INTRODUCTION 
+
+Today the two primary methods for handling big data are batch and streaming processing. 
+
 || Batch Processing | Streaming |
 |--|--|--|
-|DEFINITION|Data is processed in discrete batches, generally based on time intervals or when a threshold is reached. | Data is processed in near real-time as it is created or when an event is triggered.|
-|USE CASES| Used for non time-time-sensitive tasks, such as periodic reporting | Used for applications that require real-time analytics such as IoT, financial trading platforms, and social media analytics| 
+|DEFINITION| A large volume of data is processed at once, in predefined discrete batches, generally based on time intervals or when a threshold is reached. | Data is processed in near real-time as it is created or when an event is triggered.|
+|USE CASES| Used for non time-time-sensitive tasks, such as periodic reporting, performing analytics on historical data, and running periodic ETL (Extract, Transform, Load) jobs. | Used for applications that require real-time analytics such as IoT, financial trading platforms, and social media analytics| 
 
 <br>
 <br>
 
 #### BATCH PROCESSING 
-- TYPICAL INTERVALS: 
-    - Weekly
-    - Daily
-    - Hourly
-    - 3x /hr
-    - Every 5 min
-- TECHNOLOGIES:
-    - Python Scripts run in Kubernetics, AWS, etc 
-    - SQL 
-    - Spark
-    - Flink
-    - Orchestrators such as Airflow or Mage
-- ADVANTAGES: 
-    - Convenient and easy to manage - tools can parameterize the scripts
-    - Automatic retry
-    - Easy to scale
-- DISADVANTAGE: 
-    - Latency and limited freshness of data
-    - Not suited for real-time analytics
+|**TYPICAL TIME INTERVALS**|**TECNOLOGIES USE**D|
+|--|--|
+|- Weekly<br>- Daily<br>- Hourly<br>- 3x /hr<br>- Every 5 min|- Python Scripts run in Kubernetics, AWS, etc<br>- SQL<br>- Spark<br>- Flink- Orchestrators such as Airflow or Mage|
+|**ADVANTAGES**|**DISADVANTAGE**| 
+|- Convenient and easy to manage - tools can parameterize the scripts<br>- Automatic retry>br>- Easy to scale|- Latency and limited freshness of data<br>- Not suited for real-time analytics|
 
 <br>
 <br>
