@@ -78,6 +78,7 @@ _Note: If the job can be expressed solely in SQL, then it's recommended to use a
 
 <br>
 <br>
+
 #### SPARK WORKFLOW 
 In a Spark cluster setup, the orchestration of tasks begins with the Spark master, which manages the distribution of workloads across the cluster.  
 
