@@ -241,7 +241,7 @@ The 3 main datastructures available for working with distributed data in Spark a
 <br>
 <br>
 
-#### SPARK DATA FRAMES  
+#### PYSPARK AND SPARK DATA FRAMES  
 Dataframes are the most commonly used data structure when working with python and spark. PySpark, the Python API for Spark, allows you to work with spark dataframes in a mannar similar to working with dataframes in python. It also provides additional functionality, such as partitioning, which allows us to take advantage of the parallel processing capabilities of spark.  
 
 **EXAMPLES** 
@@ -250,6 +250,7 @@ PRINT SCHEMA
 ```python
 df.schema or df.printSchema
 ```
+
 SELECT COLUMNS AND FILTER 
 ```python 
 df.select('pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID') \
@@ -257,22 +258,23 @@ df.select('pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID')
 ```
 
 #### ACTIONS VS TRANSFORMATIONS 
-`Transformations` are Lazy, meaning they are not executed right away.  Instead they are executed when the next action is called.  <br>
-- selecting columns
+|TRANSFORMATIONS|ACTIONS|
+|--|--|
+|`Transformations` are Lazy, meaning they are not executed right away but rather when the next action is called.| `Actions` are eager, meaning they are executed right away.|
+|- selecting columns
 - filtering
 - joins
 - groupby
-- any kind of transofrmation
-- note: it is recommended to use SQL for joins and groupbys because it is more expressive 
-for complicated conditionality use python - easier to test. <br><br>
-
-`Actions` are eager, meaning they are executed right away. <br>
+- any kind of transofrmation|
 - show()
 - take()
 - hea() 
-- write() 
+- write()|
+  
+- note: it is recommended to use SQL for joins and groupbys because it is more expressive 
+for complicated conditionality use python - easier to test. <br><br>
 
-#### PySPARK FUNCTIONS 
+#### PYSPARK BUILT-IN FUNCTIONS 
 Pyspark comes with many build in fucntions. Typing F. will display a list of available functions. 
 <br>
 Example
@@ -289,7 +291,7 @@ df \
 
 ```
 
-#### USER DEFINED FUNCTIONS 
+#### PYSPARK USER DEFINED FUNCTIONS 
 You also have the ability to define your own functions in spark. 
 <br> <br> 
 EXAMPLE: <br>
