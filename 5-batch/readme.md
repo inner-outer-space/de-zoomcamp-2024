@@ -68,7 +68,7 @@ _Note: If the job can be expressed solely in SQL, then it's recommended to use a
 <br>
 
 - `SparkSession` is the driver program in the image above. It is the main entry point to Spark's SQL, DataFrame, and Dataset APIs. It encapsulates the functionality of the SparkContext, SQLContext, and HiveContext, providing a single interface for working with structured data in Spark. In the past, a developer had to start and stop each Context as needed. SparkSession now manages the underlying various SparkContexts and automatically creates them when needed. It simplifies the process of interacting with Spark by providing a cohesive API for reading data from various sources, executing SQL queries, and performing data processing tasks using DataFrames and Datasets.
-- `SparkContext` communicates with the Cluster Manager to supervise jobs, partitions the job into tasks, and assigns these tasks to worker nodes. It is the base context for creating RDDs and performing basic Spark operations. Since Spark 2.0, it is automatically created by SparkSession. Create a SparkContext if you want to work directly with RDDs, otherwise let SparkSession create it.  
+- `SparkContext` communicates with the Cluster Manager to supervise jobs, partitions the job into tasks, and assigns these tasks to worker nodes. It is the base context for creating RDDs and performing basic Spark operations. Since Spark 2.0, it is automatically created by SparkSession. If you want to work with the RDD abstraction of the data rather than with a dataframe, then you will need to exlicitely create a SparkContext; otherwise let SparkSession create the underlying SparkContext.  
 - `Cluster Manager` is responsible for allocating resources in the cluster.  
 - `Worker Nodes` are responsible for the task completion. They process tasks on the partitioned RDDs and return the result back to SparkContext/SparkSession. A worker node can have multiple executors determined by the SparkSession config setting spark.executor.instances. 
 - `Executors` is a process that is launched on a worker node. An executor can run multiple concurrent tasks/processes simultaneously, up to the number of cores allocated to it.
@@ -76,10 +76,10 @@ _Note: If the job can be expressed solely in SQL, then it's recommended to use a
 <br>
 <br>
 
-#### INGESTING DATA
+#### DATA STRUCTURES 
 Data can be ingested into Spark by establishing a connection to an external database or by directly loading a data file. Spark accepts many data formats (Parquet, Text, CSV, JSON, XML, ORC, Binary, Avro, TFRecord, Sequence Files) but defaults to parquet, unless otherwise specified. When reading Parquet files, Spark infers datatypes from the schema and automatically converts all columns to be nullable for compatibility reasons.
 
-Data is read into a: 
+The 3 main datastructures available for working with distributed data in Spark are: 
 - DataFrame:
     - Easiest data strucutre to work with, with an extensive number of functions and libraries available. 
     - Built on top of RDDs for optimization.
