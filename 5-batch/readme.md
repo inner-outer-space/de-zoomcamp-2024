@@ -845,3 +845,32 @@ You can find an example of the Rest API call for a job on the configuration tab 
 
 
 #### Spark and BigQuery
+Connect Spark run with Dataproc to BigQuery.  The last excercise took data from gcs modified it and returned it to gcs. 
+
+In order to send the data to bigquery, the script needs to be modified 
+
+replace the write at the following which will write a table to bigquery. 
+```python
+df_result.write.format('bigquery') \
+    .option('table', output) \
+    .save()
+```
+specify a temprorary bucket. You can choose one of the temp tables that were created by dataproc.  
+```python
+spark.conf.set('temporaryGcsBucket', 'dataproc-staging-europe-west6-453692755898-tfqnuapg')
+```
+
+ The output option will also be changed when calling the script and a connector .jar file will need to be specified. 
+ ```cli
+gcloud dataproc jobs submit pyspark \
+    --cluster=de-datatalks \  
+    --region=europe-west6 \
+    --jars=gs://spark-lib/bigquery/spark-bigquery-latest_2.12.jar \
+    gs://ny-taxi-data-for-spark/code/07_spark_sql.py \
+    -- \
+        --input_green=gs://ny-taxi-data-for-spark/pq/green/2020/*/ \
+        --input_yellow=gs://ny-taxi-data-for-spark/pq/yellow/2020/*/ \
+        --output=all_ny_data.report-2020
+```
+
+ 
