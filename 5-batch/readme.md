@@ -53,7 +53,7 @@ Spark can handle both batch and streaming data processing. In the case of stream
 - `There are large amounts of data` Spark is suitable for processing large volumes of data efficiently due to its distributed computing capabilities.
 - `Complex transformations are needed` Spark supports SQL as well as Java, Scala, Python, and R. These other languages are well-suited for handling complex transformations, implementing unit tests, training and applying machine learning models, etc.
 
-_Note: If the job can be expressed solely in SQL, then it's recommended to use a more light weight tool such as Presto or Athena. Alternatively, you could also utilize these tools to handle for SQL preprocessing and then pass the data to Spark for more complex transformations. _
+_Note: If the job can be expressed solely in SQL, then it's recommended to use a more light weight tool such as Presto or Athena. Alternatively, you could also utilize these tools to handle for SQL preprocessing and then pass the data to Spark for more complex transformations._
 
 <br>
 <br>
