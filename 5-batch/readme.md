@@ -16,9 +16,6 @@
 
 <hr />
 <br>
-https://www.altexsoft.com/blog/apache-spark-pros-cons/
-client vs cluster mode https://medium.com/@sephinreji98/understanding-spark-cluster-modes-client-vs-cluster-vs-local-d3c41ea96073
-stand alone internals https://books.japila.pl/spark-standalone-internals/overview/#scheduleexecutorsonworkers
 
 || Batch Processing | Streaming |
 |--|--|--|
