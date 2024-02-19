@@ -124,8 +124,7 @@ If not working locally, then forward port 4040 to view in the web browser. <br>
 <br>
 
 ## INGESTING NY TAXI CSV 
-
-According to the documentation, Spark will attempt to infer the schema for a CSV file. But it may end up reading everything in as string.  Therefore, it is best to provide the schema for CSV files.  
+Data can be ingested into Spark by establishing a connection to an external database or by directly loading a data file. Spark accepts many data formats (Parquet, Text, CSV, JSON, XML, ORC, Binary, Avro, TFRecord, Sequence Files) but defaults to parquet, unless otherwise specified. When reading Parquet files, Spark infers datatypes from the schema and automatically converts all columns to be nullable for compatibility reasons.
 
 ```python
 df = spark.read \
@@ -135,9 +134,12 @@ df = spark.read \
 df.show()
 ```
 
-We can use pandas to infer the data types and then use that create a schema for the spark dataframe. <br>
-Pandas will not do this perfectly either but it will be a better place to start from<br>
-`step 1` - create a pandas df from a sample set of the data<br>
+According to the documentation, Spark will attempt to infer the schema for a CSV file. But it may end up reading everything in as string.  Therefore, it is best to provide the schema for CSV files.  
+
+The following is a workaround for using Pandas to assist in creating the schema rather than having to create it from scratch. We can utilize Pandas to infer the data types, which can then be used to construct a schema for the Spark DataFrame. While Pandas may not provide a perfect inference, it serves as a better starting point for schema creation.
+
+
+`step 1` - create a pandas df from a smaller sample set of the data<br>
 `step 2` - convert the pandas df to a spark df using a spark session method called createDataFrame<br> 
 `step 3` - output the spark schema which now contains pandas best guess at the schema <br>
 
