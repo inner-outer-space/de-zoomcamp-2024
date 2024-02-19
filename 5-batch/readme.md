@@ -269,11 +269,12 @@ _note: for joins and group-bys, it is recommended to use SQL because it is more 
 <br>
 
 #### PYSPARK BUILT-IN FUNCTIONS 
-Pyspark comes with many build in fucntions. Typing F. will display a list of available functions. 
+Pyspark comes with many build in fucntions. Typing `F.` will display a list of available functions. 
 <br>
-Example
-F.to_date() - extracts the data from the time stamp
-df.withColumn() adds a new column to a df. If the columns already exist, it will be overwritten.  
+<br>
+Example<br> 
+- F.to_date() - extracts the data from the time stamp 
+- df.withColumn() adds a new column to a df. If the columns already exist, it will be overwritten.  
 ```python
 from pyspark.sql import functions as F
 
@@ -284,9 +285,11 @@ df \
     .show()
 
 ```
+<br>
+<br>
 
-#### PYSPARK USER DEFINED FUNCTIONS 
-You also have the ability to define your own functions in spark. 
+#### PYSPARK USER DEFINED FUNCTIONS (UDFs) 
+You also have the ability to define your own functions in PySpark. 
 <br> <br> 
 EXAMPLE: <br>
 Any function that you define  
@@ -314,9 +317,11 @@ df \
     .withColumn('base_id', crazy_stuff_udf(df.dispatching_base_num))\
     .show()
 ```
+<br>
+<br>
 
 ## SPARK AND SQL 
-In order to use SQL queries with DataFrames in Spark, you need to register the DataFrame as a temporary view or table. 
+In order to use SQL queries with DataFrames in Spark, the DataFrame needs to be registered as a temporary view or table. 
 - .registerTempTable or .registerTempView
 - .createOrReplaceTempTable or .createOrReplaceTempView
 
@@ -326,8 +331,9 @@ df_trips_data.registerTempTable('trips_data')
 
 ```
 
-Once registered, you can query the table by referrencing the name. 
-
+This allows you to use SQL to query the table by referrencing the name (trips_data) set at registration. 
+<br><br>
+SAMPLE SQL QUERRIES 
 ```python
 spark.sql("""
 SELECT * from trips_data LIMIT 5;
