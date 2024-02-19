@@ -121,16 +121,17 @@ Data is read into a:
 2. Stand Alone - Single Machine Cluster Environment 
     - The driver and the workers are run in different JVMs on the same machine 
     - you can specify number of cores per JVM
-    - In a distributed environment you need to specify a persistance layer (storage system)
+    - This is technically a distributed environment, so you need to specify a persistance layer (storage system)
 3. Cluster mode with 3rd party resource managers (YARN, Kubernetes, Mesos, Amazon EMR)
     - Utilizes external resource managers rather than Spark Master
     - Typically deployed on a remote cluster
     - The driver can be local or colacted with the workers
     - Allows sharing cluster resources among multiple applications and frameworks.
-
+<br>
+<br>
 
 #### LOCAL MODE  
-Initiate a Spark session with SparkSession.builder() and define the master as local.  
+In local mode, Spark runs on a single JVM, but it can still utilize multiple cores if available. The number of threads specified with * instructs Spark to use as many threads as there are available cores on the machine. Each thread can execute tasks concurrently, simulating parallel processing even though it's all within a single JVM.
 ``` python
 from pyspark.sql import SparkSession
 
@@ -144,16 +145,16 @@ When finished, close the spark session with
 ```Python
 spark.stop()
 ```
+<br>
+<br>
+
 #### MASTER UI 
-Once the Spark Session has been initiated, the master UI can be viewed in a web browser. It that includes cluster status, resource consumption, details about jobs, stages, executors, and environment, an event timeline, and logging. 
+Once the Spark Session has been initiated, the master UI can be viewed in a web browser. It includes cluster status, resource consumption, details about jobs, stages, executors, and environment, an event timeline, and logging. 
 
 For Local Spark 
 `http://localhost:4040/jobs/`
 
 If not working locally, then forward port 4040 to view in the web browser. <br>
-
-
-
 
 
 #### READING IN A CSV FILE EXAMPLE IN VIDEO 
@@ -210,9 +211,9 @@ df = spark.read \
 ```
 
 #### PARTITIONS 
-In order to take advantage of Sparks distributed workers and parallel processing, you want to partition the data. The repartition function can be used to partition a Spark DF.  When this DF is written to a file, Spark will then create multiple files based on the number of partitions specified. 
+In order to take advantage of Sparks distributed workers and parallel processing, you want to partition the data. The repartition function can be used to partition a Spark DF.  The dataframe will be written to multiple files based on the number of partitions specified. 
 
-Note: Repartition is a lazy function that will only be executed when the next action is called. In this case, it will be executed with write. 
+_Note: Repartition is a lazy function that will only be executed when the next action is called. In this case, it will be executed with write. _
 ```python
 df = df.repartition(24)
 
