@@ -199,7 +199,7 @@ The data should be partitioned and written to multiple files in order to take ad
 
 The repartition function can be used to partition a Spark DF.  The number of files is determined by the number of partitions specified.  
 
-_Note: Repartition is a lazy function that will only be executed when the next action is called. In this case, it will be executed with write. _#
+_Note: Repartition is a lazy function that will only be executed when the next action is called. In this case, it will be executed with write. _
 
 ```python
 df = df.repartition(24)
