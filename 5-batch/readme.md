@@ -394,6 +394,8 @@ GROUP BY
 
 #### SPARK INTERNALS 
 _(see [Spark Architecture](#spark-architecture)  above)_
+<br>
+<br>
 
 #### SPARK IMPLEMENTATION OF GROUPBY 
 
@@ -416,13 +418,6 @@ ORDER BY
 """)
 ```
 
-Groupby stage #2 
-reshuffling - if the group by is being done on col 1 and 2, then that is basically the key for that record. Records with the same key get moved into the same partition. Then the final group by can be done. You can have multiple keys in one partition. Just that all of the same kind should end up in the same partition. This is an external merge sort. Now you can combine the results. 
-
-Shuffling is an extensive operation because you need to move a lot of data around. So you want to do as little of it as possible. 
-
-If you had Order By then there will another stage where that is handled. 
-
 `STEP 1` Initial GroupBy <br>
 - Each executor retrieves a partition of the data.
 - All executors independently execute filtering and group by operations within their respective partitions.
@@ -438,6 +433,8 @@ If you had Order By then there will another stage where that is handled.
 
 Order By:
 - If an "Order By" operation is specified, there will be an additional stage to handle the sorting.
+<br>
+<br>
 
 #### SPARK IMPLEMENTATION OF JOINS
 
@@ -446,19 +443,21 @@ EXAMPLE: OUTER JOIN ON 2 COLUMNS
 df_join = df_green_revenue_tmp.join(df_yellow_revenue_tmp, on = ['hour', 'zone'], how='outer')
 ```
 `STEP 1`  Organize the data in each partition<br>
--  within each partition of the original green and yellow data, a complex record is created with a composite key created from the values in the columns that are being joined on. 
+-  within each partition of the original green and yellow data, a complex record is created with a composite key created from the values in the columns that are being joined on. <br> 
 `STEP 2` Reshuffling <br> 
-- Records with the same join keys are reshuffled to the same partition, enabling localized join operations within each partition.
+- Records with the same join keys are reshuffled to the same partition, enabling localized join operations within each partition.<br> 
 `STEP 3` Reduce within a partition<br>
-- Within each partition, a local join operation is performed on the records sharing the same join keys.
+- Within each partition, a local join operation is performed on the records sharing the same join keys.<br> 
 `STEP 4` Final Reduce <br>
-- The results of local join operations within each partition are aggregated to produce the final joined dataset.
+- The results of local join operations within each partition are aggregated to produce the final joined dataset.<br> 
+<br> 
+<br> 
 
-
-
-EXAMPLE: BROADCASTING: JOINING A LARGE AND SMALL DF  
+EXAMPLE: <br> 
+BROADCASTING - JOINING A LARGE AND SMALL DF  <br> 
 In Spark, broadcasting is used to optimize join operations between a large and small DataFrame. The smaller DataFrame is broadcasted to all executors, eliminating the need for shuffling and enabling local join processing, resulting in significantly faster execution times.
-
+<br> 
+<br> 
 
 
 ## RESILIENT DISTRIBUTED DATASETS
