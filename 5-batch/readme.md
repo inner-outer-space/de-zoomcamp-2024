@@ -810,7 +810,7 @@ spark-submit \
            --input_yellow data/pq/yellow/2020/* \
            --output data/pq/output
 ```
-
+<br>
 `Step 5` Manually stop the worker and master <br>
 run the following from within the spark folder
 ```cli 
@@ -821,7 +821,7 @@ run the following from within the spark folder
 #### SETTING UP A DATAPROC CLUSTER 
 Dataproc is a fully managed cloud service provided by Google Cloud Platform (GCP) for running Apache Spark and Apache Hadoop clusters. It abstracts the complexities of managing infrastructure, allowing users to focus on analyzing and processing data without worrying about cluster management tasks such as installation, configuration, and monitoring. Dataproc provides features such as automatic cluster provisioning, automatic scaling, integration with other GCP services like BigQuery and Cloud Storage, and support for various cluster configurations. It is particularly well-suited for running data processing and analytics workloads at scale in a cloud environment. 
 
-CREATE A CLUSTER ON DATAPROC 
+CREATE A CLUSTER ON DATAPROC <br>
 **** Make sure that you are using a service account that has permissions to submit to DataProc****
 
 On the dataproc clusters page, click `create cluster` and then create cluster on Compute Engine. 
@@ -832,24 +832,24 @@ For the purposes of this excercise select:
 - Optional components: Jupyter and Docker
 - leave all other defaults 
 
-Creating the cluster will spin up a virtual machine for master. Connect to this machine to see the Master UI. 
+Creating the cluster will spin up a virtual machine for master. Connect to this machine to see the Master UI. <br>
 Remember to shut it down when finished. 
 
 
-SUBMIT A JOB TO DATAPROC 
+**SUBMIT A JOB TO DATAPROC** <br>
 There are 3 ways to submit a job to Dataproc:
 1. Web ui
 2. Google cloud sdk
 3. Rest api
 
-WEB UI 
+**WEB UI**<br> 
 In order to submit a job via the Web UI, the python script first needs to be uploaded to a bucket. **Note:**  It is important that master in not defined in the script because you want to use the dataproc resource manager not the spark master. Dataprocs is configured to connect to google cloud storage, therefore a connector and the configuration for the connector are not needed.  
 ```cli
 # from the folder where the script lives
 gsutil cp 07_spark_sql.py gs://ny-taxi-data-for-spark/code/07_spark_sql.py
 ```
 
-**Submitting a Job**
+To Submit the Job: 
 - Click on the cluster to get to the Cluster Details page and then click `Submit Job`
 - Set Job Type: PySpark
 - Specify Main python File: gs://ny-taxi-data-for-spark/code/07_spark_sql.py
@@ -860,8 +860,10 @@ gsutil cp 07_spark_sql.py gs://ny-taxi-data-for-spark/code/07_spark_sql.py
     - `--input_yellow=gs://ny-taxi-data-for-spark/pq/yellow/2020/*`
     - `--output=gs://ny-taxi-data-for-spark/pq/report-2020`
 - Click Submit
+<br>
+<br>
 
-**Google Cloud SDK**
+**GOOGLE CLOUD SDK**
 ``` python
 gcloud dataproc jobs submit pyspark \
     --cluster=de-datatalks \  # dataprocs cluster name
@@ -872,14 +874,18 @@ gcloud dataproc jobs submit pyspark \
         --input_yellow=gs://ny-taxi-data-for-spark/pq/yellow/2020/*/ \
         --output=gs://ny-taxi-data-for-spark/pq/output/report-2020
 ```
+<br>
+<br>
 
-**Rest API**
+**Rest API**<br>
 You can find an example of the Rest API call for a job on the configuration tab of the rest details.  
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/ffbb2e4d-9cf5-45cf-9743-760e2fd6c410" width="400" height="auto"> 
 
+<br>
+<br>
 
 #### Spark and BigQuery
-Connect Spark run with Dataproc to BigQuery.  The last excercise took data from gcs modified it and returned it to gcs. 
+Connect a SparkSession run with Dataproc to BigQuery.  The last excercise took data from gcs modified it and returned it to gcs. 
 
 In order to send the data to bigquery, the script needs to be modified 
 
