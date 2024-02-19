@@ -209,7 +209,7 @@ df.write.parquet('fhvhv/2021/01/', mode="overwrite")
 <br>
 <br>
 
-When transforming a dataframe, by default spark will partition it. To avoid the DF being writtend to multiple files you can use coalesce. 
+When transforming a DataFrame, by default, Spark partitions the data to enable parallel processing. Repartition allows you to have control over the number of partitions. To avoid the DataFrame being written to multiple files, you can use coalesce.
 ```python
 df_result.coalesce(1).write.parquet('data/report/revenue', mode='overwrite')
 ```
