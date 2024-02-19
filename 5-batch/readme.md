@@ -80,17 +80,18 @@ _Note: If the job can be expressed solely in SQL, then it's recommended to use a
 #### SPARK MODES 
 1. Local Mode - Single Machine Environment Non-Cluster Environment
     - the driver and the workers are run in one JVM.
-    - The number of cores is specified with `local[n]`
+    - The number of threads is specified by n in `local[n]`
     - Spark Master manages resources available to the single JVM
 2. Stand Alone - Single Machine Cluster Environment 
     - The driver and the workers are run in different JVMs on the same machine 
-    - you can specify number of cores per JVM
+    - You can specify number of cores per JVM
     - This is technically a distributed environment, so you need to specify a persistance layer (storage system)
+    - Spark Master manages resources available to the multiple JVM
 3. Cluster mode with 3rd party resource managers (YARN, Kubernetes, Mesos, Amazon EMR)
     - Utilizes external resource managers rather than Spark Master
     - Typically deployed on a remote cluster
-    - The driver can be local or colacted with the workers
-    - Allows sharing cluster resources among multiple applications and frameworks.
+    - The driver can be local or colocated with the workers
+    - Allows for sharing of cluster resources among multiple applications and frameworks.
 <br>
 <br>
 
