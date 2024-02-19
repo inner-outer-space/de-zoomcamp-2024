@@ -67,31 +67,34 @@ _Note: If the job can be expressed solely in SQL, then it's recommended to use a
 
 <br>
 
-- `SparkSession` is the driver program in the image above. It is the main entry point to Spark's SQL, DataFrame, and Dataset APIs. It encapsulates the functionality of the SparkContext, SQLContext, and HiveContext, providing a single interface for working with structured data in Spark. In the past, a developer had to start and stop each Context as needed. SparkSession now manages the underlying various SparkContexts and automatically creates them when needed. It simplifies the process of interacting with Spark by providing a cohesive API for reading data from various sources, executing SQL queries, and performing data processing tasks using DataFrames and Datasets.
+- `Driver Program` is a Java process. This is the process where the main() method of the Scala, Java, Python program runs. It executes the user code and creates a SparkSession or SparkContext.
+- `SparkSession` is a high level-interface for working with structured data and managing the underlying SparkContexts. It is the main entry point to Spark's SQL, DataFrame, and Dataset APIs encapsulating the functionality of the SparkContext, SQLContext, and HiveContext, providing a single interface for working with structured data in Spark. In the past, a developer had to start and stop each Context as needed. SparkSession now manages the underlying various SparkContexts and automatically creates and destroys them when needed. It provides a cohesive API for reading data from various sources, executing SQL queries, and performing data processing tasks using DataFrames and Datasets.
 - `SparkContext` communicates with the Cluster Manager to supervise jobs, partitions the job into tasks, and assigns these tasks to worker nodes. It is the base context for creating RDDs and performing basic Spark operations. Since Spark 2.0, it is automatically created by SparkSession. If you want to work with the RDD abstraction of the data rather than with a dataframe, then you will need to explicitly create a SparkContext; otherwise let SparkSession create the underlying SparkContext.  
 - `Cluster Manager` is responsible for allocating resources in the cluster.  
 - `Worker Nodes` are responsible for the task completion. They process tasks on the partitioned RDDs and return the result back to SparkContext/SparkSession. A worker node can have multiple executors determined by the SparkSession config setting spark.executor.instances. 
-- `Executors` is a process that is launched on a worker node. An executor can run multiple concurrent tasks/processes simultaneously, up to the number of cores allocated to it.
+- `Executors` is a process that is launched on a worker node. An executor can run multiple concurrent tasks/processes simultaneously, up to the number of cores allocated to it. It runs tasks and returns the results to the driver. 
 
 <br>
 <br>
 
 
 #### SPARK MODES 
-1. Local Mode - Single Machine Environment Non-Cluster Environment
-    - the driver and the workers are run in one JVM.
-    - The number of threads is specified by n in `local[n]`
-    - Spark Master manages resources available to the single JVM
-2. Stand Alone - Single Machine Cluster Environment 
-    - The driver and the workers are run in different JVMs on the same machine 
-    - You can specify number of cores per JVM
-    - This is technically a distributed environment, so you need to specify a persistance layer (storage system)
-    - Spark Master manages resources available to the multiple JVM
-3. Cluster mode with 3rd party resource managers (YARN, Kubernetes, Mesos, Amazon EMR)
-    - Utilizes external resource managers rather than Spark Master
-    - Typically deployed on a remote cluster
-    - The driver can be local or colocated with the workers
-    - Allows for sharing of cluster resources among multiple applications and frameworks.
+<table>
+<tr>
+    <td>`Local Mode`</td>
+    <td>- Single Machine Non-Clustered Environment.<br>- The driver and the workers are run in one JVM.<br>- The number of threads is specified by n in `local[n]`<br>- Spark Master manages resources available to the single JVM</td>
+</tr>
+
+
+`Cluster Mode`
+    - Uses either an external resource manager (YARN, Kubernetes, Mesos) or the built-in Spark resource manager (Stand-Alone). 
+    - Typically deployed on a remote cluster, but can also be deployed locally in a pseudo-distributed cluster. 
+    - The driver is colocated with the workers.
+    - This is a distributed environment, so you need to specify a persistance layer (storage system)
+`Client Mode`
+    - Similar to Cluster Mode, but the driver is on the client machine that submitted the job. 
+</table>
+
 <br>
 <br>
 
@@ -262,7 +265,7 @@ df.select('pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID')
 |TRANSFORMATIONS|ACTIONS|
 |--|--|
 |`Transformations` are Lazy, meaning they are not executed right away but rather when the next action is called. These are operations that manipulate the data or trigger computations.| `Actions` are eager, meaning they are executed right away. These include functions that return results or write data to a file.|
-|- selecting columns <br>- filtering<br>- joins<br>- groupby<br>- any kind of transofrmation|- show()<br>- take()<br>- head()<br>- write()|
+|- selecting columns <br>- filtering<br>- joins<br>- group-by<br>- any kind of transformation|- show()<br>- take()<br>- head()<br>- write()|
 
 _note: for joins and group-bys, it is recommended to use SQL because it is more expressive and python is recommended for more complicated conditionality because it is easier to specify and test._
 
@@ -305,7 +308,7 @@ def crazy_stuff(base_num):
         return f'e/{num:03x}'
 ```
 
-can be can be converted into a user defined function 
+can be converted into a user defined function 
 ```python
 crazy_stuff_udf=F.udf(crazy_stuff,  returnType= types.StringType())
 ```
@@ -322,7 +325,7 @@ df \
 <br>
 
 ## SPARK AND SQL 
-In order to use SQL queries with DataFrames in Spark, the DataFrame needs to be registered as a temporary view or table. 
+In order to use SQL queries on DataFrames in Spark, the DataFrame needs to be registered as a temporary view or table. 
 - .registerTempTable or .registerTempView
 - .createOrReplaceTempTable or .createOrReplaceTempView
 
@@ -331,8 +334,8 @@ In order to use SQL queries with DataFrames in Spark, the DataFrame needs to be 
 df_trips_data.registerTempTable('trips_data')
 
 ```
-
-This allows you to use SQL to query the table by referrencing the name (trips_data) set at registration. 
+<br>
+Once registered, you'll be able to query the table by referrencing the name (trips_data). 
 <br><br>
 SAMPLE SQL QUERRIES 
 ```python
@@ -385,7 +388,7 @@ GROUP BY
 
 ## SPARK ARCHITECTURE 
 _(see above)_
-In a Spark cluster setup, the orchestration of tasks begins with a central Spark master, which manages the distribution of workloads across the cluster.  
+In a Spark cluster setup, the orchestration of tasks begins with the Spark master, which manages the distribution of workloads across the cluster.  
 
 Once we have created a script in Python, Scala, Java, etc, the job is submitted by the driver to the Spark master using `spark-submit`. The driver can be your personal laptop or an orchestrator. 
 
@@ -394,7 +397,7 @@ Once the code is submitted, it is dispatched by the master and executed by the w
 When processing data, Spark operates on partitions, where each partition typically represents a portion of the dataset stored in a distributed file system, such as S3 or a data lake. In the past, with technologies like Hadoop and HDFS, the partitions were stored on the same machines as the executors with redundancy. Source code was then sent to the machines that already had the data which minimized the amount of data transfer needed.  Since it is now common for the data lake and spark cluster to live within the same storage infrastructure, the concept of data locality has become less critical. 
 
 
-## SPARK IMPLEMENTATION OF GROUPBY 
+#### SPARK IMPLEMENTATION OF GROUPBY 
 
 ```python
 df_green_revenue = spark.sql("""
