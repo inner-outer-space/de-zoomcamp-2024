@@ -24,7 +24,7 @@ The two primary methods for handling big data are `batch` and `streaming` proces
 || Batch Processing | Streaming Processing |
 |--|--|--|
 |DEFINITION| A large volume of data is processed at once, in predefined discrete batches, generally based on time intervals or when a threshold is reached. | Data is processed in near real-time as it is created or when an event is triggered.|
-|USE CASES| Used for non time-time-sensitive tasks, such as periodic reporting, performing analytics on historical data, and running periodic ETL (Extract, Transform, Load) jobs. | Used for applications that require real-time analytics such as IoT, financial trading platforms, and social media analytics| 
+|USE CASES| Used for non time-time-sensitive tasks, such as periodic reporting, performing analytics on historical data, and running periodic ETL (Extract, Transform, Load) jobs. | Used for applications that require real-time analytics such as IoT, financial trading platforms, and social media analytics.| 
 
 <br>
 <br>
