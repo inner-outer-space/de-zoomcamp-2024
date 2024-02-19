@@ -219,8 +219,6 @@ df_result.coalesce(1).write.parquet('data/report/revenue', mode='overwrite')
 ## SPARK DATAFRAMES 
 
 #### SPARK DATA STRUCTURES 
-Data can be ingested into Spark by establishing a connection to an external database or by directly loading a data file. Spark accepts many data formats (Parquet, Text, CSV, JSON, XML, ORC, Binary, Avro, TFRecord, Sequence Files) but defaults to parquet, unless otherwise specified. When reading Parquet files, Spark infers datatypes from the schema and automatically converts all columns to be nullable for compatibility reasons.
-
 The 3 main datastructures available for working with distributed data in Spark are: 
 - DataFrame:
     - Easiest data strucutre to work with, with an extensive number of functions and libraries available. 
