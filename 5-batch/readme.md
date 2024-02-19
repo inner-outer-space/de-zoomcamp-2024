@@ -57,11 +57,11 @@ Spark is especially useful for parallel processing of distributed data with iter
 
 Similar to the MapReduce paradigm, Spark employs a combination of Map and Reduce functions to process data. But unlike MapReduce, Spark leverages in-memory processing, resulting in much faster processing.
 
-Spark can handle both batch and streaming data processing. Spark processes continuous data by breaking it down into a sequence of small batch jobs. 
+Spark can handle both batch and streaming data processing. In the case of streaming data, Spark processes it by breaking it down into a sequence of small batch jobs. 
 
 #### WHEN TO USE SPARK 
-- Data is Stored in a Data Lake: Spark is compatible with distributed file systems like HDFS, S3, and GCS, enabling seamless integration with data stored in these environments.
-- There are Large Amounts of Data: Spark is suitable for processing large volumes of data efficiently due to its distributed computing capabilities.
+- **Data is Stored in a Data Lake:** Spark is compatible with distributed file systems like HDFS, S3, and GCS, enabling seamless integration with data stored in these environments.
+- `There are Large Amounts of Data:` Spark is suitable for processing large volumes of data efficiently due to its distributed computing capabilities.
 - Complex Transformations are Needed: Spark supports SQL as well as Java, Scala, Python, and R. These other languages are well-suited for handling complex transformations, implementing unit tests, training and applying machine learning models, etc.
 
 Note: If the job can be expressed solely in SQL, then it's recommended to use a more light weight tool such as Presto or Athena. Alternatively, you could also utilize these tools to handle for SQL preprocessing and then pass the data to Spark for more complex transformations. 
