@@ -604,11 +604,12 @@ df_result = rdd \
     .toDF(result_schema)
 ```
 
-There will be two stages in the DAG for Group By: 
-    - Stage 1: the map function 
-    - Stage 2: the reshuffling and reduce function
+There will be two stages in the DAG for Group By: <br>
+    - Stage 1: the map function <br>
+    - Stage 2: the reshuffling and reduce function<br>
 <br>
 <br>
+
 
 #### MAPPARTITION
 The mapPartition operation is similar to map, but it applies a function to an entire partition of data rather than a single object. It takes an RDD as input and returns another RDD. Chunking the data in this way, facilitates processing large datasets efficiently, and is particularly useful for machine learning tasks where computations can be parallelized across partitions.
