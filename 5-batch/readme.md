@@ -34,7 +34,7 @@
 #### MORE ON BATCH PROCESSING 
 |**TYPICAL TIME INTERVALS**|**TECNOLOGIES USE**|**ADVANTAGES**|**DISADVANTAGE**| 
 |--|--|--|--|
-|- Weekly<br>- Daily<br>- Hourly<br>- 3x /hr<br>- Every 5 min|- Languages: Python, SQL, Java, Scala, R<br>- Platforms: AWS, GCP, IBM Cloud, Microsoft Azure etc<br>- Frameworks: Apache Spark, Apache Flink, Apache Hadoop<br>- Orchestrators: Apache Airflow, Mage, Kubernetes (for container orchestration)|- Convenient and easy to manage<br>- Available tools can parameterize the scripts<br>- Automatic retry<br>- Easy to scale|- Latency<br>-imited freshness of data<br>- Not suited for real-time analytics|
+|- Weekly<br>- Daily<br>- Hourly<br>- 3x /hr<br>- Every 5 min|- Languages: Python, SQL, Java, Scala, R<br>- Platforms: AWS, GCP, IBM Cloud, Microsoft Azure etc<br>- Frameworks: Apache Spark, Apache Flink, Apache Hadoop<br>- Orchestrators: Apache Airflow, Mage, Kubernetes (for container orchestration)|- Convenient and easy to manage<br>- Available tools can parameterize the scripts<br>- Automatic retry<br>- Easy to scale|- Latency<br>- Limited freshness of data<br>- Not suited for real-time analytics|
 
 <br>
 <br>
