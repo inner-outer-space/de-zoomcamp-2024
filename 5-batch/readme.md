@@ -121,7 +121,7 @@ spark.stop()
 Once the Local SparkSession has been initiated, the SPARK Master UI can be viewed in a web browser. It includes cluster status, resource consumption, details about jobs, stages, executors, and environment, an event timeline, and logging for a specific Spark application. 
 
 For Local Spark 
-`http://localhost:4040/jobs/`
+`http://localhost:4040/`
 
 If not working on your local machine, you can still access the Spark Master UI by forwarding port 4040. <br>
 
@@ -673,8 +673,9 @@ duration_rdd.mapPartitions(apply_model_in_batch).collect()
 def model_predict(df):
     df = pd.DataFrame(rows, columns=columns)
     # it would look something like this when it is called
-    # but since we didn't define it we'll use a simple linear substitute
     # y_pred = model.predict(df) 
+
+    # but since we haven't define it, we'll use a simple linear substitute
     y_pred = df.trip_distance * 5
     return y_pred
 
@@ -713,7 +714,7 @@ Steps to connect to GCS from Local Spark:
 3. Create Spark Session 
 
 `Step 1` CONFIGURE SPARK APPLICATION <br>
-Use the `SparkConf()` class to define the configuration parameters needed to connect to google cloud prior to initiating a SparkSession. 
+Use the `SparkConf()` class to define the configuration parameters needed to connect to google cloud. 
 - specify the .jar file containing the GCS connector
 - enable service account authentication
 - specify the location of the JSON key used for service account auth
@@ -751,8 +752,8 @@ hadoop_conf.set("fs.gs.auth.service.account.enable", "true")
 <br>
 <br>
 
-`Step 3` Set up the Spark Session 
-Create a Spark session with a reference to the predefined Spark config.
+`Step 3` SET UP SPARKSESSION <br>
+Create a SparkSession with a reference to the pre-defined Spark config.
 ```python
 spark = SparkSession.builder \
     .config(conf=sc.getConf()) \
@@ -768,7 +769,7 @@ df_green = spark.read.parquet('gs://ny-taxi-data-for-spark/pq/green/*/*')
 <br>
 
 #### CREATING A STANDALONE PSEUDO-DISTRIBUTED SPARK CLUSTER
-Unlike distributed Spark clusters, where multiple machines (nodes) collaborate to process data in parallel, we'll set up this pseudo-distributed Spark cluster to run entirely on a single machine in stand-alone mode, which means we'll be using the built-in Spark resource manager. All Spark components, including the master and worker nodes, will run on the same machine. This lightweight environment is ideal for development and testing.  
+Unlike distributed Spark clusters, where multiple machines (nodes) collaborate to process data in parallel, we'll set up this pseudo-distributed Spark cluster to run entirely on a single machine in stand-alone mode, which uses the built-in Spark resource manager. All Spark components, including the master and worker nodes, will run on the same machine. This lightweight environment is ideal for development and testing.  
 
 `Step 1` Manually start the SparkMaster<br> 
 - Run `./sbin/start-master.sh` in the terminal from the Spark directory on the machine you want to run Spark on. 
@@ -777,10 +778,10 @@ Unlike distributed Spark clusters, where multiple machines (nodes) collaborate t
 <br>
 
 `Step 2` Connect the Master to a Session <br> 
-- Once the master has been started, navigate to the Master UI http://localhost:8080.
-- Retrieve the Master URL from the Master UI `spark://HOST:PORT URL`. 
+- Once the master has been started, navigate to the Master UI at http://localhost:8080.
+- There you will find the Master URL `spark://HOST:PORT URL`. 
 - The Master URL can be used to connect Master to the Spark Session or Context and to connect workers to master.
-- Note: This is being run on my local machine instead of on a Google Cloud VM as in the video.
+- Note: I am doing this on my local machine instead of on a Google Cloud VM as in the video.
 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/1d07c6be-7ba0-4c73-aadb-dc97024f33ed" width="800" height="auto">
 <br>
@@ -822,9 +823,9 @@ To add 1 worker:
 <br>
 
 `Step 4` Submit a Job with spark-submit<br>
-- Spark-submit is a script that comes with Spark that is used to submit jobs to Spark.
-- There are quite a few options that can be specified with spark-submit including the location of the master and the .jar file.
-- It is best to specify the master in spark-submit rather than in the script you are submitting to make it easier to use the script in other clusters.  
+- Spark-submit is a script that comes with Spark, used to submit jobs to Spark.
+- There are quite a few options that can be specified with spark-submit, including the location of the master and the .jar file.
+- It is preferable to specify the master in the spark-submit command rather than within the script being submitted. This makes it easier to use the script across different clusters. 
 ``` python
 spark-submit \
        --master spark://pepper:7077 \ 
@@ -837,7 +838,7 @@ spark-submit \
 <br>
 
 `Step 5` Manually stop the worker and master <br>
-- run the following commands in the terminal in the Spark folder.
+- Run the following commands in the terminal in the Spark folder.
 ```cli 
 ./sbin/stop-worker.sh
 ./sbin/stop-master.sh
@@ -864,22 +865,23 @@ _Make sure that you are using a service account that has permissions to submit t
 
 **SUBMIT A JOB TO DATAPROC** <br>
 There are 3 ways to submit a job to DataProc:
-1. Web ui
-2. Google cloud sdk
-3. Rest api
+1. Web UO
+2. Google cloud SDK
+3. Rest API
 <br>
 <br>
 
 **WEB UI**<br> 
-- In order to submit a job via the Web UI, the Python script first needs to be uploaded to a bucket. 
-- **Note:**  We want to use the dataProc resource manager instead of the Spark master. Make sure that master in not defined in the script. 
+`Step 1` Upload Script to GCS
+- The Python script needs to be accessible from within GCP in order to submit the job via the Web UI. 
 - DataProc is configured to connect to google cloud storage, therefore a connector and the configuration for the connector are not needed.  
+- **Note:**  We want to use the dataProc resource manager instead of the Spark Master. Make sure that master in not defined in the script. 
 ```bash
-# from the folder where the script lives
+# run from the folder where the script lives to upload to GCS
 gsutil cp 07_spark_sql.py gs://ny-taxi-data-for-spark/code/07_spark_sql.py
 ```
 
-To Submit the Job: 
+`Step 2` Submit the Job 
 - Click on the cluster to get to the Cluster Details page and then click `Submit Job`
     - Set Job Type: PySpark
     - Specify Main Python File: gs://ny-taxi-data-for-spark/code/07_spark_sql.py
