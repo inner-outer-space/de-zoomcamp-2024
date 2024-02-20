@@ -71,7 +71,7 @@ _Note: If the job can be expressed solely in SQL, then it's recommended to use a
 
 - `Driver Program` executes the user code and creates a SparkSession or SparkContext. It contains various other components such as DAG Scheduler, Task Scheduler, Backend Scheduler, and Block Manager, which are responsible for translating the user-written code into jobs that are actually executed on the cluster. The driver program also manages the execution of the Spark job, coordinates with the cluster manager, and monitors the overall progress of the job.
 - `SparkSession` is a high-level interface for working with structured data and managing the underlying SparkContexts, creating and destroying them as needed. It provides a cohesive API for reading data from various sources, executing SQL queries, and performing data processing tasks using DataFrames and Datasets. It serves as the main entry point to Spark's SQL, DataFrame, and Dataset APIs, encapsulating the functionality of the SparkContext, SQLContext, and HiveContext. This consolidation offers a single interface for working with structured data in Spark. 
-- `SparkContext` communicates with the Cluster Manager to supervise jobs, partitions the job into tasks, and assigns these tasks to worker nodes. It is the base context for creating RDDs and performing basic Spark operations. Since Spark 2.0, it is automatically created by SparkSession. If you want to work with the RDD abstraction of the data rather than with a dataframe, then you will need to explicitly create a SparkContext; otherwise let SparkSession create the underlying SparkContext.  
+- `SparkContext` communicates with the Cluster Manager to supervise jobs, partitions the job into tasks, and assigns these tasks to worker nodes. It is the base context for creating RDDs and performing basic Spark operations. Since Spark 2.0, it is automatically created by SparkSession. If you want to work with the RDD abstraction of the data rather than with a DataFrame, then you will need to explicitly create a SparkContext; otherwise let SparkSession create the underlying SparkContext.  
 - `Cluster Manager` is responsible for allocating resources in the cluster and instructing the workers to execute the tasks. Spark can be run on its own built-in cluster manager (Stand-Alone) or on an external cluster manager that also supports other applications (YARN, Kubernetes, Mesos) 
 - `Worker Nodes` are responsible for the task completion. They process tasks on the partitioned RDDs and return the result back to SparkContext/SparkSession. A worker node can have multiple executors determined by the SparkSession config setting spark.executor.instances. 
 - `Executors` are processes launched on worker nodes. They execute tasks assigned to them by the driver and return the results back to the driver once the tasks are completed.
@@ -84,7 +84,7 @@ In a Spark cluster setup, the orchestration of tasks begins with the Spark maste
 
 Once we have created a script in Python, Scala, Java, etc, the job is submitted by the driver to the Spark master using `spark-submit`. The driver can be on your personal laptop or it can be colocated with the cluster. Once the Spark master receives a job submission via spark-submit, it communicates with the cluster manager to request resources for the job. The cluster manager is responsible for allocating resources such as memory and CPU cores to the Spark application. 
 
-Once the code is submitted, the driver defines the jobs based on the series of tranfromations and determines the necesary tasks. It then dispatched the tasks to the executors within the cluster. Each executor retrieves a partition of the data and completes the task. In case of any executor failures, the Spark master automatically redistributes the pending tasks to other available executors. Once the executor has completed the task, they return the results to the driver for aggregation. 
+Once the code is submitted, the driver defines the jobs based on the series of transformations and determines the necessary tasks. It then dispatched the tasks to the executors within the cluster. Each executor retrieves a partition of the data and completes the task. In case of any executor failures, the Spark master automatically redistributes the pending tasks to other available executors. Once the executor has completed the task, they return the results to the driver for aggregation. 
 
 When processing data, Spark operates on partitions, where each partition typically represents a portion of the dataset stored in a distributed file system, such as S3 or a data lake. In the past, with technologies like Hadoop and HDFS, the partitions were stored on the same machines as the executors with redundancy. Source code was then sent to the machines that already had the data which minimized the amount of data transfer needed.  Since it is now common for the data lake and spark cluster to live within the same storage infrastructure, the concept of data locality has become less critical. 
 <br>
@@ -125,13 +125,13 @@ For Local Spark
 
 If not working on your local machine, you can still access the Spark Master UI by forwarding port 4040. <br>
 
-_Note: The 3rd party resource maangers like YARN and Kubernetes also provide web based UIs with dashboards and tools for monitoring and managing the cluster and its applications._ 
+_Note: The 3rd party resource managers like YARN and Kubernetes also provide web based UIs with dashboards and tools for monitoring and managing the cluster and its applications._ 
 
 <br>
 <br>
 
 ## INGESTING NY TAXI CSV 
-Data can be ingested into Spark by establishing a connection to an external database or by directly loading a data file. Spark accepts many data formats (Parquet, Text, CSV, JSON, XML, ORC, Binary, Avro, TFRecord, Sequence Files) but defaults to parquet, unless otherwise specified. When reading Parquet files, Spark infers datatypes from the schema and automatically converts all columns to be nullable for compatibility reasons.
+Data can be ingested into Spark by establishing a connection to an external database or by directly loading a data file. Spark accepts many data formats (Parquet, Text, CSV, JSON, XML, ORC, Binary, Avro, TFRecord, Sequence Files) but defaults to parquet, unless otherwise specified. When reading Parquet files, Spark infers data types from the schema and automatically converts all columns to be nullable for compatibility reasons.
 
 ```python
 df = spark.read \
@@ -226,9 +226,9 @@ df_result.coalesce(1).write.parquet('data/report/revenue', mode='overwrite')
 ## SPARK DATAFRAMES 
 
 #### SPARK DATA STRUCTURES 
-The 3 main datastructures available for working with distributed data in Spark are: 
+The 3 main data structures available for working with distributed data in Spark are: 
 - DataFrame:
-    - Easiest data strucutre to work with, with an extensive number of functions and libraries available. 
+    - Easiest data structure to work with, with an extensive number of functions and libraries available. 
     - Built on top of RDDs for optimization.
     - Represents structured data organized in rows and columns.
     - Operations are lazily evaluated, meaning that transformations are not executed until an action is called.
@@ -237,7 +237,7 @@ The 3 main datastructures available for working with distributed data in Spark a
 - Dataset:
     - Available in Java and Scala with limited Python support.
     - Suitable for both structured and unstructured data, supporting custom classes and types. 
-    - Strongly typed and provides type-saftey. 
+    - Strongly typed and provides type-safety. 
     - Operations are lazily evaluated.
     - When an action is called, Spark creates a DAG and optimizes it for execution.
 
@@ -249,7 +249,7 @@ The 3 main datastructures available for working with distributed data in Spark a
 <br>
 
 #### PYSPARK AND SPARK DATA FRAMES  
-Dataframes are the most commonly used data structure when working with python and spark. PySpark, the Python API for Spark, allows you to work with spark dataframes in a mannar similar to working with dataframes in python. It also provides additional functionality, such as partitioning, which allows us to take advantage of the parallel processing capabilities of spark.  
+DataFrames are the most commonly used data structure when working with python and spark. PySpark, the Python API for Spark, allows you to work with spark DataFrames in a manner similar to working with DataFrames in python. It also provides additional functionality, such as partitioning, which allows us to take advantage of the parallel processing capabilities of spark.  
 
 **EXAMPLES** 
 
@@ -277,7 +277,7 @@ _note: for joins and group-bys, it is recommended to use SQL because it is more 
 <br>
 
 #### PYSPARK BUILT-IN FUNCTIONS 
-Pyspark comes with many built-in fucntions. Typing `F.` will display a list of available functions. 
+PySpark comes with many built-in functions. Typing `F.` will display a list of available functions. 
 <br>
 <br>
 Example<br> 
@@ -339,11 +339,11 @@ df_trips_data.registerTempTable('trips_data')
 
 ```
 <br>
-Once registered, you'll be able to query the table by referrencing the name (trips_data). 
+Once registered, you'll be able to query the table by referencing the name (trips_data). 
 <br>
 <br>
 
-SAMPLE SQL QUERRIES 
+SAMPLE SQL QUERIES 
 ```python
 spark.sql("""
 SELECT * from trips_data LIMIT 5;
@@ -381,8 +381,8 @@ SELECT
     SUM(congestion_surcharge) AS revenue_monthly_congestion_surcharge,
 
     -- Additional calculations
-    AVG(passenger_count) AS avg_montly_passenger_count,
-    AVG(trip_distance) AS avg_montly_trip_distance
+    AVG(passenger_count) AS avg_monthly_passenger_count,
+    AVG(trip_distance) AS avg_monthly_trip_distance
 FROM
     trips_data
 GROUP BY
@@ -397,7 +397,7 @@ _(see [Spark Architecture](#spark-architecture)  above)_
 <br>
 <br>
 
-#### SPARK IMPLEMENTATION OF GROUPBY 
+#### SPARK IMPLEMENTATION OF GROUP BY 
 
 ```python
 df_green_revenue = spark.sql("""
@@ -418,18 +418,18 @@ ORDER BY
 """)
 ```
 
-`STEP 1` Initial GroupBy <br>
+`STEP 1` Initial GROUP BY <br>
 - Each executor retrieves a partition of the data.
 - All executors independently execute filtering and group by operations within their respective partitions.
 - This stage is limited to processing data within individual partitions, resulting in incomplete group by results.
 
 ` STEP 2 ` Reshuffling <br>
-- Records with the same group by key (a composite of the values of the grouped columns) are redistributed to ensure that records with identical keys are co-located within the same partition.
+- The records are reorganized so that all records with the same GROUP BY key (a composite of the values of the grouped columns) are co-located within the same partition.
 - Reshuffling is analogous to an external merge sort.
 - This is an expensive operations, so you want to reshuffle as little data as possible. 
 
-`Step 3` Final GroupBy <br>
-- With records consolidated based on groupby keys within partitions, the final group by operation is executed.
+`Step 3` Final GROUP BY <br>
+- With records consolidated based on GROUP BY keys within partitions, the final GROUP BY operation is executed.
 
 `Step 4` Order By<br>
 - If an "Order By" operation is specified, there will be an additional stage to handle the sorting.
@@ -446,7 +446,7 @@ df_join = df_green_revenue_tmp.join(df_yellow_revenue_tmp, on = ['hour', 'zone']
 <br>
 
 `STEP 1`  Organize the data in each partition<br>
-- within each partition of the original green and yellow data, a complex record is created with a composite key created from the values in the columns that are being joined on.
+- Within each partition of the original green and yellow data, a complex record is created with a composite key created from the values in the columns that are being joined on.
 
 `STEP 2` Reshuffling <br> 
 - Records with the same join keys are reshuffled to the same partition, enabling localized join operations within each partition.
@@ -472,7 +472,7 @@ Earlier versions of Spark relied heavily on RDDs (Resilient Distributed Datasets
 
 
 #### CREATE AN RDD 
-The `.rdd` method converts a spark dataframe into and rdd. 
+The `.rdd` method converts a spark DataFrame into and rdd. 
 ```python
 rdd = df_green \
     .select('lpep_pickup_datetime', 'PULocationID', 'total_amount') \
@@ -487,7 +487,7 @@ Use the `.filter` method to implement WHERE on an RDD. Note: filter returns a bo
 # selects all objects in the RDD
 rdd.filter(lambda row: True).take(1)
 
-# selects objecs based on time filter
+# selects objects based on time filter
 start = dataetime (year=2020, month=1, day=1)
 rdd.filter(lambda row: row.lpep_pickup_datetime >= start).take(1)
 ```
@@ -502,7 +502,7 @@ rdd.filter(filter_outliers).take(1)
 ```
 <br>
 
-**SELECT AND GROUPBY**<br> 
+**SELECT AND GROUP BY**<br> 
 The following is a walk through of how to implement the following SQL on an RDD.  
 ```sql
 SELECT 
@@ -547,7 +547,7 @@ def calculate_revenue(left_value, right_value):
     
     return (output_amount, output_count)
 
-rdd.filter(fitler_outliers) \
+rdd.filter(filter_outliers) \
     .map(prepare_for_grouping) \
     .reduceByKey(calculate_revenue) \
     .take(10)
@@ -555,13 +555,13 @@ rdd.filter(fitler_outliers) \
 ```
 <br>
 
-The results of these tranformations are nested. Before we can convert this back to a DataFrame the results must be un-nested.   
+The transformation results are nested. Before we can convert this back to a DataFrame the results must be un-nested.   
 ```python
 # This function creates a tuple that returns all the elements.
 def unwrap(row):
     return (row[0][0], row[0][1], row[1][0], row [1][1])
 
-rdd.filter(fitler_outliers) \
+rdd.filter(filter_outliers) \
     .map(prepare_for_grouping) \
     .reduceByKey(calculate_revenue) \
     .map(unwrap) \
@@ -645,7 +645,7 @@ rdd.mapPartitions(apply_model_in_batch).collect()
 <br>
 
 
-Another option is to marterialize the RDD/Partition as a pandas dataframe and then use the len function. If needed, the python iter library can be used to slice it into subpartitions. 
+Another option is to materialize the RDD/Partition as a pandas DataFrame and then use the len function. If needed, the python iter library can be used to slice it into sub-partitions. 
 ```python
 def apply_model_in_batch(rows):
     pd.DataFrame(rows, columns = columns)
@@ -676,7 +676,7 @@ def apply_model_in_batch(rows):
     predictions = model_predict(df)    # this is an array with a prediction for each row in df. 
     df['predicted_duration'] = predictions
 
-# you need to output each element of the dataframe - use pandas iterables
+# you need to output each element of the DataFrame - use pandas iterables
 # spark will take all the output for all the partitions and flatten them.
 
 for row in df.itertuples:
@@ -796,8 +796,8 @@ Once you have connected to master, you'll see the application id in the UI. <br>
 <br>
 
 `Step 3` Manually start Spark workers <br>
-- At this point the Session has been initialied and connected the master, but there are no workers.
-- At this point running anything will throw an error. 
+- At this point the Session has been initialized and connected the master, but there are no workers.
+- Running anything will throw an error. 
 ```python
 - 24/02/14 19:01:03 WARN TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered 
 ```
@@ -838,13 +838,13 @@ spark-submit \
 <br>
 
 #### SETTING UP A DATAPROC CLUSTER 
-Dataproc is a fully managed cloud service provided by Google Cloud Platform (GCP) for running Apache Spark and Apache Hadoop clusters. It abstracts the complexities of managing infrastructure, allowing users to focus on analyzing and processing data without worrying about cluster management tasks such as installation, configuration, and monitoring. Dataproc provides features such as automatic cluster provisioning, automatic scaling, integration with other GCP services like BigQuery and Cloud Storage, and support for various cluster configurations. It is particularly well-suited for running data processing and analytics workloads at scale in a cloud environment. 
+DataProc is a fully managed cloud service provided by Google Cloud Platform (GCP) for running Apache Spark and Apache Hadoop clusters. It abstracts the complexities of managing infrastructure, allowing users to focus on analyzing and processing data without worrying about cluster management tasks such as installation, configuration, and monitoring. DataProc provides features such as automatic cluster provisioning, automatic scaling, integration with other GCP services like BigQuery and Cloud Storage, and support for various cluster configurations. It is particularly well-suited for running data processing and analytics workloads at scale in a cloud environment. 
 
 **CREATE A CLUSTER** 
 _Make sure that you are using a service account that has permissions to submit to DataProc_
 
-1. On the dataproc clusters page, click `create cluster` and then create cluster on Compute Engine. 
-2. For the purposes of this excercise select: 
+1. On the dataProc clusters page, click `create cluster` and then create cluster on Compute Engine. 
+2. For the purposes of this exercise select: 
     - Cluster Type: Single Node (1 master, 0 workers)
     - Region: europe-west6 (same zone as bucket)
     - Optional components: Jupyter and Docker
@@ -855,7 +855,7 @@ _Make sure that you are using a service account that has permissions to submit t
 <br>
 
 **SUBMIT A JOB TO DATAPROC** <br>
-There are 3 ways to submit a job to Dataproc:
+There are 3 ways to submit a job to DataProc:
 1. Web ui
 2. Google cloud sdk
 3. Rest api
@@ -864,9 +864,9 @@ There are 3 ways to submit a job to Dataproc:
 
 **WEB UI**<br> 
 - In order to submit a job via the Web UI, the python script first needs to be uploaded to a bucket. 
-- **Note:**  We want to use the dataproc resource manager instead of the spark master. Make sure that master in not defined in the script. 
-- Dataprocs is configured to connect to google cloud storage, therefore a connector and the configuration for the connector are not needed.  
-```cli
+- **Note:**  We want to use the dataProc resource manager instead of the spark master. Make sure that master in not defined in the script. 
+- DataProc is configured to connect to google cloud storage, therefore a connector and the configuration for the connector are not needed.  
+```bash
 # from the folder where the script lives
 gsutil cp 07_spark_sql.py gs://ny-taxi-data-for-spark/code/07_spark_sql.py
 ```
@@ -875,7 +875,7 @@ To Submit the Job:
 - Click on the cluster to get to the Cluster Details page and then click `Submit Job`
     - Set Job Type: PySpark
     - Specify Main python File: gs://ny-taxi-data-for-spark/code/07_spark_sql.py
-    - Additional python files: None, There are no dependencies so you dont need to specify any other files.
+    - Additional python files: None, There are no dependencies so you don't need to specify any other files.
     - Jar files: None
     - Job arguments:  using the bucket names rather than the local file paths. 
         - `--input_green=gs://ny-taxi-data-for-spark/pq/green/2020/*`
@@ -908,7 +908,7 @@ You can find an example of the Rest API call for a job on the configuration tab 
 <br>
 
 #### SETTING UP DATAPROC SPARK AND BIGQUERY
-In the last excercise we took data from gcs modified it and returned it to gcs. You can also connect a DataProc SparkSession to BigQuery.   
+In the last exercise we took data from gcs modified it and returned it to gcs. In this exercise, we'll send the data to BigQuery instead.    
 
 In order to send the data to bigquery, the script needs to be modified as follows: 
 
@@ -920,7 +920,7 @@ df_result.write.format('bigquery') \
 ```
 <br>
 
-`Step 2` Specify a temprorary bucket. <br>
+`Step 2` Specify a temporary bucket. <br>
 You can choose one of the temp tables that were created by dataproc.  
 ```python
 spark.conf.set('temporaryGcsBucket', 'dataproc-staging-europe-west6-453692755898-tfqnuapg')
