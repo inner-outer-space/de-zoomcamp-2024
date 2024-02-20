@@ -265,6 +265,7 @@ df.select('pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID')
 ```
 <br>
 <br>
+
 #### SPARK ACTIONS VS TRANSFORMATIONS 
 |TRANSFORMATIONS|ACTIONS|
 |--|--|
