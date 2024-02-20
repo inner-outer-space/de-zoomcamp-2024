@@ -604,7 +604,8 @@ df_result = rdd \
     .toDF(result_schema)
 ```
 
-There will be two stages in the DAG for GROUP BY:
+There will be two stages in the DAG for GROUP BY:<br>
+
     - Stage 1: the map function <br>
     - Stage 2: the reshuffling and reduce function<br>
 
