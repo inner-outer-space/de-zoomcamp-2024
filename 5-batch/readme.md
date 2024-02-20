@@ -776,8 +776,9 @@ Unlike distributed Spark clusters, where multiple machines (nodes) collaborate t
 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/1d07c6be-7ba0-4c73-aadb-dc97024f33ed" width="800" height="auto">
 <br>
+<br>
 
-- Passing the Master URL to master in SparkSession or SparkContext establishes a connection between the Spark application and the Spark master, allowing the application to submit jobs to the Spark cluster managed by the standalone master.
+Passing the Master URL to master in SparkSession or SparkContext establishes a connection between the Spark application and the Spark master, allowing the application to submit jobs to the Spark cluster managed by the standalone master.
 ```python
 import pyspark
 from pyspark.sql import SparkSession
@@ -787,6 +788,7 @@ spark = SparkSession.builder \
     .appName('test') \
     .getOrCreate()
 ```
+<br>
 
 Once you have connected to master, you'll see the application id in the UI. <br>
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/51f92eb6-b08f-42d1-bc11-1f26f464502a" width="800" height="auto">
@@ -798,6 +800,7 @@ At this point the Session has been initialied and connected the master, but ther
 - 24/02/14 19:01:03 WARN TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered 
 ```
 <br>
+
 To add workers: 
 - Run `./sbin/start-worker.sh <master-spark-URL>` from the Spark directory on the machine you are working on (./sbin/start-worker.sh spark://pepper:7077).
 - This will deploy one worker.
