@@ -90,7 +90,9 @@ When processing data, Spark operates on partitions, where each partition typical
 <br>
 <br>
 
-|.........................|SPARK MODES |
+
+#### SPARK MODES 
+|.........................| |
 |--|--|
 |  ` Local Mode `  |- Single Machine Non-Clustered Environment.<br>- The driver and the workers are run in one JVM.<br>- The number of threads is specified by n in `local[n]`<br>- Spark Master manages resources available to the single JVM
 |` Cluster Mode `|- Uses either an external resource manager (YARN, Kubernetes, Mesos) <br> or the built-in Spark resource manager (Stand-Alone). <br>- Typically deployed on a remote cluster, but can also be deployed locally in a pseudo-distributed cluster.<br>- The driver is collocated with the workers.<br>- This is a distributed environment, so you need to specify a persistance layer (storage system) so that data can be shared between the nodes.|
