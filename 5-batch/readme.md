@@ -764,42 +764,44 @@ Unlike distributed Spark clusters, where multiple machines (nodes) collaborate t
 
 `Step 1` Manually start the SparkMaster<br> 
 This creates a Spark master that can be accessed at `localhost:8080`
-- Run `./sbin/start-master.sh` from the Spark directory on the machine you want to run Spark on. 
+- Run `./sbin/start-master.sh` in the terminal from the Spark directory on the machine you want to run Spark on. 
 - Note: `echo $SPARK_HOME` tells you where to find the spark directory.
 
 `Step 2` Connect the Master to a Session <br> 
 - Once the master has been started, navigate to the Master UI http://localhost:8080.
-- Retrieve the Master URL from the Masster UI `spark://HOST:PORT URL`. 
+- Retrieve the Master URL from the Master UI `spark://HOST:PORT URL`. 
 - The Master URL can be used to connect Master to the Spark Session or Context and to connect workers to master.
 - Note: This is being run on my local machine instead of on a Google Cloud VM as in the video.
 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/1d07c6be-7ba0-4c73-aadb-dc97024f33ed" width="800" height="auto">
 
 
-Passing the Master URL to master in SparkSession or SparkContext establishes a connection between your Spark application and the Spark master, allowing your application to submit jobs to the Spark cluster managed by the standalone master.
+- Passing the Master URL to master in SparkSession or SparkContext establishes a connection between your Spark application and the Spark master, allowing your application to submit jobs to the Spark cluster managed by the standalone master.
 ```python
+import pyspark
+from pyspark.sql import SparkSession
+
 spark = SparkSession.builder \
     .master("spark://pepper:7077") \
     .appName('test') \
     .getOrCreate()
 ```
 
-Once you connect to master than you will see the application id in the UI. <br>
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/527cc4db-6ad1-4952-8f09-edb5695a16a5" width="500" height="auto">
+Once you have connected to master, you'll see the application id in the UI. <br>
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/51f92eb6-b08f-42d1-bc11-1f26f464502a" width="800" height="auto">
+
 
 `Step 3` Manually start Spark workers. <br>
-At this point the Session has been initialied and the master has been defined, but there are no workers. Running anything at this point, will throw an error. 
+At this point the Session has been initialied and connected the master, but there are no workers. Running anything at this point, will throw an error. 
 ```python
 - 24/02/14 19:01:03 WARN TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered 
 ```
-To add workers 
-- Navigate to the Spark directory 
-- run `./sbin/start-worker.sh <master-spark-URL>` to create one worker node.  (./sbin/start-worker.sh spark://pepper:7077)
-- to deploy multiple workers, you can run the command multiple times or speciy instances  ./sbin/start-worker.sh <master-spark-URL> --instances 3 
-- you can also specify number of cores and memory per worker node ./sbin/start-worker.sh <master-spark-URL> --cores 2 --memory 4G
-
+To add workers: 
+- Run `./sbin/start-worker.sh <master-spark-URL>` from the Spark directory on the machine you are working on (./sbin/start-worker.sh spark://pepper:7077).
+- This will deploy one worker.
+- You can also specify the number of cores and memory per worker node ./sbin/start-worker.sh <master-spark-URL> --cores 2 --memory 4G 
 Now when you refresh you see a worker <br>
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/309d8b54-a1f4-4dde-8e44-228ca4400d9e" width="400" height="auto">
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/dfb0f692-3ba4-4036-9e3d-522951a2d200" width="800" height="auto">
 <br>
 ### NOTE: If running the spark on a virtual machine do not forget to export the path 
 
