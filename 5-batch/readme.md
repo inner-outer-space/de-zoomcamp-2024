@@ -397,9 +397,10 @@ GROUP BY
 _(see [Spark Architecture](#spark-architecture)  above)_
 <br>
 <br>
+<br>
 
 #### SPARK IMPLEMENTATION OF GROUP BY 
-
+The following steps describe sparks workflow for implementing the this GROUP BY. 
 ```python
 df_green_revenue = spark.sql("""
 SELECT 
@@ -439,8 +440,7 @@ ORDER BY
 
 #### SPARK IMPLEMENTATION OF JOINS
 
-EXAMPLE: <br>
-OUTER JOIN ON 2 COLUMNS 
+The following steps describe sparks workflow for implementing this OUTER JOIN on 2 Columns. 
 ```python
 df_join = df_green_revenue_tmp.join(df_yellow_revenue_tmp, on = ['hour', 'zone'], how='outer')
 ```
@@ -461,12 +461,11 @@ df_join = df_green_revenue_tmp.join(df_yellow_revenue_tmp, on = ['hour', 'zone']
 <br> 
 <br> 
 
-EXAMPLE: <br> 
-BROADCASTING - JOINING A LARGE AND SMALL DF  <br> 
+#### BROADCASTING - JOINING A LARGE AND SMALL DF  <br> 
 In Spark, broadcasting is used to optimize join operations between a large and small DataFrame. The smaller DataFrame is broadcasted to all executors, eliminating the need for shuffling and enabling local join processing, resulting in significantly faster execution times.
 <br> 
 <br> 
-
+<br> 
 
 ## RESILIENT DISTRIBUTED DATASETS
 Earlier versions of Spark relied heavily on RDDs (Resilient Distributed Datasets), which represent distributed unstructured collections of objects. DataFrames, introduced later, provide a higher-level abstraction built on top of RDDs. They offer structured data with a defined schema, simplifying data manipulation tasks. While DataFrames are more commonly used due to their ease of use, RDDs offer flexibility and control over data processing workflows. 
@@ -480,9 +479,7 @@ rdd = df_green \
     .rdd
 ```
 
-#### RDD OPERATIONS  
-
-**WHERE**<br>
+#### RDD - WHERE
 Use the `.filter` method to implement WHERE on an RDD. Note: filter returns a boolean.  
 ```python
 # selects all objects in the RDD
@@ -503,8 +500,8 @@ rdd.filter(filter_outliers).take(1)
 ```
 <br>
 
-**SELECT AND GROUP BY**<br> 
-The following is a walk through of how to implement the following SQL on an RDD.  
+#### RDD - SELECT AND GROUP BY
+The following is a walk through of how to implement this SQL for an RDD.
 ```sql
 SELECT 
     date_trunc('hour', lpep_pickup_datetime) AS hour, 
@@ -520,6 +517,7 @@ GROUP BY
     1, 2
 ```
 
+`Step 1` Restructure the Data<br>
 To perform a group by operation, the data needs to be restructured so that each row is represented as a tuple where the first element is the key (corresponding to the group by values), and the second element is a tuple or list containing the rest of the values in the row. Once the data is appropriately structured, aggregations can be applied to compute summaries or statistics within each group.
 
 ```python
@@ -534,10 +532,9 @@ def prepare_for_grouping(row):
 
     return (key, value)
 ```
-Use the `.map` method to apply the restructuring function. Map takes an object as an input, applies a transformation, and returns another object. 
 
+`Step 2` Aggregate the Data<br>
 After restructuring the data, an aggregation is performed using the calculate_revenue function. For each key, the values associated with that key are combined to produce a single aggregated value. 
-The `.reduceByKey` method takes in elements with (key, value) and returns (key, reduced_value). When complete, there will be only one record for each key. 
 ```python
 def calculate_revenue(left_value, right_value):
     left_amount, left_count = left_value
@@ -547,7 +544,13 @@ def calculate_revenue(left_value, right_value):
     output_count = left_count + right_count
     
     return (output_amount, output_count)
+```
 
+APPLY THE FUNCTIONS TO THE RDD 
+- Use the `.map` method to apply the prepare_for_grouping restructuring function. Map takes an object as an input, applies a transformation, and returns another object. 
+- Use the `.reduceByKey` method to apply the aggregation. ReduceByKey takes in elements with (key, value) and returns (key, reduced_value). When complete, there will be only one record for each key. 
+
+``` python 
 rdd.filter(filter_outliers) \
     .map(prepare_for_grouping) \
     .reduceByKey(calculate_revenue) \
