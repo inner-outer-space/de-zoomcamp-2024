@@ -116,3 +116,15 @@ gcloud dataproc jobs submit pyspark \
         --output=trips_data_all.reports-2020
 ```
 
+for me 
+``` bash 
+gcloud dataproc jobs submit pyspark \
+    --cluster=de-datatalks \
+    --region=europe-west6 \
+    --jars=gs://spark-lib/bigquery/spark-bigquery-latest_2.12.jar \
+    gs://ny-taxi-data-for-spark/code/07_spark_sql_big_query.py \
+    -- \
+        --input_green=gs://ny-taxi-data-for-spark/pq/green/2020/*/ \
+        --input_yellow=gs://ny-taxi-data-for-spark/pq/yellow/2020/*/ \
+        --output=all_ny_data.report-2020
+``` 

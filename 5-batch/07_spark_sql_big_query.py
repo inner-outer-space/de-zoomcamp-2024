@@ -25,7 +25,7 @@ spark = SparkSession.builder \
     .appName('test') \
     .getOrCreate()
 
-spark.conf.set('temporaryGcsBucket', 'dataproc-temp-europe-west6-828225226997-fckhkym8')
+spark.conf.set('temporaryGcsBucket', 'dataproc-staging-europe-west6-453692755898-tfqnuapg')
 
 df_green = spark.read.parquet(input_green)
 
