@@ -763,9 +763,10 @@ df_green = spark.read.parquet('gs://ny-taxi-data-for-spark/pq/green/*/*')
 Unlike distributed Spark clusters, where multiple machines (nodes) collaborate to process data in parallel, we'll set up this pseudo-distributed Spark cluster to run entirely on a single machine in stand-alone mode, which means we'll be using the built-in Spark resource manager. All Spark components, including the master and worker nodes, will run on the same machine. This lightweight environment is ideal for development and testing.  
 
 `Step 1` Manually start the SparkMaster<br> 
-This creates a Spark master that can be accessed at `localhost:8080`
 - Run `./sbin/start-master.sh` in the terminal from the Spark directory on the machine you want to run Spark on. 
 - Note: `echo $SPARK_HOME` tells you where to find the spark directory.
+- This creates a Spark master that can be accessed at `localhost:8080`
+<br>
 
 `Step 2` Connect the Master to a Session <br> 
 - Once the master has been started, navigate to the Master UI http://localhost:8080.
@@ -774,9 +775,9 @@ This creates a Spark master that can be accessed at `localhost:8080`
 - Note: This is being run on my local machine instead of on a Google Cloud VM as in the video.
 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/1d07c6be-7ba0-4c73-aadb-dc97024f33ed" width="800" height="auto">
+<br>
 
-
-- Passing the Master URL to master in SparkSession or SparkContext establishes a connection between your Spark application and the Spark master, allowing your application to submit jobs to the Spark cluster managed by the standalone master.
+- Passing the Master URL to master in SparkSession or SparkContext establishes a connection between the Spark application and the Spark master, allowing the application to submit jobs to the Spark cluster managed by the standalone master.
 ```python
 import pyspark
 from pyspark.sql import SparkSession
@@ -789,25 +790,26 @@ spark = SparkSession.builder \
 
 Once you have connected to master, you'll see the application id in the UI. <br>
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/51f92eb6-b08f-42d1-bc11-1f26f464502a" width="800" height="auto">
-
+<br>
 
 `Step 3` Manually start Spark workers. <br>
 At this point the Session has been initialied and connected the master, but there are no workers. Running anything at this point, will throw an error. 
 ```python
 - 24/02/14 19:01:03 WARN TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered 
 ```
+<br>
 To add workers: 
 - Run `./sbin/start-worker.sh <master-spark-URL>` from the Spark directory on the machine you are working on (./sbin/start-worker.sh spark://pepper:7077).
 - This will deploy one worker.
 - You can also specify the number of cores and memory per worker node ./sbin/start-worker.sh <master-spark-URL> --cores 2 --memory 4G 
-Now when you refresh you see a worker <br>
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/dfb0f692-3ba4-4036-9e3d-522951a2d200" width="800" height="auto">
 <br>
+
 ### NOTE: If running the spark on a virtual machine do not forget to export the path 
 
 `Step 4` Submit a Job with spark-submit<br>
-Spark-submit is a script that comes with spark that is used to submit jobs to spark. There are a quite a few options that can be specified with spark-submit including the location of the master and the .jar file.  
-It is best to specify the master in spark-submit rather than in the script for reusability purposes. 
+Spark-submit is a script that comes with spark that is used to submit jobs to spark. There are quite a few options that can be specified with spark-submit including the location of the master and the .jar file.  
+It is best to specify the master in spark-submit rather than in the script you are submitting to make it easier to use the script in other clusters.  
 ``` python
 spark-submit \
        --master spark://pepper:7077 \ 
@@ -817,12 +819,15 @@ spark-submit \
            --output data/pq/output
 ```
 <br>
+
 `Step 5` Manually stop the worker and master <br>
-run the following from within the spark folder
+- run the following commands in the terminal in the spark folder.
 ```cli 
 ./sbin/stop-worker.sh
 ./sbin/stop-master.sh
 ```
+<br>
+<br>
 
 #### SETTING UP A DATAPROC CLUSTER 
 Dataproc is a fully managed cloud service provided by Google Cloud Platform (GCP) for running Apache Spark and Apache Hadoop clusters. It abstracts the complexities of managing infrastructure, allowing users to focus on analyzing and processing data without worrying about cluster management tasks such as installation, configuration, and monitoring. Dataproc provides features such as automatic cluster provisioning, automatic scaling, integration with other GCP services like BigQuery and Cloud Storage, and support for various cluster configurations. It is particularly well-suited for running data processing and analytics workloads at scale in a cloud environment. 
