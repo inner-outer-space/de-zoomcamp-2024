@@ -100,7 +100,7 @@ When processing data, Spark operates on partitions, where each partition typical
 <br>
 
 #### SETTING UP LOCAL MODE  
-In local mode, Spark runs on a single JVM, but it can still utilize multiple cores if available. The number of threads specified with * instructs Spark to use as many worker threads as logical cores on your machine. Each thread can execute tasks concurrently, simulating parallel processing even though it's all within a single JVM.
+Local mode is the easiest and fastest to set up. In this mode, Spark runs on a single JVM, but it can still utilize multiple cores if available. The number of threads specified with * instructs Spark to use as many worker threads as logical cores on your machine. Each thread can execute tasks concurrently, simulating parallel processing even though it's all within a single JVM. This mode is good for development, testing, and running small jobs.  
 ``` python
 from pyspark.sql import SparkSession
 
@@ -141,7 +141,7 @@ df = spark.read \
 df.show()
 ```
 
-In the case of a CSV file, Spark will attempt to infer the schema but it may end up reading everything in as string.  Therefore, it is best to provide the schema.  
+In the case of a CSV file, Spark will attempt to infer the schema, but it may end up reading everything in as string.  Therefore, it is best to provide the schema.  
 
 The following is a workaround for using Pandas to assist in creating the schema. We can utilize Pandas to infer the data types, which can then be used to construct a schema for the Spark DataFrame. While Pandas may not provide a perfect inference, it serves as a better starting point for schema creation.
 
