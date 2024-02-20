@@ -21,7 +21,7 @@
 
 ## INTRODUCTION 
 
-#### The two primary methods for handling big data are `batch` and `streaming` processing. 
+### The two primary methods for handling big data are `batch` and `streaming` processing. 
 
 || Batch Processing | Streaming Processing |
 |--|--|--|
