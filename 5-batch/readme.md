@@ -149,18 +149,18 @@ The following is a workaround for using Pandas to assist in creating the schema.
 `step 1` For manageability, use a small sample set of the larger DataFrame to create a Pandas DataFrame<br>
 ```python
 # write a subset of the data to a csv file 
-df.limit(1000).toPandas().to_csv('small_fhvhv_tripdata_2021-01.csv', index=False)
+!head -n 1001 fhvhv_tripdata_2021-01.csv > head.csv
 
 # read the subset of data into a pandas df
 df_csv = pd.read_csv('small_fhvhv_tripdata_2021-01.csv')
 ```
 
-`step 2` Convert the Pandas DataFrame to a Spark DataFrame using a SparkSession method called createDataFrame<br> 
+`Step 2` Convert the Pandas DataFrame into a Spark DataFrame using a SparkSession method called createDataFrame<br> 
 ```python
 spark_df=spark.createDataFrame(df_csv)
 ```
 
-`step 3` Output the Spark schema, which now contains the Pandas best guess at the schema <br>
+`Step 3` Output the Spark schema, which now contains the Pandas best guess at the schema <br>
 ```python 
 `spark.createDataFrame(df_pandas).schema` <br>
 ```
@@ -177,7 +177,7 @@ StructType([
 ])
 ```
 
-`step 4` Convert the StructType output into python code. <br>
+`Step 4` Convert the StructType output into python code. <br><br>
 Python Schema
 ```python
 schema = types.StructType([
@@ -191,7 +191,7 @@ schema = types.StructType([
 ])
 ```
 
-`step 5` Read the full CSV file in with a schema. 
+`Step 5` Read the full CSV file in with a schema. 
 ```python
 df = spark.read \
     .option("header", "true") \
