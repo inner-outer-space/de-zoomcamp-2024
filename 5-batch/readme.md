@@ -122,7 +122,7 @@ spark.stop()
 Once the Local SparkSession has been initiated, the SPARK Master UI can be viewed in a web browser. It includes cluster status, resource consumption, details about jobs, stages, executors, and environment, an event timeline, and logging for a specific Spark application. 
 
 For Local Spark 
-`http://localhost:4040/`
+`http://localhost:4040/jobs/`
 
 If not working on your local machine, you can still access the Spark Master UI by forwarding port 4040. <br>
 
