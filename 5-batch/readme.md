@@ -559,7 +559,7 @@ rdd.filter(filter_outliers) \
 ```
 <br>
 
-The transformation results are nested. Before we can convert this back to a DataFrame the results must be un-nested.   
+The transformation results are nested. Before we can convert this back to a DataFrame, the results must be un-nested.   
 ```python
 # This function creates a tuple that returns all the elements.
 def unwrap(row):
@@ -586,7 +586,7 @@ def unwrap(row):
         count = row [1][1])
 ```
 
-In the absence of a schema, Spark will attempt to infer it. The transformation will run much faster if a schema is supplied. 
+In the absence of a schema, Spark will attempt to infer it. The transformation will run much faster if a schema is provided. 
 ```python
 
 result_schema = types.StructType([
@@ -604,7 +604,9 @@ df_result = rdd \
     .toDF(result_schema)
 ```
 
-There will be two stages in the DAG for Group By: one stage for the map function and a second for the reshuffling and reduce function.
+There will be two stages in the DAG for Group By: 
+    - Stage 1: the map function 
+    - Stage 2: the reshuffling and reduce function
 <br>
 <br>
 
