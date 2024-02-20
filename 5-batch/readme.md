@@ -851,13 +851,16 @@ _Make sure that you are using a service account that has permissions to submit t
     - leave all other defaults
 3. Creating the cluster will spin up a virtual machine for master. Connect to this machine to see the Master UI. <br>
 4. **Remember to shut the VM down when finished**
-
+<br>
+<br>
 
 **SUBMIT A JOB TO DATAPROC** <br>
 There are 3 ways to submit a job to Dataproc:
 1. Web ui
 2. Google cloud sdk
 3. Rest api
+<br>
+<br>
 
 **WEB UI**<br> 
 - In order to submit a job via the Web UI, the python script first needs to be uploaded to a bucket. 
@@ -882,7 +885,7 @@ To Submit the Job:
 <br>
 <br>
 
-**GOOGLE CLOUD SDK**
+**GOOGLE CLOUD SDK**<br>
 The DataProc cluster can be created from the command line using the GC SDK. 
 ``` python
 gcloud dataproc jobs submit pyspark \
@@ -899,7 +902,7 @@ gcloud dataproc jobs submit pyspark \
 
 **Rest API**<br>
 You can find an example of the Rest API call for a job on the configuration tab of the rest details.  
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/ffbb2e4d-9cf5-45cf-9743-760e2fd6c410" width="400" height="auto"> 
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/ffbb2e4d-9cf5-45cf-9743-760e2fd6c410" width="350" height="auto"> 
 
 <br>
 <br>
