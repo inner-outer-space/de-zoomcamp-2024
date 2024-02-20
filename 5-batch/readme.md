@@ -6,10 +6,9 @@
 
 [Intro](#introduction) • 
 [Apache Spark](#apache-spark) • 
-[Spark Dataframes](#spark-dataframes) <br>
-[Taxi Data Prep](#taxi-data-preparation) • 
+[Ingesting NY Taxi CSV](ingesting-the-ny-taxi-csv)
+[Spark DataFrames & PySpark](#spark-dataframes-and-pyspark) <br>
 [Spark & SQL](#spark-and-sql) • 
-[Spark Internals](#spark-internals) • 
 [Resilient Distributed Datasets](#resilient-distributed-datasets) • 
 [Spark in the Cloud](#spark-in-the-cloud) 
 </div>
@@ -132,7 +131,7 @@ _Note: The 3rd party resource managers like YARN and Kubernetes also provide web
 <br>
 <br>
 
-## INGESTING NY TAXI CSV 
+## INGESTING THE NY TAXI CSV 
 Data can be ingested into Spark by establishing a connection to an external database or by directly loading a data file. Spark accepts many data formats (Parquet, Text, CSV, JSON, XML, ORC, Binary, Avro, TFRecord, Sequence Files) but defaults to parquet, unless otherwise specified. When reading Parquet files, Spark infers data types from the schema and automatically converts all columns to be nullable for compatibility reasons.
 
 ```python
@@ -225,7 +224,7 @@ df_result.coalesce(1).write.parquet('data/report/revenue', mode='overwrite')
 <br>
 <br>
 
-## SPARK DATAFRAMES 
+## SPARK DATAFRAMES AND PYSPARK
 
 #### SPARK DATA STRUCTURES 
 The 3 main data structures available for working with distributed data in Spark are: 
@@ -250,7 +249,7 @@ The 3 main data structures available for working with distributed data in Spark 
 <br>
 <br>
 
-#### PYSPARK AND SPARK DATA FRAMES  
+#### PYSPARK
 DataFrames are the most commonly used data structure when working with Python and Spark. PySpark, the Python API for Spark, allows you to work with Spark DataFrames in a manner similar to working with DataFrames in python. It also provides additional functionality, such as partitioning, which allows us to take advantage of the parallel processing capabilities of Spark.  
 
 **EXAMPLES** 
