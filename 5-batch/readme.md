@@ -82,18 +82,18 @@ _Note: If the job can be expressed solely in SQL, then it's recommended to use a
 #### SPARK WORKFLOW 
 In a Spark cluster setup, the orchestration of tasks begins with the Spark master, which manages the distribution of workloads across the cluster.  
 
-Once we have created a script in Python, Scala, Java, etc, the job is submitted by the driver to the Spark master using `spark-submit`. The driver can be on your personal laptop or it can be colocated with the cluster. Once the Spark master receives a job submission via spark-submit, it communicates with the cluster manager to request resources for the job. The cluster manager is responsible for allocating resources such as memory and CPU cores to the Spark application. 
+Once we have created a script in Python, Scala, Java, etc, the job is submitted by the driver to the Spark master using `spark-submit`. The driver can be on your personal laptop or it can be collocated with the cluster. Once the Spark master receives a job submission via spark-submit, it communicates with the cluster manager to request resources for the job. The cluster manager is responsible for allocating resources such as memory and CPU cores to the Spark application. 
 
 Once the code is submitted, the driver defines the jobs based on the series of transformations and determines the necessary tasks. As part of this process, the driver constructs the Directed Acyclic Graph (DAG) representing the sequence of transformations and actions that need to be taken on the data. The DAG helps Spark optimize the execution plan. It then dispatched the tasks to the executors within the cluster. Each executor then retrieves a partition of the data and completes their task. If an executor fails, the Spark master automatically redistributes the pending task to another available executor. Once the executor has completed the task, the results are returned to the driver for aggregation. 
 
-When processing data, Spark operates on partitions, where each partition typically represents a portion of the dataset stored in a distributed file system, such as S3 or a data lake. In the past, with technologies like Hadoop and HDFS, the partitions were stored on the same machines as the executors with redundancy. Source code was then sent to the machines that already had the data which minimized the amount of data transfer needed.  Since it is now common for the data lake and spark cluster to live within the same storage infrastructure, the concept of data locality has become less critical. 
+When processing data, Spark operates on partitions, where each partition typically represents a portion of the dataset stored in a distributed file system, such as S3 or a data lake. In the past, with technologies like Hadoop and HDFS, the partitions were stored on the same machines as the executors with redundancy. Source code was then sent to the machines that already had the data which minimized the amount of data transfer needed.  Since it is now common for the data lake and Spark cluster to live within the same storage infrastructure, the concept of data locality has become less critical. 
 <br>
 <br>
 
 |.........................|SPARK MODES |
 |--|--|
 |  ` Local Mode `  |- Single Machine Non-Clustered Environment.<br>- The driver and the workers are run in one JVM.<br>- The number of threads is specified by n in `local[n]`<br>- Spark Master manages resources available to the single JVM
-|` Cluster Mode `|- Uses either an external resource manager (YARN, Kubernetes, Mesos) <br> or the built-in Spark resource manager (Stand-Alone). <br>- Typically deployed on a remote cluster, but can also be deployed locally in a pseudo-distributed cluster.<br>- The driver is colocated with the workers.<br>- This is a distributed environment, so you need to specify a persistance layer (storage system) so that data can be shared between the nodes.|
+|` Cluster Mode `|- Uses either an external resource manager (YARN, Kubernetes, Mesos) <br> or the built-in Spark resource manager (Stand-Alone). <br>- Typically deployed on a remote cluster, but can also be deployed locally in a pseudo-distributed cluster.<br>- The driver is collocated with the workers.<br>- This is a distributed environment, so you need to specify a persistance layer (storage system) so that data can be shared between the nodes.|
 |` Client Mode `|- Similar to Cluster Mode, but the driver is on the client machine that submitted the job.| 
 
 <br>
@@ -177,7 +177,7 @@ StructType([
 ])
 ```
 
-`Step 4` Convert the StructType output into python code. <br><br>
+`Step 4` Convert the StructType output into Python code. <br><br>
 Python Schema
 ```python
 schema = types.StructType([
@@ -249,7 +249,7 @@ The 3 main data structures available for working with distributed data in Spark 
 <br>
 
 #### PYSPARK AND SPARK DATA FRAMES  
-DataFrames are the most commonly used data structure when working with python and spark. PySpark, the Python API for Spark, allows you to work with spark DataFrames in a manner similar to working with DataFrames in python. It also provides additional functionality, such as partitioning, which allows us to take advantage of the parallel processing capabilities of spark.  
+DataFrames are the most commonly used data structure when working with Python and Spark. PySpark, the Python API for Spark, allows you to work with Spark DataFrames in a manner similar to working with DataFrames in python. It also provides additional functionality, such as partitioning, which allows us to take advantage of the parallel processing capabilities of Spark.  
 
 **EXAMPLES** 
 
@@ -271,7 +271,7 @@ df.select('pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID')
 |`Transformations` are Lazy, meaning they are not executed right away but rather when the next action is called. These are operations that manipulate the data or trigger computations.| `Actions` are eager, meaning they are executed right away. These include functions that return results or write data to a file.|
 |- selecting columns <br>- filtering<br>- joins<br>- group-by<br>- any kind of transformation|- show()<br>- take()<br>- head()<br>- write()|
 
-_note: for joins and group-bys, it is recommended to use SQL because it is more expressive and python is recommended for more complicated conditionality because it is easier to specify and test._
+_note: for joins and group-bys, it is recommended to use SQL because it is more expressive and Python is recommended for more complicated conditionality because it is easier to specify and test._
 
 <br>
 <br>
@@ -472,7 +472,7 @@ Earlier versions of Spark relied heavily on RDDs (Resilient Distributed Datasets
 
 
 #### CREATE AN RDD 
-The `.rdd` method converts a spark DataFrame into and rdd. 
+The `.rdd` method converts a Spark DataFrame into and rdd. 
 ```python
 rdd = df_green \
     .select('lpep_pickup_datetime', 'PULocationID', 'total_amount') \
@@ -645,7 +645,7 @@ rdd.mapPartitions(apply_model_in_batch).collect()
 <br>
 
 
-Another option is to materialize the RDD/Partition as a pandas DataFrame and then use the len function. If needed, the python iter library can be used to slice it into sub-partitions. 
+Another option is to materialize the RDD/Partition as a pandas DataFrame and then use the len function. If needed, the Python iter library can be used to slice it into sub-partitions. 
 ```python
 def apply_model_in_batch(rows):
     pd.DataFrame(rows, columns = columns)
@@ -661,7 +661,7 @@ duration_rdd.mapPartitions(apply_model_in_batch).collect()
 # define the model 
 # model = ....
 
-# call the model in the predict function
+# Call the model in the predict function
 def model_predict(df):
     df = pd.DataFrame(rows, columns=columns)
     # it would look something like this when it is called
@@ -676,13 +676,13 @@ def apply_model_in_batch(rows):
     predictions = model_predict(df)    # this is an array with a prediction for each row in df. 
     df['predicted_duration'] = predictions
 
-# you need to output each element of the DataFrame - use pandas iterables
-# spark will take all the output for all the partitions and flatten them.
+# You need to output each element of the DataFrame - use pandas iterables
+# Spark will take all the output for all the partitions and flatten them.
 
 for row in df.itertuples:
     yield row 
 
-# Dont want to use collect because it will materialize all the data. 
+# Don't want to use collect because it will materialize all the data. 
 duration_rdd.mapPartitions(apply_model_in_batch).take(10)
 ```
 
@@ -744,14 +744,14 @@ hadoop_conf.set("fs.gs.auth.service.account.enable", "true")
 <br>
 
 `Step 3` Set up the Spark Session 
-Create a spark session with a reference to the predefined spark config
+Create a Spark session with a reference to the predefined Spark config.
 ```python
 spark = SparkSession.builder \
     .config(conf=sc.getConf()) \
     .getOrCreate()
 ```
 
-Once the session has been activated then you can read data from GCS into your spark dfs 
+Once the session has been activated then you can read data from GCS into your Spark DataFrames.  
 ```python
 # read in data
 df_green = spark.read.parquet('gs://ny-taxi-data-for-spark/pq/green/*/*')
@@ -814,7 +814,7 @@ To add 1 worker:
 <br>
 
 `Step 4` Submit a Job with spark-submit<br>
-- Spark-submit is a script that comes with spark that is used to submit jobs to spark.
+- Spark-submit is a script that comes with Spark that is used to submit jobs to Spark.
 - There are quite a few options that can be specified with spark-submit including the location of the master and the .jar file.
 - It is best to specify the master in spark-submit rather than in the script you are submitting to make it easier to use the script in other clusters.  
 ``` python
@@ -829,7 +829,7 @@ spark-submit \
 <br>
 
 `Step 5` Manually stop the worker and master <br>
-- run the following commands in the terminal in the spark folder.
+- run the following commands in the terminal in the Spark folder.
 ```cli 
 ./sbin/stop-worker.sh
 ./sbin/stop-master.sh
@@ -863,8 +863,8 @@ There are 3 ways to submit a job to DataProc:
 <br>
 
 **WEB UI**<br> 
-- In order to submit a job via the Web UI, the python script first needs to be uploaded to a bucket. 
-- **Note:**  We want to use the dataProc resource manager instead of the spark master. Make sure that master in not defined in the script. 
+- In order to submit a job via the Web UI, the Python script first needs to be uploaded to a bucket. 
+- **Note:**  We want to use the dataProc resource manager instead of the Spark master. Make sure that master in not defined in the script. 
 - DataProc is configured to connect to google cloud storage, therefore a connector and the configuration for the connector are not needed.  
 ```bash
 # from the folder where the script lives
@@ -874,8 +874,8 @@ gsutil cp 07_spark_sql.py gs://ny-taxi-data-for-spark/code/07_spark_sql.py
 To Submit the Job: 
 - Click on the cluster to get to the Cluster Details page and then click `Submit Job`
     - Set Job Type: PySpark
-    - Specify Main python File: gs://ny-taxi-data-for-spark/code/07_spark_sql.py
-    - Additional python files: None, There are no dependencies so you don't need to specify any other files.
+    - Specify Main Python File: gs://ny-taxi-data-for-spark/code/07_spark_sql.py
+    - Additional Python files: None, There are no dependencies so you don't need to specify any other files.
     - Jar files: None
     - Job arguments:  using the bucket names rather than the local file paths. 
         - `--input_green=gs://ny-taxi-data-for-spark/pq/green/2020/*`
