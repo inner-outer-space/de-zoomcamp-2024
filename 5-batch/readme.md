@@ -793,6 +793,7 @@ spark = SparkSession.builder \
 Once you have connected to master, you'll see the application id in the UI. <br>
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/51f92eb6-b08f-42d1-bc11-1f26f464502a" width="800" height="auto">
 <br>
+<br>
 
 `Step 3` Manually start Spark workers. <br>
 At this point the Session has been initialied and connected the master, but there are no workers. Running anything at this point, will throw an error. 
@@ -801,18 +802,20 @@ At this point the Session has been initialied and connected the master, but ther
 ```
 <br>
 
-To add workers: 
-- Run `./sbin/start-worker.sh <master-spark-URL>` from the Spark directory on the machine you are working on (./sbin/start-worker.sh spark://pepper:7077).
-- This will deploy one worker.
-- You can also specify the number of cores and memory per worker node ./sbin/start-worker.sh <master-spark-URL> --cores 2 --memory 4G 
+To add 1 worker: 
+- Run `./sbin/start-worker.sh <master-spark-URL>` from the Spark directory on the machine you are working on 
+- You can specify the number of cores and memory per worker node ./sbin/start-worker.sh <master-spark-URL> --cores 2 --memory 4G 
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/dfb0f692-3ba4-4036-9e3d-522951a2d200" width="800" height="auto">
 <br>
 
 ### NOTE: If running the spark on a virtual machine do not forget to export the path 
+<br>
+<br>
 
 `Step 4` Submit a Job with spark-submit<br>
-Spark-submit is a script that comes with spark that is used to submit jobs to spark. There are quite a few options that can be specified with spark-submit including the location of the master and the .jar file.  
-It is best to specify the master in spark-submit rather than in the script you are submitting to make it easier to use the script in other clusters.  
+- Spark-submit is a script that comes with spark that is used to submit jobs to spark.
+- There are quite a few options that can be specified with spark-submit including the location of the master and the .jar file.
+- It is best to specify the master in spark-submit rather than in the script you are submitting to make it easier to use the script in other clusters.  
 ``` python
 spark-submit \
        --master spark://pepper:7077 \ 
@@ -821,6 +824,7 @@ spark-submit \
            --input_yellow data/pq/yellow/2020/* \
            --output data/pq/output
 ```
+<br>
 <br>
 
 `Step 5` Manually stop the worker and master <br>
