@@ -104,4 +104,4 @@ Using the zone lookup data and the FHV October 2019 data, what is the name of th
 
 - Form for submitting: TBA
 - Deadline: See the course app
-Took 1.25 hr
+Took 1.25 hr https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/homework/hw5-scratch.ipynb
