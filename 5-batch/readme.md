@@ -759,20 +759,24 @@ df_green = spark.read.parquet('gs://ny-taxi-data-for-spark/pq/green/*/*')
 <br>
 <br>
 
-#### CREATING A STANDALONE LOCAL PSEUDO-DISTRIBUTED SPARK CLUSTER
-Unlike distributed Spark clusters, where multiple machines (nodes) collaborate to process data in parallel, we'll set up this standalone local pseudo-distributed Spark cluster to run entirely on a single machine. All Spark components, including the master and worker nodes, will run on the same machine. This lightweight environment is ideal for development and testing.  
+#### CREATING A STANDALONE PSEUDO-DISTRIBUTED SPARK CLUSTER
+Unlike distributed Spark clusters, where multiple machines (nodes) collaborate to process data in parallel, we'll set up this pseudo-distributed Spark cluster to run entirely on a single machine in stand-alone mode, which means we'll be using the built-in Spark resource manager. All Spark components, including the master and worker nodes, will run on the same machine. This lightweight environment is ideal for development and testing.  
 
 `Step 1` Manually start the SparkMaster<br> 
-This creates a spark master that can be accessed at `localhost:8080`
-- Navigate to the Spark directory
-- Run `./sbin/start-master.sh`
-- Note: `echo $SPARK_HOME` provides info on the spark directory
+This creates a Spark master that can be accessed at `localhost:8080`
+- Run `./sbin/start-master.sh` from the Spark directory on the machine you want to run Spark on. 
+- Note: `echo $SPARK_HOME` tells you where to find the spark directory.
 
 `Step 2` Connect the Master to a Session <br> 
-Pass the Master URL to the Spark Session. This is being run on my local machine instead of on a VM in Google Cloud.  
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/43c9b8f8-7e65-4540-afa3-597c8eb48b11" width="500" height="auto">
+- Once the master has been started, navigate to the Master UI http://localhost:8080.
+- Retrieve the Master URL from the Masster UI `spark://HOST:PORT URL`. 
+- The Master URL can be used to connect Master to the Spark Session or Context and to connect workers to master.
+- Note: This is being run on my local machine instead of on a Google Cloud VM as in the video.
 
-This establishes a connection between your Spark application and the Spark master, allowing your application to submit jobs to the Spark cluster managed by the standalone master.
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/1d07c6be-7ba0-4c73-aadb-dc97024f33ed" width="800" height="auto">
+
+
+Passing the Master URL to master in SparkSession or SparkContext establishes a connection between your Spark application and the Spark master, allowing your application to submit jobs to the Spark cluster managed by the standalone master.
 ```python
 spark = SparkSession.builder \
     .master("spark://pepper:7077") \
