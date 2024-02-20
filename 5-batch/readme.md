@@ -74,7 +74,7 @@ _Note: If the job can be expressed solely in SQL, then it's recommended to use a
 - `SparkContext` communicates with the Cluster Manager to supervise jobs, partitions the job into tasks, and assigns these tasks to worker nodes. It is the base context for creating RDDs and performing basic Spark operations. Since Spark 2.0, it is automatically created by SparkSession. If you want to work with the RDD rather than the DataFrame, then you will need to explicitly create a SparkContext; otherwise let SparkSession create the underlying SparkContext.  
 - `Cluster Manager` is responsible for allocating resources in the cluster and instructing the workers to execute the tasks. Spark can be run on its own built-in cluster manager (Stand-Alone) or on an external cluster manager that also supports other applications (YARN, Kubernetes, Mesos) 
 - `Worker Nodes` are responsible for the task completion. They process tasks on the partitioned RDDs and return the result back to SparkContext/SparkSession. A worker node can have multiple executors determined by the SparkSession config setting spark.executor.instances. 
-- `Executors` are processes launched on worker nodes. They execute tasks assigned to them by the driver and return the results back to the driver once the tasks are completed.
+- `Executors` are processes launched on worker nodes. They execute tasks assigned to them by the driver and return the results back to the driver for aggregation once the tasks are completed.
 
 <br>
 <br>
