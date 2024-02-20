@@ -910,7 +910,7 @@ gcloud dataproc jobs submit pyspark \
 <br>
 <br>
 
-**Rest API**<br>
+**REST API**<br>
 You can find an example of the Rest API call for a job on the configuration tab of the rest details.  
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/ffbb2e4d-9cf5-45cf-9743-760e2fd6c410" width="350" height="auto"> 
 
@@ -918,11 +918,11 @@ You can find an example of the Rest API call for a job on the configuration tab 
 <br>
 
 #### SETTING UP DATAPROC SPARK AND BIGQUERY
-In the last exercise we took data from gcs modified it and returned it to gcs. In this exercise, we'll send the data to BigQuery instead.    
+In the last exercise, we retrieved data from Google Cloud Storage (GCS), modified it, and then returned it to GCS. In this exercise, we'll output the data to BigQuery instead.   
 
 In order to send the data to bigquery, the script needs to be modified as follows: 
 
-`Step 1` Replace the write at the end of the script with the following, which will write the data to a table to bigquery instead of to a parquet file. 
+`Step 1` Replace the write operation at the end of the script with the following. This code will write the DataFrame data to a BigQuery table instead of saving it to a Parquet file. 
 ```python
 df_result.write.format('bigquery') \
     .option('table', output) \
