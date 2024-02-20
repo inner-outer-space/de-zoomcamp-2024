@@ -928,8 +928,8 @@ spark.conf.set('temporaryGcsBucket', 'dataproc-staging-europe-west6-453692755898
 <br>
 
 `Step 3` Submit the DataProc Job with updated options 
-- the --output option should specify the BigQuery table
-- add a connector .jar file  
+- Specify the BigQuery table in `--output` 
+- Add a connector .jar file  
  ```cli
 gcloud dataproc jobs submit pyspark \
     --cluster=de-datatalks \  
