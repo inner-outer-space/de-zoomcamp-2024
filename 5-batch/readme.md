@@ -6,7 +6,7 @@
 
 [Intro](#introduction) • 
 [Apache Spark](#apache-spark) • 
-[Ingesting NY Taxi CSV](ingesting-the-ny-taxi-csv)
+[Ingesting NY Taxi CSV](#ingesting-the-ny-taxi-csv) • 
 [Spark DataFrames & PySpark](#spark-dataframes-and-pyspark) <br>
 [Spark & SQL](#spark-and-sql) • 
 [Resilient Distributed Datasets](#resilient-distributed-datasets) • 
