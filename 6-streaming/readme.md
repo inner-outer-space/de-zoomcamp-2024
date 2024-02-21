@@ -1,6 +1,6 @@
 <div align="center">
     
-# BATCH
+# KAFKA STREAMING
 (*for Linux*)
 <hr />
 
