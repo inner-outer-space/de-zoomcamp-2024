@@ -144,7 +144,7 @@ df.show()
 
 In the case of a CSV file, Spark will attempt to infer the schema, but it may end up reading everything in as string.  Therefore, it is best to provide the schema.  
 
-The following is a workaround for using Pandas to assist in creating the schema. We can utilize Pandas to infer the data types, which can then be used to construct a schema for the Spark DataFrame. While Pandas may not provide a perfect inference, it serves as a better starting point for schema creation.
+The following is a workaround for using Pandas to assist in creating the schema. We can utilize Pandas to infer the data types, which can then be used to construct a schema for the Spark DataFrame. While Pandas may not provide a perfect inference, it is a good starting point.
 
 
 `step 1` For manageability, use a small sample set of the larger DataFrame to create a Pandas DataFrame<br>
@@ -163,7 +163,7 @@ spark_df=spark.createDataFrame(df_csv)
 
 `Step 3` Output the Spark schema, which now contains the Pandas best guess at the schema <br>
 ```python 
-`spark.createDataFrame(df_pandas).schema` <br>
+spark.createDataFrame(df_pandas).schema
 ```
 StructType Output (comes from scala)
 ```scala
