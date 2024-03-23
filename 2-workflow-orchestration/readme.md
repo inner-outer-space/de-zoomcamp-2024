@@ -21,8 +21,6 @@
 </div>
 
 <hr/>
-<br>
-
 ## Workflow Orchestration 
 
 **WHAT TO EXPECT THIS WEEK**
