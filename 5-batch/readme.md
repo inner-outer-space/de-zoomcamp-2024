@@ -37,6 +37,7 @@
 
 <br>
 <br>
+<hr/>
 
 ## APACHE SPARK 
 "Apache Spark is a unified analytics engine for large-scale data processing. It provides high-level APIs in Java, Scala, Python(PySpark) and R, and an optimized engine that supports general execution graphs. It also supports a rich set of higher-level tools including Spark SQL for SQL and structured data processing, Pandas API on Spark for pandas workloads (PySpark), MLlib for machine learning, GraphX for graph processing, and Structured Streaming for incremental computation and stream processing." [Apache Spark Dox](https://spark.apache.org/docs/latest/)
@@ -130,6 +131,7 @@ _Note: The 3rd party resource managers like YARN and Kubernetes also provide web
 
 <br>
 <br>
+<hr/>
 
 ## INGESTING THE NY TAXI CSV 
 Data can be ingested into Spark by establishing a connection to an external database or by directly loading a data file. Spark accepts many data formats (Parquet, Text, CSV, JSON, XML, ORC, Binary, Avro, TFRecord, Sequence Files) but defaults to parquet, unless otherwise specified. When reading Parquet files, Spark infers data types from the schema and automatically converts all columns to be nullable for compatibility reasons.
@@ -223,6 +225,7 @@ df_result.coalesce(1).write.parquet('data/report/revenue', mode='overwrite')
 ```
 <br>
 <br>
+<hr/>
 
 ## SPARK DATAFRAMES AND PYSPARK
 
@@ -329,6 +332,7 @@ df \
 ```
 <br>
 <br>
+<hr/>
 
 ## SPARK AND SQL 
 In order to use SQL queries on DataFrames in Spark, the DataFrame needs to be registered as a temporary view or table. 
@@ -467,6 +471,7 @@ In Spark, broadcasting is used to optimize join operations between a large and s
 <br> 
 <br> 
 <br> 
+<hr/>
 
 ## RESILIENT DISTRIBUTED DATASETS
 Earlier versions of Spark relied heavily on RDDs (Resilient Distributed Datasets), which represent distributed unstructured collections of objects. DataFrames, introduced later, provide a higher-level abstraction built on top of RDDs. They offer structured data with a defined schema, simplifying data manipulation tasks. While DataFrames are more commonly used due to their ease of use, RDDs offer flexibility and control over data processing workflows. 
@@ -703,6 +708,7 @@ list(df.itertuples())
 ```
 <br>
 <br>
+<hr/>
 
 ## SPARK IN THE CLOUD
 
