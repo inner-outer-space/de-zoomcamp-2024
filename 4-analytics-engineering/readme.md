@@ -59,6 +59,7 @@ The concept of an `Analytics Engineer` has emerged as a bridge between the tradi
 </div>
 <br>
 <br>
+<hr/>
 
 ## DATA MODELING CONCEPTS 
 <div align = "center">
@@ -102,6 +103,7 @@ DIMENSION TABLES
 </div>
 <br>
 <br>
+<hr/>
 
 ## WHAT IS DBT 
 dbt, data build tool, is a transformation tool that allows anyone with SQL knowledge to deploy analytics code following software engineering best practices like modularity, portability, CI/CD, and documentation. 
@@ -154,6 +156,7 @@ We will use dbt to process the data and display it in a dashboard.
 - Zone Lookup Table 
 <br>
 <br>
+<hr/>
 
 ## DBT CLOUD PROJECT WITH BIGQUERY
 Starting a dbt project using dbt Cloud and BigQuery
@@ -212,7 +215,7 @@ Starting a dbt project using dbt Cloud and BigQuery
    - delete the example under this model 
 <br>
 <br>
-
+<hr/>
 
 ## DBT MODEL COMPONENTS
 `JINJA`  
@@ -322,6 +325,7 @@ Its primary functions are:
 <br>
 <br>
 
+<hr/>
 
 ## DBT PROJECT 
 
@@ -473,6 +477,7 @@ limit 100
 ```
 <br>
 <br>
+<hr/>
 
 ## MACROS
 - Macros are reusable pieces of code analogous to functions. 
@@ -534,6 +539,7 @@ where vendorid is not null
 
 <br>
 <br>
+<hr/>
 
 ## PACKAGES
 - Similarly to libraries in other programming languages, you can import and use macros from other projects.
@@ -571,6 +577,7 @@ Compiled code
 ```
 <br>
 <br>
+<hr/>
 
 ## VARIABLES
 - variables are useful for defining values that could be used across the project
@@ -600,6 +607,7 @@ Compiled code
     ```
 <br>
 <br>
+<hr/>
 
 ## SEEDS 
 - DBT Seeds are csv files maintained in our repository that we can use as tables with the ref macro
@@ -632,6 +640,7 @@ Create another model in the core folder `fact_trips.sql`
 
 
 ```
+<hr/>
 
 ## COMPLETE PROJECT DATA FLOW 
 ![image](https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/dd25a077-484a-4118-9cf7-44036e79a9dc)
@@ -643,6 +652,7 @@ Create another model in the core folder `fact_trips.sql`
 <br>
 <br>
 
+<hr/>
 
 ## TESTING AND DOCUMENTATION
 TESTS
@@ -731,6 +741,7 @@ seeds:
 ```  
 <br>
 <br>           
+<hr/>
 
 ## DEPLOY TO DBT CLOUD 
 Deployment is the process of running the models that were created in development in the production environment. 
@@ -742,6 +753,8 @@ Running a dbt project in production
 - Each job will keep a log of the runs over time.
 - A job can also generate documentation, that could be viewed under the run information.
 - If dbt source freshness is included in the run, then the results could also be viewed at the end of a job.
+<br>
+<hr/>
 
 ## CONTINUOUS INTEGRATION (CI) 
 - CI is the practice of regularly merging dev branches into a central repository, that then builds automatically and runs tests.
