@@ -76,7 +76,7 @@ A good orchestrator handles
 <br>
 <br>
 
-<hr />
+<hr/>
 
 ## Mage
 ### Mage is an open-source pipeline tool for orchestrating, transforming, and integrating data 
