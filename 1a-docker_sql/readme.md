@@ -27,19 +27,19 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
 - built using the Dockerfile.<br> 
 
 #### DOCKER CONTAINER:
-- an instance of a docker image running as a process on a host system. <br>
+- an instance of a Docker image running as a process on a host system. <br>
 - encapsulates an application/ pipeline/ database/ process etc. and its dependencies, libraries, and configurations along with a runtime environment.<br> 
 - shares the host OS kernel and some system libraries but still provides isolation.<br>
 - multiple containers can run and be managed independently on the same host OS.<br>
 - processes, file systems, user and group IDs, networks, and resources are isolated between containers. <br>
 - can be easily created and destroyed without affecting the host or other containers.
-- when a container is removed, all changes made to it during run time are lost. <br>
+- when a container is removed, all changes made to it during runtime are lost. <br>
 
 #### ADVANTAGES:
 <table>
   <tr>
     <td><b>Reproducible</b></td>
-    <td>- the container encapsulates the application/ service and all of its dependencies ensuring that it will run consistently where ever it is deployed.<br>- avoids environment issues when the container is recreated on a different machine (e.g., recreating the dev environment on a local machine for the purpose of experimenting and testing (CI/CD))</td>
+    <td>- the container encapsulates the application/ service and all of its dependencies ensuring that it will run consistently wherever it is deployed.<br>- avoids environment issues when the container is recreated on a different machine. For example, recreating the dev environment on a local machine for the purpose of experimenting and testing (CI/CD).</td>
   </tr>
   <tr>
     <td><b>Isolated</b></td>
@@ -47,7 +47,7 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
   </tr>
   <tr>
     <td><b>Portable</b></td>
-    <td>containers can run on any platform that supports docker<br> - Cloud data pipelines - AWS Batch, Kubernetes jobs<br> - Spark data pipelines<br> - Severless functions - AWS Lamda, Google cloud functions</td>
+    <td>containers can run on any platform that supports Docker<br> - Cloud data pipelines - AWS Batch, Kubernetes jobs<br> - Spark data pipelines<br> - Severless functions - AWS Lamda, Google cloud functions</td>
   </tr>
   <tr>
     <td><b>Scalable</b></td>
@@ -111,7 +111,7 @@ WHAT HAPPENS IN A CONTAINER STAYS IN A CONTAINER
 </details>
 
 #### DOCKERFILE
-You'll normally need more than just python or ubuntu (base images) installed in a container. You could specify a bash entrypoint and then install libraries etc via the command line but these will all disappear when you close the container. 
+You'll normally need more than just python or ubuntu (base images) installed in a container. You could specify a Bash entry point and then install libraries, etc., via the command line, but these will all disappear when the container is closed. 
 ```bash
 $ docker run -it --entrypoint=bash python:3.9
 ```
