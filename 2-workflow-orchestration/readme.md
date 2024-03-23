@@ -211,7 +211,7 @@ To create a new Pipeline
 
 On the Pipeline Overview page you'll find an example_pipeline that you can click to open. Clicking `Edit Pipeline` in the left hand nav takes you to the pipeline details page. 
 
-On the left side of the screen, you can access the files structure and have a list view of the current blocks included in the pipeline. 
+On the left side of the screen, you have the file structure and a list view of the current blocks included in the pipeline. 
 <br>
 <br>
 The blocks and their code are displayed in the center of the page. From here, you can edit and run each block individually. You can also run all blocks together by going to the last block in the pipeline and clicking `Execute with all upstream blocks` 
