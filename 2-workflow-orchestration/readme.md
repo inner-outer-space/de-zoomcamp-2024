@@ -2,7 +2,7 @@
     
 # WORKFLOW ORCHESTRATION WITH MAGE
 (*for Linux*)
-<hr />
+<hr/>
 
 [Workflow Orchestration](#workflow-orchestration) •
 [Mage](#mage) •
@@ -21,6 +21,7 @@
 </div>
 
 <hr/>
+
 ## Workflow Orchestration 
 
 **WHAT TO EXPECT THIS WEEK**
@@ -148,8 +149,7 @@ Other notable functionality:
         - you can have zero to many assertions
 <br>
 <br>
-<hr />
-<br>
+<hr/>
 
 ## Mage Set Up  
 
@@ -230,8 +230,7 @@ The example_pipeline loads the Titanic data set, performs a transformation, and 
     <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/aab41bd5-7d5a-4bfd-a52b-c586323f1fb3" width="300" height="auto"></td>
 </table>
 <br>
-<hr />
-<br>
+<hr/>
 
 ## Configuring Postgres
 Configuring the postgres client so that we can connect to the local Postgres DB in the Docker container where Mage lives. 
@@ -298,8 +297,8 @@ SELECT 1;
 6. Note: To delete a block - click on the more actions elipse in the block <br><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/5359c5aa-8a13-4f4d-b0ad-468a690e1b5f" width="500" height="auto"> <br><br>
 <br>
 <br>
-<hr />
-<br>
+<hr/>
+
 ## LOAD DATA TO POSTGRES
 In this section we import the NY Taxi data compressed CSV file, transform the data, and load it to Postgres. 
 <br>
@@ -424,8 +423,8 @@ Add another SQL Data Loader block and query the DB to confirm that the data load
 <br>
 <br>
 <br>
-<hr />
-<br>
+<hr/>
+
 ## CONFIGURE GOOGLE CLOUD PLATFORM 
 In this module we are going to set up google cloud to allow Mage to read and write data to both google cloud storage and bigquery. 
 
@@ -512,8 +511,8 @@ Confirm that we can read and write files to Google Cloud Storage
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/8e6866c0-d810-482e-8087-ba2dece1c3f6" width="auto" height="250">
 <br>
 <br>
-<hr />
-<br>
+<hr/>
+
 ## LOAD DATA TO GCS
 In this module we will write data to Google Cloud Storage. Previously we wrote data to Postgres, an OLTP database (structured row oriented vs column oriented). Now we are going to write data to Google Cloud Storage which is just a file system in the cloud. Often data is written to cloud storage destinations because it is relatively inexpensive and it can also accept semi structured data better than a relationsal database. 
 
@@ -605,8 +604,8 @@ The files can be found in the ny_taxi folder in the bucket. <br>
 <br>
 <br>
 <br>
-<hr />
-<br>
+<hr/>
+
 ## LOAD DATA FROM GCS TO BIGQUERY 
 In this module, we will take the data that we wrote to Google Cloud Storage and write it to BigQuery, an OLAP database. This mirrors a traditional data workflow. 
 
@@ -682,8 +681,8 @@ You can trigger workflows:
 - from an api webhook 
 <br>
 <br>
-<hr />
-<br>
+<hr/>
+
 ## Parameterized Execution
 This module will cover loading partial datasets or loading datasets dependent on a parameter. The execution of the DAG or pipeline is dependent on a variable being supplied to the DAG. Mage has many different types of variables (run time, global etc). 
 
@@ -780,8 +779,7 @@ There are a number of custom ways to do this in Mage
 <img src ="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/26a62413-7a27-426c-b97e-c0b561fa2467" width = "275" height = "auto">
 <br>
 <br>
-<hr />
-<br>
+<hr/>
 
 ## Pipeline Backfills
 This module covers backfilling pipelines. In the case of lost or missing data, you want to build a script that will simulate each pipeline in order to recapture the missing data. 
@@ -793,8 +791,8 @@ Set the fields as follows. Note that the date range includes the last day, so th
 <img src ="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/52e881d6-8c83-4b74-bab0-70150dbb5988" width = "275" height = "auto">
 <br>
 <br>
-<hr />
-<br>
+<hr/>
+
 ## Deployment Prerequisites 
 Prerequisites for deploying Mage to Google Cloud using Terraform. 
 - Terraform installed locally
@@ -803,8 +801,7 @@ Prerequisites for deploying Mage to Google Cloud using Terraform.
 - Mage Terraform templates
 <br>
 <br>
-<hr />
-<br>
+<hr/>
 
 ## CLOUD PERMISSIONS 
 Go to Service Account for Mage in GCP. We originally added this service account with the owner role, which has full permissions ***not recommended***. 
@@ -816,8 +813,7 @@ If you want to limit the permissions then replace owner with the following:
 - Service Account token creater
 <br>
 <br>
-<hr />
-<br>
+<hr/>
 
 ## DEPLOYING TO GCP
 Configuring the Mage Terraform 
