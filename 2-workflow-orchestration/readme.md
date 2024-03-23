@@ -78,6 +78,7 @@ A good orchestrator handles
 
 <hr />
 <br>
+
 ## Mage
 ### Mage is an open-source pipeline tool for orchestrating, transforming, and integrating data 
 
@@ -152,6 +153,7 @@ Other notable functionality:
 <br>
 <hr />
 <br>
+
 ## Mage Set Up  
 
 #### CLONE THE REPO 
@@ -230,6 +232,8 @@ The example_pipeline loads the Titanic data set, performs a transformation, and 
 - Data Exporter - export_titanic_clean  </td><br>
     <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/aab41bd5-7d5a-4bfd-a52b-c586323f1fb3" width="300" height="auto"></td>
 </table>
+<br>
+<hr />
 <br>
 
 ## Configuring Postgres
@@ -779,6 +783,8 @@ There are a number of custom ways to do this in Mage
 <img src ="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/26a62413-7a27-426c-b97e-c0b561fa2467" width = "275" height = "auto">
 <br>
 <br>
+<hr />
+<br>
 
 ## Pipeline Backfills
 This module covers backfilling pipelines. In the case of lost or missing data, you want to build a script that will simulate each pipeline in order to recapture the missing data. 
@@ -800,6 +806,8 @@ Prerequisites for deploying Mage to Google Cloud using Terraform.
 - Mage Terraform templates
 <br>
 <br>
+<hr />
+<br>
 
 ## CLOUD PERMISSIONS 
 Go to Service Account for Mage in GCP. We originally added this service account with the owner role, which has full permissions ***not recommended***. 
@@ -813,6 +821,7 @@ If you want to limit the permissions then replace owner with the following:
 <br>
 <hr />
 <br>
+
 ## DEPLOYING TO GCP
 Configuring the Mage Terraform 
 
