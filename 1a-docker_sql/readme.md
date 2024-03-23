@@ -73,7 +73,7 @@ A container is an instance of an image that is created by running that image. If
 ```bash
 docker run -it ubuntu bash   
 ```
-Structure: docker \<Main Command\> \<flags\> \<image\> \<commands to run in container\>   
+Structure: \<Main Command\> \<flags\> \<image\> \<commands to run in container\>   
 `docker run` main command<br>
 `-i` interactive and `-t` terminal flags allow you to interact with the container via the terminal<br>
 ```ubuntu``` image that is being run<br>
