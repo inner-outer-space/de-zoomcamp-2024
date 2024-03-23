@@ -30,6 +30,7 @@
 | **Data View** | Lists day-to-day business transactions | Multi-dimensional view of enterprise data |
 | **Examples** | E-commerce systems, customer relationship management (CRM) software, banking applications, etc. | Data warehousing systems, business intelligence tools, and reporting platforms typically use OLAP databases.|
 
+<hr/>
 
 ## WHAT IS A DATA WAREHOUSE 
 A data warehouse is a centralized and integrated repository of large volumes of data collected from various sources within an organization. It is specifically designed for the purpose of efficiently storing, managing, and analyzing data to support business intelligence (BI) and decision-making processes.
@@ -37,6 +38,8 @@ A data warehouse is a centralized and integrated repository of large volumes of 
 <div align = center>
 <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/ce5d1296-6eec-4356-8e27-3c8b8a1aa0b9" width="500" height="auto">
 </div>
+
+<hr/>
 
 ## BIGQUERY 
 BigQuery is a fully managed and serverless data warehouse and analytics platform offered by Google Cloud. 
@@ -66,6 +69,7 @@ Pricing Models
 - Flat Rate - based on the number or pre requested slots. 100 slots costs ~ $2,000/mos which is ~400TB of data processed on demand. 
 <br>
 <br>
+<hr/>
 
 ## PARTITIONING AND CLUSTERING 
 A partitioned table is a type of database table in which the data is divided into multiple smaller sub-tables or partitions based on a specific column or set of columns, typically a date or timestamp column. The primary purpose of partitioning tables is to improve query performance and data management by allowing the database system to read and write only the relevant partitions when executing queries or performing maintenance operations. When done correctly, partitioning can considerably improve performance.  
@@ -219,6 +223,7 @@ In the case of integer partitions, you will need to supply:
     - DATETIME
 <br>
 <br>
+<hr/>
 
 ## PARTITIONING VS CLUSTERING
 Understanding the differences between partitioning and clustering will help you make decisions about when to use these approaches. 
@@ -249,7 +254,8 @@ To maintain the performance characteristics of a clustered table, BigQuery perfo
 Note: Automatic reclustering does not incur costs on GCloud
 <br>
 <br>
- 
+<hr/>
+
 ## BEST PRACTICES 
 #### FOR COST REDUCTION 
 - Avoid SELECT *
@@ -276,6 +282,7 @@ Note: Automatic reclustering does not incur costs on GCloud
 - **Arrange Tables by Size:** When performing joins, place the table with the largest number of rows first, followed by the table with fewer rows, and so on, in decreasing order of size.
 <br>
 <br>
+<hr/>
 
 ## INTERNAL STRUCTURE OF BIGQUERY 
 <div align = center>
@@ -324,6 +331,7 @@ SUBSETTING OF BQ QUERY <br>
 - [BigQuery - Dremel](http://www.goldsborough.me/distributed-systems/2019/05/18/21-09-00-a_look_at_dremel/)
 <br>
 <br>
+<hr/>
 
 ## ML in BigQuery  
 This module covers ML in BigQuery. We are going to build a model, export it, and run it with Docker. 
@@ -551,6 +559,7 @@ tip_amount IS NOT NULL;
 ```
 <br>
 <br>
+<hr/>
 
 ## EXPORT THE MODEL USING DOCKER 
 The next module covers exporting and deploying the model using docker. 
