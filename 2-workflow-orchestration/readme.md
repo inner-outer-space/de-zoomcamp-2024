@@ -200,6 +200,7 @@ localhost:789
 ```
 <br>
 <br>
+<hr/>
 
 ## A Simple Pipeline
 We are going to configure a simple pipeline to upload the titanic dataset from an http location and load it to Postgres. 
