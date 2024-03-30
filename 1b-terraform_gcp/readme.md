@@ -59,7 +59,7 @@ HashiCorp terraform is an infrastructure as code (IaC) tool that lets you define
 4. Set up a service account and authentication
 
 ### SERVICE ACCOUNT AND AUTHENTICATION   
-After you have created a GCP account and project and enabled the apis, you'll need to set up a GPC service account for Terraform. 
+After you have created a GCP account and project and enabled the apis, you'll need to set up a GCP service account for Terraform. 
 
 Service account:
    - similar to a user account that is used by particular services rather than by a user
@@ -158,7 +158,7 @@ To connect to a Google Cloud project, add the following configuration options to
 ```terraform
 provider "google" {
   credentials = <path_to_file/file.json>	# This method is NOT RECOMMENDED  
-  project = "<your_project_id>"  		# Replace with your Google Cloud project ID on GPC Dashboard
+  project = "<your_project_id>"  		# Replace with your Google Cloud project ID on GCP Dashboard
   region  = "europe-west1"       		# Set your desired region
 }
 ```
@@ -178,7 +178,7 @@ RUN Creates/ Downloads:
 - DATASETS - Big Query - structured data storage
 <br>
 
-**GPC BUCKET**
+**GCP BUCKET**
 <br> 
 [**Terraform google_storage_bucket Documentation**](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket)
  
@@ -199,7 +199,7 @@ resource "google_storage_bucket" "taxi-bucket" {
 }
 ```
 - `resource` \<resource being created\> \<local variable name\>  --> these names combined with a dot can be used to reference this resource in other blocks in this file (e.g., google_storage_bucket.taxi-bucket
-- `name` this has to be globally unique across all of GPC to be unique. Using a variation on the project generally works. 
+- `name` this has to be globally unique across all of GCP to be unique. Using a variation on the project generally works. 
 - `age` - in days 
 <br>
 
