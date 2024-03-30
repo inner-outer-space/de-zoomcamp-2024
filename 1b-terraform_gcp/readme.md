@@ -203,7 +203,7 @@ resource "google_storage_bucket" "taxi-bucket" {
 - `age` - in days 
 <br>
 
-**GPC DATASET** 
+**GCP DATASET** 
 <br>
 [**Terraform google_bigquerry_dataset Documentation**](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_dataset)
 ```terraform
