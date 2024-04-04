@@ -202,6 +202,18 @@ localhost:5789
 <br>
 <hr/>
 
+#### RUNNING MULTIPLE MAGE CONTAINERS 
+You'll need to connect Mage to a different port. In the docker-compose.yml you'll need to update both the port and the mage start command 
+``` yml
+  command: mage start --port 6788 ${PROJECT_NAME}
+ 
+      ports:
+      - 6788:6788
+``
+
+When attempting to connect to Mage with a port other than 6789, the browser may not render the page correctly with localhost:port.
+Instead, use 127.0.0.1:port to connect to Mage.
+
 ## A Simple Pipeline
 We are going to configure a simple pipeline to upload the titanic dataset from an http location and load it to Postgres. 
 
