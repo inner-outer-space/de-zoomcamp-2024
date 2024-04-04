@@ -178,7 +178,7 @@ docker-compose build
 Followed by: <br>
 
 ```cli
-docker-compose run
+docker-compose up
 ```
 *Note: the port mapping in the YAML file `"${POSTGRES_PORT}:5432"` uses 5432 on the host. If that port is already allocated to another Postgres container, it will cause a conflict.* 
 <br>
@@ -192,11 +192,11 @@ pull mageai/mageai:latest
 <br>
 
 #### ACCESS MAGE 
-Mage is accessed through a web browser
+Mage is accessed through a web browser at the port specified in the .yml file
 <br>
 
 ```cli
-localhost:789
+localhost:5789
 ```
 <br>
 <br>
