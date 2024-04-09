@@ -872,7 +872,7 @@ _Make sure that you are using a service account that has permissions to submit t
 
 **SUBMIT A JOB TO DATAPROC** <br>
 There are 3 ways to submit a job to DataProc:
-1. Web UO
+1. Web UI
 2. Google cloud SDK
 3. Rest API
 <br>
