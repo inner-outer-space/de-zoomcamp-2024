@@ -209,7 +209,7 @@ You'll need to connect Mage to a different port. In the docker-compose.yml you'l
  
       ports:
       - 6788:6788
-``
+```
 
 When attempting to connect to Mage with a port other than 6789, the browser may not render the page correctly with localhost:port.
 Instead, use 127.0.0.1:port to connect to Mage.
