@@ -768,6 +768,23 @@ Running a dbt project in production
 
 ## INTEGRATING DBT INTO MAGE 
 
+Add a profiles.yml 
+
+```
+collisions:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      location: EU
+      method: service-account
+      project: nyc-auto-accidents
+      dataset: nyc_collisions
+      threads: 4
+      timeout_seconds: 300
+      keyfile: /home/src/google_cloud_key.json
+```
+
 Mage was pointing to the wrong place for the profile and project.yml. Executing the following in the mage terminal to update. 
 ```
 Once there, do the following:
