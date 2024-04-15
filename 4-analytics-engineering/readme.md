@@ -771,8 +771,8 @@ Running a dbt project in production
 Mage was pointing to the wrong place for the profile and project.yml. Executing the following in the mage terminal to update. 
 ```
 Once there, do the following:
-DBT_PROFILES_DIR=/path/to/profiles.yml
-DBT_PROJECT_DIR=/path/to/project.yml
+DBT_PROFILES_DIR=/path/to/profiles.yml/
+DBT_PROJECT_DIR=/path/to/project.yml/
 dbt debug --config-dir
 ```
 
