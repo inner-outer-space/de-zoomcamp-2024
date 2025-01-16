@@ -106,7 +106,7 @@ WHAT HAPPENS IN A CONTAINER STAYS IN A CONTAINER
 	
 [Source: PhoenixNAP Cheat Sheet](https://phoenixnap.com/kb/docker-commands-cheat-sheet)
 <p align="center">
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/635e26c7-de01-41d4-98f8-0d67b8730541" align="ctr" width="900" height="580"><br>
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/635e26c7-de01-41d4-98f8-0d67b8730541" width="1200" height="auto"><br>
 </p>
 </details>
 
@@ -215,7 +215,7 @@ BASIC PGCLI COMMANDS<br>
 `\dt` list all tables<br> 
 `\d <table_name>` table details<br>  
 ###### *Since we haven't added tables yet the list will be empty.*
-<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/c054af8a-78e4-4bf6-bfe8-6ba4affc3cc9" width="200" height="70"><br><br>
+<img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/c054af8a-78e4-4bf6-bfe8-6ba4affc3cc9" width="200" height="auto"><br><br>
 
 <br><br><br>
 <hr />
