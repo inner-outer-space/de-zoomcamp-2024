@@ -18,7 +18,6 @@ MODULE 6:   [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomc
 <br>
 <br>
 ## RESOURCES
-![GIT_data_transport_commands](https://github.com/user-attachments/assets/d71b96c0-53ea-4b0d-8f6c-e0cffd627273)
 
 <details>
 <summary>GIT</summary>
