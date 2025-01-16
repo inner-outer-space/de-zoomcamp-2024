@@ -22,10 +22,11 @@ MODULE 6:   [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomc
 <details>
 <summary>GIT</summary>
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/34fd0e22-404d-4d73-a48a-8e249b429b74" style="margin: 0 auto;">
+  <img src="https://github.com/user-attachments/assets/34fd0e22-404d-4d73-a48a-8e249b429b74" style="margin: 5 auto;">
 </div>
 
-  - [GIT Cheatsheet](https://www.jrebel.com/blog/git-cheat-sheet)
+  - [GIT Beginner](https://jdsalaro.com/tutorial/git/)
+  - [GIT Cheatsheet](https://jdsalaro.com/cheatsheet/git/index.html)
   - [GIT Extended](https://dangitgit.com/) Special commit cases
   - [GIT Readme](https://pragmaticpineapple.com/adding-custom-html-and-css-to-github-readme/) Adding HTML and CSS to GIT Readme
   - [GIT Merge Divergent Branches](https://stackoverflow.com/questions/71768999/how-to-merge-when-you-get-error-hint-you-have-divergent-branches-and-need-to-s)
