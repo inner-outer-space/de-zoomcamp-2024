@@ -34,6 +34,13 @@ Docker is a set of Platform as a Service products that use OS level virtualizati
 - processes, file systems, user and group IDs, networks, and resources are isolated between containers. <br>
 - can be easily created and destroyed without affecting the host or other containers.
 - when a container is removed, all changes made to it during runtime are lost. <br>
+<div align="center">
+<h6>
+WHAT HAPPENS IN A CONTAINER STAYS IN A CONTAINER
+</h6>
+<i>All changes made in a container are lost when that container is destroyed<br> Changes made in one container will not affect the image or any subsequent containers created from that image.</i>
+</div>
+<br><br>
 
 #### ADVANTAGES:
 <table>
@@ -91,13 +98,7 @@ More **RUN** flags<br>
 `-v` or `--volume` mount volumes to share files and directories between the host and container.<br>
 `--network` connect the container to a specific Docker network, allowing communication between containers on the same network.<br>
 `--entrypoint` specify a different command to run as the entrypoint for that container.<br><br>
-<div align="center">
-<h6>
-WHAT HAPPENS IN A CONTAINER STAYS IN A CONTAINER
-</h6>
-<i>All changes made in a container are lost when that container is destroyed<br> Changes made in one container will not affect the image or any subsequent containers created from that image.</i>
-</div>
-<br><br>
+
 
 #### DOCKER COMMANDS  
 
