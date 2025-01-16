@@ -25,8 +25,8 @@ MODULE 6:   [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomc
   <img src="https://github.com/user-attachments/assets/34fd0e22-404d-4d73-a48a-8e249b429b74" 
     width="800" 
     height="auto" 
-    margin-top= "30px" 
-    margin-bottom= "80px" 
+    margin-top= "30" 
+    margin-bottom= "80" 
     margin-left= "auto" 
     margin-right= "auto">
 </div>
