@@ -46,19 +46,19 @@ WHAT HAPPENS IN A CONTAINER STAYS IN A CONTAINER
 <table>
   <tr>
     <td><b>Reproducible</b></td>
-    <td>- the container encapsulates the application/ service and all of its dependencies ensuring that it will run consistently wherever it is deployed.<br>- avoids environment issues when the container is recreated on a different machine. For example, recreating the dev environment on a local machine for the purpose of experimenting and testing (CI/CD).</td>
+    <td>- Containers encapsulate the application/ service and all of its dependencies ensuring that it will run consistently wherever they are deployed.<br>- This avoids environment issues when the container is recreated on a different machine. For example, recreating the dev environment on a local machine for the purpose of experimenting and testing (CI/CD).</td>
   </tr>
   <tr>
     <td><b>Isolated</b></td>
-    <td>- allows multiple applications or services to run on the same machine without conflict.</td>
+    <td>- Containers allow multiple applications or services to run on the same machine without conflict.</td>
   </tr>
   <tr>
     <td><b>Portable</b></td>
-    <td>containers can run on any platform that supports Docker<br> - Cloud data pipelines - AWS Batch, Kubernetes jobs<br> - Spark data pipelines<br> - Severless functions - AWS Lamda, Google cloud functions</td>
+    <td>Containers can run on any platform that supports Docker<br> - Cloud data pipelines - AWS Batch, Kubernetes jobs<br> - Spark data pipelines<br> - Severless functions - AWS Lamda, Google cloud functions</td>
   </tr>
   <tr>
     <td><b>Scalable</b></td>
-    <td>- containers are lightweight, resource efficient, and easy to scale.</td>
+    <td>- Containers are lightweight, resource efficient, and easy to scale.</td>
   </tr>
 </table>
 <br><br><br>
