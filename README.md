@@ -1,17 +1,18 @@
-# DataTalks Data Engineering ZoomCamp 2024 
-This repo contains my notes and homework assignments for the 2024 [Data Talks Data Engineering Zoomcamp](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main)
-The final project for this course can be found in this repo [NYC Collisions Analytics](https://github.com/inner-outer-space/nyc-collisions-analytics)
+# DataTalks Data Engineering ZoomCamp
+This repo contains my notes and homework assignments for the 2024 [Data Talks Data Engineering Zoomcamp](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main) plus additional notes for Airflow (2021) and Kestra (2025) 
+The final project for the 2024 course can be found in this repo [NYC Collisions Analytics](https://github.com/inner-outer-space/nyc-collisions-analytics)
 <div align="center">
   <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/2689b1a3-60af-4b13-9ca5-dde96f28773c" width="400" height="225" style="margin: 0 auto;">
 </div>
 
 ## NOTES 
-MODULE 1:  [Docker & SQL](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/1a-docker_sql/readme.md) • [Terraform & GCP](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/1b-terraform_gcp/readme.md) <br>
-MODULE 2:  [Orchestration with Mage](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/2-workflow-orchestration) <br>
-MODULE 3:  [Data Warehouses with BigQuery](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/3a-data-warehouse/readme.md) <br>
-MODULE 4:  [Analytics Engineering with dbt](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/4-analytics-engineering) <br>
-MODULE 5:  [Batch with Spark](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/5-batch) <br>
-MODULE 6:  [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/6-streaming)
+MODULE 1:   [Docker & SQL](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/1a-docker_sql/readme.md) • [Terraform & GCP](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/1b-terraform_gcp/readme.md) <br>
+MODULE 2A:  [Orchestration with Mage](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/2-workflow-orchestration) <br>
+MODULE 2B:  [Orchestration with Kestra)() <br>
+MODULE 3:   [Data Warehouses with BigQuery](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/3a-data-warehouse/readme.md) <br>
+MODULE 4:   [Analytics Engineering with dbt](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/4-analytics-engineering) <br>
+MODULE 5:   [Batch with Spark](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/5-batch) <br>
+MODULE 6:   [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/6-streaming)
 <br>
 <br>
 ## RESOURCES
