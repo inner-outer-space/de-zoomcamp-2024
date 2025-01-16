@@ -186,7 +186,7 @@ docker run -it \
 ```
 `-e` environmental variables needed to configure postgres<br>
 `-p` \<host port\>:\<container port\> maps the host port to the container port <br>
-`-v` \<path to host folder\>:\<path to container folder\> maps a volume on host to the container. 
+`-v` \<full path to host folder\>:\<path to container folder\> maps a volume on host to the container. 
 Postgres stores data among other things in the `/var/lib/postgresql/data` folder. Mounting a folder on the host to this folder in the container allow the postgres file system to be saved outside of the container so it isn't lost when the container is removed. <br>
 
 *note: I had to update permission in order to open this folder. The following grants complete access to everyone, which is not good practice. 
