@@ -45,7 +45,8 @@ MODULE 6:   [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomc
 <details>
 <summary>Docker</summary>  
   
-  - [Docker Commands](https://linuxhandbook.com/essential-docker-commands/)
+  - [Docker Commands - DockerLabs](https://dockerlabs.collabnix.com/docker/cheatsheet/)
+  - [Docker Commands - Linux Handbook](https://linuxhandbook.com/essential-docker-commands/)
 </details>
 
 <details>
