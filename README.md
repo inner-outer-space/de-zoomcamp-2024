@@ -22,7 +22,7 @@ MODULE 6:   [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomc
 <details>
 <summary>GIT</summary>
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/34fd0e22-404d-4d73-a48a-8e249b429b74" width="800" height="auto" style="margin: 10 auto;">
+  <img src="https://github.com/user-attachments/assets/34fd0e22-404d-4d73-a48a-8e249b429b74" width="800" height="auto" style="margin: 50 auto;">
 </div>
 
   - [GIT Beginner](https://jdsalaro.com/tutorial/git/)
