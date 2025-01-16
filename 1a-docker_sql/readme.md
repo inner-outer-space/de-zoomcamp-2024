@@ -22,18 +22,18 @@
 Docker is a set of Platform as a Service products that use OS level virtualization to deliver software in packages called containers. It uses client server architecture with communication via a REST API. 
 
 #### DOCKER IMAGE:
-- a lightweight, stand-alone, and executable package that contains all the necessary code, libraries, dependencies, and configuration to run a piece of software<br>
-- can be stored in public or private registries for sharing purposes<br>
-- built using the Dockerfile<br> 
+- A lightweight, stand-alone, and executable package that contains all the necessary code, libraries, dependencies, and configuration to run a piece of software.<br>
+- Can be stored in public or private registries for sharing purposes.<br>
+- Built using the Dockerfile.<br>
 
 #### DOCKER CONTAINER:
-- an instance of a Docker image running as a process on a host system. <br>
-- encapsulates an application/ pipeline/ database/ process etc. and its dependencies, libraries, and configurations along with a runtime environment.<br> 
-- shares the host OS kernel and some system libraries but still provides isolation.<br>
-- multiple containers can run and be managed independently on the same host OS.<br>
-- processes, file systems, user and group IDs, networks, and resources are isolated between containers. <br>
-- can be easily created and destroyed without affecting the host or other containers.
-- when a container is removed, all changes made to it during runtime are lost. <br>
+- An instance of a Docker image running as a process on a host system.<br>
+- Encapsulates an application, pipeline, database, or process along with its dependencies, libraries, configurations, and runtime environment.<br>
+- Shares the host OS kernel and some system libraries but still provides isolation.<br>
+- Multiple containers can run and be managed independently on the same host OS.<br>
+- Processes, file systems, user and group IDs, networks, and resources are isolated between containers.<br>
+- Can be easily created and destroyed without affecting the host or other containers.<br>
+- When a container is removed, all changes made to it during runtime are lost; <b>however, data can be persisted by using a volume.</b><br>
 <div align="center">
 <h6>
 WHAT HAPPENS IN A CONTAINER STAYS IN A CONTAINER
