@@ -2,7 +2,13 @@
 This repo contains my notes and homework assignments for the 2024 [Data Talks Data Engineering Zoomcamp](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main) plus additional notes on orchestrators from other years -  Airflow (2022), Prefect (2023), and Kestra (2025) 
 The final project for the 2024 course can be found in this repo [NYC Collisions Analytics](https://github.com/inner-outer-space/nyc-collisions-analytics)
 <div align="center">
-  <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/2689b1a3-60af-4b13-9ca5-dde96f28773c" width="800" height="auto" style="margin: 0 auto;">
+  <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/2689b1a3-60af-4b13-9ca5-dde96f28773c" 
+    width="800" 
+    height="auto" 
+    margin-top= "80" 
+    margin-bottom= "80" 
+    margin-left= "auto" 
+    margin-right= "auto">
 </div>
 
 ## NOTES 
