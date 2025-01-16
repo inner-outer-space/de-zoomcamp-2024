@@ -2,7 +2,7 @@
 This repo contains my notes and homework assignments for the 2024 [Data Talks Data Engineering Zoomcamp](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main) plus additional notes on orchestrators from other years -  Airflow (2022), Prefect (2023), and Kestra (2025) 
 The final project for the 2024 course can be found in this repo [NYC Collisions Analytics](https://github.com/inner-outer-space/nyc-collisions-analytics)
 <div align="center">
-  <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/2689b1a3-60af-4b13-9ca5-dde96f28773c" width="800" height="auto" style="margin: 100 auto;">
+  <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/2689b1a3-60af-4b13-9ca5-dde96f28773c" width="800" height="auto" style="margin: 0 auto;">
 </div>
 
 ## NOTES 
@@ -22,7 +22,7 @@ MODULE 6:   [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomc
 <details>
 <summary>GIT</summary>
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/34fd0e22-404d-4d73-a48a-8e249b429b74" style="margin: 5 auto;">
+  <img src="https://github.com/user-attachments/assets/34fd0e22-404d-4d73-a48a-8e249b429b74" width="800" height="auto" style="margin: 10 auto;">
 </div>
 
   - [GIT Beginner](https://jdsalaro.com/tutorial/git/)
