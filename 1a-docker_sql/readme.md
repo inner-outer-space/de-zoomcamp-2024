@@ -112,12 +112,12 @@ More **RUN** flags<br>
 </details>
 
 #### DOCKERFILE
-You'll normally need more than just python or ubuntu (base images) installed in a container. You could specify a Bash entry point and then install libraries, etc., via the command line, but these will all disappear when the container is closed. 
+Typically, you'll need more than just the base images, such as Python or Ubuntu, installed in a container. To install additional resources within a container, you could specify a Bash entry point and manually install libraries or other dependencies via the command line. However, these changes will not persist, as everything installed during runtime will be lost when the container is closed.
 ```bash
 $ docker run -it --entrypoint=bash python:3.9
 ```
 
-The dockerfile allows you to expand on a base image and create your own more complex images. The file contains instructions on how to set up the container and includes actions such as running commands, installing libraries, and copying files into the container.  
+The <b>Dockerfile<\b> allows you to expand on a base image and create your own more complex images. The file contains instructions on how to set up the container and includes actions such as running commands, installing libraries, and copying files into the container.  
 
 ##### DOCKERFILE EXAMPLE THAT RUNS A PIPELINE.PY FILE
 In this example a data pipeline (pipeline.py) is copied to the container and executed on creation.
