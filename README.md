@@ -18,12 +18,12 @@ MODULE 6:   [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomc
 <br>
 <br>
 ## RESOURCES
+![GIT_data_transport_commands](https://github.com/user-attachments/assets/d71b96c0-53ea-4b0d-8f6c-e0cffd627273)
 
 <details>
 <summary>GIT</summary>
 <div align="center">
-  <img src= ![GIT_data_transport_commands](https://github.com/user-attachments/assets/34fd0e22-404d-4d73-a48a-8e249b429b74)
-width="400" height="225" style="margin: 0 auto;">
+  <img src="https://github.com/user-attachments/assets/34fd0e22-404d-4d73-a48a-8e249b429b74" style="margin: 0 auto;">
 </div>
 
   - [GIT Cheatsheet](https://www.jrebel.com/blog/git-cheat-sheet)
