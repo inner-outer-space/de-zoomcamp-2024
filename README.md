@@ -4,11 +4,7 @@ The final project for the 2024 course can be found in this repo [NYC Collisions 
 <div align="center">
   <img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/2689b1a3-60af-4b13-9ca5-dde96f28773c" 
     width="800" 
-    height="auto" 
-    margin-top= "80" 
-    margin-bottom= "80" 
-    margin-left= "auto" 
-    margin-right= "auto">
+    height="auto">
 </div>
 
 ## NOTES 
@@ -30,11 +26,7 @@ MODULE 6:   [Streaming with Kafka](https://github.com/inner-outer-space/de-zoomc
 <div align="center">
   <img src="https://github.com/user-attachments/assets/34fd0e22-404d-4d73-a48a-8e249b429b74" 
     width="800" 
-    height="auto" 
-    margin-top= "80" 
-    margin-bottom= "80" 
-    margin-left= "auto" 
-    margin-right= "auto">
+    height="auto" >
 </div>
 
   - [GIT Beginner](https://jdsalaro.com/tutorial/git/)
