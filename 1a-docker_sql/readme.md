@@ -69,7 +69,7 @@ docker build -t test:pandas .
 <br><br>
 
 #### CREATE A CONTAINER
-A container is an instance of an image that is created by running that image. If the image is not found in the local cache then docker will attempt to pull it from the Docker Hub repository.<br> 
+When you run a Docker image, it creates a container, which is an independent instance of that image. If the specified image is not available in the local cache, Docker will automatically pull it from the Docker Hub repository (or another configured registry).<br> 
 ```bash
 docker run -it ubuntu bash   
 ```
