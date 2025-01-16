@@ -22,9 +22,9 @@
 Docker is a set of Platform as a Service products that use OS level virtualization to deliver software in packages called containers. It uses client server architecture with communication via a REST API. 
 
 #### DOCKER IMAGE:
-- a lightweight, stand-alone, and executable package that contains all the necessary code, libraries, dependencies, and configuration to run a piece of software. <br>
-- can be stored in public or private registries for sharing purposes.<br>
-- built using the Dockerfile.<br> 
+- a lightweight, stand-alone, and executable package that contains all the necessary code, libraries, dependencies, and configuration to run a piece of software<br>
+- can be stored in public or private registries for sharing purposes<br>
+- built using the Dockerfile<br> 
 
 #### DOCKER CONTAINER:
 - an instance of a Docker image running as a process on a host system. <br>
