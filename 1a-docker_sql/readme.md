@@ -116,8 +116,7 @@ Typically, you'll need more than just the base images, such as Python or Ubuntu,
 ```bash
 $ docker run -it --entrypoint=bash python:3.9
 ```
-
-The <b>Dockerfile</b> allows you to expand on a base image and create your own more complex images. The file contains instructions on how to set up the container and includes actions such as running commands, installing libraries, and copying files into the container.  
+To create a custom more complex image that includes all the required dependencies and configurations, you use a <b>Dockerfile</>. A Dockerfile is a script that includes actions such as running commands, installing libraries, and copying files into the container.
 
 ##### DOCKERFILE EXAMPLE THAT RUNS A PIPELINE.PY FILE
 In this example a data pipeline (pipeline.py) is copied to the container and executed on creation.
