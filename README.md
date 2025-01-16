@@ -8,8 +8,8 @@ The final project for the 2024 course can be found in this repo [NYC Collisions 
 ## NOTES 
 MODULE 1:   [Docker & SQL](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/1a-docker_sql/readme.md) • [Terraform & GCP](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/1b-terraform_gcp/readme.md) <br>
 MODULE 2A:  [Orchestration with Mage](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/2-workflow-orchestration) <br>
-MODULE 2B:  [Orchestration with Airflow] <br>
-MODULE 2C:  [Orchestration with Prefect] <br>
+MODULE 2B:  [Orchestration with Airflow]() <br>
+MODULE 2C:  [Orchestration with Prefect]() <br>
 MODULE 2D:  [Orchestration with Kestra]() <br>
 MODULE 3:   [Data Warehouses with BigQuery](https://github.com/inner-outer-space/de-zoomcamp-2024/blob/main/3a-data-warehouse/readme.md) <br>
 MODULE 4:   [Analytics Engineering with dbt](https://github.com/inner-outer-space/de-zoomcamp-2024/tree/main/4-analytics-engineering) <br>
