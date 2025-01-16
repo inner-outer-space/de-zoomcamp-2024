@@ -112,7 +112,7 @@ More **RUN** flags<br>
 </details>
 
 #### DOCKERFILE
-Typically, you'll need more than just the base images, such as Python or Ubuntu, installed in a container. To install additional resources within a container, you could specify a Bash entry point and manually install libraries or other dependencies via the command line. However, these changes will not persist, as everything installed during runtime will be lost when the container is closed.
+Typically, you'll need more than just a base image, such as Python or Ubuntu, installed in a container. To install additional resources within a container, you could specify a Bash entry point and manually install libraries or other dependencies via the command line. However, these changes will not persist, as everything installed during runtime will be lost when the container is closed.
 ```bash
 $ docker run -it --entrypoint=bash python:3.9
 ```
