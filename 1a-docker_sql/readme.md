@@ -402,7 +402,7 @@ jupyter nbconvert --to=script upload-data.iypnb
 ```
 
 Remove unnecessary code and add main method and arg parse so that you can pass arguments to the job. 
-As an exercise this was written to upload the yellow taxi data and the zones lookup table. Please note: I have used the parquet file but the class uses the CSV. The data is different in the parquet file and shouldn't be used to answer the quiz questions. 
+As an exercise this was written to upload the yellow taxi data and the zones lookup table.<br><br> Please note: I have used the parquet file here, but the class uses the CSV. The parquet file has slightly different data than the CSV so shouldn't be used for the quiz. 
     
 ```python 
 import argparse
