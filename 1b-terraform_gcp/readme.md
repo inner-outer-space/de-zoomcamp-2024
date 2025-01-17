@@ -157,7 +157,7 @@ To connect to a Google Cloud project, add the following configuration options to
 
 ```terraform
 provider "google" {
-  credentials = <path_to_file/file.json>	# This method is NOT RECOMMENDED  
+  credentials = "<path_to_file/file.json>"	# This method is NOT RECOMMENDED  
   project = "<your_project_id>"  		# Replace with your Google Cloud project ID on GCP Dashboard
   region  = "europe-west1"       		# Set your desired region
 }
