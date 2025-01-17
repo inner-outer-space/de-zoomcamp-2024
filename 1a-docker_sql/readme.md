@@ -370,7 +370,7 @@ dpage/pgadmin4
     <td><b>LOGIN TO PGADMIN</b><br>admin@admin.com / password<br><br><br></td>
     <td><b>REGISTER A NEW SERVER</b><br>left click on 'Server'<br><br><br></td>
     <td><b>GENERAL TAB</b><br> enter a name<br><br><br></td>
-    <td><b>CONNECTION TAB</b><br>use Host name, username,<br>& pswd defined for Postgres<br>pg-database / root / root</td>
+    <td><b>CONNECTION TAB</b><br>use Host name, username,<br>& pswd defined for Postgres<br>(pg-database / root / root)</td>
 <br></td>
   </tr>
   <tr>
