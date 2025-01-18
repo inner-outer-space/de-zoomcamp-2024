@@ -125,7 +125,8 @@ gcloud auth application-default login
 <br><br>
 
 ## TERRAFORM MAIN.TF 
-```terraform fmt``` fixes the formatting of the tf file in the folder you run this command. 
+ - ```terraform fmt``` fixes the formatting of the tf file in the folder you run this command.
+ - Add a [Terraform .gitignore](https://github.com/github/gitignore/blob/main/Terraform.gitignore) to the folder  
 
 **GCP PROVIDER BLOCK** <br> 
 Define the provider in the main.tf file.  
