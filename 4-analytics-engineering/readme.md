@@ -116,7 +116,7 @@ dbt, data build tool, is a transformation tool that allows anyone with SQL knowl
 
 <table>
 <tr>
-<td>After data is extracted and loaded into a data warehouse,<br> DBT helps us transform raw data following good software<br> development practices. It allows you to<br> develope models, test, execute, and deploy<br> using version control. </td>
+<td>After data is extracted and loaded into a data warehouse,<br> DBT helps us transform raw data following good software<br> development practices. It allows you to<br> develop models, test, execute, and deploy<br> using version control. </td>
 <td><img src="https://github.com/inner-outer-space/de-zoomcamp-2024/assets/12296455/608ed128-067c-4775-b7e4-95cbce80b7cc" width="350" height="auto"></td>
 </tr>
 </table>
